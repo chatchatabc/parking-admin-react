@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { authCheckSession, authLogout } from "../../domain/service/authService";
+import Sidebar from "../components/Sidebar";
 
 function HomeLayout() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function HomeLayout() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-blue-50">
       <header className="bg-blue-300 border-b-2 p-2 flex items-center border-blue-900">
         {/* Left */}
         <div className="flex items-center space-x-2">
@@ -43,10 +44,8 @@ function HomeLayout() {
         </button>
       </header>
       <div className="flex flex-1">
-        <div className="w-[300px] bg-blue-300 border-r-2 border-blue-900">
-          <header>
-            <h2>Sidebar</h2>
-          </header>
+        <div className="w-[300px] bg-blue-300 border-r-2 py-1 border-blue-900">
+          <Sidebar />
         </div>
         <div className="flex-1 p-2">
           <Outlet />
