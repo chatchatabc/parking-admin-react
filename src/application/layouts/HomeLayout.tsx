@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { authLogout } from "../../domain/service/authService";
+import { authCheckSession, authLogout } from "../../domain/service/authService";
 
 function HomeLayout() {
   const navigate = useNavigate();
@@ -8,8 +8,14 @@ function HomeLayout() {
   function handleLogout() {
     authLogout();
 
-    navigate("/");
+    navigate("/login");
   }
+
+  React.useEffect(() => {
+    if (!authCheckSession()) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

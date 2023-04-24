@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import MyInput from "../components/MyInput";
-import { authLogin } from "../../domain/service/authService";
+import { authCheckSession, authLogin } from "../../domain/service/authService";
 import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
@@ -20,6 +20,12 @@ function LoginPage() {
       navigate("/");
     }
   }
+
+  React.useEffect(() => {
+    if (authCheckSession()) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="h-screen flex flex-col justify-center container mx-auto px-4 lg:px-8">

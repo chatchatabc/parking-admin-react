@@ -19,3 +19,15 @@ export async function authLogin(values: Record<string, any>) {
 export async function authLogout() {
   document.cookie = "token=; path=/; max-age=0";
 }
+
+export function authCheckSession() {
+  const cookie = document.cookie;
+
+  const token = cookie.split("; ").find((row) => row.startsWith("token="));
+
+  if (token) {
+    return true;
+  }
+
+  return false;
+}
