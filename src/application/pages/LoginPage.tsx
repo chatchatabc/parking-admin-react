@@ -1,14 +1,36 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import MyInput from "../components/MyInput";
+import { authLogin } from "../../domain/service/authService";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
+  const navigate = useNavigate();
+
+  async function handleLogin(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const values = Object.fromEntries(new FormData(form).entries());
+    const response = await authLogin(values);
+
+    if (response.error) {
+      console.log(response.error);
+    } else {
+      console.log(response);
+      navigate("/");
+    }
+  }
+
   return (
     <div className="h-screen flex flex-col justify-center container mx-auto px-4 lg:px-8">
       <header className="text-center space-y-2">
         <h1 className="text-4xl font-bold">Davao Parking Dashboard</h1>
         <h2 className="text-2xl">Login Page</h2>
       </header>
-      <form className="max-w-[300px] space-y-2 mt-8 w-full mx-auto">
+      <form
+        onSubmit={handleLogin}
+        className="max-w-[300px] space-y-2 mt-8 w-full mx-auto"
+      >
         <MyInput
           name="username"
           label="Username"
@@ -18,9 +40,9 @@ function LoginPage() {
 
         <MyInput
           type="password"
-          name="username"
-          label="Username"
-          placeholder="Username"
+          name="password"
+          label="Password"
+          placeholder="Password"
           required
         />
 
