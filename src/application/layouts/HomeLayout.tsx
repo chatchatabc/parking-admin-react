@@ -72,13 +72,13 @@ function HomeLayout() {
       </header>
 
       {/* Right Content */}
-      <main className="flex-1 flex">
+      <div className="flex-1 flex">
         {/* Sidebar */}
         <Sidebar open={openSidebar} />
-        <div className="flex flex-1">
+        <main className="flex flex-1">
           <Outlet />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
