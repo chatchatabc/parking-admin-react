@@ -7,9 +7,16 @@ import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
 
 function HomeLayout() {
-  const [openSidebar, setOpenSidebar] = React.useState(true);
+  const [openSidebar, setOpenSidebar] = React.useState(
+    JSON.parse(localStorage.getItem("sidebarState") ?? "true")
+  );
   const [openProfileMenu, setProfileMenu] = React.useState(false);
   const navigate = useNavigate();
+
+  function handleSidebar() {
+    setOpenSidebar(!openSidebar);
+    localStorage.setItem("sidebarState", JSON.stringify(!openSidebar));
+  }
 
   React.useEffect(() => {
     if (!authCheckSession()) {
@@ -28,7 +35,7 @@ function HomeLayout() {
             <Icon
               className="w-8 h-8"
               icon={openSidebar ? "mdi:menu-open" : "mdi:menu"}
-              onClick={() => setOpenSidebar(!openSidebar)}
+              onClick={handleSidebar}
             />
           </button>
 
