@@ -3,6 +3,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./globals.css";
 import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
+import { message } from "antd";
+
+message.config({
+  maxCount: 2,
+});
 
 const router = createBrowserRouter([
   {
