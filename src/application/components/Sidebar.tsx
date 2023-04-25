@@ -44,7 +44,7 @@ function NavigationDropDown({ navigation, open }: DropDownProps) {
         <ul className="mt-0.5">
           {navigation.children.map((child: Record<string, any>) => {
             return (
-              <li className="p-0.5" key={child.path}>
+              <li className="py-0.5" key={child.path}>
                 <NavLink
                   to={child.path}
                   className={({ isActive }) =>
