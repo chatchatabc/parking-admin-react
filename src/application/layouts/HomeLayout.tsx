@@ -45,7 +45,7 @@ function HomeLayout() {
             <p>Admin</p>
             <Popover
               open={openProfileMenu}
-              content={<NavbarProfileMenu />}
+              content={<NavbarProfileMenu setProfileMenu={setProfileMenu} />}
               placement="topRight"
               trigger="click"
               onOpenChange={(open) => setProfileMenu(open)}
