@@ -35,38 +35,44 @@ function HomeLayout() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-blue-50">
-      <header className="bg-blue-300 border-b-2 p-2 flex items-center border-blue-900">
-        {/* Left */}
-        <div className="flex items-center space-x-2">
-          <div className="w-32">
-            <div className="relative pb-[40%] bg-white">
-              <p className="absolute">Logo Here</p>
+    <div className="flex bg-blue-50">
+      {/* Sidebar */}
+      <aside className="w-[300px] h-screen sticky top-0 bg-blue-300 border-r-2 border-blue-900">
+        {/* Sidebar header */}
+        <header className="p-2">
+          <div className="flex items-center space-x-2">
+            <div className="w-32">
+              <div className="relative pb-[40%] bg-white">
+                <p className="absolute">Davao Parking logo</p>
+              </div>
             </div>
           </div>
-          <h1 className="text-xl font-medium">Davao Parking Dashboard</h1>
-        </div>
+        </header>
 
-        {/* Right */}
-        <div className="ml-auto flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-full border border-blue-900 bg-white"></div>
-          <p>Admin</p>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="ml-4 py-1 px-4 bg-red-500 text-white rounded-md transition hover:opacity-90"
-        >
-          Logout
-        </button>
-      </header>
-      <div className="flex flex-1">
-        <div className="w-[300px] bg-blue-300 border-r-2 py-1 border-blue-900">
+        {/* Navigation */}
+        <nav className="p-2 mt-4">
           <Sidebar />
-        </div>
-        <div className="flex-1 p-2">
+        </nav>
+      </aside>
+
+      {/* Right Content */}
+      <main className="flex-1">
+        <header className="bg-blue-300 sticky top-0 border-b-2 p-2 flex items-center border-blue-900">
+          <div className="ml-auto flex items-center space-x-2">
+            <div className="w-10 h-10 rounded-full border border-blue-900 bg-white"></div>
+            <p>Admin</p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="ml-4 py-1 px-4 bg-red-500 text-white rounded-md transition hover:opacity-90"
+          >
+            Logout
+          </button>
+        </header>
+        <div className="flex flex-1">
           <Outlet />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

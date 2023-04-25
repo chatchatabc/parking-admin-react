@@ -13,10 +13,10 @@ function Sidebar() {
     <ul>
       {navigations.map((navigation) => {
         return (
-          <li key={navigation.path}>
+          <li className="p-0.5" key={navigation.path}>
             <NavLink
               className={({ isActive }) =>
-                `p-2 flex items-center ${
+                `p-2 rounded-md flex items-center ${
                   isActive ? "bg-blue-100" : "hover:bg-blue-100"
                 } `
               }
