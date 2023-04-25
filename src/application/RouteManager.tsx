@@ -34,6 +34,14 @@ const router = createBrowserRouter([
               </div>
             ),
           },
+          {
+            path: "list",
+            element: (
+              <div>
+                <h1>List Users</h1>
+              </div>
+            ),
+          },
         ],
       },
       {
@@ -43,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "help",
+        element: <h1>Help</h1>,
+      },
+      {
+        path: "about",
+        element: <h1>About</h1>,
       },
     ],
   },
