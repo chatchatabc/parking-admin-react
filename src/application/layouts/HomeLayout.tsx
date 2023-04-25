@@ -2,14 +2,30 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { authCheckSession, authLogout } from "../../domain/service/authService";
 import Sidebar from "../components/Sidebar";
+import { Modal } from "antd";
 
 function HomeLayout() {
   const navigate = useNavigate();
+  const { confirm } = Modal;
 
   function handleLogout() {
-    authLogout();
-
-    navigate("/login");
+    confirm({
+      title: "Are you sure?",
+      content: "You will be logged out of the system.",
+      onOk() {
+        authLogout();
+        navigate("/login");
+        close();
+      },
+      onCancel() {
+        close();
+      },
+      okText: "Logout",
+      okButtonProps: {
+        danger: true,
+      },
+      maskClosable: true,
+    });
   }
 
   React.useEffect(() => {
