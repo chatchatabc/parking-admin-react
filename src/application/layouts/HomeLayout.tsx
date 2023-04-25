@@ -1,32 +1,14 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { authCheckSession, authLogout } from "../../domain/service/authService";
+import { authCheckSession } from "../../domain/service/authService";
 import Sidebar from "../components/Sidebar";
-import { Modal } from "antd";
+import { Popover } from "antd";
+import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
+import { Icon } from "@iconify/react";
 
 function HomeLayout() {
+  const [openProfileMenu, setProfileMenu] = React.useState(false);
   const navigate = useNavigate();
-  const { confirm } = Modal;
-
-  function handleLogout() {
-    confirm({
-      title: "Are you sure?",
-      content: "You will be logged out of the system.",
-      onOk() {
-        authLogout();
-        navigate("/login");
-        close();
-      },
-      onCancel() {
-        close();
-      },
-      okText: "Logout",
-      okButtonProps: {
-        danger: true,
-      },
-      maskClosable: true,
-    });
-  }
 
   React.useEffect(() => {
     if (!authCheckSession()) {
@@ -61,13 +43,21 @@ function HomeLayout() {
           <div className="ml-auto flex items-center space-x-2">
             <div className="w-10 h-10 rounded-full border border-blue-900 bg-white"></div>
             <p>Admin</p>
+            <Popover
+              open={openProfileMenu}
+              content={<NavbarProfileMenu />}
+              placement="topRight"
+              trigger="click"
+              onOpenChange={(open) => setProfileMenu(open)}
+              zIndex={1001}
+            >
+              <button
+                className={`transition ${openProfileMenu ? "rotate-180" : ""}`}
+              >
+                <Icon className="w-8 h-8" icon="mdi:caret-down" />
+              </button>
+            </Popover>
           </div>
-          <button
-            onClick={handleLogout}
-            className="ml-4 py-1 px-4 bg-red-500 text-white rounded-md transition hover:opacity-90"
-          >
-            Logout
-          </button>
         </header>
         <div className="flex flex-1">
           <Outlet />

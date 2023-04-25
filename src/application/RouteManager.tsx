@@ -4,6 +4,7 @@ import "./globals.css";
 import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
+import ProfilePage from "./pages/ProfilePage";
 
 message.config({
   maxCount: 2,
@@ -36,8 +37,12 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/settings",
+        path: "settings",
         element: <h1>Settings</h1>,
+      },
+      {
+        path: "profile",
+        element: <ProfilePage />,
       },
     ],
   },
