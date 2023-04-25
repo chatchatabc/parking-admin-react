@@ -6,6 +6,7 @@ export async function authLogin(values: Record<string, any>) {
 
     return {
       username: "admin",
+      error: null,
     };
   }
 
