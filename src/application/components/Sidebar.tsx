@@ -26,8 +26,8 @@ function NavigationDropDown({ navigation, open }: DropDownProps) {
         </span>
         <span
           className={`transition-all ease-linear overflow-hidden line-clamp-1 ${
-            open ? "max-w-[100px] px-2" : "max-w-[0]"
-          } group-hover:max-w-[100px] group-hover:px-2`}
+            open ? "max-w-[250px] px-2" : "max-w-[0]"
+          } group-hover:max-w-[250px] group-hover:px-2`}
         >
           {navigation.label}
         </span>
@@ -64,8 +64,8 @@ function NavigationDropDown({ navigation, open }: DropDownProps) {
                   </span>
                   <span
                     className={`transition-all ease-linear overflow-hidden line-clamp-1 ${
-                      open ? "max-w-[200px] px-2" : "max-w-[0]"
-                    } group-hover:max-w-[200px] group-hover:px-2`}
+                      open ? "max-w-[250px] px-2" : "max-w-[0]"
+                    } group-hover:max-w-[250px] group-hover:px-2`}
                   >
                     {child.label}
                   </span>
@@ -109,8 +109,8 @@ function Sidebar({ open }: Props) {
   return (
     <aside
       className={`sticky top-[66px] h-[calc(100vh-66px)] bg-blue-300 border-r-2 border-blue-900 ${
-        open ? "min-w-[200px]" : "min-w-[1px]"
-      } transition-all ease-linear group hover:min-w-[200px]`}
+        open ? "min-w-[250px]" : "min-w-[1px]"
+      } transition-all ease-linear group hover:min-w-[250px]`}
     >
       {/* Navigation */}
       <nav className="p-2 space-y-2">
@@ -134,8 +134,8 @@ function Sidebar({ open }: Props) {
                     </span>
                     <span
                       className={`transition-all ease-linear overflow-hidden  line-clamp-1 ${
-                        open ? "max-w-[200px] px-2" : "max-w-[0]"
-                      } group-hover:max-w-[100px] group-hover:px-2`}
+                        open ? "max-w-[250px] px-2" : "max-w-[0]"
+                      } group-hover:max-w-[250px] group-hover:px-2`}
                     >
                       {navigation.label}
                     </span>
@@ -163,8 +163,8 @@ function Sidebar({ open }: Props) {
                   </span>
                   <span
                     className={`transition-all ease-linear overflow-hidden ${
-                      open ? "max-w-[100px] px-2" : "max-w-[0]"
-                    } group-hover:max-w-[100px] group-hover:px-2`}
+                      open ? "max-w-[250px] px-2" : "max-w-[0]"
+                    } group-hover:max-w-[250px] group-hover:px-2`}
                   >
                     {navigation.label}
                   </span>
