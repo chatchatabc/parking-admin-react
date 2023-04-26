@@ -27,11 +27,11 @@ function HomeLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-blue-50">
       {/* Navbar */}
-      <header className="bg-blue-300 sticky top-0 border-b-2 py-2 px-4 flex items-center border-blue-900">
+      <header className="bg-blue-300 sticky top-0 border-b-2 py-2 px-3 flex items-center border-blue-900">
         {/* Left side */}
         <div className="flex space-x-4 items-center">
           {/* Sidebar show and hide btn */}
-          <button>
+          <button className="p-1 rounded-md hover:bg-blue-100">
             <Icon
               className="w-8 h-8"
               icon={openSidebar ? "mdi:menu-open" : "mdi:menu"}
@@ -58,9 +58,7 @@ function HomeLayout() {
         />
 
         {/* Right side */}
-        <div className="ml-auto flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-full border border-blue-900 bg-white"></div>
-          <p>Admin</p>
+        <div className="ml-auto">
           <Popover
             open={openProfileMenu}
             content={<NavbarProfileMenu setProfileMenu={setProfileMenu} />}
@@ -70,9 +68,17 @@ function HomeLayout() {
             zIndex={1001}
           >
             <button
-              className={`transition ${openProfileMenu ? "rotate-180" : ""}`}
+              className={`flex items-center space-x-2 p-1 rounded-md transition ${
+                openProfileMenu ? "bg-blue-100" : ""
+              } hover:bg-blue-100`}
             >
-              <Icon className="w-8 h-8" icon="mdi:caret-down" />
+              <div className="w-10 h-10 rounded-full border border-blue-900 bg-white"></div>
+              <p>Admin</p>
+              <span
+                className={`transition ${openProfileMenu ? "rotate-180" : ""}`}
+              >
+                <Icon className="w-8 h-8" icon="mdi:caret-down" />
+              </span>
             </button>
           </Popover>
         </div>
