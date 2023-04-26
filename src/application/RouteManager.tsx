@@ -4,7 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
 import ProfilePage from "./pages/ProfilePage";
-import UsersListPage from "./pages/UsersListPage";
+import UsersListPage from "./pages/users/UsersListPage";
 
 message.config({
   maxCount: 2,
