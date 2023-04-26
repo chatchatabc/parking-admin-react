@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { authCheckSession } from "../../domain/service/authService";
 import Sidebar from "../components/Sidebar";
-import { Popover } from "antd";
+import { Input, Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
 
@@ -49,6 +49,13 @@ function HomeLayout() {
             <h1 className="text-2xl font-bold">Parking Admin</h1>
           </div>
         </div>
+
+        {/* Search Bar */}
+        <Input
+          prefix={<Icon className="w-6 h-6" icon="ph:magnifying-glass" />}
+          className="h-full p-2 w-64 ml-12 rounded-md"
+          placeholder="Search..."
+        />
 
         {/* Right side */}
         <div className="ml-auto flex items-center space-x-2">
