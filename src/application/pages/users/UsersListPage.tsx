@@ -42,7 +42,7 @@ function UsersListPage() {
       <section className="bg-slate-300 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
-          <h2 className="text-2xl font-medium">User Activity</h2>
+          <h2 className="text-xl font-bold">User Activity</h2>
         </header>
 
         {/* Table Actions */}
