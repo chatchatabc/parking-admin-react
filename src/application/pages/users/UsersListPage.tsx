@@ -1,6 +1,9 @@
 import { Input, Table } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function UsersListPage() {
+  const navigate = useNavigate();
+
   const dataSource = [
     {
       key: "1",
@@ -52,7 +55,12 @@ function UsersListPage() {
             </button>
           </div>
 
-          <button className="bg-blue-500 ml-auto text-white px-4 py-1 rounded-md">
+          <button
+            onClick={() => {
+              navigate("/users/create");
+            }}
+            className="bg-blue-500 ml-auto text-white px-4 py-1 rounded-md"
+          >
             Create User +
           </button>
         </section>
