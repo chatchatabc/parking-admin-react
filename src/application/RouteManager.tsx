@@ -1,10 +1,10 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./globals.css";
 import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
 import ProfilePage from "./pages/ProfilePage";
+import UsersListPage from "./pages/UsersListPage";
 
 message.config({
   maxCount: 2,
@@ -23,10 +23,6 @@ const router = createBrowserRouter([
         path: "users",
         children: [
           {
-            path: "",
-            element: <h1>Users</h1>,
-          },
-          {
             path: "create",
             element: (
               <div>
@@ -36,11 +32,7 @@ const router = createBrowserRouter([
           },
           {
             path: "list",
-            element: (
-              <div>
-                <h1>List Users</h1>
-              </div>
-            ),
+            element: <UsersListPage />,
           },
         ],
       },
