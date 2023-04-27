@@ -68,7 +68,6 @@ export async function axiosGet(url: string, params?: Record<string, any>) {
   try {
     response = await axios.get(`${baseURL}${url}`, config);
   } catch (e: any) {
-    console.log(e);
     response = axiosHandleError(e);
   }
 
@@ -85,7 +84,6 @@ export async function axiosPost(url: string, data: Record<string, any>) {
   try {
     response = await axios.post(`${baseURL}${url}`, data, config);
   } catch (e: any) {
-    console.log(e);
     response = axiosHandleError(e);
   }
 
@@ -102,7 +100,6 @@ export async function axiosPut(url: string, data: Record<string, any>) {
   try {
     response = await axios.put(`${baseURL}${url}`, data, config);
   } catch (e: any) {
-    console.log(e);
     response = axiosHandleError(e);
   }
 
@@ -119,7 +116,6 @@ export async function axiosDelete(url: string, data: Record<string, any>) {
   try {
     response = await axios.delete(`${baseURL}${url}`, config);
   } catch (e: any) {
-    console.log(e);
     response = axiosHandleError(e);
   }
 
