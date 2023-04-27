@@ -39,7 +39,7 @@ function UsersListPage() {
 
   return (
     <div className="p-4 w-full">
-      <section className="bg-bg15 p-4 space-y-2 rounded-lg w-full">
+      <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">User Activity</h2>
@@ -65,7 +65,7 @@ function UsersListPage() {
           </button>
         </section>
         <section>
-          <Table className={`my-table`} rowClassName={`bg-bg25 text-white`} dataSource={dataSource} columns={columns} />
+          <Table className={`my-table`} dataSource={dataSource} columns={columns} />
         </section>
       </section>
     </div>

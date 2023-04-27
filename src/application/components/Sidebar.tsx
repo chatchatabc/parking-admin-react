@@ -108,7 +108,7 @@ function Sidebar({ open }: Props) {
 
   return (
     <aside
-      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg15 border-r-2 border-accent1 ${
+      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg4 border-r-2 border-accent1 ${
         open ? "min-w-[250px]" : "min-w-[1px]"
       } transition-all ease-linear group hover:min-w-[250px]`}
     >
