@@ -8,22 +8,22 @@ function axiosHandleError(e: any): Record<string, any> {
     return {
       data: {
         error: true,
-        message: "No response from server",
+        message: "NO_RESPONSE",
       },
     };
   }
 
   const error = e.response?.data?.error;
   const message = e.response?.data?.message;
-
+  
   if (error && message) {
     return e.response;
   } else if (error) {
-    e.response.data.message = "No error message receive";
+    e.response.data.message = "NO_ERR_MSG";
   } else {
     e.response.data = {
       error: true,
-      message: "Cannot determine if error or not",
+      message: "NO_API_ERR",
     };
   }
 

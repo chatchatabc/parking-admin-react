@@ -1,6 +1,8 @@
 {
   "NO_RESPONSE": "Cannot connect to server. Please try again later.",
-  "NO_ERR_MESSAGE": "No error message available.",
+  "NO_ERR_MSG": "No error message available.",
+  "NO_API_ERR": "Error, but no API error.",
   "UNKNOWN_ERR": "Unknown error.",
-  "USER_LOGIN_SUCCESS": "User login successful."
+  "USER_LOGIN_SUCCESS": "User login successful.",
+  "USER_BAD_CREDENTIALS": "Invalid username or password."
 }
