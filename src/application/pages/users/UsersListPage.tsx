@@ -58,7 +58,14 @@ function UsersListPage() {
 
           <button
             onClick={() => {
-              dispatch(drawerFormUpdate({ show: true }));
+              dispatch(
+                drawerFormUpdate({
+                  show: true,
+                  title: "Create User",
+                  content: "user",
+                  mode: "create",
+                })
+              );
             }}
             className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
