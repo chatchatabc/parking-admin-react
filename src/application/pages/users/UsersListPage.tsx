@@ -1,8 +1,9 @@
 import { Input, Table } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
 function UsersListPage() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const dataSource = [
     {
@@ -57,7 +58,7 @@ function UsersListPage() {
 
           <button
             onClick={() => {
-              navigate("/users/create");
+              dispatch(drawerFormUpdate({ show: true }));
             }}
             className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
@@ -65,7 +66,11 @@ function UsersListPage() {
           </button>
         </section>
         <section>
-          <Table className={`my-table`} dataSource={dataSource} columns={columns} />
+          <Table
+            className={`my-table`}
+            dataSource={dataSource}
+            columns={columns}
+          />
         </section>
       </section>
     </div>

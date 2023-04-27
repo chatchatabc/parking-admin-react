@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { Input, Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
+import DrawerForm from "../components/drawers/DrawerForm";
 
 function HomeLayout() {
   const [openSidebar, setOpenSidebar] = React.useState(
@@ -92,6 +93,8 @@ function HomeLayout() {
           <Outlet />
         </main>
       </div>
+
+      <DrawerForm />
     </div>
   );
 }
