@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { authCheckSession } from "../../domain/service/authService";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/sidebar/Sidebar";
 import { Input, Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
