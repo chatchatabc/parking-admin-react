@@ -20,16 +20,16 @@ function NavbarProfileMenu({ setProfileMenu }: Props) {
         return new Promise(async (resolve, reject) => {
           const response = await authLogout();
           if (response.error) {
-            reject();
+            reject(response);
           }
           resolve(true);
         })
-          .then(() => {
-            message.success("Logout successful!");
+          .then((response: any) => {
+            message.success(response.message ?? "Logout successful!");
             navigate("/login");
           })
-          .catch(() => {
-            message.error("Logout failed");
+          .catch((response: any) => {
+            message.error(response.message ?? "Logout failed");
           });
       },
       closable: true,
