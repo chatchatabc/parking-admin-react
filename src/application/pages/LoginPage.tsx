@@ -32,53 +32,54 @@ function LoginPage() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col justify-center container mx-auto px-4 lg:px-8">
-      <header className="text-center space-y-2">
-        <h1 className="text-4xl font-bold">Davao Parking Dashboard</h1>
-        <h2 className="text-2xl">Login Page</h2>
-      </header>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={handleLogin}
-        className="max-w-[300px] mt-8 w-full mx-auto"
-      >
-        <Form.Item
-          name="username"
-          label="Username"
-          rules={[
-            {
-              message: "Need some input",
-              required: true,
-            },
-          ]}
+    <div className="h-screen flex items-center bg-bg1">
+      <div className="p-16 bg-bg0 rounded-lg w-fit mx-auto">
+        <header className="text-center space-y-2">
+          <h1 className="text-4xl font-bold">Davao Parking Dashboard</h1>
+        </header>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleLogin}
+          className="max-w-[300px] mt-8 w-full mx-auto"
         >
-          <Input placeholder="Username" />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[
-            {
-              message: "Need some input",
-              required: true,
-            },
-          ]}
-        >
-          <Input.Password placeholder="password" />
-        </Form.Item>
-
-        <Form.Item>
-          <Button
-            loading={loading}
-            htmlType="submit"
-            className="px-4 py-1 bg-blue-500 rounded-md text-white mx-auto block w-fit"
+          <Form.Item
+            name="username"
+            label="Username"
+            rules={[
+              {
+                message: "Need some input",
+                required: true,
+              },
+            ]}
           >
-            Login
-          </Button>
-        </Form.Item>
-      </Form>
+            <Input placeholder="Username" />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[
+              {
+                message: "Need some input",
+                required: true,
+              },
+            ]}
+          >
+            <Input.Password placeholder="password" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              loading={loading}
+              htmlType="submit"
+              className="px-4 py-1 bg-blue-500 rounded-md text-white mx-auto block w-fit"
+            >
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </div>
   );
 }
