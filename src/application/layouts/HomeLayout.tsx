@@ -25,13 +25,13 @@ function HomeLayout() {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-blue-50">
+    <div className="flex min-h-screen flex-col bg-bg10 text-text1">
       {/* Navbar */}
-      <header className="bg-blue-300 sticky top-0 border-b-2 py-2 px-3 flex items-center border-blue-900">
+      <header className="bg-bg15 sticky top-0 border-b-2 py-2 px-3 flex items-center border-accent1">
         {/* Left side */}
         <div className="flex space-x-4 items-center">
           {/* Sidebar show and hide btn */}
-          <button className="p-1 rounded-md hover:bg-blue-100">
+          <button className="p-1 rounded-md hover:bg-accent1">
             <Icon
               className="w-8 h-8"
               icon={openSidebar ? "mdi:menu-open" : "mdi:menu"}
@@ -69,10 +69,10 @@ function HomeLayout() {
           >
             <button
               className={`flex items-center space-x-2 p-1 rounded-md transition ${
-                openProfileMenu ? "bg-blue-100" : ""
-              } hover:bg-blue-100`}
+                openProfileMenu ? "bg-accent1" : ""
+              } hover:bg-accent1`}
             >
-              <div className="w-10 h-10 rounded-full border border-blue-900 bg-white"></div>
+              <div className="w-10 h-10 rounded-full border border-accent1 bg-white"></div>
               <p>Admin</p>
               <span
                 className={`transition ${openProfileMenu ? "rotate-180" : ""}`}

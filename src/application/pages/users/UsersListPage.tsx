@@ -39,7 +39,7 @@ function UsersListPage() {
 
   return (
     <div className="p-4 w-full">
-      <section className="bg-slate-300 p-4 space-y-2 rounded-lg w-full">
+      <section className="bg-bg15 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">User Activity</h2>
@@ -50,7 +50,7 @@ function UsersListPage() {
           {/* Search bar */}
           <div className="flex space-x-2">
             <Input className="p-2 w-64" placeholder="Search for Users" />
-            <button className="h-full px-4 bg-blue-500 rounded-md text-white flex items-center">
+            <button className="h-full px-4 bg-primary rounded-md text-white flex items-center transition hover:bg-secondary">
               Search
             </button>
           </div>
@@ -59,13 +59,13 @@ function UsersListPage() {
             onClick={() => {
               navigate("/users/create");
             }}
-            className="bg-blue-500 ml-auto text-white px-4 py-1 rounded-md"
+            className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
             Create User +
           </button>
         </section>
         <section>
-          <Table dataSource={dataSource} columns={columns} />
+          <Table className={`my-table`} rowClassName={`bg-bg25 text-white`} dataSource={dataSource} columns={columns} />
         </section>
       </section>
     </div>

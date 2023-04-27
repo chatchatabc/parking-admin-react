@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --primary: hsla(214, 82%, 44%, 1);
+    --secondary: hsla(214, 82%, 34%, 1);
+    --tertiary: hsla(104, 96%, 36%, 1);
+    --text-primary: #FFF;
+    --text-1: #FFF;
+    --accent-1: hsla(214, 10%, 36%, 1);
+    --bg-10: hsla(214, 10%, 20%, 1);
+    --bg-15: hsla(214, 10%, 24%, 1);
+    --bg-20: hsla(214, 10%, 28%, 1);
+    --bg-25: hsla(214, 10%, 32%, 1);
+    --bg-30: hsla(214, 10%, 36%, 1);
+    --bg-35: hsla(214, 10%, 40%, 1);
+}
+
+.my-table .ant-table-thead > tr > th {
+    background: var(--bg-20);
+    color: var(--text-1);
+    border-color: var(--bg-10);
+}
+
+.my-table .ant-table-tbody > tr > td {
+    background: var(--bg-25);
+    border-color: var(--bg-10);
+}
+
+.my-table .ant-table-tbody > tr.ant-table-row:hover > td {
+    background: var(--bg-30);
+}
+
+.my-table .ant-pagination-item-link {
+    color: var(--text-1) !important;
+}

@@ -19,7 +19,7 @@ function NavigationDropDown({ navigation, open }: DropDownProps) {
         onClick={() => {
           setHide(!hide);
         }}
-        className="p-2 w-full rounded-md flex items-center hover:bg-blue-100"
+        className="p-2 w-full rounded-md flex items-center hover:bg-accent1"
       >
         <span>
           <Icon className="w-6 h-6" icon={navigation.icon} />
@@ -49,7 +49,7 @@ function NavigationDropDown({ navigation, open }: DropDownProps) {
                   to={child.path}
                   className={({ isActive }) =>
                     `p-2 rounded-md flex items-center ${
-                      isActive ? "bg-blue-100" : "hover:bg-blue-100"
+                      isActive ? "bg-accent1" : "hover:bg-accent1"
                     }`
                   }
                 >
@@ -108,7 +108,7 @@ function Sidebar({ open }: Props) {
 
   return (
     <aside
-      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-blue-300 border-r-2 border-blue-900 ${
+      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg15 border-r-2 border-accent1 ${
         open ? "min-w-[250px]" : "min-w-[1px]"
       } transition-all ease-linear group hover:min-w-[250px]`}
     >
@@ -124,7 +124,7 @@ function Sidebar({ open }: Props) {
                   <NavLink
                     className={({ isActive }) =>
                       `p-2 rounded-md flex items-center ${
-                        isActive ? "bg-blue-100" : "hover:bg-blue-100"
+                        isActive ? "bg-accent1" : "hover:bg-accent1"
                       }`
                     }
                     to={navigation.path}
@@ -145,7 +145,7 @@ function Sidebar({ open }: Props) {
             );
           })}
         </ul>
-        <hr />
+        <hr className="border-accent1" />
         <ul>
           {navigationsHelp.map((navigation) => {
             return (
@@ -153,7 +153,7 @@ function Sidebar({ open }: Props) {
                 <NavLink
                   className={({ isActive }) =>
                     `p-2 rounded-md flex items-center ${
-                      isActive ? "bg-blue-100" : "hover:bg-blue-100"
+                      isActive ? "bg-accent1" : "hover:bg-accent1"
                     } `
                   }
                   to={navigation.path}
