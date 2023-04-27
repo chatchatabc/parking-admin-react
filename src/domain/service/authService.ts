@@ -33,7 +33,7 @@ export async function authLogin(values: Record<string, any>) {
 }
 
 export async function authLogout() {
-  const response = await axiosPost("/user/logout", {});
+  const response = await axiosPost("/profile/logout", {});
 
   if (response.data.error) {
     return response.data;
