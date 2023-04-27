@@ -1,24 +1,46 @@
+import { axiosPost } from "../infra/axios/axiosService";
+
+export function authTokenGet() {
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
+  return token;
+}
+
+function authTokenSave(token: string) {
+  document.cookie = `token=${token}; path=/; max-age=3600`;
+}
+
+function authTokenRemove() {
+  document.cookie = `token=; path=/; max-age=0`;
+}
+
 export async function authLogin(values: Record<string, any>) {
-  const { username, password } = values;
+  const response = await axiosPost("/auth/login", values);
 
-  if (username === "admin" && password === "admin") {
-    document.cookie = "token=123; path=/; max-age=3600";
-
-    return {
-      username: "admin",
-      error: null,
-    };
+  if (response.data.error) {
+    authTokenRemove();
+    return response.data;
   }
 
-  return {
-    error: {
-      message: "Invalid username or password",
-    },
-  };
+  const token = response.headers["x-access-token"];
+
+  authTokenSave(token);
+
+  return response.data;
 }
 
 export async function authLogout() {
-  document.cookie = "token=; path=/; max-age=0";
+  const response = await axiosPost("/user/logout", {});
+
+  if (response.data.error) {
+    return response.data;
+  }
+
+  authTokenRemove();
+  return response.data;
 }
 
 export function authCheckSession() {

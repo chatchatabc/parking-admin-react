@@ -16,9 +16,9 @@ function LoginPage() {
     const response = await authLogin(values);
 
     if (response.error) {
-      message.error(response.error.message);
+      message.error(response.message);
     } else {
-      message.success("Login successful!");
+      message.success(response.message ?? "Login successful!");
       navigate("/");
     }
 

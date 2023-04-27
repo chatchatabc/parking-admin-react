@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import React from "react";
 import { authLogout } from "../../../domain/service/authService";
 import { useNavigate } from "react-router-dom";
@@ -17,13 +17,22 @@ function NavbarProfileMenu({ setProfileMenu }: Props) {
       title: "Are you sure?",
       content: "You will be logged out of the system.",
       onOk() {
-        authLogout();
-        navigate("/login");
-        close();
+        return new Promise(async (resolve, reject) => {
+          const response = await authLogout();
+          if (response.error) {
+            reject();
+          }
+          resolve(true);
+        })
+          .then(() => {
+            message.success("Logout successful!");
+            navigate("/login");
+          })
+          .catch(() => {
+            message.error("Logout failed");
+          });
       },
-      onCancel() {
-        close();
-      },
+      closable: true,
       okText: "Logout",
       okButtonProps: {
         danger: true,
