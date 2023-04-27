@@ -1,0 +1,6 @@
+{
+  "NO_RESPONSE": "Cannot connect to server. Please try again later.",
+  "NO_ERR_MESSAGE": "No error message available.",
+  "UNKNOWN_ERR": "Unknown error.",
+  "USER_LOGIN_SUCCESS": "User login successful."
+}

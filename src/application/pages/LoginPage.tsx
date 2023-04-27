@@ -3,6 +3,7 @@ import { authCheckSession, authLogin } from "../../domain/service/authService";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
+import { utilApiMessageGet } from "../../domain/utils/commonUtils";
 
 function LoginPage() {
   const [loading, setLoading] = React.useState(false);
@@ -16,9 +17,9 @@ function LoginPage() {
     const response = await authLogin(values);
 
     if (response.error) {
-      message.error(response.message);
+      message.error(utilApiMessageGet(response.message));
     } else {
-      message.success(response.message ?? "Login successful!");
+      message.success(utilApiMessageGet(response.message));
       navigate("/");
     }
 
