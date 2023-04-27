@@ -8,18 +8,16 @@ interface DropDownProps {
 }
 
 function SideBarDropdown({ navigation, open }: DropDownProps) {
-  const [hide, setHide] = React.useState(true);
-
   const location = useLocation();
-
-  React.useEffect(() => {
-    for (const child of navigation.children) {
-      if (child.path === location.pathname) {
-        setHide(false);
-        break;
-      }
+  let hideChildren = true;
+  for (const child of navigation.children) {
+    if (child.path === location.pathname) {
+      hideChildren = false;
+      break;
     }
-  }, [location]);
+  }
+
+  const [hide, setHide] = React.useState(hideChildren);
 
   return (
     <div>
