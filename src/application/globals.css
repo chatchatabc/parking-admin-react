@@ -27,11 +27,11 @@
 .my-table .ant-table-thead > tr > th {
     background: var(--bg1);
     color: var(--text1);
-    border-color: var(--bg7);
+    border-color: var(--bg9);
 }
 
 .my-table .ant-table-tbody > tr > td {
-    border-color: var(--bg3);
+    border-color: var(--bg4);
     background: white;
 }
 
