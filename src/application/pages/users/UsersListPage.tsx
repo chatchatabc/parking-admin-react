@@ -1,40 +1,82 @@
-import { Input, Table } from "antd";
+import { Input, Table, TableColumnsType } from "antd";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import { useQuery } from "@tanstack/react-query";
+import { userGet } from "../../../domain/service/userService";
 
 function UsersListPage() {
   const dispatch = useDispatch();
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+  // Queries
+  const { isLoading, data } = useQuery({
+    queryKey: ["users"],
+    queryFn: userGet,
+    cacheTime: 0,
+  });
 
-  const columns = [
+  const dataSource = data?.data?.content?.map((user: any) => {
+    return {
+      ...user,
+      key: `users-list-${user.id}`,
+    };
+  });
+
+  const columns: TableColumnsType<Record<string, any>> = [
     {
-      title: "Name",
-      dataIndex: "name",
+      title: "Username",
       key: "name",
+      render: (record) => {
+        if (record.username) {
+          return <div>{record.username}</div>;
+        } else if (record.phone) {
+          return <div>{record.phone}</div>;
+        }
+        return <div>Unknown</div>;
+      },
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Status",
+      key: "status",
+      render: (record) => {
+        if (record.enabled) {
+          return <div className="text-green-500 font-bold">Enabled</div>;
+        }
+        return <div className="text-red-500">Disabled</div>;
+      },
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Phone",
+      key: "phone",
+      render: (record) => {
+        if (record.phone && record.phoneVerifiedAt) {
+          const dateVerified = new Date(record.phoneVerifiedAt);
+          const dateFormatted = dateVerified.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          });
+          return (
+            <div className="flex gap-2 items-center">
+              <span>{record.phone}</span>
+              <span className="text-green-500 text-xs font-bold">
+                ({dateFormatted})
+              </span>
+            </div>
+          );
+        } else if (record.phone) {
+          return (
+            <div className="flex items-center gap-2">
+              <span>{record.phone}</span>
+              <span className="text-red-500 text-xs font-bold">
+                (Not yet verified)
+              </span>
+            </div>
+          );
+        }
+        return <div className="text-red-500">Not Verified</div>;
+      },
     },
   ];
 
@@ -74,6 +116,7 @@ function UsersListPage() {
         </section>
         <section>
           <Table
+            loading={isLoading}
             className={`my-table`}
             dataSource={dataSource}
             columns={columns}
