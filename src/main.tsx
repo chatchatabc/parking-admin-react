@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import RouteManager from "./application/RouteManager";
 import store from "./application/redux/store";
 import { Provider } from "react-redux";
-import GraphqlProvider from "./application/query/GraphqlProvider";
+import GraphqlProvider from "./application/graphql/GraphqlProvider";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
