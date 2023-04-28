@@ -1,20 +1,25 @@
 import { Input, Table, TableColumnsType } from "antd";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { useQuery } from "@tanstack/react-query";
-import { userGet } from "../../../domain/service/userService";
+import React from "react";
+import { graphqlQuery } from "../../graphql/GraphqlProvider";
+import { userGetDoc } from "../../graphql/docs/userDoc";
 
 function UsersListPage() {
+  const [pagination, setPagination] = React.useState({
+    current: 0,
+    pageSize: 10,
+    total: 0,
+  });
   const dispatch = useDispatch();
 
   // Queries
-  const { isLoading, data } = useQuery({
-    queryKey: ["users"],
-    queryFn: userGet,
-    cacheTime: 0,
-  });
+  const { loading, data } = graphqlQuery(
+    userGetDoc(pagination.pageSize, pagination.current),
+    "Users"
+  );
 
-  const dataSource = data?.data?.content?.map((user: any) => {
+  const dataSource = data?.getUsers?.map((user: any) => {
     return {
       ...user,
       key: `users-list-${user.id}`,
@@ -80,6 +85,15 @@ function UsersListPage() {
     },
   ];
 
+  React.useEffect(() => {
+    if (data) {
+      setPagination({
+        ...pagination,
+        total: data?.data?.totalElements,
+      });
+    }
+  }, [data]);
+
   return (
     <div className="p-4 w-full">
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
@@ -116,7 +130,7 @@ function UsersListPage() {
         </section>
         <section>
           <Table
-            loading={isLoading}
+            loading={loading}
             className={`my-table`}
             dataSource={dataSource}
             columns={columns}
