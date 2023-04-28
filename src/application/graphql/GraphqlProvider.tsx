@@ -5,14 +5,32 @@ import {
   ApolloProvider,
   useQuery,
   DocumentNode,
+  createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { authTokenGet } from "../../domain/service/authService";
 
 interface Props {
   children: React.ReactNode;
 }
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: "http://192.168.1.11:5180/graphql",
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = authTokenGet();
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -22,10 +40,10 @@ export function graphqlQuery(schema: DocumentNode, name: string) {
   React.useEffect(() => {
     if (query.data) {
       console.log(`${name} debug`);
-      console.log(query);
+      console.log({ ...query, token: authTokenGet() });
     } else if (query.error) {
       console.log(`${name} error`);
-      console.log(query);
+      console.log({ ...query, token: authTokenGet() });
     }
   }, [query.data, query.error]);
 
