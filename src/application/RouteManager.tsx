@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./globals.css";
+import "./styles/globals.css";
 import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
