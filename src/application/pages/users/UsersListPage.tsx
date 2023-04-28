@@ -2,8 +2,8 @@ import { Input, Table, TableColumnsType } from "antd";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import React from "react";
-import { graphqlQuery } from "../../graphql/GraphqlProvider";
-import { userGetDoc } from "../../graphql/docs/userDoc";
+import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
+import { userGetDoc } from "../../../domain/infra/apollo-client/docs/userDoc";
 
 function UsersListPage() {
   const [pagination, setPagination] = React.useState({
