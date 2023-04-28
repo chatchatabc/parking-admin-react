@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface DropDownProps {
   navigation: Record<string, any>;
