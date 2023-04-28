@@ -3,10 +3,10 @@ import React from "react";
 
 const queryClient = new QueryClient();
 
-function ReactQuery({ children }: { children: React.ReactNode }) {
+function RestProvider({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
 
-export default ReactQuery;
+export default RestProvider;
