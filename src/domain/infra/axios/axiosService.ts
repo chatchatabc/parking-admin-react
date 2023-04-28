@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { authTokenGet } from "../../service/authService";
 
-const baseURL = "http://192.168.1.11:5180/api";
+const baseURL = "/api";
 
 function axiosHandleError(e: any): Record<string, any> {
   if (!e.response) {
@@ -15,7 +15,7 @@ function axiosHandleError(e: any): Record<string, any> {
 
   const error = e.response?.data?.error;
   const message = e.response?.data?.message;
-  
+
   if (error && message) {
     return e.response;
   } else if (error) {
