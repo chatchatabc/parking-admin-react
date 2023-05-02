@@ -43,7 +43,7 @@ function UsersListPage() {
       title: "Status",
       key: "status",
       render: (record) => {
-        if (record.enabled) {
+        if (record.phoneVerifiedAt || record.emailVerifiedAt) {
           return <div className="text-green-500 font-bold">Enabled</div>;
         }
         return <div className="text-red-500">Disabled</div>;
@@ -80,7 +80,41 @@ function UsersListPage() {
             </div>
           );
         }
-        return <div className="text-red-500">Not Verified</div>;
+        return <div className="text-red-500">N/A</div>;
+      },
+    },
+    {
+      title: "Email",
+      key: "email",
+      render: (record) => {
+        if (record.email && record.emailVerifiedAt) {
+          const dateVerified = new Date(record.emailVerifiedAt);
+          const dateFormatted = dateVerified.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          });
+          return (
+            <div className="flex gap-2 items-center">
+              <span>{record.email}</span>
+              <span className="text-green-500 text-xs font-bold">
+                ({dateFormatted})
+              </span>
+            </div>
+          );
+        } else if (record.email) {
+          return (
+            <div className="flex items-center gap-2">
+              <span>{record.email}</span>
+              <span className="text-red-500 text-xs font-bold">
+                (Not yet verified)
+              </span>
+            </div>
+          );
+        }
+        return <div className="text-red-500">N/A</div>;
       },
     },
   ];
