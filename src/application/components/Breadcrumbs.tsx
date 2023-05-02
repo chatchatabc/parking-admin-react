@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { utilCapitalize } from "../utils/commonUtils";
 
 function Breadcrumbs() {
   const location = useLocation();
@@ -17,11 +16,18 @@ function Breadcrumbs() {
             </li>
           );
         } else if (index === crumbs.length - 1) {
-          return <p className="font-bold uppercase">{crumb}</p>;
+          return (
+            <p key={`crumb-${crumb}-${index}`} className="font-bold uppercase">
+              {crumb}
+            </p>
+          );
         }
         return (
           <li key={`crumb-${crumb}-${index}`}>
-            <NavLink to={path}>{utilCapitalize(crumb)}</NavLink> /
+            <NavLink to={path} className={"capitalize"}>
+              {crumb}
+            </NavLink>{" "}
+            /
           </li>
         );
       })}
