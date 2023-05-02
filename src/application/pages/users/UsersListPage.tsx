@@ -1,4 +1,4 @@
-import { Input, Table, TableColumnsType } from "antd";
+import { Input, Pagination, Table, TableColumnsType } from "antd";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import React from "react";
@@ -14,12 +14,14 @@ function UsersListPage() {
   const dispatch = useDispatch();
 
   // Queries
-  const { loading, data } = graphqlQuery(
-    userGetDoc(pagination.pageSize, pagination.current),
-    "Users"
-  );
+  const { loading, data, refetch } = graphqlQuery(userGetDoc(), "Users", {
+    variables: {
+      size: pagination.pageSize,
+      page: pagination.current,
+    },
+  });
 
-  const dataSource = data?.getUsers?.map((user: any) => {
+  const dataSource = data?.getUsers?.content.map((user: any) => {
     return {
       ...user,
       key: `users-list-${user.id}`,
@@ -121,9 +123,10 @@ function UsersListPage() {
 
   React.useEffect(() => {
     if (data) {
+      console.log(data.getUsers.pageInfo.totalElements);
       setPagination({
         ...pagination,
-        total: data?.data?.totalElements,
+        total: data?.getUsers?.pageInfo?.totalElements,
       });
     }
   }, [data]);
@@ -138,13 +141,20 @@ function UsersListPage() {
 
         {/* Table Actions */}
         <section className="flex gap-2">
-          {/* Search bar */}
-          <div className="flex space-x-2">
-            <Input className="p-2 w-64" placeholder="Search for Users" />
-            <button className="h-full px-4 bg-primary rounded-md text-white flex items-center transition hover:bg-secondary">
-              Search
-            </button>
-          </div>
+          <Pagination
+            current={pagination.current + 1}
+            total={pagination.total}
+            onChange={(page, pageSize) => {
+              setPagination({
+                ...pagination,
+                current: page - 1,
+              });
+              refetch({
+                size: pageSize,
+                page: page - 1,
+              });
+            }}
+          />
 
           <button
             onClick={() => {
@@ -168,6 +178,20 @@ function UsersListPage() {
             className={`my-table`}
             dataSource={dataSource}
             columns={columns}
+            pagination={{
+              ...pagination,
+              current: pagination.current + 1,
+              onChange: (page, pageSize) => {
+                setPagination({
+                  ...pagination,
+                  current: page - 1,
+                });
+                refetch({
+                  size: pageSize,
+                  page: page - 1,
+                });
+              },
+            }}
           />
         </section>
       </section>

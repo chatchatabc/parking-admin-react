@@ -1,4 +1,9 @@
-import { DocumentNode, createHttpLink, useQuery } from "@apollo/client";
+import {
+  DocumentNode,
+  createHttpLink,
+  useMutation,
+  useQuery,
+} from "@apollo/client";
 import React from "react";
 import { authTokenGet } from "../../service/authService";
 import { setContext } from "@apollo/client/link/context";
@@ -18,8 +23,12 @@ export const authLink = setContext((_, { headers }) => {
   };
 });
 
-export function graphqlQuery(schema: DocumentNode, name: string) {
-  const query = useQuery(schema);
+export function graphqlQuery(
+  schema: DocumentNode,
+  name: string,
+  variables?: Record<string, any>
+) {
+  const query = useQuery(schema, variables);
 
   React.useEffect(() => {
     if (query.data) {
@@ -32,4 +41,20 @@ export function graphqlQuery(schema: DocumentNode, name: string) {
   }, [query.data, query.error]);
 
   return query;
+}
+
+export function graphqlMutation(schema: DocumentNode, name: string) {
+  const [mutateFunction, mutate] = useMutation(schema);
+
+  React.useEffect(() => {
+    if (mutate.data) {
+      console.log(`${name} debug`);
+      console.log({ ...mutate, token: authTokenGet() });
+    } else if (mutate.error) {
+      console.log(`${name} error`);
+      console.log({ ...mutate, token: authTokenGet() });
+    }
+  }, [mutate.data, mutate.error]);
+
+  return [mutateFunction, mutate as any];
 }

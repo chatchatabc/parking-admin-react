@@ -1,15 +1,22 @@
 import { gql } from "@apollo/client";
 
-export function userGetDoc(size = 10, page = 0) {
+export function userGetDoc() {
   return gql`
-    query {
-      getUsers(size: ${size}, page: ${page}) {
-        id,
-        username,
-        phone,
-        phoneVerifiedAt,
-        emailVerifiedAt,
-        email
+    query GetUsers($size: Int!, $page: Int!) {
+      getUsers(size: $size, page: $page) {
+        content {
+          id
+          username
+          phone
+          phoneVerifiedAt
+          emailVerifiedAt
+          email
+        }
+
+        pageInfo {
+          size
+          totalElements
+        }
       }
     }
   `;
