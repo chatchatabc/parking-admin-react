@@ -5,7 +5,7 @@ export function userGetDoc() {
     query GetUsers($size: Int!, $page: Int!) {
       getUsers(size: $size, page: $page) {
         content {
-          id
+          userId
           username
           phone
           phoneVerifiedAt
