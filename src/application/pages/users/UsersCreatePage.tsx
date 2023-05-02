@@ -1,8 +1,13 @@
 import { Button, Form, Input } from "antd";
 import React from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "antd/es/form/Form";
 
 function UsersCreatePage() {
+  const [form] = useForm();
+  const navigate = useNavigate();
+
   return (
     <div className="flex-1 px-4">
       {/* Breadcrumbs */}
@@ -10,7 +15,33 @@ function UsersCreatePage() {
         <Breadcrumbs />
       </section>
 
-      <div className="flex gap-4">
+      <section className="flex justify-between my-2">
+        <Button
+          onClick={() => {
+            navigate("/users");
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            form.submit();
+          }}
+          className="bg-primary text-white"
+        >
+          Save
+        </Button>
+      </section>
+
+      <Form
+        form={form}
+        className="flex gap-4"
+        onFinish={(values) => {
+          console.log(values);
+        }}
+        layout="vertical"
+        autoComplete="off"
+      >
         {/* Left side */}
         <section className="w-1/4">
           {/* 1st row */}
@@ -22,11 +53,8 @@ function UsersCreatePage() {
               <div className="pb-[100%] border-2 border-primary rounded-full"></div>
             </div>
             <button className="mt-4 bg-primary block w-fit mx-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary">
-              Upload Avatar
+              Select Avatar
             </button>
-            <p className="text-xs text-center text-yellow-600">
-              *This will automatically be saved*
-            </p>
           </div>
         </section>
 
@@ -37,14 +65,7 @@ function UsersCreatePage() {
               <h1 className="text-lg font-bold">User Information</h1>
             </header>
 
-            <Form
-              onFinish={(values) => {
-                console.log(values);
-              }}
-              layout="vertical"
-              className="flex flex-wrap p-2 [&>*]:w-1/4 [&>*]:px-2"
-              autoComplete="off"
-            >
+            <div className="flex flex-wrap p-2 [&>*]:w-1/4 [&>*]:px-2">
               <Form.Item name="username" label="Username">
                 <Input placeholder="Username" />
               </Form.Item>
@@ -84,17 +105,14 @@ function UsersCreatePage() {
               </Form.Item>
 
               <div style={{ width: "100%" }}>
-                <Button
-                  htmlType="submit"
-                  className="ml-auto w-fit block bg-primary text-white"
-                >
-                  Save
+                <Button htmlType="submit" className="hidden">
+                  submit
                 </Button>
               </div>
-            </Form>
+            </div>
           </div>
         </section>
-      </div>
+      </Form>
     </div>
   );
 }

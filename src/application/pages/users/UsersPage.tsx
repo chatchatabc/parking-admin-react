@@ -3,6 +3,7 @@ import React from "react";
 import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
 import { userGetDoc } from "../../../domain/infra/apollo-client/docs/userDoc";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 function UsersPage() {
   const [pagination, setPagination] = React.useState({
@@ -131,11 +132,14 @@ function UsersPage() {
   }, [data]);
 
   return (
-    <div className="p-4 w-full">
+    <div className="px-4 w-full">
+      <section className="py-2">
+        <Breadcrumbs />
+      </section>
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
-          <h2 className="text-xl font-bold">User Activity</h2>
+          <h2 className="text-xl font-bold">Users List</h2>
         </header>
 
         {/* Table Actions */}
