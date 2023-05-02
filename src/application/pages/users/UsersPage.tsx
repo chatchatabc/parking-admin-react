@@ -1,17 +1,16 @@
 import { Input, Pagination, Table, TableColumnsType } from "antd";
-import { useDispatch } from "react-redux";
-import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import React from "react";
 import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
 import { userGetDoc } from "../../../domain/infra/apollo-client/docs/userDoc";
+import { useNavigate } from "react-router-dom";
 
-function UsersListPage() {
+function UsersPage() {
   const [pagination, setPagination] = React.useState({
     current: 0,
     pageSize: 10,
     total: 0,
   });
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Queries
   const { loading, data, refetch } = graphqlQuery(userGetDoc(), "Users", {
@@ -158,14 +157,7 @@ function UsersListPage() {
 
           <button
             onClick={() => {
-              dispatch(
-                drawerFormUpdate({
-                  show: true,
-                  title: "Create User",
-                  content: "user",
-                  mode: "create",
-                })
-              );
+              navigate("create");
             }}
             className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
@@ -199,4 +191,4 @@ function UsersListPage() {
   );
 }
 
-export default UsersListPage;
+export default UsersPage;

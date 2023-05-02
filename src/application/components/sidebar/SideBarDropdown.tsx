@@ -52,6 +52,7 @@ function SideBarDropdown({ navigation, open }: DropDownProps) {
             return (
               <li className="py-0.5" key={child.path}>
                 <NavLink
+                  end
                   to={child.path}
                   className={({ isActive }) =>
                     `p-2 rounded-md flex items-center ${

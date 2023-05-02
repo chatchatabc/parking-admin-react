@@ -15,9 +15,9 @@ function Sidebar({ open }: Props) {
       path: "/users",
       children: [
         {
-          label: "List Users",
+          label: "Information",
           icon: "mdi:account-multiple",
-          path: "/users/list",
+          path: "/users",
         },
         {
           label: "Create User",

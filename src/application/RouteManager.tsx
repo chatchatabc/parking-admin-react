@@ -4,8 +4,9 @@ import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
 import ProfilePage from "./pages/ProfilePage";
-import UsersListPage from "./pages/users/UsersListPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import UsersCreatePage from "./pages/users/UsersCreatePage";
+import UsersPage from "./pages/users/UsersPage";
 
 message.config({
   maxCount: 2,
@@ -24,12 +25,12 @@ const router = createBrowserRouter([
         path: "users",
         children: [
           {
-            path: "list",
-            element: <UsersListPage />,
+            path: "",
+            element: <UsersPage />,
           },
           {
             path: "create",
-            element: <h1>Create User</h1>,
+            element: <UsersCreatePage />,
           },
         ],
       },
