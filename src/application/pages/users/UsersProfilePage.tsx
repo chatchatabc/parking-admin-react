@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import NotFoundPage from "../NotFoundPage";
 import React from "react";
 import { useForm } from "antd/es/form/Form";
 import { userUpdateProfile } from "../../../domain/service/userService";
+import { utilApiMessageGet } from "../../../domain/utils/commonUtils";
 
 function UsersProfilePage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function UsersProfilePage() {
   const [form] = useForm();
   const identifiers = profile?.split("-");
 
-  if (!identifiers || identifiers.length !== 2) {
+  if (!identifiers || (identifiers[0] !== "u" && identifiers[0] !== "p")) {
     return <NotFoundPage />;
   }
 
@@ -38,10 +39,23 @@ function UsersProfilePage() {
     }
   );
 
-  const realData = data?.getUserByUsername;
+  const realData = data?.getUserByUsername ?? data?.getUserByPhone;
 
   async function handleFinish(values: any) {
-    userUpdateProfile(values);
+    const response = await userUpdateProfile(values);
+
+    if (response.error) {
+      message.error(utilApiMessageGet(response.message));
+    } else {
+      message.success("Profile updated successfully.");
+      console.log(response);
+
+      if (response.data.username) {
+        navigate(`/users/u-${response.data.username}`, { replace: true });
+      } else if (response.data.phone) {
+        navigate(`/users/p-${response.data.phone}`, { replace: true });
+      }
+    }
   }
 
   React.useEffect(() => {
