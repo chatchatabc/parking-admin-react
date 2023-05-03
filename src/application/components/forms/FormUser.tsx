@@ -1,13 +1,42 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, FormInstance, Input, message } from "antd";
 import FormContainer from "./FormContainer";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { userCreateProfile } from "../../../domain/service/userService";
+import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
-function FormUser() {
+interface Props {
+  form: FormInstance<any>;
+}
+
+function FormUser({ form }: Props) {
+  const [loading, setLoading] = React.useState(false);
+  const dispatch = useDispatch();
+
+  async function onFinish(values: any) {
+    setLoading(true);
+
+    const response = await userCreateProfile(values);
+    if (response.error) {
+      message.error(response.message ?? "Something went wrong");
+    } else {
+      message.success("User created successfully");
+      dispatch(drawerFormUpdate({ show: false }));
+    }
+
+    setLoading(true);
+  }
+
   return (
-    <FormContainer>
+    <FormContainer form={form} onFinish={onFinish}>
       <div className="flex flex-wrap gap-x-2">
+        <Form.Item name="username" label="Username">
+          <Input placeholder="Username" />
+        </Form.Item>
+
         <Form.Item
-          name="username"
-          label="Username"
+          name="phone"
+          label="Phone Number"
           rules={[
             {
               message: "Need some input",
@@ -15,10 +44,10 @@ function FormUser() {
             },
           ]}
         >
-          <Input placeholder="Username" />
+          <Input placeholder="09123456789" />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           name="password"
           label="Password"
           rules={[
@@ -29,9 +58,9 @@ function FormUser() {
           ]}
         >
           <Input.Password placeholder="password" />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
           name="email"
           label="Email"
           rules={[
@@ -42,9 +71,9 @@ function FormUser() {
           ]}
         >
           <Input placeholder="Email" />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
           name="first_name"
           label="First Name"
           rules={[
@@ -55,9 +84,9 @@ function FormUser() {
           ]}
         >
           <Input placeholder="First Name" />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item
+        {/* <Form.Item
           name="last_name"
           label="Last Name"
           rules={[
@@ -68,10 +97,14 @@ function FormUser() {
           ]}
         >
           <Input placeholder="Last Name" />
-        </Form.Item>
+        </Form.Item> */}
 
-        <Form.Item className="w-full">
-          <Button htmlType="submit" className="bg-primary text-white">
+        <Form.Item hidden className="w-full">
+          <Button
+            loading={loading}
+            htmlType="submit"
+            className="bg-primary text-white"
+          >
             Submit
           </Button>
         </Form.Item>

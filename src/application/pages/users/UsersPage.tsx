@@ -28,7 +28,7 @@ function UsersPage() {
   const dataSource = data?.getUsers?.content.map((user: any) => {
     return {
       ...user,
-      key: `users-list-${user.id}`,
+      key: `users-list-${user.userId}`,
     };
   });
 
