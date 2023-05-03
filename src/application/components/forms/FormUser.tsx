@@ -18,9 +18,10 @@ function FormUser({ form }: Props) {
   const dispatch = useDispatch();
 
   async function onFinish(values: any) {
-    dispatch(drawerFormUpdate({ loading: true }));
+    dispatch(drawerFormUpdate({ ...drawerForm, loading: true }));
 
     const response = await userCreateProfile(values);
+
     if (response.error) {
       message.error(response.message ?? "Something went wrong");
     } else {
@@ -29,7 +30,9 @@ function FormUser({ form }: Props) {
       dispatch(globalStateUpdate({ reset: true }));
     }
 
-    dispatch(drawerFormUpdate({ loading: false }));
+    dispatch(
+      drawerFormUpdate({ show: response.error ? true : false, loading: false })
+    );
   }
 
   return (
