@@ -5,7 +5,7 @@ import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import UsersCreatePage from "./pages/users/UsersCreatePage";
+import UsersCreatePage from "./pages/users/UsersProfilePage";
 import UsersPage from "./pages/users/UsersPage";
 
 message.config({
@@ -30,6 +30,10 @@ const router = createBrowserRouter([
           },
           {
             path: "create",
+            element: <UsersCreatePage />,
+          },
+          {
+            path: ":profile",
             element: <UsersCreatePage />,
           },
         ],

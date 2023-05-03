@@ -1,12 +1,41 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "antd/es/form/Form";
+import { useNavigate, useParams } from "react-router-dom";
+import { formRefHandler } from "../../layouts/HomeLayout";
+import {
+  userGetByIdDoc,
+  userGetByPhoneDoc,
+  userGetByUsernameDoc,
+} from "../../../domain/infra/apollo-client/docs/userDoc";
+import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
+import NotFoundPage from "../NotFoundPage";
 
-function UsersCreatePage() {
-  const [form] = useForm();
+function UsersProfilePage() {
   const navigate = useNavigate();
+  const { profile } = useParams();
+  const identifiers = profile?.split("-");
+
+  if (!identifiers || identifiers.length !== 2) {
+    return <NotFoundPage />;
+  }
+
+  const { data } = graphqlQuery(
+    identifiers[0] === "u"
+      ? userGetByUsernameDoc()
+      : identifiers[0] === "p"
+      ? userGetByPhoneDoc()
+      : userGetByIdDoc(),
+    "Users Profile",
+    {
+      variables: {
+        phone: identifiers[1],
+        userId: identifiers[1],
+        username: identifiers[1],
+      },
+    }
+  );
+
+  console.log(data);
 
   return (
     <div className="flex-1 px-4">
@@ -25,7 +54,7 @@ function UsersCreatePage() {
         </Button>
         <Button
           onClick={() => {
-            form.submit();
+            formRefHandler.submit();
           }}
           className="bg-primary text-white"
         >
@@ -34,7 +63,7 @@ function UsersCreatePage() {
       </section>
 
       <Form
-        form={form}
+        form={formRefHandler}
         className="flex gap-4"
         onFinish={(values) => {
           console.log(values);
@@ -96,11 +125,11 @@ function UsersCreatePage() {
                 <Input.Password placeholder="password" />
               </Form.Item>
 
-              <Form.Item label="Email">
+              <Form.Item label="Email" name="email">
                 <Input placeholder="email" />
               </Form.Item>
 
-              <Form.Item label="Status">
+              <Form.Item label="Status" name="status">
                 <Input placeholder="status" />
               </Form.Item>
 
@@ -117,4 +146,4 @@ function UsersCreatePage() {
   );
 }
 
-export default UsersCreatePage;
+export default UsersProfilePage;
