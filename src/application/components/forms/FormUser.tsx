@@ -31,7 +31,11 @@ function FormUser({ form }: Props) {
     }
 
     dispatch(
-      drawerFormUpdate({ show: response.error ? true : false, loading: false })
+      drawerFormUpdate({
+        ...drawerForm,
+        show: response.error ? true : false,
+        loading: false,
+      })
     );
   }
 
