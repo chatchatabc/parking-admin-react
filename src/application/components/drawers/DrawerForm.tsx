@@ -2,12 +2,11 @@ import { Button, Drawer } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import FormUser from "../forms/FormUser";
-import { useForm } from "antd/es/form/Form";
+import { formRefHandler } from "../../layouts/HomeLayout";
 
 function DrawerForm() {
   const dispatch = useDispatch();
   const drawerForm = useSelector((state: any) => state.drawerForm);
-  const [form] = useForm();
 
   return (
     <Drawer
@@ -22,14 +21,15 @@ function DrawerForm() {
         <Button
           className="bg-primary text-white"
           onClick={() => {
-            form.submit();
+            formRefHandler.submit();
           }}
+          loading={drawerForm.loading}
         >
           {drawerForm.mode === "create" ? "Add" : "Update"}
         </Button>
       }
     >
-      {drawerForm.content === "user" && <FormUser form={form} />}
+      {drawerForm.content === "user" && <FormUser form={formRefHandler} />}
     </Drawer>
   );
 }

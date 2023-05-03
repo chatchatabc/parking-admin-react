@@ -7,6 +7,7 @@ export const drawerForm = createSlice({
     title: null,
     content: null,
     mode: null,
+    loading: false,
   },
   reducers: {
     drawerFormUpdate(state, action) {
@@ -14,6 +15,7 @@ export const drawerForm = createSlice({
       state.title = action.payload.title;
       state.content = action.payload.content;
       state.mode = action.payload.mode;
+      state.loading = action.payload.loading;
     },
   },
 });

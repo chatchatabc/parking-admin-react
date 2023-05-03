@@ -3,10 +3,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { formRefHandler } from "../../layouts/HomeLayout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { userGet } from "../../../domain/service/userService";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
+import { globalStateUpdate } from "../../redux/slices/globalState";
 
 function UsersPage() {
   const [pagination, setPagination] = React.useState({
@@ -16,6 +17,7 @@ function UsersPage() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const globalState = useSelector((state: any) => state.globalState);
 
   // Queries
   const { loading, data, refetch, error } = userGet(
@@ -160,6 +162,16 @@ function UsersPage() {
       });
     }
   }, [data]);
+
+  React.useEffect(() => {
+    if (globalState.reset) {
+      refetch({
+        size: pagination.pageSize,
+        page: pagination.current,
+      });
+      dispatch(globalStateUpdate({ reset: false }));
+    }
+  }, [globalState.reset]);
 
   return (
     <div className="px-4 w-full relative">

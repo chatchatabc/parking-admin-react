@@ -1,24 +1,24 @@
 import { Button, Form, FormInstance, Input, message } from "antd";
 import FormContainer from "./FormContainer";
-import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   userCreateProfile,
   userRoleList,
 } from "../../../domain/service/userService";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import SelectGraphql from "../select/SelectGraphql";
+import { globalStateUpdate } from "../../redux/slices/globalState";
 
 interface Props {
   form: FormInstance<any>;
 }
 
 function FormUser({ form }: Props) {
-  const [loading, setLoading] = React.useState(false);
+  const drawerForm = useSelector((state: any) => state.drawerForm);
   const dispatch = useDispatch();
 
   async function onFinish(values: any) {
-    setLoading(true);
+    dispatch(drawerFormUpdate({ loading: true }));
 
     const response = await userCreateProfile(values);
     if (response.error) {
@@ -26,9 +26,10 @@ function FormUser({ form }: Props) {
     } else {
       message.success("User created successfully");
       dispatch(drawerFormUpdate({ show: false }));
+      dispatch(globalStateUpdate({ reset: true }));
     }
 
-    setLoading(true);
+    dispatch(drawerFormUpdate({ loading: false }));
   }
 
   return (
@@ -135,7 +136,7 @@ function FormUser({ form }: Props) {
 
         <Form.Item hidden className="w-full">
           <Button
-            loading={loading}
+            loading={drawerForm.loading}
             htmlType="submit"
             className="bg-primary text-white"
           >
