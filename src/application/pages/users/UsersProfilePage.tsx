@@ -1,16 +1,13 @@
 import { Button, Form, Input, message } from "antd";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  userGetByIdDoc,
-  userGetByPhoneDoc,
-  userGetByUsernameDoc,
-} from "../../../domain/infra/apollo-client/docs/userDoc";
-import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
 import NotFoundPage from "../NotFoundPage";
 import React from "react";
 import { useForm } from "antd/es/form/Form";
-import { userUpdateProfile } from "../../../domain/service/userService";
+import {
+  userGetProfile,
+  userUpdateProfile,
+} from "../../../domain/service/userService";
 import { utilApiMessageGet } from "../../../domain/utils/commonUtils";
 
 function UsersProfilePage() {
@@ -23,23 +20,10 @@ function UsersProfilePage() {
     return <NotFoundPage />;
   }
 
-  const { data } = graphqlQuery(
-    identifiers[0] === "u"
-      ? userGetByUsernameDoc()
-      : identifiers[0] === "p"
-      ? userGetByPhoneDoc()
-      : userGetByIdDoc(),
-    "Users Profile",
-    {
-      variables: {
-        phone: identifiers[1],
-        userId: identifiers[1],
-        username: identifiers[1],
-      },
-    }
-  );
-
-  const realData = data?.getUserByUsername ?? data?.getUserByPhone;
+  const { data } = userGetProfile({
+    username: identifiers[0] === "u" ? identifiers[1] : undefined,
+    phone: identifiers[0] === "p" ? identifiers[1] : undefined,
+  });
 
   async function handleFinish(values: any) {
     const response = await userUpdateProfile(values);
@@ -59,10 +43,10 @@ function UsersProfilePage() {
   }
 
   React.useEffect(() => {
-    if (realData) {
-      form.setFieldsValue(realData);
+    if (data) {
+      form.setFieldsValue(data);
     }
-  }, [realData]);
+  }, [data]);
 
   return (
     <div className="flex-1 px-4">

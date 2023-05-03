@@ -26,9 +26,9 @@ export const authLink = setContext((_, { headers }) => {
 export function graphqlQuery(
   schema: DocumentNode,
   name: string,
-  variables?: Record<string, any>
+  options?: Record<string, any>
 ) {
-  const query = useQuery(schema, variables);
+  const query = useQuery(schema, options);
 
   React.useEffect(() => {
     if (query.data) {

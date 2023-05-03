@@ -1,12 +1,11 @@
 import { Pagination, Table, TableColumnsType } from "antd";
 import React from "react";
-import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { userGetListDoc } from "../../../domain/infra/apollo-client/docs/userDoc";
+import { userGet } from "../../../domain/service/userService";
 
 function UsersPage() {
   const [pagination, setPagination] = React.useState({
@@ -18,14 +17,12 @@ function UsersPage() {
   const dispatch = useDispatch();
 
   // Queries
-  const { loading, data, refetch } = graphqlQuery(userGetListDoc(), "Users", {
-    variables: {
-      size: pagination.pageSize,
-      page: pagination.current,
-    },
-  });
+  const { loading, data, refetch } = userGet(
+    pagination.current,
+    pagination.pageSize
+  );
 
-  const dataSource = data?.getUsers?.content.map((user: any) => {
+  const dataSource = data?.content.map((user: any) => {
     return {
       ...user,
       key: `users-list-${user.userId}`,
