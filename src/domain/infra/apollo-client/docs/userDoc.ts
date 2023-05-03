@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export function userGetDoc() {
+export function userGetListDoc() {
   return gql`
     query GetUsers($size: Int!, $page: Int!) {
       getUsers(size: $size, page: $page) {
@@ -17,6 +17,51 @@ export function userGetDoc() {
           size
           totalElements
         }
+      }
+    }
+  `;
+}
+
+export function userGetByUsernameDoc() {
+  return gql`
+    query GetUserByUsername($username: String!) {
+      getUserByUsername(username: $username) {
+        userId
+        username
+        phone
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
+      }
+    }
+  `;
+}
+
+export function userGetByPhoneDoc() {
+  return gql`
+    query GetUserByPhone($phone: String!) {
+      getUserByPhone(phone: $phone) {
+        userId
+        username
+        phone
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
+      }
+    }
+  `;
+}
+
+export function userGetByIdDoc() {
+  return gql`
+    query GetUserById($userId: String!) {
+      getUserById(userId: $userId) {
+        userId
+        username
+        phone
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
       }
     }
   `;

@@ -1,9 +1,12 @@
-import { Input, Pagination, Table, TableColumnsType } from "antd";
+import { Pagination, Table, TableColumnsType } from "antd";
 import React from "react";
 import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
-import { userGetDoc } from "../../../domain/infra/apollo-client/docs/userDoc";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import { formRefHandler } from "../../layouts/HomeLayout";
+import { useDispatch } from "react-redux";
+import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import { userGetListDoc } from "../../../domain/infra/apollo-client/docs/userDoc";
 
 function UsersPage() {
   const [pagination, setPagination] = React.useState({
@@ -12,9 +15,10 @@ function UsersPage() {
     total: 0,
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Queries
-  const { loading, data, refetch } = graphqlQuery(userGetDoc(), "Users", {
+  const { loading, data, refetch } = graphqlQuery(userGetListDoc(), "Users", {
     variables: {
       size: pagination.pageSize,
       page: pagination.current,
@@ -34,11 +38,40 @@ function UsersPage() {
       key: "name",
       render: (record) => {
         if (record.username) {
-          return <div>{record.username}</div>;
+          return (
+            <button
+              onClick={() => {
+                navigate(`u-${record.username}`);
+              }}
+              className="text-blue-500 underline hover:no-underline"
+            >
+              {record.username}
+            </button>
+          );
         } else if (record.phone) {
-          return <div>{record.phone}</div>;
+          return (
+            <button
+              onClick={() => {
+                formRefHandler.setFieldsValue(record);
+                navigate(`p-${record.phone}`);
+              }}
+              className="text-blue-500 underline hover:no-underline"
+            >
+              {record.phone}
+            </button>
+          );
         }
-        return <div>Unknown</div>;
+        return (
+          <button
+            onClick={() => {
+              formRefHandler.setFieldsValue(record);
+              navigate(`i-${record.id}`);
+            }}
+            className="text-blue-500 underline hover:no-underline"
+          >
+            Unknown
+          </button>
+        );
       },
     },
     {
@@ -161,7 +194,15 @@ function UsersPage() {
 
           <button
             onClick={() => {
-              navigate("create");
+              formRefHandler.resetFields();
+              dispatch(
+                drawerFormUpdate({
+                  show: true,
+                  title: "Create User",
+                  content: "user",
+                  mode: "create",
+                })
+              );
             }}
             className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
