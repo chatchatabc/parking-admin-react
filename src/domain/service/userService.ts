@@ -37,10 +37,6 @@ export function userGetProfile(params: Record<string, string | undefined>) {
       fetchPolicy: "network-only",
     });
     processedData = query.data?.getUserByPhone;
-  } else {
-    query = {
-      error: true,
-    };
   }
 
   return { ...query, data: processedData };

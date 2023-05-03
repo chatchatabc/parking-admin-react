@@ -9,6 +9,7 @@ import {
   userUpdateProfile,
 } from "../../../domain/service/userService";
 import { utilApiMessageGet } from "../../../domain/utils/commonUtils";
+import ErrorMessageComp from "../../components/ErrorMessageComp";
 
 function UsersProfilePage() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function UsersProfilePage() {
     return <NotFoundPage />;
   }
 
-  const { data } = userGetProfile({
+  const { data, loading } = userGetProfile({
     username: identifiers[0] === "u" ? identifiers[1] : undefined,
     phone: identifiers[0] === "p" ? identifiers[1] : undefined,
   });
@@ -48,8 +49,14 @@ function UsersProfilePage() {
     }
   }, [data]);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="flex-1 px-4">
+    <div className="flex-1 px-4 relative">
+      {!data && <ErrorMessageComp message="User cannot be found!" />}
+
       {/* Breadcrumbs */}
       <section className="py-2">
         <Breadcrumbs />

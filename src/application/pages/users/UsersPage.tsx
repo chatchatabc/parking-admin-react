@@ -6,6 +6,7 @@ import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { userGet } from "../../../domain/service/userService";
+import ErrorMessageComp from "../../components/ErrorMessageComp";
 
 function UsersPage() {
   const [pagination, setPagination] = React.useState({
@@ -17,7 +18,7 @@ function UsersPage() {
   const dispatch = useDispatch();
 
   // Queries
-  const { loading, data, refetch } = userGet(
+  const { loading, data, refetch, error } = userGet(
     pagination.current,
     pagination.pageSize
   );
@@ -161,7 +162,8 @@ function UsersPage() {
   }, [data]);
 
   return (
-    <div className="px-4 w-full">
+    <div className="px-4 w-full relative">
+      {error && <ErrorMessageComp />}
       <section className="py-2">
         <Breadcrumbs />
       </section>
