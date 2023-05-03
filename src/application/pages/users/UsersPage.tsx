@@ -158,7 +158,7 @@ function UsersPage() {
     if (data) {
       setPagination({
         ...pagination,
-        total: data?.getUsers?.pageInfo?.totalElements,
+        total: data?.pageInfo?.totalElements,
       });
     }
   }, [data]);
