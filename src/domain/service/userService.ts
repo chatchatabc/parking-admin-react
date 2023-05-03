@@ -2,6 +2,7 @@ import {
   userGetByPhoneDoc,
   userGetByUsernameDoc,
   userGetListDoc,
+  userRoleListDoc,
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apollo-client/apolloActions";
 import { axiosPost, axiosPut } from "../infra/axios/axiosService";
@@ -52,4 +53,19 @@ export async function userUpdateProfile(values: Record<string, any>) {
   const response = await axiosPut(`/user/update/${values.userId}`, values);
 
   return response.data;
+}
+
+export function userRoleList() {
+  const query = graphqlQuery(userRoleListDoc(), "User Role List", {
+    variables: { page: 0, size: 100 },
+    fetchPolicy: "network-only",
+  });
+
+  const processedData = query.data?.getRoles.content.map((role: any) => {
+    return {
+      value: role.name,
+    };
+  });
+
+  return { ...query, data: processedData };
 }

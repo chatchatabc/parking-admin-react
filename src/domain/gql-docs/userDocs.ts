@@ -78,3 +78,15 @@ export function userAddDoc() {
     }
   `;
 }
+
+export function userRoleListDoc() {
+  return gql`
+    query GetRoles($size: Int!, $page: Int!) {
+      getRoles(size: $size, page: $page) {
+        content {
+          name
+        }
+      }
+    }
+  `;
+}

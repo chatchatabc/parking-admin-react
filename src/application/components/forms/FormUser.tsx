@@ -2,8 +2,12 @@ import { Button, Form, FormInstance, Input, message } from "antd";
 import FormContainer from "./FormContainer";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { userCreateProfile } from "../../../domain/service/userService";
+import {
+  userCreateProfile,
+  userRoleList,
+} from "../../../domain/service/userService";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import SelectGraphql from "../select/SelectGraphql";
 
 interface Props {
   form: FormInstance<any>;
@@ -29,7 +33,7 @@ function FormUser({ form }: Props) {
 
   return (
     <FormContainer form={form} onFinish={onFinish}>
-      <div className="flex flex-wrap gap-x-2">
+      <div className="flex flex-wrap [&>*]:px-2 [&>*]:w-1/3">
         <Form.Item name="username" label="Username">
           <Input placeholder="Username" />
         </Form.Item>
@@ -45,6 +49,36 @@ function FormUser({ form }: Props) {
           ]}
         >
           <Input placeholder="09123456789" />
+        </Form.Item>
+
+        <Form.Item
+          name="email"
+          label="Email"
+          rules={[
+            {
+              type: "email",
+              message: "Invalid email",
+            },
+          ]}
+        >
+          <Input placeholder="Email" />
+        </Form.Item>
+
+        <Form.Item
+          name="roles"
+          label="Roles"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
+        >
+          <SelectGraphql
+            placeholder="Roles"
+            optionsGet={userRoleList}
+            mode="multiple"
+          />
         </Form.Item>
 
         {/* <Form.Item
