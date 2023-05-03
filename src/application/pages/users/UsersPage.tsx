@@ -156,7 +156,6 @@ function UsersPage() {
 
   React.useEffect(() => {
     if (data) {
-      console.log(data.getUsers.pageInfo.totalElements);
       setPagination({
         ...pagination,
         total: data?.getUsers?.pageInfo?.totalElements,

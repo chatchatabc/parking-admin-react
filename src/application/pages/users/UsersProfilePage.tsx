@@ -9,6 +9,7 @@ import {
 } from "../../../domain/infra/apollo-client/docs/userDoc";
 import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
 import NotFoundPage from "../NotFoundPage";
+import React from "react";
 
 function UsersProfilePage() {
   const navigate = useNavigate();
@@ -35,7 +36,13 @@ function UsersProfilePage() {
     }
   );
 
-  console.log(data);
+  const realData = data?.getUserByUsername;
+
+  React.useEffect(() => {
+    if (realData) {
+      formRefHandler.setFieldsValue(realData);
+    }
+  }, [realData]);
 
   return (
     <div className="flex-1 px-4">
@@ -112,25 +119,8 @@ function UsersProfilePage() {
                 <Input placeholder="09123456789" />
               </Form.Item>
 
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                  {
-                    message: "Need some input",
-                    required: true,
-                  },
-                ]}
-              >
-                <Input.Password placeholder="password" />
-              </Form.Item>
-
               <Form.Item label="Email" name="email">
                 <Input placeholder="email" />
-              </Form.Item>
-
-              <Form.Item label="Status" name="status">
-                <Input placeholder="status" />
               </Form.Item>
 
               <div style={{ width: "100%" }}>
