@@ -1,7 +1,6 @@
 import { Button, Form, Input } from "antd";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
-import { formRefHandler } from "../../layouts/HomeLayout";
 import {
   userGetByIdDoc,
   userGetByPhoneDoc,
@@ -10,10 +9,13 @@ import {
 import { graphqlQuery } from "../../../domain/infra/apollo-client/apolloActions";
 import NotFoundPage from "../NotFoundPage";
 import React from "react";
+import { useForm } from "antd/es/form/Form";
+import { userUpdateProfile } from "../../../domain/service/userService";
 
 function UsersProfilePage() {
   const navigate = useNavigate();
   const { profile } = useParams();
+  const [form] = useForm();
   const identifiers = profile?.split("-");
 
   if (!identifiers || identifiers.length !== 2) {
@@ -38,9 +40,13 @@ function UsersProfilePage() {
 
   const realData = data?.getUserByUsername;
 
+  async function handleFinish(values: any) {
+    userUpdateProfile(values);
+  }
+
   React.useEffect(() => {
     if (realData) {
-      formRefHandler.setFieldsValue(realData);
+      form.setFieldsValue(realData);
     }
   }, [realData]);
 
@@ -61,7 +67,7 @@ function UsersProfilePage() {
         </Button>
         <Button
           onClick={() => {
-            formRefHandler.submit();
+            form.submit();
           }}
           className="bg-primary text-white"
         >
@@ -70,11 +76,9 @@ function UsersProfilePage() {
       </section>
 
       <Form
-        form={formRefHandler}
+        form={form}
         className="flex gap-4"
-        onFinish={(values) => {
-          console.log(values);
-        }}
+        onFinish={handleFinish}
         layout="vertical"
         autoComplete="off"
       >
@@ -102,6 +106,8 @@ function UsersProfilePage() {
             </header>
 
             <div className="flex flex-wrap p-2 [&>*]:w-1/4 [&>*]:px-2">
+              <Form.Item name="userId" noStyle hidden></Form.Item>
+
               <Form.Item name="username" label="Username">
                 <Input placeholder="Username" />
               </Form.Item>

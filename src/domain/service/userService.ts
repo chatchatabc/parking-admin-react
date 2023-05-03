@@ -13,7 +13,7 @@ export async function userCreateProfile(values: Record<string, any>) {
 }
 
 export async function userUpdateProfile(values: Record<string, any>) {
-  const response = await axiosPut(`/user/update/${values.id}`, values);
+  const response = await axiosPut(`/user/update/${values.userId}`, values);
 
   return response.data;
 }
