@@ -65,7 +65,7 @@ function UsersProfilePage() {
       <section className="flex justify-between my-2">
         <Button
           onClick={() => {
-            navigate("/users");
+            navigate(-1);
           }}
         >
           Back

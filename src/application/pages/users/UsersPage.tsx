@@ -20,12 +20,13 @@ function UsersPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const globalState = useSelector((state: any) => state.globalState);
+  const keyword = searchParams.get("keyword") ?? undefined;
 
   // Queries
   const { loading, data, refetch, error } = userGet(
     pagination.current,
     pagination.pageSize,
-    searchParams.get("keyword") ?? undefined
+    keyword
   );
 
   const dataSource = data?.content.map((user: any) => {
@@ -157,6 +158,16 @@ function UsersPage() {
     },
   ];
 
+  function handleNavigation(page: number, size: number) {
+    setPagination({
+      ...pagination,
+      current: page - 1,
+    });
+    navigate(
+      `?page=${page}&size=${size}${keyword ? "&keyword=" + keyword : ""}`
+    );
+  }
+
   React.useEffect(() => {
     if (data) {
       setPagination({
@@ -176,6 +187,23 @@ function UsersPage() {
     }
   }, [globalState.reset]);
 
+  React.useEffect(() => {
+    const page = Number(searchParams.get("page") ?? 1);
+    const size = Number(searchParams.get("size") ?? 10);
+    setPagination({
+      ...pagination,
+      current: page - 1,
+      pageSize: size,
+    });
+    if (!loading) {
+      refetch({
+        size: size,
+        page: page - 1,
+        keyword,
+      });
+    }
+  }, [searchParams]);
+
   return (
     <div className="px-4 w-full relative">
       {error && <ErrorMessageComp />}
@@ -193,16 +221,7 @@ function UsersPage() {
           <Pagination
             current={pagination.current + 1}
             total={pagination.total}
-            onChange={(page, pageSize) => {
-              setPagination({
-                ...pagination,
-                current: page - 1,
-              });
-              refetch({
-                size: pageSize,
-                page: page - 1,
-              });
-            }}
+            onChange={handleNavigation}
           />
 
           <button
@@ -231,16 +250,7 @@ function UsersPage() {
             pagination={{
               ...pagination,
               current: pagination.current + 1,
-              onChange: (page, pageSize) => {
-                setPagination({
-                  ...pagination,
-                  current: page - 1,
-                });
-                refetch({
-                  size: pageSize,
-                  page: page - 1,
-                });
-              },
+              onChange: handleNavigation,
             }}
           />
         </section>
