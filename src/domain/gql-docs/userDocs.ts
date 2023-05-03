@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 export function userGetListDoc() {
   return gql`
-    query GetUsers($size: Int!, $page: Int!) {
-      getUsers(size: $size, page: $page) {
+    query GetUsers($size: Int!, $page: Int!, $keyword: String) {
+      getUsers(size: $size, page: $page, keyword: $keyword) {
         content {
           userId
           username

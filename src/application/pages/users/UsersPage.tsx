@@ -1,6 +1,6 @@
 import { Pagination, Table, TableColumnsType } from "antd";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,8 @@ import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 
 function UsersPage() {
+  const [searchParams, _] = useSearchParams();
+
   const [pagination, setPagination] = React.useState({
     current: 0,
     pageSize: 10,
@@ -22,7 +24,8 @@ function UsersPage() {
   // Queries
   const { loading, data, refetch, error } = userGet(
     pagination.current,
-    pagination.pageSize
+    pagination.pageSize,
+    searchParams.get("keyword") ?? undefined
   );
 
   const dataSource = data?.content.map((user: any) => {

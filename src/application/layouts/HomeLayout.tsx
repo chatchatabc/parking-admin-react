@@ -2,11 +2,12 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { authCheckSession } from "../../domain/service/authService";
 import Sidebar from "../components/sidebar/Sidebar";
-import { Input, Popover } from "antd";
+import { Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
 import DrawerForm from "../components/drawers/DrawerForm";
 import { FormInstance, useForm } from "antd/es/form/Form";
+import NavbarSearchBar from "../components/navbar/NavbarSearchBar";
 
 export let formRefHandler: FormInstance<any>;
 
@@ -58,11 +59,7 @@ function HomeLayout() {
         </div>
 
         {/* Search Bar */}
-        <Input
-          prefix={<Icon className="w-6 h-6" icon="ph:magnifying-glass" />}
-          className="h-full p-2 w-64 ml-12 rounded-md"
-          placeholder="Search..."
-        />
+        <NavbarSearchBar />
 
         {/* Right side */}
         <div className="ml-auto">

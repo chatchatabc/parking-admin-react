@@ -7,9 +7,13 @@ import {
 import { graphqlQuery } from "../infra/apollo-client/apolloActions";
 import { axiosPost, axiosPut } from "../infra/axios/axiosService";
 
-export function userGet(page: number = 0, size: number = 10) {
+export function userGet(
+  page: number = 0,
+  size: number = 10,
+  keyword: string | undefined
+) {
   const query = graphqlQuery(userGetListDoc(), "User Get List", {
-    variables: { page, size },
+    variables: { page, size, keyword },
     fetchPolicy: "network-only",
   });
 
