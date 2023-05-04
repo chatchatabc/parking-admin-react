@@ -4,7 +4,7 @@ import {
   userUpdateProfile,
 } from "../../domain/service/userService";
 import { utilApiMessageGet } from "../../domain/utils/commonUtils";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import ErrorMessageComp from "../components/ErrorMessageComp";
@@ -50,7 +50,11 @@ function ProfilePage({ username, phone }: Props) {
   }, [data]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <Spin />
+      </div>
+    );
   }
 
   return (
