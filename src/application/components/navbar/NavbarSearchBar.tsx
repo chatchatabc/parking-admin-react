@@ -46,7 +46,7 @@ function NavbarSearchBar() {
 
   const tokens = searchText?.split(" ");
   const identifier = tokens[0].toLowerCase();
-  const value = tokens[1];
+  const value = tokens.slice(1).join(" ");
   const searchType = dictionary[identifier];
 
   function handleSearch() {
