@@ -25,6 +25,8 @@ export async function authLogin(values: Record<string, any>) {
     return response.data;
   }
 
+  localStorage.setItem("user", JSON.stringify(response.data.data));
+
   const token = response.headers["x-access-token"];
 
   authTokenSave(token);
@@ -53,4 +55,19 @@ export function authCheckSession() {
   }
 
   return false;
+}
+
+export function authUsername() {
+  const userLocal = localStorage.getItem("user");
+
+  if (!userLocal) {
+    return null;
+  }
+
+  try {
+    const userParsed = JSON.parse(userLocal) as Record<string, any>;
+    return userParsed.username;
+  } catch (error) {
+    return null;
+  }
 }
