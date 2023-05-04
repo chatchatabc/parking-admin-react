@@ -54,6 +54,10 @@ function FormUser({ form }: Props) {
               message: "Need some input",
               required: true,
             },
+            {
+              pattern: new RegExp(/^[0-9\b]+$/),
+              message: "Invalid phone number",
+            },
           ]}
         >
           <Input placeholder="09123456789" />
