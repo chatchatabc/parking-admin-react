@@ -27,7 +27,7 @@ function HomeLayout() {
     localStorage.setItem("sidebarState", JSON.stringify(!openSidebar));
   }
 
-  if (authCheckSession()) {
+  if (!authCheckSession()) {
     return <NoAccessPage />;
   }
 
