@@ -1,33 +1,14 @@
 import { NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import SideBarDropdown from "./SideBarDropdown";
+import sidebarJson from "../../../../data/sidebar.json";
 
 interface Props {
   open: boolean;
 }
 
 function Sidebar({ open }: Props) {
-  const navigations = [
-    { label: "Home", icon: "mdi:home", path: "/" },
-    {
-      label: "Users",
-      icon: "mdi:account-group",
-      path: "/users",
-      children: [
-        {
-          label: "Information",
-          icon: "mdi:account-multiple",
-          path: "/users",
-        },
-        {
-          label: "Create User",
-          icon: "mdi:account-plus",
-          path: "/users/create",
-        },
-      ],
-    },
-    { label: "Settings", icon: "mdi:cog", path: "/settings" },
-  ];
+  const { navigations } = sidebarJson;
   const navigationsHelp = [
     { label: "Help", icon: "mdi:help", path: "/help" },
     { label: "About", icon: "mdi:information", path: "/about" },

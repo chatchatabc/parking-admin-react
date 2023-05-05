@@ -1,0 +1,38 @@
+{
+  "navigations": [
+    { "label": "Home", "icon": "mdi:home", "path": "/" },
+    {
+      "label": "Users",
+      "icon": "mdi:account-group",
+      "children": [
+        {
+          "label": "Information",
+          "icon": "mdi:account-multiple",
+          "path": "/users"
+        },
+        {
+          "label": "Create User",
+          "icon": "mdi:account-plus",
+          "path": "/users/create"
+        }
+      ]
+    },
+    {
+      "label": "Parking Lot",
+      "icon": "mdi:parking",
+      "children": [
+        {
+          "label": "Information",
+          "icon": "mdi:parking",
+          "path": "/parking-lot"
+        },
+        {
+          "label": "Create Parking Lot",
+          "icon": "mdi:plus",
+          "path": "/parking-lot/create"
+        }
+      ]
+    },
+    { "label": "Settings", "icon": "mdi:cog", "path": "/settings" }
+  ]
+}
