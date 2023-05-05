@@ -8,6 +8,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import UsersCreatePage from "./pages/users/UsersProfilePage";
 import UsersPage from "./pages/users/UsersPage";
 import ParkingPage from "./pages/parking/ParkingPage";
+import ParkingProfile from "./pages/parking/ParkingProfile";
 
 message.config({
   maxCount: 2,
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
           {
             path: "create",
             element: <h1>Parking Create</h1>,
+          },
+          {
+            path: ":identifier",
+            element: <ParkingProfile />,
           },
         ],
       },

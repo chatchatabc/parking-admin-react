@@ -9,6 +9,7 @@ export function parkingGetDoc() {
           availableSlots
           address
           capacity
+          name
 
           rate {
             id

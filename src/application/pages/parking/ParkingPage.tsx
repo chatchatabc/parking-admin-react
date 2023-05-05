@@ -6,6 +6,7 @@ import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { parkingGet } from "../../../domain/service/parkingService";
+import { useNavigate } from "react-router-dom";
 
 function ParkingPage() {
   const [pagination, setPagination] = React.useState({
@@ -14,6 +15,7 @@ function ParkingPage() {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { loading, error, data } = parkingGet();
 
@@ -30,10 +32,49 @@ function ParkingPage() {
 
   const columns: TableColumnsType<Record<string, any>> = [
     {
+      title: "Parking Name",
+      key: "name",
+      render: (record) => {
+        if (record.owner.username || record.owner.phone) {
+          return (
+            <button
+              className="text-blue-500 underline hover:no-underline"
+              onClick={() => {
+                navigate(
+                  record.username
+                    ? `u-${record.owner.username}`
+                    : `p-${record.owner.phone}`
+                );
+              }}
+            >
+              {record.name}
+            </button>
+          );
+        }
+        return <p>Unknown</p>;
+      },
+    },
+    {
       title: "Owner",
       key: "owner",
       render: (record) => {
-        return <div>{record.owner.username ?? record.owner.phone}</div>;
+        if (record.owner.username || record.owner.phone) {
+          return (
+            <button
+              className="text-blue-500 underline hover:no-underline"
+              onClick={() => {
+                navigate(
+                  record.username
+                    ? `/users/u-${record.owner.username}`
+                    : `/users/p-${record.owner.phone}`
+                );
+              }}
+            >
+              {record.owner.username ?? record.owner.phone}
+            </button>
+          );
+        }
+        return <p>Unknown</p>;
       },
     },
     {
