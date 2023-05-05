@@ -17,8 +17,6 @@ function ParkingPage() {
 
   const { loading, error, data } = parkingGet();
 
-  console.log(data);
-
   function handleNavigation(page: number) {
     setPagination({ ...pagination, current: page - 1 });
   }
