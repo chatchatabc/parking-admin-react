@@ -8,7 +8,6 @@ import { Button, Form, Input, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import ErrorMessageComp from "../components/ErrorMessageComp";
-import Breadcrumbs from "../components/Breadcrumbs";
 import { authUsername } from "../../domain/service/authService";
 import ProfileParking from "../components/profile/ProfileParking";
 
@@ -63,9 +62,9 @@ function ProfilePage({ username, phone }: Props) {
       {!data && <ErrorMessageComp message="User cannot be found!" />}
 
       {/* Breadcrumbs */}
-      <section className="py-2">
+      {/* <section className="py-2">
         <Breadcrumbs />
-      </section>
+      </section> */}
 
       <section className="flex justify-between my-2">
         <Button

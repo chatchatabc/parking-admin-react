@@ -1,6 +1,5 @@
 import React from "react";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
-import Breadcrumbs from "../../components/Breadcrumbs";
 import { Pagination, Table, TableColumnsType } from "antd";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
@@ -107,9 +106,6 @@ function ParkingPage() {
   return (
     <div className="px-4 w-full relative">
       {error && <ErrorMessageComp />}
-      <section className="py-2">
-        <Breadcrumbs />
-      </section>
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">

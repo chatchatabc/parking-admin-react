@@ -8,6 +8,7 @@ import { Icon } from "@iconify/react";
 import DrawerForm from "../components/drawers/DrawerForm";
 import { FormInstance, useForm } from "antd/es/form/Form";
 import NavbarSearchBar from "../components/navbar/NavbarSearchBar";
+import MultiTabs from "../components/MultiTabs";
 
 export let formRefHandler: FormInstance<any>;
 
@@ -92,7 +93,10 @@ function HomeLayout() {
       <div className="flex-1 flex">
         {/* Sidebar */}
         <Sidebar open={openSidebar} />
-        <main className="flex flex-1">
+        <main className="flex flex-col flex-1">
+          <section className="uppercase">
+            <MultiTabs />
+          </section>
           <Outlet />
         </main>
       </div>

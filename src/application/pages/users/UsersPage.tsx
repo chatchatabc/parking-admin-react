@@ -1,7 +1,6 @@
 import { Pagination, Table, TableColumnsType } from "antd";
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Breadcrumbs from "../../components/Breadcrumbs";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
@@ -187,9 +186,6 @@ function UsersPage() {
   return (
     <div className="px-4 w-full relative">
       {error && <ErrorMessageComp />}
-      <section className="py-2">
-        <Breadcrumbs />
-      </section>
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
