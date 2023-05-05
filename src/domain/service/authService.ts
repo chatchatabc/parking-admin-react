@@ -13,7 +13,7 @@ function authTokenSave(token: string) {
   document.cookie = `token=${token}; path=/; max-age=3600`;
 }
 
-function authTokenRemove() {
+export function authTokenRemove() {
   document.cookie = `token=; path=/; max-age=0`;
 }
 

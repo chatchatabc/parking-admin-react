@@ -9,6 +9,7 @@ import DrawerForm from "../components/drawers/DrawerForm";
 import { FormInstance, useForm } from "antd/es/form/Form";
 import NavbarSearchBar from "../components/navbar/NavbarSearchBar";
 import MultiTabs from "../components/MultiTabs";
+import NoAccessPage from "../pages/NoAccessPage";
 
 export let formRefHandler: FormInstance<any>;
 
@@ -18,7 +19,6 @@ function HomeLayout() {
   );
   const [openProfileMenu, setProfileMenu] = React.useState(false);
 
-  const navigate = useNavigate();
   const [form] = useForm();
   formRefHandler = form;
 
@@ -27,11 +27,9 @@ function HomeLayout() {
     localStorage.setItem("sidebarState", JSON.stringify(!openSidebar));
   }
 
-  React.useEffect(() => {
-    if (!authCheckSession()) {
-      navigate("/login");
-    }
-  }, [navigate]);
+  if (authCheckSession()) {
+    return <NoAccessPage />;
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-bg0 text-text1">
