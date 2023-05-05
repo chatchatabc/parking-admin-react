@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 interface DropDownProps {
   navigation: Record<string, any>;
@@ -8,16 +8,21 @@ interface DropDownProps {
 }
 
 function SideBarDropdown({ navigation, open }: DropDownProps) {
+  const navigate = useNavigate();
   const location = useLocation();
-  let hideChildren = true;
-  for (const child of navigation.children) {
-    if (child.path === location.pathname) {
-      hideChildren = false;
-      break;
-    }
-  }
 
-  const [hide, setHide] = React.useState(hideChildren);
+  const [hide, setHide] = React.useState(true);
+
+  React.useEffect(() => {
+    if (hide) {
+      for (const child of navigation.children) {
+        if (child.path === location.pathname) {
+          setHide(false);
+          break;
+        }
+      }
+    }
+  }, [navigate]);
 
   return (
     <div>
