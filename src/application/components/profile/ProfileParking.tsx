@@ -1,5 +1,4 @@
 import { Button, Table } from "antd";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

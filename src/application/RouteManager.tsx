@@ -3,7 +3,7 @@ import "./styles/globals.css";
 import LoginPage from "./pages/LoginPage";
 import HomeLayout from "./layouts/HomeLayout";
 import { message } from "antd";
-import ProfilePage from "./pages/profile/ProfilePage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import UsersCreatePage from "./pages/users/UsersProfilePage";
 import UsersPage from "./pages/users/UsersPage";

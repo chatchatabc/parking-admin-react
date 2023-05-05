@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
-import ProfilePage from "../profile/ProfilePage";
+import ProfilePage from "../ProfilePage";
 
 function UsersProfilePage() {
   const { profile } = useParams();

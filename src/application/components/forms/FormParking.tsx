@@ -1,4 +1,3 @@
-import React from "react";
 import FormContainer from "./FormContainer";
 import { Button, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +9,8 @@ function FormParking() {
 
   async function handleSubmit(values: Record<string, any>) {
     dispatch(drawerFormUpdate({ ...drawerForm, loading: true }));
+
+    console.log(values);
 
     dispatch(drawerFormUpdate({ ...drawerForm, loading: false }));
   }

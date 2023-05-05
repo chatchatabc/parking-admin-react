@@ -2,15 +2,15 @@ import React from "react";
 import {
   userGetProfile,
   userUpdateProfile,
-} from "../../../domain/service/userService";
-import { utilApiMessageGet } from "../../../domain/utils/commonUtils";
+} from "../../domain/service/userService";
+import { utilApiMessageGet } from "../../domain/utils/commonUtils";
 import { Button, Form, Input, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
-import ErrorMessageComp from "../../components/ErrorMessageComp";
-import Breadcrumbs from "../../components/Breadcrumbs";
-import { authUsername } from "../../../domain/service/authService";
-import ProfileParking from "./ProfileParking";
+import ErrorMessageComp from "../components/ErrorMessageComp";
+import Breadcrumbs from "../components/Breadcrumbs";
+import { authUsername } from "../../domain/service/authService";
+import ProfileParking from "../components/profile/ProfileParking";
 
 interface Props {
   username?: string;
