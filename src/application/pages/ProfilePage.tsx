@@ -58,7 +58,7 @@ function ProfilePage({ username, phone }: Props) {
   }
 
   return (
-    <div className="flex-1 px-4 relative">
+    <div className="flex-1 px-4 pb-4 relative">
       {!data && <ErrorMessageComp message="User cannot be found!" />}
 
       {/* Breadcrumbs */}
@@ -66,7 +66,7 @@ function ProfilePage({ username, phone }: Props) {
         <Breadcrumbs />
       </section> */}
 
-      <section className="flex justify-between my-2">
+      <section className="flex justify-between mb-2">
         <Button
           onClick={() => {
             navigate(-1);

@@ -39,6 +39,7 @@ function MultiTabs() {
 
   return (
     <Tabs
+      size="small"
       activeKey={multiTabsState.activeKey}
       type="editable-card"
       onChange={(key: string) => {
