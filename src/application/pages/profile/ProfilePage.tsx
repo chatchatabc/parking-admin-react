@@ -2,14 +2,15 @@ import React from "react";
 import {
   userGetProfile,
   userUpdateProfile,
-} from "../../domain/service/userService";
-import { utilApiMessageGet } from "../../domain/utils/commonUtils";
+} from "../../../domain/service/userService";
+import { utilApiMessageGet } from "../../../domain/utils/commonUtils";
 import { Button, Form, Input, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
-import ErrorMessageComp from "../components/ErrorMessageComp";
-import Breadcrumbs from "../components/Breadcrumbs";
-import { authUsername } from "../../domain/service/authService";
+import ErrorMessageComp from "../../components/ErrorMessageComp";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import { authUsername } from "../../../domain/service/authService";
+import ProfileParking from "./ProfileParking";
 
 interface Props {
   username?: string;
@@ -108,7 +109,7 @@ function ProfilePage({ username, phone }: Props) {
         </section>
 
         {/* Right Side */}
-        <section className="flex-1">
+        <section className="flex-1 space-y-4">
           <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
             <header>
               <h1 className="text-lg font-bold">User Information</h1>
@@ -144,6 +145,13 @@ function ProfilePage({ username, phone }: Props) {
                 </Button>
               </div>
             </div>
+          </div>
+
+          <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
+            <ProfileParking
+              username={username ?? authUsername()}
+              phone={phone}
+            />
           </div>
         </section>
       </Form>
