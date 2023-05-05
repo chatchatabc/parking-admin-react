@@ -150,6 +150,7 @@ function ProfilePage({ username, phone }: Props) {
             <ProfileParking
               username={username ?? authUsername()}
               phone={phone}
+              userId={data?.userId}
             />
           </div>
         </section>
