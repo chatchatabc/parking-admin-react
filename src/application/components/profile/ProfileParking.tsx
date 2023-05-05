@@ -63,7 +63,7 @@ function ProfileParking({ username, phone, userId }: Props) {
         <h1 className="text-lg font-bold">Parking Lots</h1>
         <Button
           onClick={() => {
-            navigate(`/parking?keywords=${username}`);
+            navigate(`/parking?keyword=${username}`);
           }}
           className="bg-primary text-white"
         >

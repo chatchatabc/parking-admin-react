@@ -20,8 +20,8 @@ const dictionary: Record<string, any> = {
     ),
   },
   p: {
-    name: "Products",
-    url: "/products",
+    name: "Parking Lots",
+    url: "/parking",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

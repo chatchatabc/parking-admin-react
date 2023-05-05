@@ -5,18 +5,26 @@ import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { parkingGet } from "../../../domain/service/parkingService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function ParkingPage() {
   const [pagination, setPagination] = React.useState({
     current: 0,
+    pageSize: 10,
     total: 0,
   });
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, data } = parkingGet();
+  const keywords = searchParams.get("keyword") ?? undefined;
+
+  const { loading, error, data } = parkingGet(
+    pagination.current,
+    pagination.pageSize,
+    keywords
+  );
 
   function handleNavigation(page: number) {
     setPagination({ ...pagination, current: page - 1 });
