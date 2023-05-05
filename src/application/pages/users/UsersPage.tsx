@@ -213,7 +213,7 @@ function UsersPage() {
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
-          <h2 className="text-xl font-bold">Users List</h2>
+          <h2 className="text-xl font-bold">Users</h2>
         </header>
 
         {/* Table Actions */}

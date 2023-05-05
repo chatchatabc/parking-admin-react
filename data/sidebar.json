@@ -4,9 +4,10 @@
     {
       "label": "Users",
       "icon": "mdi:account-group",
+      "path": "/users-parent",
       "children": [
         {
-          "label": "Information",
+          "label": "List",
           "icon": "mdi:account-multiple",
           "path": "/users"
         },
@@ -20,16 +21,17 @@
     {
       "label": "Parking Lot",
       "icon": "mdi:parking",
+      "path": "/parking-parent",
       "children": [
         {
-          "label": "Information",
+          "label": "List",
           "icon": "mdi:parking",
-          "path": "/parking-lot"
+          "path": "/parking"
         },
         {
           "label": "Create Parking Lot",
           "icon": "mdi:plus",
-          "path": "/parking-lot/create"
+          "path": "/parking/create"
         }
       ]
     },

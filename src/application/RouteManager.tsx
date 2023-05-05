@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "parking-lot",
+        path: "parking",
         children: [
           {
             path: "",

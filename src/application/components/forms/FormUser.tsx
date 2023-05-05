@@ -9,11 +9,7 @@ import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import SelectGraphql from "../select/SelectGraphql";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 
-interface Props {
-  form: FormInstance<any>;
-}
-
-function FormUser({ form }: Props) {
+function FormUser() {
   const drawerForm = useSelector((state: any) => state.drawerForm);
   const dispatch = useDispatch();
 
@@ -40,7 +36,7 @@ function FormUser({ form }: Props) {
   }
 
   return (
-    <FormContainer form={form} onFinish={onFinish}>
+    <FormContainer onFinish={onFinish}>
       <div className="flex flex-wrap [&>*]:px-2 [&>*]:w-1/3">
         <Form.Item name="username" label="Username">
           <Input placeholder="Username" />

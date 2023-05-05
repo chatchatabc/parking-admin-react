@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import FormUser from "../forms/FormUser";
 import { formRefHandler } from "../../layouts/HomeLayout";
+import FormParking from "../forms/FormParking";
 
 function DrawerForm() {
   const dispatch = useDispatch();
@@ -29,7 +30,8 @@ function DrawerForm() {
         </Button>
       }
     >
-      {drawerForm.content === "user" && <FormUser form={formRefHandler} />}
+      {drawerForm.content === "user" && <FormUser />}
+      {drawerForm.content === "parking" && <FormParking />}
     </Drawer>
   );
 }

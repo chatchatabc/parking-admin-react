@@ -1,16 +1,16 @@
 import { Form, FormInstance } from "antd";
 import React from "react";
+import { formRefHandler } from "../../layouts/HomeLayout";
 
 interface Props {
   children: React.ReactNode;
   onFinish?: (values: any) => void;
-  form: FormInstance;
 }
 
-function FormContainer({ children, onFinish, form }: Props) {
+function FormContainer({ children, onFinish }: Props) {
   return (
     <Form
-      form={form}
+      form={formRefHandler}
       onFinish={onFinish}
       name="basic"
       layout="vertical"
