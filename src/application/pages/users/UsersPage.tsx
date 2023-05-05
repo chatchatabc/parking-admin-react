@@ -41,41 +41,21 @@ function UsersPage() {
       title: "Username",
       key: "name",
       render: (record) => {
-        if (record.username) {
+        if (record.username || record.phone) {
           return (
             <button
-              onClick={() => {
-                navigate(`u-${record.username}`);
-              }}
               className="text-blue-500 underline hover:no-underline"
-            >
-              {record.username}
-            </button>
-          );
-        } else if (record.phone) {
-          return (
-            <button
               onClick={() => {
-                formRefHandler.setFieldsValue(record);
-                navigate(`p-${record.phone}`);
+                navigate(
+                  record.username ? `u-${record.username}` : `p-${record.phone}`
+                );
               }}
-              className="text-blue-500 underline hover:no-underline"
             >
-              {record.phone}
+              {record.username ?? record.phone}
             </button>
           );
         }
-        return (
-          <button
-            onClick={() => {
-              formRefHandler.setFieldsValue(record);
-              navigate(`i-${record.id}`);
-            }}
-            className="text-blue-500 underline hover:no-underline"
-          >
-            Unknown
-          </button>
-        );
+        return <p>Unknown</p>;
       },
     },
     {
