@@ -1,26 +1,28 @@
 import { describe, expect, it } from "vitest";
-import {
-  authTokenGet,
-  authTokenRemove,
-  authTokenSave,
-} from "../../service/authService";
+import { authLogin, authLogout, authTokenGet } from "../../service/authService";
 
-describe("Auth Token", () => {
-  const token = "1234567890";
+describe("Auth Login and Logout", () => {
+  const credentials = {
+    username: "admin",
+    password: "123456",
+  };
 
-  it("Save Token", () => {
-    authTokenSave(token);
-    const tokenSaved = authTokenGet();
-    expect(tokenSaved).toBe(token);
+  it("Login", async () => {
+    const response = await authLogin(credentials);
+    expect(response.error).toBe(false);
   });
 
-  it("Get Token", () => {
+  it("Token Saved", () => {
     const tokenSaved = authTokenGet();
-    expect(tokenSaved).toBe(token);
+    expect(tokenSaved).not.toBe(undefined);
   });
 
-  it("Remove Token", () => {
-    authTokenRemove();
+  it("Logout", async () => {
+    const response = await authLogout();
+    expect(response.error).toBe(false);
+  });
+
+  it("Token Removed", () => {
     const tokenSaved = authTokenGet();
     expect(tokenSaved).toBe(undefined);
   });
