@@ -9,7 +9,7 @@ export function authTokenGet() {
   return token;
 }
 
-function authTokenSave(token: string) {
+export function authTokenSave(token: string) {
   document.cookie = `token=${token}; path=/; max-age=3600`;
 }
 
