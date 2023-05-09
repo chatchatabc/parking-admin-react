@@ -5,7 +5,7 @@ import {
   useQuery,
 } from "@apollo/client";
 import React from "react";
-import { authTokenGet } from "../../service/authService";
+import { authTokenGet } from "../../services/authService";
 import { setContext } from "@apollo/client/link/context";
 
 export const httpLink = createHttpLink({

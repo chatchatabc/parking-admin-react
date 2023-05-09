@@ -1,6 +1,6 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { authCheckSession } from "../../domain/service/authService";
+import { Outlet } from "react-router-dom";
+import { authCheckSession } from "../../domain/services/authService";
 import Sidebar from "../components/sidebar/Sidebar";
 import { Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";

@@ -1,6 +1,6 @@
 import { Modal, message } from "antd";
 import React from "react";
-import { authLogout } from "../../../domain/service/authService";
+import { authLogout } from "../../../domain/services/authService";
 import { useNavigate } from "react-router-dom";
 
 interface Props {

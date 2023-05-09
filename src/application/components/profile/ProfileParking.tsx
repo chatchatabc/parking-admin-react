@@ -1,6 +1,6 @@
 import { Button, Table } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { parkingGetAllByOwner } from "../../../domain/service/parkingService";
+import { parkingGetAllByOwner } from "../../../domain/services/parkingService";
 import React from "react";
 
 interface Props {

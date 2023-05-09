@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { userGet } from "../../../domain/service/userService";
+import { userGet } from "../../../domain/services/userService";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 

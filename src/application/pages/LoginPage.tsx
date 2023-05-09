@@ -1,5 +1,5 @@
 import React from "react";
-import { authCheckSession, authLogin } from "../../domain/service/authService";
+import { authCheckSession, authLogin } from "../../domain/services/authService";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";

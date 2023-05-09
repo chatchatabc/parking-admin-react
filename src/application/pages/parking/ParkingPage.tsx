@@ -4,7 +4,7 @@ import { Pagination, Table, TableColumnsType } from "antd";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { parkingGet } from "../../../domain/service/parkingService";
+import { parkingGet } from "../../../domain/services/parkingService";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 function ParkingPage() {

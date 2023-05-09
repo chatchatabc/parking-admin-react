@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   userCreateProfile,
   userRoleList,
-} from "../../../domain/service/userService";
+} from "../../../domain/services/userService";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import SelectGraphql from "../select/SelectGraphql";
 import { globalStateUpdate } from "../../redux/slices/globalState";

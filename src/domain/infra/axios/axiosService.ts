@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { authTokenGet } from "../../service/authService";
+import { authTokenGet } from "../../services/authService";
 
 const baseURL = "/api";
 

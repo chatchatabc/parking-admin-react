@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
-import { authTokenRemove } from "../../domain/service/authService";
+import { authTokenRemove } from "../../domain/services/authService";
 
 function NoAccessPage() {
   const navigate = useNavigate();
