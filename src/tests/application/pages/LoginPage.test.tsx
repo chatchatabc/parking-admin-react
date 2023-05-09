@@ -1,14 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "../../../application/pages/LoginPage";
+import TestEnvironment from "../../TestEnvironment";
 
 describe("Login Page", async () => {
   render(
-    <Routes>
-      <Route path="" element={<LoginPage />} />
-    </Routes>,
-    { wrapper: BrowserRouter }
+    <TestEnvironment>
+      <LoginPage />
+    </TestEnvironment>
   );
 
   const username = screen.getByTestId(/username/i);
