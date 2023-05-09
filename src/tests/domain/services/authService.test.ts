@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { authLogin, authLogout, authTokenGet } from "../../service/authService";
+import {
+  authLogin,
+  authLogout,
+  authTokenGet,
+} from "../../../domain/services/authService";
 
 describe("Auth Login and Logout", () => {
   const credentials = {
