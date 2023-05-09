@@ -34,4 +34,15 @@ describe("Login Page", async () => {
   it("should show error message when username is empty", () => {
     expect(feedback).toBeDefined();
   });
+
+  fireEvent.change(username, { target: { value: "admin" } });
+  fireEvent.change(password, { target: { value: "123456" } });
+  fireEvent.click(submit);
+
+  const message = await screen.findByText(/success/i);
+
+  it("should redirect to home page when login success", () => {
+    expect(message).toBeDefined();
+    expect(window.location.pathname).toBe("/");
+  });
 });
