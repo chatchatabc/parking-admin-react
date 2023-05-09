@@ -54,7 +54,7 @@ function LoginPage() {
               },
             ]}
           >
-            <Input placeholder="Username" />
+            <Input data-testid="username" placeholder="Username" />
           </Form.Item>
 
           <Form.Item
@@ -67,7 +67,7 @@ function LoginPage() {
               },
             ]}
           >
-            <Input.Password placeholder="password" />
+            <Input.Password data-testid="password" placeholder="password" />
           </Form.Item>
 
           <Form.Item>

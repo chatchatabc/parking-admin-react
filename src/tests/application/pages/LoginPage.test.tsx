@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "../../../application/pages/LoginPage";
 
-describe("Login Page", () => {
+describe("Login Page", async () => {
   render(
     <Routes>
       <Route path="" element={<LoginPage />} />
@@ -11,8 +11,27 @@ describe("Login Page", () => {
     { wrapper: BrowserRouter }
   );
 
-  it("Show user inputs", () => {
-    expect(screen.getByText(/username/i)).toBeDefined();
-    expect(screen.getByText(/password/i)).toBeDefined();
+  const username = screen.getByTestId(/username/i);
+  const password = screen.getByLabelText(/password/i);
+  const submit = screen.getByRole("button", { name: /login/i });
+
+  it("should have username input", () => {
+    expect(username).toBeDefined();
+  });
+
+  it("should have password input", () => {
+    expect(password).toBeDefined();
+  });
+
+  it("should have submit button", () => {
+    expect(submit).toBeDefined();
+  });
+
+  fireEvent.change(username, { target: { value: "" } });
+  fireEvent.click(submit);
+  const feedback = await screen.findByText(/need some input/i);
+
+  it("should show error message when username is empty", () => {
+    expect(feedback).toBeDefined();
   });
 });
