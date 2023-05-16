@@ -2,8 +2,11 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import LoginPage from "../../../application/pages/LoginPage";
 import TestEnvironment from "../../TestEnvironment";
+import { authTokenRemove } from "../../../domain/services/authService";
 
 describe("Login Page", async () => {
+  authTokenRemove();
+
   render(
     <TestEnvironment>
       <LoginPage />

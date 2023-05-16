@@ -3,13 +3,15 @@ import {
   authLogin,
   authLogout,
   authTokenGet,
+  authTokenRemove,
 } from "../../../domain/services/authService";
 
-describe("Auth Login and Logout", () => {
+describe("Auth Operations", () => {
   const credentials = {
     username: "admin",
     password: "123456",
   };
+  authTokenRemove();
 
   it("Login", async () => {
     const response = await authLogin(credentials);
