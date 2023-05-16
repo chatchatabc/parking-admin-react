@@ -37,13 +37,15 @@ function axiosDebug(
   data: Record<string, any>,
   response: Record<string, any>
 ) {
-  console.log("Axios Debug", {
-    url,
-    method,
-    params,
-    data,
-    response,
-  });
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    console.log("Axios Debug", {
+      url,
+      method,
+      params,
+      data,
+      response,
+    });
+  }
 }
 
 function axiosConfig() {

@@ -31,12 +31,14 @@ export function graphqlQuery(
   const query = useQuery(schema, options);
 
   React.useEffect(() => {
-    if (query.data) {
-      console.log(`${name} debug`);
-      console.log({ ...query, token: authTokenGet() });
-    } else if (query.error) {
-      console.log(`${name} error`);
-      console.log({ ...query, token: authTokenGet() });
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      if (query.data) {
+        console.log(`${name} debug`);
+        console.log({ ...query, token: authTokenGet() });
+      } else if (query.error) {
+        console.log(`${name} error`);
+        console.log({ ...query, token: authTokenGet() });
+      }
     }
   }, [query.data, query.error]);
 
@@ -47,13 +49,16 @@ export function graphqlMutation(schema: DocumentNode, name: string) {
   const [mutateFunction, mutate] = useMutation(schema);
 
   React.useEffect(() => {
-    if (mutate.data) {
-      console.log(`${name} debug`);
-      console.log({ ...mutate, token: authTokenGet() });
-    } else if (mutate.error) {
-      console.log(`${name} error`);
-      console.log({ ...mutate, token: authTokenGet() });
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      if (mutate.data) {
+        console.log(`${name} debug`);
+        console.log({ ...mutate, token: authTokenGet() });
+      } else if (mutate.error) {
+        console.log(`${name} error`);
+        console.log({ ...mutate, token: authTokenGet() });
+      }
     }
+    
   }, [mutate.data, mutate.error]);
 
   return [mutateFunction, mutate as any];

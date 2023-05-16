@@ -33,7 +33,6 @@ function ProfilePage({ username, phone }: Props) {
       message.error(utilApiMessageGet(response.message));
     } else {
       message.success("Profile updated successfully.");
-      console.log(response);
 
       if (response.data.username) {
         navigate(`/users/u-${response.data.username}`, { replace: true });
