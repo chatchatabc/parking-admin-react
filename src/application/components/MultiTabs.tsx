@@ -50,11 +50,12 @@ function MultiTabs() {
         targetKey: React.MouseEvent | React.KeyboardEvent | string,
         _: string
       ) => {
-        dispatch(multiTabsStateRemove({ key: targetKey }));
-        const newItems = items.filter((item: any) => item.key !== targetKey);
-        if (newItems.length > 0) {
+        if (items.length > 1) {
+          dispatch(multiTabsStateRemove({ key: targetKey }));
+          const newItems = items.filter((item: any) => item.key !== targetKey);
           navigate(newItems[newItems.length - 1].key);
-        } else {
+        } else if (items[0].key !== "/") {
+          dispatch(multiTabsStateRemove({ key: targetKey }));
           navigate("/");
         }
       }}
