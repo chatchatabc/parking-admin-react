@@ -35,7 +35,7 @@ function MultiTabs() {
         })
       );
     }
-  }, [navigate, items]);
+  }, [location.pathname]);
 
   return (
     <Tabs
