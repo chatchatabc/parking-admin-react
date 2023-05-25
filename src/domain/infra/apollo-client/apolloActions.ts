@@ -1,5 +1,7 @@
 import {
+  ApolloClient,
   DocumentNode,
+  InMemoryCache,
   QueryHookOptions,
   createHttpLink,
   useMutation,
@@ -22,6 +24,11 @@ export const authLink = setContext((_, { headers }) => {
       authorization: token ? `Bearer ${token}` : "",
     },
   };
+});
+
+export const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });
 
 export function graphqlQuery(

@@ -4,36 +4,29 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { memberGetAll } from "../../../domain/services/memberService";
 
 function UsersPage() {
-  const [searchParams, _] = useSearchParams();
-
-  const [pagination, setPagination] = React.useState({
-    current: 0,
-    pageSize: 10,
-    total: 0,
-  });
+  // React Router
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [searchParams, _] = useSearchParams();
+
+  // Saved States
   const globalState = useSelector((state: any) => state.globalState);
   const keyword = searchParams.get("keyword") ?? undefined;
+  const page = searchParams.get("page") ?? 0;
+  const pageSize = searchParams.get("pageSize") ?? 10;
 
-  // Queries
-  const { loading, data, refetch, error } = memberGetAll(
-    pagination.current,
-    pagination.pageSize,
-    keyword
-  );
-
-  const dataSource = data?.content.map((user: any) => {
-    return {
-      ...user,
-      key: `users-list-${user.memberUuid}`,
-    };
+  // Local States
+  const [loading, setLoading] = React.useState(true);
+  const [pagination, setPagination] = React.useState({
+    current: Number(page) - 1,
+    pageSize: Number(pageSize),
+    total: 0,
   });
+  const [data, setData] = React.useState([]);
 
   const columns: TableColumnsType<Record<string, any>> = [
     {
@@ -142,50 +135,67 @@ function UsersPage() {
       ...pagination,
       current: page - 1,
     });
+    setLoading(true);
     navigate(
       `?page=${page}&size=${size}${keyword ? "&keyword=" + keyword : ""}`
     );
   }
 
   React.useEffect(() => {
-    if (data) {
-      setPagination({
-        ...pagination,
-        total: data?.pageInfo?.totalElements,
+    async function fetchData() {
+      const query = await memberGetAll(
+        pagination.current,
+        pagination.pageSize,
+        keyword
+      );
+
+      const processedData = query.content.map((user: any) => {
+        return {
+          ...user,
+          key: `users-list-${user.memberUuid}`,
+        };
       });
+
+      setData(processedData);
+      setPagination((prev) => ({
+        ...prev,
+        total: query.pageInfo.totalElements,
+      }));
+      setLoading(false);
     }
-  }, [data]);
+
+    if (loading) {
+      fetchData();
+    }
+  }, [loading]);
 
   React.useEffect(() => {
     if (globalState.reset) {
-      refetch({
-        size: pagination.pageSize,
-        page: pagination.current,
-      });
+      setLoading(true);
       dispatch(globalStateUpdate({ reset: false }));
     }
   }, [globalState.reset]);
 
-  React.useEffect(() => {
-    const page = Number(searchParams.get("page") ?? 1);
-    const size = Number(searchParams.get("size") ?? 10);
-    setPagination({
-      ...pagination,
-      current: page - 1,
-      pageSize: size,
-    });
-    if (!loading) {
-      refetch({
-        size: size,
-        page: page - 1,
-        keyword,
-      });
-    }
-  }, [searchParams]);
+  // React.useEffect(() => {
+  //   const page = Number(searchParams.get("page") ?? 1);
+  //   const size = Number(searchParams.get("size") ?? 10);
+  //   setPagination({
+  //     ...pagination,
+  //     current: page - 1,
+  //     pageSize: size,
+  //   });
+  //   if (!loading) {
+  //     refetch({
+  //       size: size,
+  //       page: page - 1,
+  //       keyword,
+  //     });
+  //   }
+  // }, [searchParams]);
 
   return (
     <div className="px-4 pb-4 w-full relative">
-      {error && <ErrorMessageComp />}
+      {/* {error && <ErrorMessageComp />} */}
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
@@ -221,7 +231,7 @@ function UsersPage() {
           <Table
             loading={loading}
             className={`my-table`}
-            dataSource={dataSource}
+            dataSource={data}
             columns={columns}
             pagination={{
               ...pagination,
