@@ -1,22 +1,24 @@
 import {
   parkingGetAllByOwnerDoc,
-  parkingGetDoc,
+  parkingGetAllDoc,
 } from "../gql-docs/parkingDocs";
-import { graphqlQuery } from "../infra/apollo-client/apolloActions";
+import {
+  apolloClient,
+  graphqlQuery,
+} from "../infra/apollo-client/apolloActions";
 
-export function parkingGet(
-  page: number = 0,
-  size: number = 10,
-  keyword: string | undefined
-) {
-  const query = graphqlQuery(parkingGetDoc(), "Parking Lot", {
+export async function parkingGetAll({
+  page = 0,
+  size = 10,
+  keyword = undefined,
+}: Record<string, any>) {
+  const query = await apolloClient.query({
+    query: parkingGetAllDoc(),
     variables: { page, size, keyword },
     fetchPolicy: "network-only",
   });
 
-  const processedData = query.data?.getParkingLots;
-
-  return { ...query, data: processedData };
+  return query.data.getParkingLots;
 }
 
 export function parkingGetAllByOwner(
