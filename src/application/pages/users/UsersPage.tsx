@@ -4,9 +4,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { userGet } from "../../../domain/services/userService";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { globalStateUpdate } from "../../redux/slices/globalState";
+import { memberGetAll } from "../../../domain/services/memberService";
 
 function UsersPage() {
   const [searchParams, _] = useSearchParams();
@@ -22,7 +22,7 @@ function UsersPage() {
   const keyword = searchParams.get("keyword") ?? undefined;
 
   // Queries
-  const { loading, data, refetch, error } = userGet(
+  const { loading, data, refetch, error } = memberGetAll(
     pagination.current,
     pagination.pageSize,
     keyword
