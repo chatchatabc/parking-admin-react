@@ -49,10 +49,20 @@ function MultiTabs() {
         _: string
       ) => {
         if (items.length > 1) {
+          // If there are more than one tab
           dispatch(multiTabsStateRemove({ key: targetKey }));
-          const newItems = items.filter((item: any) => item.key !== targetKey);
-          navigate(newItems[newItems.length - 1].key);
+          if (targetKey === multiTabsState.activeKey) {
+            // If the tab to be closed is the active tab
+            const newItems = items.filter(
+              (item: any) => item.key !== targetKey
+            );
+            const targetKeyIndex = items.findIndex(
+              (item: any) => item.key === targetKey
+            );
+            navigate(newItems[targetKeyIndex - 1].key);
+          }
         } else if (items[0].key !== "/") {
+          // If the last tab is not the home page
           dispatch(multiTabsStateRemove({ key: targetKey }));
           navigate("/");
         }
