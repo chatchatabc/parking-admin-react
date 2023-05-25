@@ -1,41 +1,36 @@
 import React from "react";
-import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { Pagination, Table, TableColumnsType } from "antd";
 import { formRefHandler } from "../../layouts/HomeLayout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { parkingGet } from "../../../domain/services/parkingService";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { parkingGetAll } from "../../../domain/services/parkingService";
+import { globalStateUpdate } from "../../redux/slices/globalState";
 
 function ParkingPage() {
+  // React Router
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [searchParams, _] = useSearchParams();
+
+  // Saved States
+  const globalState = useSelector((state: any) => state.globalState);
+  const keyword = searchParams.get("keyword") ?? undefined;
+  const page = searchParams.get("page") ?? 1;
+  const pageSize = searchParams.get("pageSize") ?? 10;
+
+  // Local States
+  const [loading, setLoading] = React.useState(true);
   const [pagination, setPagination] = React.useState({
-    current: 0,
-    pageSize: 10,
+    current: Number(page) - 1,
+    pageSize: Number(pageSize),
     total: 0,
   });
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const keywords = searchParams.get("keyword") ?? undefined;
-
-  const { loading, error, data } = parkingGet(
-    pagination.current,
-    pagination.pageSize,
-    keywords
-  );
+  const [data, setData] = React.useState([]);
 
   function handleNavigation(page: number) {
     setPagination({ ...pagination, current: page - 1 });
   }
-
-  const dataSource = data?.content.map((parking: Record<string, any>) => {
-    return {
-      ...parking,
-      key: `parking-list-${parking.id}`,
-    };
-  });
 
   const columns: TableColumnsType<Record<string, any>> = [
     {
@@ -103,17 +98,43 @@ function ParkingPage() {
   ];
 
   React.useEffect(() => {
-    if (data) {
-      setPagination({
-        ...pagination,
-        total: data.pageInfo.totalElements,
+    async function fetchData() {
+      const query = await parkingGetAll({
+        page: pagination.current,
+        size: pagination.pageSize,
+        keyword: keyword,
       });
+
+      const processedData = query.content.map((user: any, index: number) => {
+        return {
+          ...user,
+          key: `parking-list-${index}`,
+        };
+      });
+
+      setData(processedData);
+      setPagination((prev) => ({
+        ...prev,
+        total: query.pageInfo.totalElements,
+      }));
+      setLoading(false);
     }
-  }, [data]);
+
+    if (loading) {
+      fetchData();
+    }
+  }, [loading]);
+
+  React.useEffect(() => {
+    if (globalState.reset) {
+      setLoading(true);
+      dispatch(globalStateUpdate({ reset: false }));
+    }
+  }, [globalState.reset]);
 
   return (
     <div className="px-4 pb-4 w-full relative">
-      {error && <ErrorMessageComp />}
+      {/* {error && <ErrorMessageComp />} */}
       <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
@@ -149,7 +170,7 @@ function ParkingPage() {
           <Table
             loading={loading}
             className={`my-table`}
-            dataSource={dataSource}
+            dataSource={data}
             columns={columns}
             pagination={{
               ...pagination,
