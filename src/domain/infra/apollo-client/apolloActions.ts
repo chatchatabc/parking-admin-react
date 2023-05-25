@@ -1,5 +1,6 @@
 import {
   DocumentNode,
+  QueryHookOptions,
   createHttpLink,
   useMutation,
   useQuery,
@@ -26,7 +27,7 @@ export const authLink = setContext((_, { headers }) => {
 export function graphqlQuery(
   schema: DocumentNode,
   name: string,
-  options?: Record<string, any>
+  options?: QueryHookOptions
 ) {
   const query = useQuery(schema, options);
 
@@ -58,7 +59,6 @@ export function graphqlMutation(schema: DocumentNode, name: string) {
         console.log({ ...mutate, token: authTokenGet() });
       }
     }
-    
   }, [mutate.data, mutate.error]);
 
   return [mutateFunction, mutate as any];
