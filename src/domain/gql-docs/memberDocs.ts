@@ -24,8 +24,8 @@ export function memberGetAllDoc() {
 
 export function memberRolesGetDoc() {
   return gql`
-    query GetRoles(page: Int!, size: Int!) {
-      getRoles(page: $page, size: $size) {
+    query GetRoles($size: Int!, $page: Int!) {
+      getRoles(size: $size, page: $page) {
         content {
           name
         }

@@ -29,7 +29,9 @@ export function memberRolesGet() {
     fetchPolicy: "network-only",
   });
 
-  const processedData = query.data?.getRoles;
+  const processedData = query.data?.getRoles.content.map((role: any) => ({
+    value: role.name,
+  }));
 
   return { ...query, data: processedData };
 }
