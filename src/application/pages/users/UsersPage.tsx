@@ -143,11 +143,11 @@ function UsersPage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const query = await memberGetAll(
-        pagination.current,
-        pagination.pageSize,
-        keyword
-      );
+      const query = await memberGetAll({
+        page: pagination.current,
+        size: pagination.pageSize,
+        keyword: keyword,
+      });
 
       const processedData = query.content.map((user: any) => {
         return {

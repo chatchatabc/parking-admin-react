@@ -4,18 +4,14 @@ import {
   memberGetByUsernameDoc,
   memberRolesGetDoc,
 } from "../gql-docs/memberDocs";
-import {
-  apolloClient,
-  graphqlQuery,
-} from "../infra/apollo-client/apolloActions";
+import { apolloClient } from "../infra/apollo-client/apolloActions";
 import { axiosPost } from "../infra/axios/axiosService";
 
-export async function memberGetAll(
-  page: number = 0,
-  size: number = 10,
-  keyword: string | undefined
-) {
-  console.log(page, size);
+export async function memberGetAll({
+  page = 10,
+  size = 10,
+  keyword = undefined,
+}: Record<string, any>) {
   const query = await apolloClient.query({
     query: memberGetAllDoc(),
     variables: { page, size, keyword },
