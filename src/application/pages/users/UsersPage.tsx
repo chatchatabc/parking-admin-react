@@ -16,7 +16,7 @@ function UsersPage() {
   // Saved States
   const globalState = useSelector((state: any) => state.globalState);
   const keyword = searchParams.get("keyword") ?? undefined;
-  const page = searchParams.get("page") ?? 0;
+  const page = searchParams.get("page") ?? 1;
   const pageSize = searchParams.get("pageSize") ?? 10;
 
   // Local States
@@ -175,23 +175,6 @@ function UsersPage() {
       dispatch(globalStateUpdate({ reset: false }));
     }
   }, [globalState.reset]);
-
-  // React.useEffect(() => {
-  //   const page = Number(searchParams.get("page") ?? 1);
-  //   const size = Number(searchParams.get("size") ?? 10);
-  //   setPagination({
-  //     ...pagination,
-  //     current: page - 1,
-  //     pageSize: size,
-  //   });
-  //   if (!loading) {
-  //     refetch({
-  //       size: size,
-  //       page: page - 1,
-  //       keyword,
-  //     });
-  //   }
-  // }, [searchParams]);
 
   return (
     <div className="px-4 pb-4 w-full relative">
