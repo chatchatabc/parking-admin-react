@@ -16,8 +16,6 @@ function MultiTabs() {
   const items = multiTabsState.items;
 
   React.useEffect(() => {
-    console.log("location.pathname", location.pathname.split("/"));
-
     const path = location.pathname;
     let pathName = path.split("/").join(" ");
 
