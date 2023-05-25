@@ -1,4 +1,9 @@
-import { memberGetAllDoc, memberRolesGetDoc } from "../gql-docs/memberDocs";
+import {
+  memberGetAllDoc,
+  memberGetByPhoneDoc,
+  memberGetByUsernameDoc,
+  memberRolesGetDoc,
+} from "../gql-docs/memberDocs";
 import { graphqlQuery } from "../infra/apollo-client/apolloActions";
 import { axiosPost } from "../infra/axios/axiosService";
 
@@ -24,7 +29,7 @@ export async function memberCreate(values: Record<string, any>) {
 }
 
 export function memberRolesGet() {
-  const query = graphqlQuery(memberRolesGetDoc(), "Member Get List", {
+  const query = graphqlQuery(memberRolesGetDoc(), "Get Role List", {
     variables: { page: 0, size: 100 },
     fetchPolicy: "network-only",
   });
@@ -32,6 +37,31 @@ export function memberRolesGet() {
   const processedData = query.data?.getRoles.content.map((role: any) => ({
     value: role.name,
   }));
+
+  return { ...query, data: processedData };
+}
+
+export function memberGet(params: Record<string, any>) {
+  const { username, phone } = params;
+
+  let query, processedData;
+  if (username) {
+    query = graphqlQuery(
+      memberGetByUsernameDoc(),
+      "User get profile by username",
+      {
+        variables: { username },
+        fetchPolicy: "network-only",
+      }
+    );
+    processedData = query.data?.getMemberByUsername;
+  } else if (phone) {
+    query = graphqlQuery(memberGetByPhoneDoc(), "User get profile by phone", {
+      variables: { phone },
+      fetchPolicy: "network-only",
+    });
+    processedData = query.data?.getMemberByPhone;
+  }
 
   return { ...query, data: processedData };
 }

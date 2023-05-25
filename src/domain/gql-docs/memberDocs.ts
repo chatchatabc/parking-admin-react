@@ -33,3 +33,41 @@ export function memberRolesGetDoc() {
     }
   `;
 }
+
+export function memberGetByUsernameDoc() {
+  return gql`
+    query GetMemberByUsername($username: String!) {
+      getMemberByUsername(username: $username) {
+        memberUuid
+        username
+        email
+        phone
+        lastName
+        firstName
+        createdAt
+        updatedAt
+        phoneVerifiedAt
+        emailVerifiedAt
+      }
+    }
+  `;
+}
+
+export function memberGetByPhoneDoc() {
+  return gql`
+    query GetMemberByPhone($phone: String!) {
+      getMemberByPhone(phone: $phone) {
+        memberUuid
+        username
+        email
+        phone
+        lastName
+        firstName
+        createdAt
+        updatedAt
+        phoneVerifiedAt
+        emailVerifiedAt
+      }
+    }
+  `;
+}

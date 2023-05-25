@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  userGetProfile,
-  userUpdateProfile,
-} from "../../domain/services/userService";
+import { userUpdateProfile } from "../../domain/services/userService";
 import { utilApiMessageGet } from "../../domain/utils/commonUtils";
 import { Button, Form, Input, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +7,7 @@ import { useForm } from "antd/es/form/Form";
 import ErrorMessageComp from "../components/ErrorMessageComp";
 import { authUsername } from "../../domain/services/authService";
 import ProfileParking from "../components/profile/ProfileParking";
+import { memberGet } from "../../domain/services/memberService";
 
 interface Props {
   username?: string;
@@ -21,7 +19,7 @@ function ProfilePage({ username, phone }: Props) {
 
   const navigate = useNavigate();
 
-  const { data, loading } = userGetProfile({
+  const { data, loading } = memberGet({
     username: username ?? authUsername(),
     phone,
   });
