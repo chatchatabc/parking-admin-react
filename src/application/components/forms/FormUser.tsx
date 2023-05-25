@@ -1,11 +1,13 @@
 import { Button, Form, Input, message } from "antd";
 import FormContainer from "./FormContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { userRoleList } from "../../../domain/services/userService";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import SelectGraphql from "../select/SelectGraphql";
 import { globalStateUpdate } from "../../redux/slices/globalState";
-import { memberCreate } from "../../../domain/services/memberService";
+import {
+  memberCreate,
+  memberRolesGet,
+} from "../../../domain/services/memberService";
 
 function FormUser() {
   const drawerForm = useSelector((state: any) => state.drawerForm);
@@ -82,7 +84,7 @@ function FormUser() {
         >
           <SelectGraphql
             placeholder="Roles"
-            optionsGet={userRoleList}
+            optionsGet={memberRolesGet}
             mode="multiple"
           />
         </Form.Item>
