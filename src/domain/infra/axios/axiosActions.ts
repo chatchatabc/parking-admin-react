@@ -1,33 +1,34 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { authTokenGet } from "../../services/authService";
+import { AxiosErrorsItem, AxiosResponse } from "../../models/AxiosModel";
 
 const baseURL = "/api";
 
-function axiosHandleError(e: any): Record<string, any> {
+function axiosHandleError(e: any) {
   if (!e.response) {
     return {
       data: {
-        error: true,
-        message: "NO_RESPONSE",
+        errors: [],
       },
     };
   }
 
-  const error = e.response?.data?.error;
-  const message = e.response?.data?.message;
+  const errors = e.response?.data?.errors as AxiosErrorsItem[];
 
-  if (error && message) {
+  if (errors && errors.length > 0) {
     return e.response;
-  } else if (error) {
-    e.response.data.message = "NO_ERR_MSG";
   } else {
     e.response.data = {
-      error: true,
-      message: "NO_API_ERR",
+      errors: [
+        {
+          title: "NO_ERR_TITLE",
+          message: "NO_ERR_MSG",
+        },
+      ],
     };
   }
 
-  return e.response;
+  return e.response as AxiosResponse;
 }
 
 function axiosDebug(
@@ -61,7 +62,10 @@ function axiosConfig() {
   return config;
 }
 
-export async function axiosGet(url: string, params?: Record<string, any>) {
+export async function axiosGet(
+  url: string,
+  params?: Record<string, any>
+): Promise<AxiosResponse> {
   let response;
 
   const config = axiosConfig();
@@ -78,7 +82,10 @@ export async function axiosGet(url: string, params?: Record<string, any>) {
   return response;
 }
 
-export async function axiosPost(url: string, data: Record<string, any>) {
+export async function axiosPost(
+  url: string,
+  data: Record<string, any>
+): Promise<AxiosResponse> {
   let response;
 
   const config = axiosConfig();
@@ -94,7 +101,10 @@ export async function axiosPost(url: string, data: Record<string, any>) {
   return response;
 }
 
-export async function axiosPut(url: string, data: Record<string, any>) {
+export async function axiosPut(
+  url: string,
+  data: Record<string, any>
+): Promise<AxiosResponse> {
   let response;
 
   const config = axiosConfig();
@@ -110,7 +120,10 @@ export async function axiosPut(url: string, data: Record<string, any>) {
   return response;
 }
 
-export async function axiosDelete(url: string, data: Record<string, any>) {
+export async function axiosDelete(
+  url: string,
+  data: Record<string, any>
+): Promise<AxiosResponse> {
   let response;
 
   const config = axiosConfig();
