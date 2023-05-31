@@ -1,34 +1,45 @@
-import { userGetByPhoneDoc, userGetByUsernameDoc } from "../gql-docs/userDocs";
-import { graphqlQuery } from "../infra/apollo-client/apolloActions";
+import {
+  userGetAllDoc,
+  userGetByPhoneDoc,
+  userGetByUsernameDoc,
+} from "../gql-docs/userDocs";
+import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { axiosPut } from "../infra/axios/axiosActions";
+import { AxiosResponseData } from "../models/AxiosModel";
+import { Pagination } from "../models/CommonModel";
+import { User } from "../models/UserModel";
 
-export function userGetProfile(params: Record<string, string | undefined>) {
+export async function userGetProfile(
+  params: Record<string, string | undefined>
+) {
   const { username, phone } = params;
 
-  let query, processedData;
+  let query;
+
   if (username) {
-    query = graphqlQuery(
-      userGetByUsernameDoc(),
-      "User get profile by username",
-      {
-        variables: { username },
-        fetchPolicy: "network-only",
-      }
-    );
-    processedData = query.data?.getUserByUsername;
+    query = await graphqlQuery(userGetByUsernameDoc(), { username });
   } else if (phone) {
-    query = graphqlQuery(userGetByPhoneDoc(), "User get profile by phone", {
-      variables: { phone },
-      fetchPolicy: "network-only",
-    });
-    processedData = query.data?.getUserByPhone;
+    query = await graphqlQuery(userGetByPhoneDoc(), { phone });
   }
 
-  return { ...query, data: processedData };
+  return query;
 }
 
 export async function userUpdateProfile(values: Record<string, any>) {
   const response = await axiosPut(`/user/update/${values.userId}`, values);
 
   return response.data;
+}
+
+export async function userGetAll(variables: Record<string, any>) {
+  const response = await graphqlQuery(userGetAllDoc(), variables);
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  return response.data.data.getUsers as AxiosResponseData & {
+    content: User[];
+    pageInfo: Pagination;
+  };
 }
