@@ -5,8 +5,8 @@ import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { globalStateUpdate } from "../../redux/slices/globalState";
-import { userGetAll } from "../../../domain/services/userService";
 import { User } from "../../../domain/models/UserModel";
+import { userAllGet } from "../../../domain/services/userService";
 
 function UsersPage() {
   // React Router
@@ -144,7 +144,7 @@ function UsersPage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const query = await userGetAll({
+      const query = await userAllGet({
         page: pagination.current,
         size: pagination.pageSize,
         keyword: keyword,

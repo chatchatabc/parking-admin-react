@@ -36,6 +36,6 @@ export type UserAuthorities = {
   authority?: string;
 };
 
-export type UserRoles = {
+export type UserRole = {
   name?: string;
 };
