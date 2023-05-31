@@ -91,7 +91,7 @@ export function userRoleListDoc() {
   `;
 }
 
-export function userGetAllDoc() {
+export function userAllGetDoc() {
   return `
   query GetAllUsers ($page: Int!, $size: Int!, $keyword: String) {
     getUsers(page:$page, size:$size, keyword:$keyword) {
@@ -110,5 +110,24 @@ export function userGetAllDoc() {
       }
     }
   }
+  `;
+}
+
+export function userRolesGetDoc() {
+  return `
+    query GetRoles {
+      getRoles {
+        content {
+          name
+        }
+        pageInfo {
+          size
+          totalElements
+          first
+          last
+          empty
+        }
+      }
+    }
   `;
 }
