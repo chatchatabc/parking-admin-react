@@ -64,8 +64,8 @@ export function userAllGetDoc() {
 
 export function userRolesGetDoc() {
   return `
-    query GetRoles {
-      getRoles {
+    query GetRoles ($page: Int! = 0, $size: Int! = 100) {
+      getRoles (page: $page, size: $size) {
         content {
           name
         }

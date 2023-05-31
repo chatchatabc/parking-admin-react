@@ -4,7 +4,7 @@ import {
   userGetByUsernameDoc,
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
-import { graphqlMutation, graphqlQuery } from "../infra/apis/graphqlActions";
+import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost } from "../infra/apis/restAction";
 import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
@@ -59,13 +59,13 @@ export async function userAllGet(variables: Record<string, any>) {
 }
 
 export async function userRolesGet() {
-  const response = await graphqlMutation(userRolesGetDoc(), {});
+  const response = await graphqlQuery(userRolesGetDoc(), {});
 
   if (response.data.errors) {
     return response.data;
   }
 
-  const responseData = response.data.data.getRoles as UserRole[];
+  const responseData = response.data.data.getRoles.content as UserRole[];
 
   const data = responseData.map((role) => ({
     label: role.name,
