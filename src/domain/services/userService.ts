@@ -1,6 +1,6 @@
 import { userGetByPhoneDoc, userGetByUsernameDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apollo-client/apolloActions";
-import { axiosPut } from "../infra/axios/axiosService";
+import { axiosPut } from "../infra/axios/axiosActions";
 
 export function userGetProfile(params: Record<string, string | undefined>) {
   const { username, phone } = params;

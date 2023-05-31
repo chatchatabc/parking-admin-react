@@ -1,4 +1,4 @@
-import { axiosPost } from "../infra/axios/axiosService";
+import { axiosPost } from "../infra/axios/axiosActions";
 
 export function authTokenGet() {
   const token = document.cookie

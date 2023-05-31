@@ -5,7 +5,7 @@ import {
   memberRolesGetDoc,
 } from "../gql-docs/memberDocs";
 import { apolloClient } from "../infra/apollo-client/apolloActions";
-import { axiosPost } from "../infra/axios/axiosService";
+import { axiosPost } from "../infra/axios/axiosActions";
 
 export async function memberGetAll({
   page = 10,
