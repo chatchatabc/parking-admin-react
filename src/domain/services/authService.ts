@@ -1,6 +1,6 @@
 import { restPost } from "../infra/apis/restAction";
 import { AuthLogin } from "../models/AuthModel";
-import { AxiosResponseData } from "../models/AxiosModel";
+import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 
 export function authTokenGet() {
   const token = document.cookie
@@ -19,14 +19,12 @@ export function authTokenRemove() {
   document.cookie = `token=; path=/; max-age=0`;
 }
 
-export async function authLogin(
-  values: Record<string, any>
-): Promise<AuthLogin & AxiosResponseData> {
+export async function authLogin(values: Record<string, any>) {
   const response = await restPost("/auth/login", values);
 
   if (response.data.errors) {
     authTokenRemove();
-    return response.data;
+    return response.data as AxiosResponseError;
   }
 
   localStorage.setItem("user", JSON.stringify(response.data.data));
@@ -35,18 +33,19 @@ export async function authLogin(
 
   authTokenSave(token);
 
-  return response.data;
+  return response.data as AuthLogin & AxiosResponseData;
 }
 
-export async function authLogout(): Promise<AuthLogin & AxiosResponseData> {
+export async function authLogout() {
   const response = await restPost("/profile/logout", {});
 
   if (response.data.errors) {
-    return response.data;
+    return response.data as AxiosResponseError;
   }
 
   authTokenRemove();
-  return response.data;
+
+  return response.data as AuthLogin & AxiosResponseData;
 }
 
 export function authCheckSession() {
