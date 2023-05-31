@@ -23,7 +23,7 @@ export function userGetListDoc() {
 }
 
 export function userGetByUsernameDoc() {
-  return gql`
+  return `
     query GetUserByUsername($username: String!) {
       getUserByUsername(username: $username) {
         userId
@@ -38,7 +38,7 @@ export function userGetByUsernameDoc() {
 }
 
 export function userGetByPhoneDoc() {
-  return gql`
+  return `
     query GetUserByPhone($phone: String!) {
       getUserByPhone(phone: $phone) {
         userId
@@ -88,5 +88,27 @@ export function userRoleListDoc() {
         }
       }
     }
+  `;
+}
+
+export function userGetAllDoc() {
+  return `
+  query GetAllUsers ($page: Int!, $size: Int!, $keyword: String) {
+    getUsers(page:$page, size:$size, keyword:$keyword) {
+      content {
+        userUuid
+        username
+        email
+        phone
+      }
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
   `;
 }
