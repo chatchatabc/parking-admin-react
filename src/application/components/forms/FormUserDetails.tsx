@@ -3,11 +3,18 @@ import { userRolesGet } from "../../../domain/services/userService";
 import { useSelector } from "react-redux";
 import SelectAsync from "../select/SelectAsync";
 
-function FormUserDetails() {
+type Props = {
+  title?: string;
+  formRef: any;
+};
+
+function FormUserDetails({ formRef, title }: Props) {
   const drawerForm = useSelector((state: any) => state.drawerForm);
 
+  async function onFinish() {}
+
   return (
-    <Form>
+    <Form name={title} onFinish={onFinish} layout="vertical" form={formRef}>
       <div className="flex flex-wrap [&>*]:px-2 [&>*]:w-1/3">
         <Form.Item name="username" label="Username">
           <Input placeholder="Username" />

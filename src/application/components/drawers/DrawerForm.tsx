@@ -2,13 +2,21 @@ import { Button, Drawer } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import FormUser from "../forms/FormUser";
-import { formRefHandler } from "../../layouts/HomeLayout";
 import FormParking from "../forms/FormParking";
 import FormUserDetails from "../forms/FormUserDetails";
+import { useForm } from "antd/es/form/Form";
+import React from "react";
 
 function DrawerForm() {
   const dispatch = useDispatch();
   const drawerForm = useSelector((state: any) => state.drawerForm);
+  const [form] = useForm();
+
+  React.useEffect(() => {
+    if (drawerForm.data) {
+      form.setFieldsValue(drawerForm.data);
+    }
+  }, [drawerForm.data]);
 
   return (
     <Drawer
@@ -23,7 +31,7 @@ function DrawerForm() {
         <Button
           className="bg-primary text-white"
           onClick={() => {
-            formRefHandler.submit();
+            form.submit();
           }}
           loading={drawerForm.loading}
         >
@@ -33,7 +41,9 @@ function DrawerForm() {
     >
       {drawerForm.content === "user" && <FormUser />}
       {drawerForm.content === "parking" && <FormParking />}
-      {drawerForm.content === "userDetails" && <FormUserDetails />}
+      {drawerForm.content === "userDetails" && (
+        <FormUserDetails formRef={form} title={drawerForm.title} />
+      )}
     </Drawer>
   );
 }

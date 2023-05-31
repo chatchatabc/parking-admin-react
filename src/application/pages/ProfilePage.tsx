@@ -5,6 +5,8 @@ import ErrorMessageComp from "../components/ErrorMessageComp";
 import { userGetProfile } from "../../domain/services/userService";
 import { User } from "../../domain/models/UserModel";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
 
 interface Props {
   username?: string;
@@ -13,6 +15,7 @@ interface Props {
 
 function ProfilePage({ username, phone }: Props) {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   // Local States
   const [loading, setLoading] = React.useState(true);
@@ -84,7 +87,20 @@ function ProfilePage({ username, phone }: Props) {
           <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
             <header className="flex items-center">
               <h2 className="text-lg font-bold">User Information</h2>
-              <button className="ml-auto bg-primary text-white px-4 py-1 rounded-md transition hover:bg-secondary">
+              <button
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      content: "userDetails",
+                      mode: "update",
+                      show: true,
+                      title: "User Details",
+                      data,
+                    })
+                  );
+                }}
+                className="ml-auto bg-primary text-white px-4 py-1 rounded-md transition hover:bg-secondary"
+              >
                 Edit
               </button>
             </header>
