@@ -6,8 +6,6 @@ export async function graphqlQuery(
 ) {
   const response = await axiosPost("/graphql", { query, variables });
 
-  console.log(response);
-
   return response;
 }
 
