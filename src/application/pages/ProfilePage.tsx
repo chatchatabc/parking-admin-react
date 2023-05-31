@@ -1,12 +1,9 @@
 import React from "react";
-import { Button, Form, Input, Spin, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Spin, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import ErrorMessageComp from "../components/ErrorMessageComp";
-import { authUsername } from "../../domain/services/authService";
-import ProfileParking from "../components/profile/ProfileParking";
-import { memberGet } from "../../domain/services/memberService";
-import { userUpdateProfile } from "../../domain/services/userService";
+import { userGetProfile } from "../../domain/services/userService";
+import { User } from "../../domain/models/UserModel";
 
 interface Props {
   username?: string;
@@ -15,40 +12,25 @@ interface Props {
 
 function ProfilePage({ username, phone }: Props) {
   const [loading, setLoading] = React.useState(true);
-  const [data, _] = React.useState<any>(null);
+  const [data, setData] = React.useState<User | null>(null);
   const [form] = useForm();
-
-  const navigate = useNavigate();
-
-  async function handleFinish(values: any) {
-    const response = await userUpdateProfile(values);
-
-    if (response.errors) {
-      message.error("Failed to update profile.");
-    } else {
-      message.success("Profile updated successfully.");
-
-      if (response.data.username) {
-        navigate(`/users/u-${response.data.username}`, { replace: true });
-      } else if (response.data.phone) {
-        navigate(`/users/p-${response.data.phone}`, { replace: true });
-      }
-    }
-  }
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await memberGet({
-        username: username ?? authUsername(),
-        phone,
-      });
+      const response = await userGetProfile({ username, phone });
+
+      if (response.errors) {
+        return message.error("Failed to fetch user.");
+      } else {
+        form.setFieldsValue(response.data);
+        setData(response.data);
+      }
 
       setLoading(false);
-      console.log(response);
     }
 
     if (loading) {
-      fetchData;
+      fetchData();
     }
   }, [loading]);
 
@@ -60,104 +42,65 @@ function ProfilePage({ username, phone }: Props) {
     );
   }
 
+  if (!data) {
+    <div className="flex-1">
+      <ErrorMessageComp message="User cannot be found!" />
+    </div>;
+  }
+
   return (
     <div className="flex-1 px-4 pb-4 relative">
-      {!data && <ErrorMessageComp message="User cannot be found!" />}
-
-      {/* Breadcrumbs */}
-      {/* <section className="py-2">
-        <Breadcrumbs />
-      </section> */}
-
-      <section className="flex justify-between mb-2">
-        <Button
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          Back
-        </Button>
-        <Button
-          onClick={() => {
-            form.submit();
-          }}
-          className="bg-primary text-white"
-        >
-          Save
-        </Button>
-      </section>
-
-      <Form
-        form={form}
-        className="flex gap-4"
-        onFinish={handleFinish}
-        layout="vertical"
-        autoComplete="off"
-      >
+      <section className="flex gap-4">
         {/* Left side */}
         <section className="w-1/4">
           {/* 1st row */}
           <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
-            <header>
-              <h1 className="text-lg font-bold">User Avatar</h1>
+            <header className="flex items-center">
+              <h2 className="text-lg font-bold">User Avatar</h2>
+              <button className="ml-auto bg-primary text-white px-4 py-1 rounded-md transition hover:bg-secondary">
+                Edit
+              </button>
             </header>
-            <div className="w-1/2 mx-auto">
+
+            <div className="w-1/2 mx-auto mt-2">
               <div className="pb-[100%] border-2 border-primary rounded-full"></div>
             </div>
-            <button className="mt-4 bg-primary block w-fit mx-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary">
-              Select Avatar
-            </button>
           </div>
         </section>
 
         {/* Right Side */}
         <section className="flex-1 space-y-4">
+          {/* First Entry */}
           <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
-            <header>
-              <h1 className="text-lg font-bold">User Information</h1>
+            <header className="flex items-center">
+              <h2 className="text-lg font-bold">User Information</h2>
+              <button className="ml-auto bg-primary text-white px-4 py-1 rounded-md transition hover:bg-secondary">
+                Edit
+              </button>
             </header>
 
-            <div className="flex flex-wrap p-2 [&>*]:w-1/4 [&>*]:px-2">
-              <Form.Item name="userId" noStyle hidden></Form.Item>
-
-              <Form.Item name="username" label="Username">
-                <Input placeholder="Username" />
-              </Form.Item>
-
-              <Form.Item
-                name="phone"
-                label="Phone Number"
-                rules={[
-                  {
-                    message: "Need some input",
-                    required: true,
-                  },
-                ]}
-              >
-                <Input placeholder="09123456789" />
-              </Form.Item>
-
-              <Form.Item label="Email" name="email">
-                <Input placeholder="email" />
-              </Form.Item>
-
-              <div style={{ width: "100%" }}>
-                <Button htmlType="submit" className="hidden">
-                  submit
-                </Button>
+            <div className="grid grid-flow-col mt-2 [&>*]:w-1/4">
+              <div>
+                <p className="text-xs font-bold uppercase">Username</p>
+                <p className="capitalize">{data?.username}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase">Username</p>
+                <p className="capitalize">{data?.username}</p>
               </div>
             </div>
           </div>
 
+          {/* Second Entry */}
           <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
-            <ProfileParking
+            {/* <ProfileParking
               username={username ?? authUsername()}
               phone={phone}
               userId={data?.userId}
-            />
+            /> */}
           </div>
         </section>
-      </Form>
+      </section>
     </div>
   );
 }
