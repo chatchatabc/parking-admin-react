@@ -10,7 +10,7 @@ interface Props {
 }
 
 function ProfileParking({ username, phone, userId }: Props) {
-  const [pagination, setPagination] = React.useState({
+  const [pagination, _] = React.useState({
     current: 0,
     pageSize: 10,
     total: 0,
@@ -63,7 +63,7 @@ function ProfileParking({ username, phone, userId }: Props) {
         <h1 className="text-lg font-bold">Parking Lots</h1>
         <Button
           onClick={() => {
-            navigate(`/parking?keyword=${username}`);
+            navigate(`/parking?keyword=${username ?? phone}`);
           }}
           className="bg-primary text-white"
         >

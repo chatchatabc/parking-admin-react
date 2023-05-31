@@ -15,14 +15,11 @@ interface Props {
 }
 
 function ProfilePage({ username, phone }: Props) {
+  const [loading, setLoading] = React.useState(true);
+  const [data, _] = React.useState<any>(null);
   const [form] = useForm();
 
   const navigate = useNavigate();
-
-  const { data, loading } = memberGet({
-    username: username ?? authUsername(),
-    phone,
-  });
 
   async function handleFinish(values: any) {
     const response = await userUpdateProfile(values);
@@ -41,10 +38,20 @@ function ProfilePage({ username, phone }: Props) {
   }
 
   React.useEffect(() => {
-    if (data) {
-      form.setFieldsValue(data);
+    async function fetchData() {
+      const response = await memberGet({
+        username: username ?? authUsername(),
+        phone,
+      });
+
+      setLoading(false);
+      console.log(response);
     }
-  }, [data]);
+
+    if (loading) {
+      fetchData;
+    }
+  }, [loading]);
 
   if (loading) {
     return (
