@@ -26,7 +26,7 @@ export function userGetByUsernameDoc() {
   return `
     query GetUserByUsername($username: String!) {
       getUserByUsername(username: $username) {
-        userId
+        userUuid
         username
         phone
         phoneVerifiedAt
@@ -41,7 +41,7 @@ export function userGetByPhoneDoc() {
   return `
     query GetUserByPhone($phone: String!) {
       getUserByPhone(phone: $phone) {
-        userId
+        userUuid
         username
         phone
         phoneVerifiedAt
