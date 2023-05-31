@@ -4,6 +4,7 @@ import { useForm } from "antd/es/form/Form";
 import ErrorMessageComp from "../components/ErrorMessageComp";
 import { userGetProfile } from "../../domain/services/userService";
 import { User } from "../../domain/models/UserModel";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   username?: string;
@@ -11,9 +12,18 @@ interface Props {
 }
 
 function ProfilePage({ username, phone }: Props) {
+  const location = useLocation();
+
+  // Local States
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<User | null>(null);
   const [form] = useForm();
+
+  React.useEffect(() => {
+    if (!loading) {
+      setLoading(true);
+    }
+  }, [location.pathname]);
 
   React.useEffect(() => {
     async function fetchData() {
