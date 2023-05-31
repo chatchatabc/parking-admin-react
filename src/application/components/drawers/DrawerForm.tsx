@@ -4,6 +4,7 @@ import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import FormUser from "../forms/FormUser";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import FormParking from "../forms/FormParking";
+import FormUserDetails from "../forms/FormUserDetails";
 
 function DrawerForm() {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ function DrawerForm() {
     >
       {drawerForm.content === "user" && <FormUser />}
       {drawerForm.content === "parking" && <FormParking />}
+      {drawerForm.content === "userDetails" && <FormUserDetails />}
     </Drawer>
   );
 }
