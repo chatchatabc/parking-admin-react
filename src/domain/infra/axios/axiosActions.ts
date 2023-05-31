@@ -4,7 +4,7 @@ import { AxiosErrorsItem, AxiosResponse } from "../../models/AxiosModel";
 
 const baseURL = "/api";
 
-function axiosHandleError(e: any) {
+function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
     return {
       data: {
@@ -28,7 +28,7 @@ function axiosHandleError(e: any) {
     };
   }
 
-  return e.response as AxiosResponse;
+  return e.response;
 }
 
 function axiosDebug(
