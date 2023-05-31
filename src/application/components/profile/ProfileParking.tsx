@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button, Table, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { parkingGetAllByOwner } from "../../../domain/services/parkingService";
 import React from "react";
@@ -10,6 +10,8 @@ interface Props {
 }
 
 function ProfileParking({ username, phone, userId }: Props) {
+  const [data, setData] = React.useState<any>([]);
+  const [loading, setLoading] = React.useState(true);
   const [pagination, _] = React.useState({
     current: 0,
     pageSize: 10,
@@ -17,12 +19,6 @@ function ProfileParking({ username, phone, userId }: Props) {
   });
 
   const navigate = useNavigate();
-
-  const { data, loading } = parkingGetAllByOwner(
-    pagination.current,
-    pagination.pageSize,
-    userId
-  );
 
   const columns = [
     {
@@ -56,6 +52,28 @@ function ProfileParking({ username, phone, userId }: Props) {
     key: parking.id,
     ...parking,
   }));
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const response = await parkingGetAllByOwner(
+        pagination.current,
+        pagination.pageSize,
+        userId
+      );
+
+      if (response.errors) {
+        message.error("Failed to fetch parking lots");
+      } else {
+        setData(response.data);
+      }
+
+      setLoading(false);
+    }
+
+    if (loading) {
+      fetchData();
+    }
+  }, [loading]);
 
   return (
     <div>

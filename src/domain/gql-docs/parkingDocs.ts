@@ -1,7 +1,5 @@
-import { gql } from "@apollo/client";
-
 export function parkingGetAllDoc() {
-  return gql`
+  return `
     query GetParkingLots($size: Int!, $page: Int!, $keyword: String) {
       getParkingLots(size: $size, page: $page, keyword: $keyword) {
         content {
@@ -26,7 +24,7 @@ export function parkingGetAllDoc() {
 }
 
 export function parkingGetAllByOwnerDoc() {
-  return gql`
+  return `
     query GetParkingLotsByOwner($page: Int!, $size: Int!, $userId: String!) {
       getParkingLotsByOwner(page: $page, size: $size, ownerId: $userId) {
         content {

@@ -5,6 +5,7 @@ import {
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
 import { graphqlMutation, graphqlQuery } from "../infra/apis/graphqlActions";
+import { restPost } from "../infra/apis/restAction";
 import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { Pagination } from "../models/CommonModel";
@@ -72,4 +73,10 @@ export async function userRolesGet() {
   }));
 
   return { data } as AxiosResponseData;
+}
+
+export async function userCreate(values: Record<string, any>) {
+  const response = await restPost("/member/create", values);
+
+  return response.data;
 }

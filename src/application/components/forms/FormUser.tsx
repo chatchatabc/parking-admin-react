@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import SelectGraphql from "../select/SelectGraphql";
 import { globalStateUpdate } from "../../redux/slices/globalState";
-import {
-  memberCreate,
-  memberRolesGet,
-} from "../../../domain/services/memberService";
+import { userCreate, userRolesGet } from "../../../domain/services/userService";
 
 function FormUser() {
   const drawerForm = useSelector((state: any) => state.drawerForm);
@@ -16,7 +13,7 @@ function FormUser() {
   async function onFinish(values: any) {
     dispatch(drawerFormUpdate({ ...drawerForm, loading: true }));
 
-    const response = await memberCreate(values);
+    const response = await userCreate(values);
 
     if (response.errors) {
       message.error("Something went wrong");
@@ -84,7 +81,7 @@ function FormUser() {
         >
           <SelectGraphql
             placeholder="Roles"
-            optionsGet={memberRolesGet}
+            optionsGet={userRolesGet}
             mode="multiple"
           />
         </Form.Item>
