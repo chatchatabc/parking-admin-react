@@ -8,21 +8,33 @@ import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { Pagination } from "../models/CommonModel";
 import { User } from "../models/UserModel";
+import { authUsername } from "./authService";
 
-export async function userGetProfile(
-  params: Record<string, string | undefined>
-) {
-  const { username, phone } = params;
-
-  let query;
+export async function userGetProfile({
+  username = authUsername(),
+  phone,
+}: User) {
+  let query, data;
 
   if (username) {
     query = await graphqlQuery(userGetByUsernameDoc(), { username });
+
+    if (query.data.errors) {
+      return query.data;
+    }
+
+    data = query.data.data.getUserByUsername;
   } else if (phone) {
     query = await graphqlQuery(userGetByPhoneDoc(), { phone });
+
+    if (query.data.errors) {
+      return query.data;
+    }
+
+    data = query.data.data.getUserByPhone;
   }
 
-  return query;
+  return { data } as AxiosResponseData & { data: User };
 }
 
 export async function userUpdateProfile(values: Record<string, any>) {
