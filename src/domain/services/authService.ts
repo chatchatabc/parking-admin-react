@@ -1,5 +1,5 @@
 import { restPost } from "../infra/apis/restAction";
-import { AuthLogin } from "../models/AuthModel";
+import { AuthLogin, AuthLogout } from "../models/AuthModel";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 
 export function authTokenGet() {
@@ -45,7 +45,7 @@ export async function authLogout() {
 
   authTokenRemove();
 
-  return response.data as AuthLogin & AxiosResponseData;
+  return response.data as AuthLogout & AxiosResponseData;
 }
 
 export function authCheckSession() {

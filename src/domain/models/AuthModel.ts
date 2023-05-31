@@ -1,3 +1,5 @@
+import { UserAuthorities } from "./UserModel";
+
 export type AuthLogin = {
   userUuid: string;
   username: string;
@@ -14,9 +16,7 @@ export type AuthLogin = {
   accountNonExpired: boolean;
   credentialsNonExpired: boolean;
   accountNonLocked: boolean;
-  authorities: AuthAuthorities[];
+  authorities: UserAuthorities[];
 };
 
-export type AuthAuthorities = {
-  authority: string;
-};
+export type AuthLogout = AuthLogin;
