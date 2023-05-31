@@ -1,13 +1,13 @@
 import { User } from "./UserModel";
 
 export type Vehicle = {
-  vehicleUuid: string | null | undefined;
-  name: string | null | undefined;
-  plateNumber: string | null | undefined;
-  createdAt: string | null | undefined;
-  updatedAt: string | null | undefined;
+  vehicleUuid?: string | null;
+  name?: string | null;
+  plateNumber?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 
-  type: number | null | undefined;
+  type?: number | null;
 
-  owner: User;
+  owner?: User | null;
 };

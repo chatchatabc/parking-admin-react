@@ -2,17 +2,17 @@ import { Parking } from "./ParkingModel";
 import { Vehicle } from "./VehicleModel";
 
 export type Invoice = {
-  id: string | null | undefined;
-  createdAt: string | null | undefined;
-  endAt: string | null | undefined;
-  paidAt: string | null | undefined;
-  plateNumber: string | null | undefined;
-  startAt: string | null | undefined;
-  updatedAt: string | null | undefined;
+  id?: string | null;
+  createdAt?: string | null;
+  endAt?: string | null;
+  paidAt?: string | null;
+  plateNumber?: string | null;
+  startAt?: string | null;
+  updatedAt?: string | null;
 
-  total: number | null | undefined;
-  estimatedParkingDurationInHours: number | null | undefined;
+  total?: number | null;
+  estimatedParkingDurationInHours?: number | null;
 
-  parkingLot: Parking | null | undefined;
-  vehicle: Vehicle | null | undefined;
+  parkingLot?: Parking | null;
+  vehicle?: Vehicle | null;
 };

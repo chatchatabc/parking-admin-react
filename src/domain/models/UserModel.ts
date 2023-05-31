@@ -1,41 +1,41 @@
 export type User = {
-  userUuid: string | null | undefined;
-  username: string | null | undefined;
-  notificationId: string | null | undefined;
-  email: string | null | undefined;
-  phone: string | null | undefined;
-  firstName: string | null | undefined;
-  lastName: string | null | undefined;
-  createdAt: string | null | undefined;
-  updatedAt: string | null | undefined;
-  phoneVerifiedAt: string | null | undefined;
-  emailVerifiedAt: string | null | undefined;
+  userUuid?: string | null;
+  username?: string | null;
+  notificationId?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  phoneVerifiedAt?: string | null;
+  emailVerifiedAt?: string | null;
 
-  authorities: UserAuthorities[];
+  authorities?: UserAuthorities[];
 };
 
 export type UserLoginLog = {
-  id: string | null | undefined;
-  ipAddress: string | null | undefined;
-  createdAt: string | null | undefined;
+  id?: string | null;
+  ipAddress?: string | null;
+  createdAt?: string | null;
 
-  type: number | null | undefined;
+  type?: number | null;
 
-  success: Boolean | null | undefined;
+  success?: Boolean | null;
 };
 
 export type UserLogoutLog = {
-  id: string | null | undefined;
-  ipAddress: string | null | undefined;
-  createdAt: string | null | undefined;
+  id?: string | null;
+  ipAddress?: string | null;
+  createdAt?: string | null;
 
-  type: number | null | undefined;
+  type?: number | null;
 };
 
 export type UserAuthorities = {
-  authority: string;
+  authority?: string;
 };
 
 export type UserRoles = {
-  name: string;
+  name?: string;
 };

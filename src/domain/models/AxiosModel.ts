@@ -10,7 +10,7 @@ export type AxiosResponse = {
 
 export type AxiosResponseData = {
   [key: string]: any;
-  errors: null | undefined;
+  errors?: null;
 };
 
 export type AxiosResponseError = {
