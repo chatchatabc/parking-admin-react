@@ -1,6 +1,4 @@
 import React from "react";
-import { userUpdateProfile } from "../../domain/services/userService";
-import { utilApiMessageGet } from "../../domain/utils/commonUtils";
 import { Button, Form, Input, Spin, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
@@ -8,6 +6,7 @@ import ErrorMessageComp from "../components/ErrorMessageComp";
 import { authUsername } from "../../domain/services/authService";
 import ProfileParking from "../components/profile/ProfileParking";
 import { memberGet } from "../../domain/services/memberService";
+import { userUpdateProfile } from "../../domain/services/userService";
 
 interface Props {
   username?: string;
@@ -24,8 +23,8 @@ function ProfilePage({ username, phone }: Props) {
   async function handleFinish(values: any) {
     const response = await userUpdateProfile(values);
 
-    if (response.error) {
-      message.error(utilApiMessageGet(response.message));
+    if (response.errors) {
+      message.error("Failed to update profile.");
     } else {
       message.success("Profile updated successfully.");
 

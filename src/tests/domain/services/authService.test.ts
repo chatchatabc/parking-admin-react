@@ -15,7 +15,7 @@ describe("Auth Operations", () => {
 
   it("Login", async () => {
     const response = await authLogin(credentials);
-    expect(response.error).toBe(false);
+    expect(response.errors).toBe(false);
   });
 
   it("Token Saved", () => {
@@ -25,7 +25,7 @@ describe("Auth Operations", () => {
 
   it("Logout", async () => {
     const response = await authLogout();
-    expect(response.error).toBe(false);
+    expect(response.errors).toBe(false);
   });
 
   it("Token Removed", () => {

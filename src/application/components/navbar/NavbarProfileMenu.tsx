@@ -19,7 +19,7 @@ function NavbarProfileMenu({ setProfileMenu }: Props) {
       onOk() {
         return new Promise(async (resolve, reject) => {
           const response = await authLogout();
-          if (response.error) {
+          if (response.errors) {
             reject(response);
           }
           resolve(true);

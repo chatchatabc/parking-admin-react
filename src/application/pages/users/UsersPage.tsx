@@ -5,7 +5,8 @@ import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { globalStateUpdate } from "../../redux/slices/globalState";
-import { memberGetAll } from "../../../domain/services/memberService";
+import { userGetAll } from "../../../domain/services/userService";
+import { User } from "../../../domain/models/UserModel";
 
 function UsersPage() {
   // React Router
@@ -26,7 +27,7 @@ function UsersPage() {
     pageSize: Number(pageSize),
     total: 0,
   });
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState<User[]>([]);
 
   const columns: TableColumnsType<Record<string, any>> = [
     {
@@ -143,16 +144,20 @@ function UsersPage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const query = await memberGetAll({
+      const query = await userGetAll({
         page: pagination.current,
         size: pagination.pageSize,
         keyword: keyword,
       });
 
-      const processedData = query.content.map((user: any) => {
+      if (query.errors) {
+        return;
+      }
+
+      const processedData = query.content.map((user) => {
         return {
           ...user,
-          key: `users-list-${user.memberUuid}`,
+          key: `users-list-${user.userUuid}`,
         };
       });
 

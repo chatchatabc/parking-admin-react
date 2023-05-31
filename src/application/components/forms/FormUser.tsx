@@ -18,8 +18,8 @@ function FormUser() {
 
     const response = await memberCreate(values);
 
-    if (response.error) {
-      message.error(response.message ?? "Something went wrong");
+    if (response.errors) {
+      message.error("Something went wrong");
     } else {
       message.success("User created successfully");
       dispatch(drawerFormUpdate({ show: false }));
@@ -29,7 +29,7 @@ function FormUser() {
     dispatch(
       drawerFormUpdate({
         ...drawerForm,
-        show: response.error ? true : false,
+        show: response.errors ? true : false,
         loading: false,
       })
     );

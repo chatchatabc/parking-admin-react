@@ -16,8 +16,8 @@ function LoginPage() {
 
     const response = await authLogin(values);
 
-    if (response.error) {
-      message.error(utilApiMessageGet(response.message));
+    if (response.errors) {
+      message.error("Failed to login.");
     } else {
       message.success(utilApiMessageGet(response.message));
       navigate("/");
