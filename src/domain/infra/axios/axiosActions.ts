@@ -2,8 +2,6 @@ import axios, { AxiosRequestConfig } from "axios";
 import { authTokenGet } from "../../services/authService";
 import { AxiosErrorsItem, AxiosResponse } from "../../models/AxiosModel";
 
-const baseURL = "/api";
-
 function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
     return {
@@ -72,7 +70,7 @@ export async function axiosGet(
   config.params = params;
 
   try {
-    response = await axios.get(`${baseURL}${url}`, config);
+    response = await axios.get(`${url}`, config);
   } catch (e: any) {
     response = axiosHandleError(e);
   }
@@ -91,7 +89,7 @@ export async function axiosPost(
   const config = axiosConfig();
 
   try {
-    response = await axios.post(`${baseURL}${url}`, data, config);
+    response = await axios.post(`${url}`, data, config);
   } catch (e: any) {
     response = axiosHandleError(e);
   }
@@ -110,7 +108,7 @@ export async function axiosPut(
   const config = axiosConfig();
 
   try {
-    response = await axios.put(`${baseURL}${url}`, data, config);
+    response = await axios.put(`${url}`, data, config);
   } catch (e: any) {
     response = axiosHandleError(e);
   }
@@ -129,7 +127,7 @@ export async function axiosDelete(
   const config = axiosConfig();
 
   try {
-    response = await axios.delete(`${baseURL}${url}`, config);
+    response = await axios.delete(`${url}`, config);
   } catch (e: any) {
     response = axiosHandleError(e);
   }
