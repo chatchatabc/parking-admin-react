@@ -11,7 +11,9 @@ type Props = {
 function FormUserDetails({ formRef, title }: Props) {
   const drawerForm = useSelector((state: any) => state.drawerForm);
 
-  async function onFinish() {}
+  async function onFinish(e: any) {
+    console.log(e);
+  }
 
   return (
     <Form name={title} onFinish={onFinish} layout="vertical" form={formRef}>
@@ -59,12 +61,13 @@ function FormUserDetails({ formRef, title }: Props) {
               required: true,
             },
           ]}
+          shouldUpdate
         >
-          <SelectAsync
-            placeholder="Roles"
-            getData={userRolesGet}
-            mode="multiple"
-          />
+          {SelectAsync({
+            placeholder: "Roles",
+            getData: userRolesGet,
+            mode: "multiple",
+          })}
         </Form.Item>
 
         {/* <Form.Item
