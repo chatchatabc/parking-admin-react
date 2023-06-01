@@ -3,8 +3,9 @@ import {
   parkingGetAllByOwnerDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
+import { restPost } from "../infra/apis/restAction";
 import { AxiosResponseData } from "../models/AxiosModel";
-import { Pagination } from "../models/CommonModel";
+import { CommonPageInfo } from "../models/CommonModel";
 import { Parking } from "../models/ParkingModel";
 
 export async function parkingAllGet({
@@ -20,7 +21,7 @@ export async function parkingAllGet({
 
   return query.data.data.getParkingLots as AxiosResponseData & {
     content: Parking[];
-    pageInfo: Pagination;
+    pageInfo: CommonPageInfo;
   };
 }
 
@@ -42,4 +43,13 @@ export async function parkingGetAllByOwner(
   const data = query.data?.getParkingLotsByOwner;
 
   return { data } as AxiosResponseData;
+}
+
+export async function parkingCreate(values: Record<string, any>) {
+  const response = await restPost(
+    `/parking-lot/create/${values.userUuid}`,
+    values
+  );
+
+  return response.data;
 }
