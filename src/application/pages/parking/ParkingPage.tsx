@@ -1,12 +1,13 @@
 import React from "react";
-import { Pagination, Table, TableColumnsType, message } from "antd";
+import { Pagination, Table, message } from "antd";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { globalStateUpdate } from "../../redux/slices/globalState";
 import { parkingAllGet } from "../../../domain/services/parkingService";
 import { Parking } from "../../../domain/models/ParkingModel";
+import { userGetByParkingLotUuid } from "../../../domain/services/userService";
+import { User } from "../../../domain/models/UserModel";
 
 function ParkingPage() {
   // React Router
@@ -27,24 +28,28 @@ function ParkingPage() {
     pageSize: Number(pageSize),
     total: 0,
   });
-  const [data, setData] = React.useState<Parking[]>([]);
+  const [data, setData] = React.useState<
+    (Parking & { owner: User; key: string })[]
+  >([]);
 
   function handleNavigation(page: number) {
     setPagination({ ...pagination, current: page - 1 });
   }
 
-  const columns: TableColumnsType<Record<string, any>> = [
+  const columns = [
     {
       title: "Parking Name",
       key: "name",
-      render: (record) => {
-        if (record.owner.username || record.owner.phone) {
+      render: (record: Parking & { owner: User }) => {
+        const owner = record.owner;
+
+        if (owner.username || owner.phone) {
           return (
             <button
               className="text-blue-500 underline hover:no-underline"
               onClick={() => {
                 navigate(
-                  record.username
+                  owner.username
                     ? `u-${record.owner.username}`
                     : `p-${record.owner.phone}`
                 );
@@ -60,24 +65,12 @@ function ParkingPage() {
     {
       title: "Owner",
       key: "owner",
-      render: (record) => {
-        if (record.owner.username || record.owner.phone) {
-          return (
-            <button
-              className="text-blue-500 underline hover:no-underline"
-              onClick={() => {
-                navigate(
-                  record.username
-                    ? `/users/u-${record.owner.username}`
-                    : `/users/p-${record.owner.phone}`
-                );
-              }}
-            >
-              {record.owner.username ?? record.owner.phone}
-            </button>
-          );
-        }
-        return <p>Unknown</p>;
+      render: (record: Parking & { owner: User }) => {
+        const owner = record.owner;
+
+        return (
+          <p>{owner.username ?? owner.phone ?? owner.email ?? "Unknown"}</p>
+        );
       },
     },
     {
@@ -88,7 +81,7 @@ function ParkingPage() {
     {
       title: "Slots",
       key: "slots",
-      render: (record) => {
+      render: (record: Parking) => {
         return (
           <div>
             {record.availableSlots}/{record.capacity}
@@ -100,6 +93,7 @@ function ParkingPage() {
 
   React.useEffect(() => {
     async function fetchData() {
+      // Fetch parking list
       const query = await parkingAllGet({
         page: pagination.current,
         size: pagination.pageSize,
@@ -109,12 +103,34 @@ function ParkingPage() {
       if (query.errors) {
         message.error("Failed to fetch parking list.");
       } else {
-        const processedData = query.content.map((user: any, index: number) => {
-          return {
-            ...user,
-            key: `parking-list-${index}`,
-          };
-        });
+        // Fetch additional info
+        const queryAdditionalInfo = query.content.map(
+          async (parking, index) => {
+            // Fetch owner
+            const queryOwner = await userGetByParkingLotUuid(
+              parking.parkingLotUuid ?? ""
+            );
+
+            const data = {
+              ...parking,
+              key: `parking-list-${index}`,
+              owner: {},
+            };
+
+            if (queryOwner.errors) {
+              message.error("Failed to fetch parking owner.");
+              return data;
+            }
+
+            data.owner = queryOwner.data;
+            return data;
+          }
+        );
+
+        // Wait for all additional info to be fetched
+        const processedData = await Promise.all(queryAdditionalInfo);
+
+        // Set data
         setData(processedData);
         setPagination((prev) => ({
           ...prev,

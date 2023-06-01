@@ -46,6 +46,24 @@ export function userAddDoc() {
   `;
 }
 
+export function userGetByParkingUuidDoc() {
+  return `
+    query GetUserByParkingLotUuid($parkingLotUuid: String!) {
+      getUserByParkingLotUuid(uuid: $parkingLotUuid) {
+        userUuid
+        username
+        phone
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
+        authorities {
+          authority
+        }
+      }
+    }
+  `;
+}
+
 export function userAllGetDoc() {
   return `
   query GetAllUsers ($page: Int! = 0, $size: Int! = 10, $keyword: String) {

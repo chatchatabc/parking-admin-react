@@ -1,5 +1,6 @@
 import {
   userAllGetDoc,
+  userGetByParkingUuidDoc,
   userGetByPhoneDoc,
   userGetByUsernameDoc,
   userRolesGetDoc,
@@ -102,4 +103,18 @@ export async function userUpdate(values: Record<string, any>) {
   const response = await restPut(`/user/update/${values.userUuid}`, values);
 
   return response.data;
+}
+
+export async function userGetByParkingLotUuid(parkingLotUuid: string) {
+  const response = await graphqlQuery(userGetByParkingUuidDoc(), {
+    parkingLotUuid,
+  });
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  const data = response.data.data.getUserByParkingLotUuid;
+
+  return { data: data } as AxiosResponseData & { data: User };
 }
