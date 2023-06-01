@@ -1,7 +1,7 @@
 import { Select, message } from "antd";
 import React from "react";
 
-interface Props {
+type Props = {
   className?: string;
   getData: Function;
   placeholder?: string;

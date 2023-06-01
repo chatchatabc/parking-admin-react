@@ -1,5 +1,5 @@
 import { Button, Form, FormInstance, Input } from "antd";
-import { userAllGet } from "../../../domain/services/userService";
+import { userAllOptionsGet } from "../../../domain/services/userService";
 import { useSelector } from "react-redux";
 import SelectAsyncSearch from "../select/SelectAsyncSearch";
 
@@ -66,7 +66,7 @@ function FormParkingCreate({ title, formRef }: Props) {
         >
           {SelectAsyncSearch({
             placeholder: "Roles",
-            getData: userAllGet,
+            getData: userAllOptionsGet,
             mode: "multiple",
           })}
         </Form.Item>
