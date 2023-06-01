@@ -8,6 +8,9 @@ export function userGetByUsernameDoc() {
         phoneVerifiedAt
         emailVerifiedAt
         email
+        authorities {
+          authority
+        }
       }
     }
   `;
@@ -23,6 +26,9 @@ export function userGetByPhoneDoc() {
         phoneVerifiedAt
         emailVerifiedAt
         email
+        authorities {
+          authority
+        }
       }
     }
   `;

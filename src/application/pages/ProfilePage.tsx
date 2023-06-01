@@ -1,6 +1,5 @@
 import React from "react";
 import { Spin, message } from "antd";
-import { useForm } from "antd/es/form/Form";
 import ErrorMessageComp from "../components/ErrorMessageComp";
 import { userGetProfile } from "../../domain/services/userService";
 import { User } from "../../domain/models/UserModel";
@@ -20,7 +19,6 @@ function ProfilePage({ username, phone }: Props) {
   // Local States
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<User | null>(null);
-  const [form] = useForm();
 
   React.useEffect(() => {
     if (!loading) {
@@ -35,8 +33,14 @@ function ProfilePage({ username, phone }: Props) {
       if (response.errors) {
         return message.error("Failed to fetch user.");
       } else {
-        form.setFieldsValue(response.data);
-        setData(response.data);
+        const processedData = {
+          ...response.data,
+          roles: response.data.authorities?.map(
+            (authority) => authority.authority
+          ),
+        };
+
+        setData(processedData);
       }
 
       setLoading(false);
