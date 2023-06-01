@@ -1,4 +1,4 @@
-import { Pagination, Table } from "antd";
+import { Pagination, Table, message } from "antd";
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { formRefHandler } from "../../layouts/HomeLayout";
@@ -151,21 +151,22 @@ function UsersPage() {
       });
 
       if (query.errors) {
-        return;
+        message.error("Failed to fetch data for users.");
+      } else {
+        const processedData = query.content.map((user) => {
+          return {
+            ...user,
+            key: `users-list-${user.userUuid}`,
+          };
+        });
+
+        setData(processedData);
+        setPagination((prev) => ({
+          ...prev,
+          total: query.pageInfo.totalElements,
+        }));
       }
 
-      const processedData = query.content.map((user) => {
-        return {
-          ...user,
-          key: `users-list-${user.userUuid}`,
-        };
-      });
-
-      setData(processedData);
-      setPagination((prev) => ({
-        ...prev,
-        total: query.pageInfo.totalElements,
-      }));
       setLoading(false);
     }
 

@@ -31,17 +31,18 @@ function ProfilePage({ username, phone }: Props) {
       const response = await userGetProfile({ username, phone });
 
       if (response.errors) {
-        return message.error("Failed to fetch user.");
-      } else {
-        const processedData = {
-          ...response.data,
-          roles: response.data.authorities?.map(
-            (authority) => authority.authority
-          ),
-        };
-
-        setData(processedData);
+        message.error("Failed to fetch data.");
+        return;
       }
+
+      const processedData = {
+        ...response.data,
+        roles: response.data.authorities?.map(
+          (authority) => authority.authority
+        ),
+      };
+
+      setData(processedData);
 
       setLoading(false);
     }
@@ -60,9 +61,11 @@ function ProfilePage({ username, phone }: Props) {
   }
 
   if (!data) {
-    <div className="flex-1">
-      <ErrorMessageComp message="User cannot be found!" />
-    </div>;
+    return (
+      <div className="flex-1 relative">
+        <ErrorMessageComp message="User cannot be found!" />
+      </div>
+    );
   }
 
   return (
