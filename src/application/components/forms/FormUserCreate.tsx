@@ -1,6 +1,9 @@
 import { Button, Form, FormInstance, Input, message } from "antd";
 import SelectAsync from "../select/SelectAsync";
-import { userCreate, userRolesGet } from "../../../domain/services/userService";
+import {
+  userCreate,
+  userRoleOptionsGet,
+} from "../../../domain/services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
@@ -83,7 +86,7 @@ function FormUserCreate({ formRef, title }: Props) {
         >
           {SelectAsync({
             placeholder: "Roles",
-            getData: userRolesGet,
+            getData: userRoleOptionsGet,
             mode: "multiple",
           })}
         </Form.Item>
