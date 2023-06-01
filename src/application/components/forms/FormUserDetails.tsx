@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import { userRolesGet } from "../../../domain/services/userService";
+import { userRolesGet, userUpdate } from "../../../domain/services/userService";
 import { useSelector } from "react-redux";
 import SelectAsync from "../select/SelectAsync";
 
@@ -12,12 +12,13 @@ function FormUserDetails({ formRef, title }: Props) {
   const drawerForm = useSelector((state: any) => state.drawerForm);
 
   async function onFinish(e: any) {
-    console.log(e);
+    userUpdate(e);
   }
 
   return (
     <Form name={title} onFinish={onFinish} layout="vertical" form={formRef}>
       <div className="flex flex-wrap [&>*]:px-2 [&>*]:w-1/3">
+        <Form.Item name="userUuid" hidden />
         <Form.Item name="username" label="Username">
           <Input placeholder="Username" />
         </Form.Item>
