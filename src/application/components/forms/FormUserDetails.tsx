@@ -1,5 +1,8 @@
 import { Button, Form, Input } from "antd";
-import { userRolesGet, userUpdate } from "../../../domain/services/userService";
+import {
+  userRoleOptionsGet,
+  userUpdate,
+} from "../../../domain/services/userService";
 import { useSelector } from "react-redux";
 import SelectAsync from "../select/SelectAsync";
 
@@ -66,7 +69,7 @@ function FormUserDetails({ formRef, title }: Props) {
         >
           {SelectAsync({
             placeholder: "Roles",
-            getData: userRolesGet,
+            getData: userRoleOptionsGet,
             mode: "multiple",
           })}
         </Form.Item>
