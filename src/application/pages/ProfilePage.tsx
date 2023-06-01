@@ -31,18 +31,17 @@ function ProfilePage({ username, phone }: Props) {
       const response = await userGetProfile({ username, phone });
 
       if (response.errors) {
-        message.error("Failed to fetch data.");
-        return;
+        message.error("Failed to fetch user.");
+      } else {
+        const processedData = {
+          ...response.data,
+          roles: response.data.authorities?.map(
+            (authority) => authority.authority
+          ),
+        };
+
+        setData(processedData);
       }
-
-      const processedData = {
-        ...response.data,
-        roles: response.data.authorities?.map(
-          (authority) => authority.authority
-        ),
-      };
-
-      setData(processedData);
 
       setLoading(false);
     }
