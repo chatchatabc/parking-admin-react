@@ -1,4 +1,4 @@
-import { Pagination, Table, TableColumnsType } from "antd";
+import { Pagination, Table } from "antd";
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { formRefHandler } from "../../layouts/HomeLayout";
@@ -29,11 +29,11 @@ function UsersPage() {
   });
   const [data, setData] = React.useState<User[]>([]);
 
-  const columns: TableColumnsType<Record<string, any>> = [
+  const columns = [
     {
       title: "Username",
       key: "name",
-      render: (record) => {
+      render: (record: User) => {
         if (record.username || record.phone) {
           return (
             <button
@@ -54,7 +54,7 @@ function UsersPage() {
     {
       title: "Status",
       key: "status",
-      render: (record) => {
+      render: (record: User) => {
         if (record.phoneVerifiedAt || record.emailVerifiedAt) {
           return <div className="text-green-500 font-bold">Enabled</div>;
         }
@@ -64,7 +64,7 @@ function UsersPage() {
     {
       title: "Phone",
       key: "phone",
-      render: (record) => {
+      render: (record: User) => {
         if (record.phone && record.phoneVerifiedAt) {
           const dateVerified = new Date(record.phoneVerifiedAt);
           const dateFormatted = dateVerified.toLocaleDateString("en-US", {
@@ -98,7 +98,7 @@ function UsersPage() {
     {
       title: "Email",
       key: "email",
-      render: (record) => {
+      render: (record: User) => {
         if (record.email && record.emailVerifiedAt) {
           const dateVerified = new Date(record.emailVerifiedAt);
           const dateFormatted = dateVerified.toLocaleDateString("en-US", {

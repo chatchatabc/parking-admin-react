@@ -85,6 +85,7 @@ function ProfilePage({ username, phone }: Props) {
         <section className="flex-1 space-y-4">
           {/* First Entry */}
           <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
+            {/* Header */}
             <header className="flex items-center">
               <h2 className="text-lg font-bold">User Information</h2>
               <button
@@ -105,14 +106,33 @@ function ProfilePage({ username, phone }: Props) {
               </button>
             </header>
 
-            <div className="grid grid-flow-col mt-2 [&>*]:w-1/4">
+            {/* Body */}
+            <div className="flex flex-wrap mt-2 gap-y-2 [&>*]:w-1/3">
               <div>
                 <p className="text-xs font-bold uppercase">Username</p>
-                <p className="capitalize">{data?.username}</p>
+                <p>{data?.username}</p>
               </div>
               <div>
-                <p className="text-xs font-bold uppercase">Username</p>
-                <p className="capitalize">{data?.username}</p>
+                <p className="text-xs font-bold uppercase">
+                  Phone{" "}
+                  {data?.phoneVerifiedAt ? (
+                    <span className="text-green-500">(Verified)</span>
+                  ) : (
+                    <span className="text-red-500">(Not Verified)</span>
+                  )}
+                </p>
+                <p>{data?.phone}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase">
+                  Email{" "}
+                  {data?.emailVerifiedAt ? (
+                    <span className="text-green-500">(Verified)</span>
+                  ) : (
+                    <span className="text-red-500">(Not Verified)</span>
+                  )}
+                </p>
+                <p>{data?.email}</p>
               </div>
             </div>
           </div>

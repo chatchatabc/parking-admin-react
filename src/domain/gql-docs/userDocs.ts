@@ -49,6 +49,8 @@ export function userAllGetDoc() {
         username
         email
         phone
+        emailVerifiedAt
+        phoneVerifiedAt
       }
       pageInfo {
         size
