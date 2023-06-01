@@ -31,12 +31,11 @@ function FormParkingCreate({ title, formRef }: Props) {
     e.businessHoursEnd = businessHoursEnd.toISOString();
     e.businessHoursStart = businessHoursStart.toISOString();
     e.capacity = Number(e.capacity);
-
+    e.latitude = Number(e.latitude);
+    e.longitude = Number(e.longitude);
     e.openDaysFlag = openDaysFlag.reduce((acc, curr) => {
       return acc | curr;
     }, 0);
-
-    console.log(e);
 
     const response = await parkingCreate(e);
 
@@ -201,6 +200,20 @@ function FormParkingCreate({ title, formRef }: Props) {
             <Checkbox value={32}>Friday</Checkbox>
             <Checkbox value={64}>Saturday</Checkbox>
           </Checkbox.Group>
+        </Form.Item>
+
+        <Form.Item
+          style={{ width: "100%" }}
+          name="description"
+          label="Description"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
+        >
+          <Input.TextArea className="w-full" />
         </Form.Item>
 
         <Form.Item style={{ width: "100%" }}>
