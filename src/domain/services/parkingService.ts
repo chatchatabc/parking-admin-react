@@ -46,10 +46,11 @@ export async function parkingGetAllByOwner(
 }
 
 export async function parkingCreate(values: Record<string, any>) {
-  const response = await restPost(
-    `/parking-lot/create/${values.userUuid}`,
-    values
-  );
+  const userUuid = values.userUuid;
+
+  delete values.userUuid;
+
+  const response = await restPost(`/parking-lot/create/${userUuid}`, values);
 
   return response.data;
 }
