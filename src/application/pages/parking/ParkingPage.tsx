@@ -133,7 +133,6 @@ function ParkingPage() {
   React.useEffect(() => {
     if (globalState.reset) {
       setLoading(true);
-      dispatch(globalStateUpdate({ reset: false }));
     }
   }, [globalState.reset]);
 

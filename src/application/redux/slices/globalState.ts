@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const globalState = createSlice({
   name: "globalState",
   initialState: {
-    reset: false,
+    reset: 0,
   },
   reducers: {
     globalStateUpdate(state, action) {

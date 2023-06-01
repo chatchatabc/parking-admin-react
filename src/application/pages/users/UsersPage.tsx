@@ -178,7 +178,6 @@ function UsersPage() {
   React.useEffect(() => {
     if (globalState.reset) {
       setLoading(true);
-      dispatch(globalStateUpdate({ reset: false }));
     }
   }, [globalState.reset]);
 
