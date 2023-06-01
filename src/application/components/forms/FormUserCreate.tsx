@@ -6,6 +6,7 @@ import {
 } from "../../../domain/services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import { globalStateUpdate } from "../../redux/slices/globalState";
 
 type Props = {
   title: string;
@@ -17,7 +18,6 @@ function FormUserCreate({ formRef, title }: Props) {
   const dispatch = useDispatch();
 
   async function onFinish(e: any) {
-    console.log(e);
     const response = await userCreate(e);
 
     if (response.errors) {
@@ -25,25 +25,33 @@ function FormUserCreate({ formRef, title }: Props) {
     }
 
     message.success("User created successfully");
-
     formRef.resetFields();
 
+    // Close the drawer
     dispatch(
       drawerFormUpdate({
         show: false,
+      })
+    );
+
+    // This is a hack to force the table to refresh
+    dispatch(
+      globalStateUpdate({
+        reset: Math.random() * 100000000000000000,
       })
     );
   }
 
   return (
     <Form name={title} onFinish={onFinish} layout="vertical" form={formRef}>
-      <div className="flex flex-wrap [&>*]:px-2 [&>*]:w-1/3">
+      <div className="flex flex-wrap [&>*]:px-2">
         <Form.Item name="userUuid" hidden />
-        <Form.Item name="username" label="Username">
+        <Form.Item className="w-1/2" name="username" label="Username">
           <Input placeholder="Username" />
         </Form.Item>
 
         <Form.Item
+          className="w-1/2"
           name="phone"
           label="Phone Number"
           rules={[
@@ -61,6 +69,7 @@ function FormUserCreate({ formRef, title }: Props) {
         </Form.Item>
 
         <Form.Item
+          className="w-1/2"
           name="email"
           label="Email"
           rules={[
@@ -74,6 +83,7 @@ function FormUserCreate({ formRef, title }: Props) {
         </Form.Item>
 
         <Form.Item
+          className="w-1/2"
           name="roles"
           label="Roles"
           rules={[
@@ -90,63 +100,11 @@ function FormUserCreate({ formRef, title }: Props) {
           })}
         </Form.Item>
 
-        {/* <Form.Item
-        name="password"
-        label="Password"
-        rules={[
-          {
-            message: "Need some input",
-            required: true,
-          },
-        ]}
-      >
-        <Input.Password placeholder="password" />
-      </Form.Item> */}
-
-        {/* <Form.Item
-        name="email"
-        label="Email"
-        rules={[
-          {
-            message: "Need some input",
-            required: true,
-          },
-        ]}
-      >
-        <Input placeholder="Email" />
-      </Form.Item> */}
-
-        {/* <Form.Item
-        name="first_name"
-        label="First Name"
-        rules={[
-          {
-            message: "Need some input",
-            required: true,
-          },
-        ]}
-      >
-        <Input placeholder="First Name" />
-      </Form.Item> */}
-
-        {/* <Form.Item
-        name="last_name"
-        label="Last Name"
-        rules={[
-          {
-            message: "Need some input",
-            required: true,
-          },
-        ]}
-      >
-        <Input placeholder="Last Name" />
-      </Form.Item> */}
-
-        <Form.Item hidden className="w-full">
+        <Form.Item className="w-full">
           <Button
             loading={drawerForm.loading}
             htmlType="submit"
-            className="bg-primary text-white"
+            className="bg-primary text-white block w-full"
           >
             Submit
           </Button>
