@@ -17,20 +17,17 @@ function NavbarProfileMenu({ setProfileMenu }: Props) {
       title: "Are you sure?",
       content: "You will be logged out of the system.",
       onOk() {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
           const response = await authLogout();
           if (response.errors) {
-            reject(response);
+            message.error("Failed to save logout activity!");
+          } else {
+            message.success("Logout successful!");
           }
           resolve(true);
-        })
-          .then((response: any) => {
-            message.success(response.message ?? "Logout successful!");
-            navigate("/login");
-          })
-          .catch((response: any) => {
-            message.error(response.message ?? "Logout failed");
-          });
+        }).finally(() => {
+          navigate("/login");
+        });
       },
       closable: true,
       okText: "Logout",

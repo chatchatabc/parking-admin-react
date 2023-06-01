@@ -39,11 +39,11 @@ export async function authLogin(values: Record<string, any>) {
 export async function authLogout() {
   const response = await restPost("/profile/logout", {});
 
+  authTokenRemove();
+
   if (response.data.errors) {
     return response.data as AxiosResponseError;
   }
-
-  authTokenRemove();
 
   return response.data as AuthLogout & AxiosResponseData;
 }
