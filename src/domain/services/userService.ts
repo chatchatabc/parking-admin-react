@@ -58,7 +58,24 @@ export async function userAllGet(variables: CommonVariables) {
   };
 }
 
-export async function userRolesGet() {
+export async function userAllOptionsGet(variables: { keyword: string }) {
+  const response = await graphqlQuery(userAllGetDoc(), variables);
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  const responseData = response.data.data.getUsers.content as User[];
+
+  const data = responseData.map((user) => ({
+    label: user.username ?? user.phone ?? user.email,
+    value: user.userUuid,
+  }));
+
+  return { data } as AxiosResponseData;
+}
+
+export async function userRoleOptionsGet() {
   const response = await graphqlQuery(userRolesGetDoc(), {});
 
   if (response.data.errors) {
