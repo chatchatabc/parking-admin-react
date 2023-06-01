@@ -30,6 +30,7 @@ function FormParkingCreate({ title, formRef }: Props) {
 
     e.businessHoursEnd = businessHoursEnd.toISOString();
     e.businessHoursStart = businessHoursStart.toISOString();
+    e.capacity = Number(e.capacity);
 
     e.openDaysFlag = openDaysFlag.reduce((acc, curr) => {
       return acc | curr;
