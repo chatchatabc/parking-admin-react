@@ -1,6 +1,7 @@
 import {
   parkingAllGetDoc,
-  parkingGetAllByOwnerDoc,
+  parkingLotGetByPhoneDoc,
+  parkingLotGetByUsernameDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost } from "../infra/apis/restAction";
@@ -25,24 +26,42 @@ export async function parkingAllGet({
   };
 }
 
-export async function parkingGetAllByOwner(
-  page: number = 0,
-  size: number = 10,
-  userId: string
-) {
-  const query = await graphqlQuery(parkingGetAllByOwnerDoc(), {
-    page,
-    size,
-    userId,
-  });
+export async function parkingLotGet({
+  username = "",
+  phone = "",
+}: {
+  username?: string;
+  phone?: string;
+}) {
+  let response, data;
 
-  if (query.data.errors) {
-    return query.data;
+  if (username) {
+    response = await graphqlQuery(parkingLotGetByUsernameDoc(), { username });
+
+    if (response.data.errors) {
+      return response.data;
+    }
+
+    data = response.data.data.getParkingLotByUsername;
+  } else if (phone) {
+    response = await graphqlQuery(parkingLotGetByPhoneDoc(), { phone });
+
+    if (response.data.errors) {
+      return response.data;
+    }
+
+    data = response.data.data.getParkingLotByPhone;
+  } else {
+    return {
+      errors: [
+        {
+          message: "username or phone is required",
+        },
+      ],
+    };
   }
 
-  const data = query.data?.getParkingLotsByOwner;
-
-  return { data } as AxiosResponseData;
+  return { data } as AxiosResponseData & Parking;
 }
 
 export async function parkingCreate(values: Record<string, any>) {

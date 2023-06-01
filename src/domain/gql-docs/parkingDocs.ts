@@ -23,25 +23,44 @@ export function parkingAllGetDoc() {
   `;
 }
 
-export function parkingGetAllByOwnerDoc() {
+export function parkingLotGetByUsernameDoc() {
   return `
-    query GetParkingLotsByOwner($page: Int!, $size: Int!, $userId: String!) {
-      getParkingLotsByOwner(page: $page, size: $size, ownerId: $userId) {
-        content {
-          id
-          availableSlots
-          address
-          capacity
-          name
-
-          rate {
-            id
-          }
+    query GetParkingLotByUsername($username: String!) {
+      getParkingLotByUsername(username: $username) {
+        parkingLotUuid
+        availableSlots
+        address
+        capacity
+        name
+        businessHoursEnd
+        businessHoursStart
+        latitude
+        longitude
+        description
+        rate{
+          createdAt
         }
+      }
+    }
+  `;
+}
 
-        pageInfo {
-          size
-          totalElements
+export function parkingLotGetByPhoneDoc() {
+  return `
+    query GetParkingLotByPhone($phone: String!) {
+      getParkingLotByPhone(phone: $phone) {
+        parkingLotUuid
+        availableSlots
+        address
+        capacity
+        name
+        businessHoursEnd
+        businessHoursStart
+        latitude
+        longitude
+        description
+        rate{
+          createdAt
         }
       }
     }
