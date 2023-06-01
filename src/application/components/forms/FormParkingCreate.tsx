@@ -28,8 +28,8 @@ function FormParkingCreate({ title, formRef }: Props) {
     const businessHoursEnd = e.businessHoursEnd as Dayjs;
     const businessHoursStart = e.businessHoursStart as Dayjs;
 
-    e.businessHoursEnd = businessHoursEnd.format("YYYY-MM-DD HH:mm:ss.SSS");
-    e.businessHoursStart = businessHoursStart.format("YYYY-MM-DD HH:mm:ss.SSS");
+    e.businessHoursEnd = businessHoursEnd.toISOString();
+    e.businessHoursStart = businessHoursStart.toISOString();
 
     e.openDaysFlag = openDaysFlag.reduce((acc, curr) => {
       return acc | curr;
