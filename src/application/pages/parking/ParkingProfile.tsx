@@ -40,9 +40,11 @@ function ParkingProfile() {
   }, [loading]);
 
   if (loading) {
-    <div>
-      <Spin />
-    </div>;
+    return (
+      <div>
+        <Spin />
+      </div>
+    );
   }
 
   if (!data) {
