@@ -76,7 +76,7 @@ export async function userRolesGet() {
 }
 
 export async function userCreate(values: Record<string, any>) {
-  const response = await restPost("/member/create", values);
+  const response = await restPost("/user/create", values);
 
   return response.data;
 }

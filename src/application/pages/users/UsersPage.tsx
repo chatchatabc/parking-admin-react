@@ -206,7 +206,7 @@ function UsersPage() {
                 drawerFormUpdate({
                   show: true,
                   title: "Create User",
-                  content: "user",
+                  content: "userCreate",
                   mode: "create",
                 })
               );
