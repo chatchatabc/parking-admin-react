@@ -8,7 +8,7 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restAction";
 import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
-import { Pagination } from "../models/CommonModel";
+import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
 import { User, UserRole } from "../models/UserModel";
 import { authUsername } from "./authService";
 
@@ -45,7 +45,7 @@ export async function userUpdateProfile(values: Record<string, any>) {
   return response.data;
 }
 
-export async function userAllGet(variables: Record<string, any>) {
+export async function userAllGet(variables: CommonVariables) {
   const response = await graphqlQuery(userAllGetDoc(), variables);
 
   if (response.data.errors) {
@@ -54,7 +54,7 @@ export async function userAllGet(variables: Record<string, any>) {
 
   return response.data.data.getUsers as AxiosResponseData & {
     content: User[];
-    pageInfo: Pagination;
+    pageInfo: CommonPageInfo;
   };
 }
 
