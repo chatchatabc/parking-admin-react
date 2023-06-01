@@ -1,12 +1,11 @@
 import { Button, Drawer } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import FormUser from "../forms/FormUser";
-import FormParking from "../forms/FormParking";
 import FormUserDetails from "../forms/FormUserDetails";
 import { useForm } from "antd/es/form/Form";
 import React from "react";
 import FormUserCreate from "../forms/FormUserCreate";
+import FormParkingCreate from "../forms/FormParkingCreate";
 
 function DrawerForm() {
   const dispatch = useDispatch();
@@ -40,7 +39,9 @@ function DrawerForm() {
         </Button>
       }
     >
-      {drawerForm.content === "parking" && <FormParking />}
+      {drawerForm.content === "parkingCreate" && (
+        <FormParkingCreate formRef={form} title={drawerForm.title} />
+      )}
       {drawerForm.content === "userCreate" && (
         <FormUserCreate formRef={form} title={drawerForm.title} />
       )}
