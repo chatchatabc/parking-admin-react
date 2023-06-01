@@ -82,7 +82,6 @@ function FormUserCreate({ formRef, title }: Props) {
               required: true,
             },
           ]}
-          shouldUpdate
         >
           {SelectAsync({
             placeholder: "Roles",
