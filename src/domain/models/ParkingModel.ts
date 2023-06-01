@@ -1,5 +1,5 @@
 export type Parking = {
-  id?: string | null;
+  parkingLotUuid?: string | null;
   address?: string | null;
   businessHoursEnd?: string | null;
   businessHoursStart?: string | null;

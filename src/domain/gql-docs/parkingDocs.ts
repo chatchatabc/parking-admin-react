@@ -3,7 +3,7 @@ export function parkingAllGetDoc() {
     query GetParkingLots($size: Int!, $page: Int!, $keyword: String) {
       getParkingLots(size: $size, page: $page, keyword: $keyword) {
         content {
-          id
+          parkingLotUuid
           availableSlots
           address
           capacity
