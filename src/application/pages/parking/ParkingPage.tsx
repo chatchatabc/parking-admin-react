@@ -1,11 +1,12 @@
 import React from "react";
-import { Pagination, Table, TableColumnsType } from "antd";
+import { Pagination, Table, TableColumnsType, message } from "antd";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { parkingGetAll } from "../../../domain/services/parkingService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
+import { parkingAllGet } from "../../../domain/services/parkingService";
+import { Parking } from "../../../domain/models/ParkingModel";
 
 function ParkingPage() {
   // React Router
@@ -26,7 +27,7 @@ function ParkingPage() {
     pageSize: Number(pageSize),
     total: 0,
   });
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState<Parking[]>([]);
 
   function handleNavigation(page: number) {
     setPagination({ ...pagination, current: page - 1 });
@@ -99,24 +100,28 @@ function ParkingPage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const query = await parkingGetAll({
+      const query = await parkingAllGet({
         page: pagination.current,
         size: pagination.pageSize,
         keyword: keyword,
       });
 
-      const processedData = query.content.map((user: any, index: number) => {
-        return {
-          ...user,
-          key: `parking-list-${index}`,
-        };
-      });
+      if (query.errors) {
+        message.error("Failed to fetch parking list.");
+      } else {
+        const processedData = query.content.map((user: any, index: number) => {
+          return {
+            ...user,
+            key: `parking-list-${index}`,
+          };
+        });
+        setData(processedData);
+        setPagination((prev) => ({
+          ...prev,
+          total: query.pageInfo.totalElements,
+        }));
+      }
 
-      setData(processedData);
-      setPagination((prev) => ({
-        ...prev,
-        total: query.pageInfo.totalElements,
-      }));
       setLoading(false);
     }
 

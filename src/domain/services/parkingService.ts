@@ -1,22 +1,27 @@
 import {
+  parkingAllGetDoc,
   parkingGetAllByOwnerDoc,
-  parkingGetAllDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData } from "../models/AxiosModel";
+import { Pagination } from "../models/CommonModel";
+import { Parking } from "../models/ParkingModel";
 
-export async function parkingGetAll({
+export async function parkingAllGet({
   page = 0,
   size = 10,
-  keyword = undefined,
+  keyword = "",
 }: Record<string, any>) {
-  const query = await graphqlQuery(parkingGetAllDoc(), { page, size, keyword });
+  const query = await graphqlQuery(parkingAllGetDoc(), { page, size, keyword });
 
   if (query.data.errors) {
     return query.data;
   }
 
-  return query.data.getParkingLots;
+  return query.data.data.getParkingLots as AxiosResponseData & {
+    content: Parking[];
+    pageInfo: Pagination;
+  };
 }
 
 export async function parkingGetAllByOwner(
