@@ -48,7 +48,7 @@ export function userAddDoc() {
 
 export function userAllGetDoc() {
   return `
-  query GetAllUsers ($page: Int!, $size: Int!, $keyword: String) {
+  query GetAllUsers ($page: Int! = 0, $size: Int! = 10, $keyword: String) {
     getUsers(page:$page, size:$size, keyword:$keyword) {
       content {
         userUuid
