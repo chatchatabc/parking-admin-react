@@ -16,7 +16,7 @@ function HomePage() {
           </NavLink>
         </header>
         <section className="mt-2">
-          <ParkingTable />
+          <ParkingTable showPagination={false} />
         </section>
       </section>
 
@@ -31,7 +31,7 @@ function HomePage() {
           </NavLink>
         </header>
         <section className="mt-2">
-          <UsersTable />
+          <UsersTable showPagination={false} />
         </section>
       </section>
     </div>
