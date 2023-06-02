@@ -11,9 +11,9 @@ export type Parking = {
 
   latitude?: number | null;
   longitude?: number | null;
-
   capacity?: number | null;
   availableSlots?: number | null;
+  openDaysFlag?: number | null;
 
   rate?: ParkingRate | null;
 };

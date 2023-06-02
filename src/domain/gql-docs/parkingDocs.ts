@@ -37,6 +37,7 @@ export function parkingLotGetByUsernameDoc() {
         latitude
         longitude
         description
+        openDaysFlag
         rate{
           createdAt
         }
@@ -59,6 +60,7 @@ export function parkingLotGetByPhoneDoc() {
         latitude
         longitude
         description
+        openDaysFlag
         rate{
           createdAt
         }
