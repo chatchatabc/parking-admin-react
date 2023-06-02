@@ -19,7 +19,7 @@ function NavbarProfileMenu({ setProfileMenu }: Props) {
       onOk() {
         return new Promise(async (resolve) => {
           const response = await authLogout();
-          if (response.errors) {
+          if (response.errors && response.errors.length > 0) {
             message.error("Failed to save logout activity!");
           } else {
             message.success("Logout successful!");
