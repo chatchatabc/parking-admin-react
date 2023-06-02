@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 type Props = {
+  showPagination?: boolean;
   title: string;
   columns: ColumnsType<Record<string, any>>;
   getData: (variables: CommonVariables) => Promise<
@@ -23,7 +24,12 @@ type Props = {
   >;
 };
 
-function DynamicTable({ title, getData, columns }: Props) {
+function DynamicTable({
+  title,
+  getData,
+  columns,
+  showPagination = true,
+}: Props) {
   // React Router
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -98,7 +104,9 @@ function DynamicTable({ title, getData, columns }: Props) {
     <Table
       columns={columns}
       dataSource={data}
-      pagination={{ ...pagination, onChange: handleNavigation }}
+      pagination={
+        showPagination ? { ...pagination, onChange: handleNavigation } : false
+      }
     />
   );
 }
