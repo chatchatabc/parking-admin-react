@@ -8,6 +8,8 @@ import { Parking } from "../../../domain/models/ParkingModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import dayjs from "dayjs";
+import { User } from "../../../domain/models/UserModel";
+import { userGetProfile } from "../../../domain/services/userService";
 
 function ParkingLotsProfilePage() {
   // Global states
@@ -23,6 +25,7 @@ function ParkingLotsProfilePage() {
   const phone = identifiers[0] === "p" ? identifiers[1] : undefined;
 
   // Local states
+  const [owner, setOwner] = React.useState<User | null>(null);
   const [data, setData] = React.useState<Parking | null>(null);
   const [loading, setLoading] = React.useState(true);
 
@@ -75,11 +78,18 @@ function ParkingLotsProfilePage() {
   React.useEffect(() => {
     async function fetchData() {
       const response = await parkingLotGet({ username, phone });
-
       if (response.errors) {
-        message.error("Failed to fetch user.");
+        message.error("Failed to fetch parking lot.");
       } else {
         setData(response.data);
+      }
+
+      const responseOwner = await userGetProfile({ username, phone });
+
+      if (responseOwner.errors) {
+        message.error("Failed to fetch owner.");
+      } else {
+        setOwner(responseOwner.data);
       }
 
       setLoading(false);
@@ -122,7 +132,12 @@ function ParkingLotsProfilePage() {
             </button>
           </header>
 
-          <section></section>
+          <section>
+            <div className="w-[200px] mx-auto aspect-square rounded-full border border-primary"></div>
+            <p>Username: {owner?.username}</p>
+            <p>Phone: {owner?.phone}</p>
+            <p>Email: {owner?.email}</p>
+          </section>
         </section>
       </section>
 
