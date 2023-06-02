@@ -10,7 +10,7 @@ function HomePage() {
           <h2 className="text-xl font-bold">Parking Lots Table</h2>
           <NavLink
             className="bg-c1 ml-auto text-white px-4 py-1 rounded-md transition hover:bg-blue-600"
-            to={"/parking"}
+            to={"/parking-lots"}
           >
             Open
           </NavLink>
