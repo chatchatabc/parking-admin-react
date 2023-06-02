@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SelectAsyncSearch from "../select/SelectAsyncSearch";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { parkingLotCreate } from "../../../domain/services/parkingService";
+import { globalStateUpdate } from "../../redux/slices/globalState";
 
 type Props = {
   title: string;
@@ -49,6 +50,13 @@ function FormParkingCreate({ title, formRef }: Props) {
     dispatch(
       drawerFormUpdate({
         show: false,
+      })
+    );
+
+    // This is a hack to force the table to refresh
+    dispatch(
+      globalStateUpdate({
+        reset: Math.random() * 100000000000000000,
       })
     );
   }
