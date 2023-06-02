@@ -11,3 +11,5 @@ export type CommonVariables = {
   size: number;
   keyword?: string;
 };
+
+export type CommonSeries = { name: string; data: number[] };
