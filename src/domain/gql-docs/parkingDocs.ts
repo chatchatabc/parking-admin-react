@@ -1,6 +1,6 @@
-export function parkingAllGetDoc() {
+export function parkingLotGetAllDoc() {
   return `
-    query GetParkingLots($size: Int!, $page: Int!, $keyword: String) {
+    query GetParkingLots($size: Int! = 10, $page: Int! = 0, $keyword: String) {
       getParkingLots(size: $size, page: $page, keyword: $keyword) {
         content {
           parkingLotUuid

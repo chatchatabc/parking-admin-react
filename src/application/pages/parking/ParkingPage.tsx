@@ -14,10 +14,6 @@ function ParkingPage() {
         {/* Table Title */}
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">Parking Lots</h2>
-        </header>
-
-        {/* Table Actions */}
-        <section className="flex justify-end gap-2">
           <button
             onClick={() => {
               formRefHandler.resetFields();
@@ -34,7 +30,8 @@ function ParkingPage() {
           >
             Add Parking Lot +
           </button>
-        </section>
+        </header>
+
         <section>
           <ParkingTable />
         </section>

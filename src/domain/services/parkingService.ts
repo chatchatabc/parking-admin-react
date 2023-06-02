@@ -1,5 +1,5 @@
 import {
-  parkingAllGetDoc,
+  parkingLotGetAllDoc,
   parkingLotGetByPhoneDoc,
   parkingLotGetByUsernameDoc,
 } from "../gql-docs/parkingDocs";
@@ -10,12 +10,16 @@ import { CommonPageInfo } from "../models/CommonModel";
 import { Parking } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
 
-export async function parkingAllGet({
+export async function parkingLotGetAll({
   page = 0,
   size = 10,
   keyword = "",
 }: Record<string, any>) {
-  const query = await graphqlQuery(parkingAllGetDoc(), { page, size, keyword });
+  const query = await graphqlQuery(parkingLotGetAllDoc(), {
+    page,
+    size,
+    keyword,
+  });
 
   if (query.data.errors) {
     return query.data;
@@ -36,7 +40,11 @@ export async function parkingLotGetAllWithOwners({
   size = 10,
   keyword = undefined,
 }: Record<string, any>) {
-  const query = await graphqlQuery(parkingAllGetDoc(), { page, size, keyword });
+  const query = await graphqlQuery(parkingLotGetAllDoc(), {
+    page,
+    size,
+    keyword,
+  });
 
   if (query.data.errors) {
     return query.data;
