@@ -4,7 +4,11 @@ import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
 import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingService";
 
-function ParkingTable() {
+type Props = {
+  showPagination?: boolean;
+};
+
+function ParkingTable({ showPagination }: Props) {
   const navigate = useNavigate();
 
   const columns = [
@@ -66,6 +70,7 @@ function ParkingTable() {
 
   return (
     <DynamicTable
+      showPagination={showPagination}
       title={"Parking Table"}
       columns={columns}
       getData={parkingLotGetAllWithOwners}

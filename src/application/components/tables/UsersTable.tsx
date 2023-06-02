@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import DynamicTable from "./DynamicTable";
 import { userGetAll } from "../../../domain/services/userService";
 
-function UsersTable() {
+type Props = {
+  showPagination?: boolean;
+};
+
+function UsersTable({ showPagination }: Props) {
   const navigate = useNavigate();
 
   const columns = [
@@ -113,7 +117,12 @@ function UsersTable() {
   ];
 
   return (
-    <DynamicTable columns={columns} title="users-table" getData={userGetAll} />
+    <DynamicTable
+      showPagination={showPagination}
+      columns={columns}
+      title="users-table"
+      getData={userGetAll}
+    />
   );
 }
 
