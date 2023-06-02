@@ -1,6 +1,8 @@
 import { Form, Input, Popover } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { globalStateUpdate } from "../../redux/slices/globalState";
+import { useDispatch } from "react-redux";
 
 const dictionary: Record<string, any> = {
   u: {
@@ -43,6 +45,7 @@ function NavbarSearchBar() {
   const [searchText, setSearchText] = React.useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const tokens = searchText?.split(" ");
   const identifier = tokens[0].toLowerCase();
@@ -55,6 +58,8 @@ function NavbarSearchBar() {
     } else {
       navigate(`/search?keyword=${searchText}`);
     }
+
+    dispatch(globalStateUpdate({ reset: Math.random() * 100000000000000000 }));
   }
 
   return (

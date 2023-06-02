@@ -4,8 +4,8 @@ import ParkingTable from "../components/tables/ParkingLotTable";
 function SearchPage() {
   return (
     <div className="px-4 pb-4 space-y-4 w-full relative">
-      <UsersTable />
-      <ParkingTable />
+      <UsersTable showPagination={false} />
+      <ParkingTable showPagination={false} />
     </div>
   );
 }
