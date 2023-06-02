@@ -5,12 +5,13 @@ import { useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
 import { parkingLotGet } from "../../../domain/services/parkingService";
 import { Parking } from "../../../domain/models/ParkingModel";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import dayjs from "dayjs";
 
 function ParkingProfile() {
   // Global states
+  const globalState = useSelector((state: any) => state.globalState);
   const { identifier } = useParams();
   const dispatch = useDispatch();
 
@@ -64,6 +65,12 @@ function ParkingProfile() {
 
     return null;
   });
+
+  React.useEffect(() => {
+    if (!loading) {
+      setLoading(true);
+    }
+  }, [globalState.reset]);
 
   React.useEffect(() => {
     async function fetchData() {

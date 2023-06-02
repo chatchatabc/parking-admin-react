@@ -11,6 +11,7 @@ import type { Dayjs } from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { parkingLotUpdate } from "../../../domain/services/parkingService";
+import { globalStateUpdate } from "../../redux/slices/globalState";
 
 type Props = {
   title: string;
@@ -37,7 +38,7 @@ function FormParkingUpdate({ title, formRef }: Props) {
 
     const response = await parkingLotUpdate(e);
 
-    if (response.errors) {
+    if (response.errors && response.errors.length > 0) {
       return message.error("Parking lot update failed");
     }
 
@@ -47,6 +48,13 @@ function FormParkingUpdate({ title, formRef }: Props) {
     dispatch(
       drawerFormUpdate({
         show: false,
+      })
+    );
+
+    // This is a hack to force the table to refresh
+    dispatch(
+      globalStateUpdate({
+        reset: Math.random() * 100000000000000000,
       })
     );
   }
