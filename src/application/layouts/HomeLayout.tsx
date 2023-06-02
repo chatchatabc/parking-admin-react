@@ -34,7 +34,7 @@ function HomeLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-bg1 text-t1">
       {/* Navbar */}
-      <header className="bg-bg2 z-[10] sticky top-0 border-b-2 py-2 px-3 flex items-center border-t2">
+      <header className="bg-bg2 z-[10] sticky top-0 border-b py-2 px-3 flex items-center border-t2">
         {/* Left side */}
         <div className="flex space-x-4 items-center">
           {/* Sidebar show and hide btn */}

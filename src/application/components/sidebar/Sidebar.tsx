@@ -16,7 +16,7 @@ function Sidebar({ open }: Props) {
 
   return (
     <aside
-      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg4 border-r-2 border-t2 ${
+      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg2 border-r border-t2 ${
         open ? "min-w-[250px]" : "min-w-[1px]"
       } transition-all ease-linear text-t2 group hover:min-w-[250px]`}
     >
@@ -55,7 +55,7 @@ function Sidebar({ open }: Props) {
             );
           })}
         </ul>
-        <hr className="border-bg9" />
+        <hr className="border-t2" />
         <ul>
           {navigationsHelp.map((navigation) => {
             return (
