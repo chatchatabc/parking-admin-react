@@ -64,7 +64,7 @@ export function userGetByParkingLotUuidDoc() {
   `;
 }
 
-export function userAllGetDoc() {
+export function userGetAllDoc() {
   return `
   query GetAllUsers ($page: Int! = 0, $size: Int! = 10, $keyword: String) {
     getUsers(page:$page, size:$size, keyword:$keyword) {

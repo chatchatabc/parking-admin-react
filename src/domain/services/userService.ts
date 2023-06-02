@@ -1,5 +1,5 @@
 import {
-  userAllGetDoc,
+  userGetAllDoc,
   userGetByParkingLotUuidDoc,
   userGetByPhoneDoc,
   userGetByUsernameDoc,
@@ -46,21 +46,25 @@ export async function userUpdateProfile(values: Record<string, any>) {
   return response.data;
 }
 
-export async function userAllGet(variables: CommonVariables) {
-  const response = await graphqlQuery(userAllGetDoc(), variables);
+export async function userGetAll(variables: CommonVariables) {
+  const response = await graphqlQuery(userGetAllDoc(), variables);
 
   if (response.data.errors) {
     return response.data;
   }
 
-  return response.data.data.getUsers as AxiosResponseData & {
-    content: User[];
-    pageInfo: CommonPageInfo;
+  const data = response.data.data.getUsers;
+
+  return { data } as AxiosResponseData & {
+    data: {
+      content: User[];
+      pageInfo: CommonPageInfo;
+    };
   };
 }
 
 export async function userAllOptionsGet(variables: { keyword: string }) {
-  const response = await graphqlQuery(userAllGetDoc(), variables);
+  const response = await graphqlQuery(userGetAllDoc(), variables);
 
   if (response.data.errors) {
     return response.data;
