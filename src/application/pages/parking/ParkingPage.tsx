@@ -1,7 +1,7 @@
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import ParkingTable from "../../components/tables/ParkingTable";
+import ParkingTable from "../../components/tables/ParkingLotTable";
 
 function ParkingPage() {
   // React Router
