@@ -21,6 +21,47 @@ function ParkingProfile() {
   const username = identifiers[0] === "u" ? identifiers[1] : undefined;
   const phone = identifiers[0] === "p" ? identifiers[1] : undefined;
 
+  const dates = [
+    {
+      name: "Saturday",
+      value: 64,
+    },
+    {
+      name: "Friday",
+      value: 32,
+    },
+    {
+      name: "Thursday",
+      value: 16,
+    },
+    {
+      name: "Wednesday",
+      value: 8,
+    },
+    {
+      name: "Tuesday",
+      value: 4,
+    },
+    {
+      name: "Monday",
+      value: 2,
+    },
+    {
+      name: "Sunday",
+      value: 1,
+    },
+  ];
+
+  let flagValue = data?.openDaysFlag ?? 0;
+  const activeDates = dates.map((date) => {
+    if (flagValue >= date.value) {
+      flagValue -= date.value;
+      return date.name;
+    }
+
+    return null;
+  });
+
   React.useEffect(() => {
     async function fetchData() {
       const response = await parkingLotGet({ username, phone });
@@ -88,7 +129,7 @@ function ParkingProfile() {
           </header>
 
           {/* Body */}
-          <section className="mt-2 flex flex-wrap gap-y-2">
+          <section className="mt-2 flex flex-wrap gap-y-4">
             <div className="w-1/3">
               <p className="text-xs font-bold">Name</p>
               <p>{data.name}</p>
@@ -112,6 +153,56 @@ function ParkingProfile() {
                   businessHoursEnd
                 )}
               </p>
+            </div>
+
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Address</p>
+              <p>{data?.address}</p>
+            </div>
+
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Description</p>
+              <p>{data?.description}</p>
+            </div>
+
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Longitude & Latitude</p>
+              <p>
+                {data?.longitude} & {data?.latitude}
+              </p>
+            </div>
+
+            <div className="w-full">
+              <p className="text-xs font-bold">Business Dates</p>
+              <ul className="flex flex-wrap space-x-1">
+                {dates.reverse().map((date) => {
+                  const isActive = activeDates.includes(date.name);
+                  return (
+                    <li
+                      className={`pl-2 py-1 flex items-center rounded-sm ${
+                        isActive
+                          ? "bg-green-700 pr-3 text-white"
+                          : "bg-gray-300 pr-2 text-black"
+                      }`}
+                    >
+                      {isActive && (
+                        <div className="w-4 h-4">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4L9.55 18Z"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      <p>{date.name}</p>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           </section>
         </section>
