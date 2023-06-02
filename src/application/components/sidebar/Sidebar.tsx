@@ -33,8 +33,8 @@ function Sidebar({ open }: Props) {
                     className={({ isActive }) =>
                       `p-2 rounded-md flex items-center ${
                         isActive
-                          ? "bg-bg2 text-white"
-                          : "hover:bg-bg2 hover:text-white"
+                          ? "bg-bg3 text-white"
+                          : "hover:bg-bg3 hover:text-white"
                       }`
                     }
                     to={navigation.path}
@@ -64,8 +64,8 @@ function Sidebar({ open }: Props) {
                   className={({ isActive }) =>
                     `p-2 rounded-md flex items-center ${
                       isActive
-                        ? "bg-bg2 text-white"
-                        : "hover:bg-bg2 hover:text-white"
+                        ? "bg-bg3 text-white"
+                        : "hover:bg-bg3 hover:text-white"
                     } `
                   }
                   to={navigation.path}
