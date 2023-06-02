@@ -3,6 +3,7 @@ import {
   parkingLotGetByPhoneDoc,
   parkingLotGetByUsernameDoc,
 } from "../gql-docs/parkingDocs";
+import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost } from "../infra/apis/restAction";
 import { AxiosResponseData } from "../models/AxiosModel";
@@ -58,15 +59,17 @@ export async function parkingLotGetAllWithOwners({
       owner: {},
     };
 
-    const queryOwner = await graphqlQuery(parkingLotGetByUsernameDoc(), {
+    const queryOwner = await graphqlQuery(userGetByParkingLotUuidDoc(), {
       parkingLotUuid: parkingLot.parkingLotUuid,
     });
+
+    console.log(queryOwner);
 
     if (queryOwner.data.errors) {
       return newParkingLot;
     }
 
-    newParkingLot.owner = queryOwner.data.data.getParkingLotByUsername;
+    newParkingLot.owner = queryOwner.data.data.getUserByParkingLotUuid;
     return newParkingLot;
   });
 

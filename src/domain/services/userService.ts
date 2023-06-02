@@ -1,6 +1,6 @@
 import {
   userAllGetDoc,
-  userGetByParkingUuidDoc,
+  userGetByParkingLotUuidDoc,
   userGetByPhoneDoc,
   userGetByUsernameDoc,
   userRolesGetDoc,
@@ -106,7 +106,7 @@ export async function userUpdate(values: Record<string, any>) {
 }
 
 export async function userGetByParkingLotUuid(parkingLotUuid: string) {
-  const response = await graphqlQuery(userGetByParkingUuidDoc(), {
+  const response = await graphqlQuery(userGetByParkingLotUuidDoc(), {
     parkingLotUuid,
   });
 

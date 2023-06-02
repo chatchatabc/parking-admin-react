@@ -46,7 +46,7 @@ export function userAddDoc() {
   `;
 }
 
-export function userGetByParkingUuidDoc() {
+export function userGetByParkingLotUuidDoc() {
   return `
     query GetUserByParkingLotUuid($parkingLotUuid: String!) {
       getUserByParkingLotUuid(uuid: $parkingLotUuid) {
