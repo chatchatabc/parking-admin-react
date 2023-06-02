@@ -4,7 +4,10 @@ import {
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
 import { Table, message } from "antd";
-import { CommonPageInfo } from "../../../domain/models/CommonModel";
+import {
+  CommonPageInfo,
+  CommonVariables,
+} from "../../../domain/models/CommonModel";
 import { ColumnsType } from "antd/es/table";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -12,11 +15,7 @@ import { useSearchParams } from "react-router-dom";
 type Props = {
   title: string;
   columns: ColumnsType<Record<string, any>>;
-  getData: (variables: {
-    page: number;
-    size: number;
-    keyword: string | undefined;
-  }) => Promise<
+  getData: (variables: CommonVariables) => Promise<
     | (AxiosResponseData & {
         data: { content: Record<string, any>[]; pageInfo: CommonPageInfo };
       })
