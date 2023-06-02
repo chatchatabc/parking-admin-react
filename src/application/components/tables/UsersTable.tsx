@@ -17,7 +17,11 @@ function UsersTable() {
               className="text-blue-500 underline hover:no-underline"
               onClick={() => {
                 navigate(
-                  record.username ? `u-${record.username}` : `p-${record.phone}`
+                  `/users/${
+                    record.username
+                      ? `u-${record.username}`
+                      : `p-${record.phone}`
+                  }`
                 );
               }}
             >

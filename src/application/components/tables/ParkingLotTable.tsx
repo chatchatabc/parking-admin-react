@@ -20,9 +20,11 @@ function ParkingTable() {
               className="text-blue-500 underline hover:no-underline"
               onClick={() => {
                 navigate(
-                  owner.username
-                    ? `u-${record.owner.username}`
-                    : `p-${record.owner.phone}`
+                  `/parking/${
+                    owner.username
+                      ? `u-${record.owner.username}`
+                      : `p-${record.owner.phone}`
+                  }`
                 );
               }}
             >
