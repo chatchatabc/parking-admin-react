@@ -8,6 +8,7 @@ import { restPost } from "../infra/apis/restAction";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonPageInfo } from "../models/CommonModel";
 import { Parking } from "../models/ParkingModel";
+import { User } from "../models/UserModel";
 
 export async function parkingAllGet({
   page = 0,
@@ -20,9 +21,56 @@ export async function parkingAllGet({
     return query.data;
   }
 
-  return query.data.data.getParkingLots as AxiosResponseData & {
-    content: Parking[];
-    pageInfo: CommonPageInfo;
+  const data = query.data.data.getParkingLots;
+
+  return { data } as AxiosResponseData & {
+    data: {
+      content: Parking[];
+      pageInfo: CommonPageInfo;
+    };
+  };
+}
+
+export async function parkingLotGetAllWithOwners({
+  page = 0,
+  size = 10,
+  keyword = undefined,
+}: Record<string, any>) {
+  const query = await graphqlQuery(parkingAllGetDoc(), { page, size, keyword });
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  // Add owner info to each parking lot
+  const parkingLots = query.data.data.getParkingLots.content as Parking[];
+  const additionalInfo = parkingLots.map(async (parkingLot) => {
+    const newParkingLot: Parking & { owner: User } = {
+      ...parkingLot,
+      owner: {},
+    };
+
+    const queryOwner = await graphqlQuery(parkingLotGetByUsernameDoc(), {
+      parkingLotUuid: parkingLot.parkingLotUuid,
+    });
+
+    if (queryOwner.data.errors) {
+      return newParkingLot;
+    }
+
+    newParkingLot.owner = queryOwner.data.data.getParkingLotByUsername;
+    return newParkingLot;
+  });
+
+  // Wait for all promises to resolve
+  const newContent = await Promise.all(additionalInfo);
+  const data = { ...query.data.data.getParkingLots, content: newContent };
+
+  return { data } as AxiosResponseData & {
+    data: {
+      content: (Parking & { owner: User })[];
+      pageInfo: CommonPageInfo;
+    };
   };
 }
 
