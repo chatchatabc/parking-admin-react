@@ -5,7 +5,7 @@ import {
 } from "../gql-docs/parkingDocs";
 import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost } from "../infra/apis/restAction";
+import { restPost, restPut } from "../infra/apis/restAction";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonPageInfo } from "../models/CommonModel";
 import { Parking } from "../models/ParkingModel";
@@ -121,12 +121,25 @@ export async function parkingLotGet({
   return { data } as AxiosResponseData & Parking;
 }
 
-export async function parkingCreate(values: Record<string, any>) {
+export async function parkingLotCreate(values: Record<string, any>) {
   const userUuid = values.userUuid;
 
   delete values.userUuid;
 
   const response = await restPost(`/parking-lot/create/${userUuid}`, values);
+
+  return response.data;
+}
+
+export async function parkingLotUpdate(values: Record<string, any>) {
+  const parkingLotUuid = values.parkingLotUuid;
+
+  delete values.parkingLotUuid;
+
+  const response = await restPut(
+    `/parking-lot/update/${parkingLotUuid}`,
+    values
+  );
 
   return response.data;
 }

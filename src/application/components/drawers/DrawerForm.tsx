@@ -6,6 +6,7 @@ import { useForm } from "antd/es/form/Form";
 import React from "react";
 import FormUserCreate from "../forms/FormUserCreate";
 import FormParkingCreate from "../forms/FormParkingCreate";
+import FormParkingUpdate from "../forms/FormParkingUpdate";
 
 function DrawerForm() {
   const dispatch = useDispatch();
@@ -41,6 +42,9 @@ function DrawerForm() {
     >
       {drawerForm.content === "parkingCreate" && (
         <FormParkingCreate formRef={form} title={drawerForm.title} />
+      )}
+      {drawerForm.content === "parkingUpdate" && (
+        <FormParkingUpdate formRef={form} title={drawerForm.title} />
       )}
       {drawerForm.content === "userCreate" && (
         <FormUserCreate formRef={form} title={drawerForm.title} />

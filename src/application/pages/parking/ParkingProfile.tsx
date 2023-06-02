@@ -5,21 +5,25 @@ import { useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
 import { parkingLotGet } from "../../../domain/services/parkingService";
 import { Parking } from "../../../domain/models/ParkingModel";
+import { useDispatch } from "react-redux";
+import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import dayjs from "dayjs";
 
 function ParkingProfile() {
-  const [data, setData] = React.useState<Parking | null>(null);
-  const [loading, setLoading] = React.useState(true);
-
+  // Global states
   const { identifier } = useParams();
+  const dispatch = useDispatch();
 
   const identifiers = identifier?.split("-");
-
   if (!identifiers || (identifiers[0] !== "u" && identifiers[0] !== "p")) {
     return <NotFoundPage />;
   }
-
   const username = identifiers[0] === "u" ? identifiers[1] : undefined;
   const phone = identifiers[0] === "p" ? identifiers[1] : undefined;
+
+  // Local states
+  const [data, setData] = React.useState<Parking | null>(null);
+  const [loading, setLoading] = React.useState(true);
 
   const dates = [
     {
@@ -51,7 +55,6 @@ function ParkingProfile() {
       value: 1,
     },
   ];
-
   let flagValue = data?.openDaysFlag ?? 0;
   const activeDates = dates.map((date) => {
     if (flagValue >= date.value) {
@@ -123,7 +126,35 @@ function ParkingProfile() {
           {/* Header */}
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">Parking Information</h2>
-            <button className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary">
+            <button
+              onClick={() => {
+                const openDaysFlag = dates.map((date) => {
+                  if (activeDates.includes(date.name)) {
+                    return date.value;
+                  }
+                  return 0;
+                });
+                const businessHoursEnd = dayjs(data.businessHoursEnd ?? "");
+                const businessHoursStart = dayjs(data.businessHoursStart ?? "");
+
+                console.log(businessHoursEnd, businessHoursStart);
+
+                dispatch(
+                  drawerFormUpdate({
+                    show: true,
+                    mode: "update",
+                    data: {
+                      ...data,
+                      openDaysFlag,
+                      businessHoursEnd,
+                      businessHoursStart,
+                    },
+                    content: "parkingUpdate",
+                  })
+                );
+              }}
+              className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
+            >
               Edit
             </button>
           </header>
@@ -174,7 +205,7 @@ function ParkingProfile() {
 
             <div className="w-full">
               <p className="text-xs font-bold">Business Dates</p>
-              <ul className="flex flex-wrap space-x-1">
+              <ul className="flex flex-wrap gap-1">
                 {dates.reverse().map((date) => {
                   const isActive = activeDates.includes(date.name);
                   return (
