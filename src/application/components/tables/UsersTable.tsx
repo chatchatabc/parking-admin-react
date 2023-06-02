@@ -1,4 +1,3 @@
-import React from "react";
 import { User } from "../../../domain/models/UserModel";
 import { useNavigate } from "react-router-dom";
 import DynamicTable from "./DynamicTable";
