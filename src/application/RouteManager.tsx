@@ -10,6 +10,7 @@ import UsersPage from "./pages/users/UsersPage";
 import HomePage from "./pages/HomePage";
 import ParkingLotsPage from "./pages/parking-lots/ParkingLotsPage";
 import ParkingLotsProfilePage from "./pages/parking-lots/ParkingLotsProfilePage";
+import SearchPage from "./pages/SearchPage";
 
 message.config({
   maxCount: 2,
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: "about",
         element: <h1>About</h1>,
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
       },
       {
         path: "*",
