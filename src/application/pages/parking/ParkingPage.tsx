@@ -1,17 +1,15 @@
 import React from "react";
-import { Pagination, Table, message } from "antd";
+import { Pagination } from "antd";
 import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { parkingAllGet } from "../../../domain/services/parkingService";
+import { useSearchParams } from "react-router-dom";
 import { Parking } from "../../../domain/models/ParkingModel";
-import { userGetByParkingLotUuid } from "../../../domain/services/userService";
 import { User } from "../../../domain/models/UserModel";
+import ParkingTable from "../../components/tables/ParkingTable";
 
 function ParkingPage() {
   // React Router
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchParams, _] = useSearchParams();
 
@@ -35,122 +33,6 @@ function ParkingPage() {
   function handleNavigation(page: number) {
     setPagination({ ...pagination, current: page - 1 });
   }
-
-  const columns = [
-    {
-      title: "Parking Name",
-      key: "name",
-      render: (record: Parking & { owner: User }) => {
-        const owner = record.owner;
-
-        if (owner.username || owner.phone) {
-          return (
-            <button
-              className="text-blue-500 underline hover:no-underline"
-              onClick={() => {
-                navigate(
-                  owner.username
-                    ? `u-${record.owner.username}`
-                    : `p-${record.owner.phone}`
-                );
-              }}
-            >
-              {record.name}
-            </button>
-          );
-        }
-        return <p>Unknown</p>;
-      },
-    },
-    {
-      title: "Owner",
-      key: "owner",
-      render: (record: Parking & { owner: User }) => {
-        const owner = record.owner;
-
-        return (
-          <p>{owner.username ?? owner.phone ?? owner.email ?? "Unknown"}</p>
-        );
-      },
-    },
-    {
-      title: "Address",
-      key: "address",
-      dataIndex: "address",
-    },
-    {
-      title: "Slots",
-      key: "slots",
-      render: (record: Parking) => {
-        return (
-          <div>
-            {record.availableSlots}/{record.capacity}
-          </div>
-        );
-      },
-    },
-  ];
-
-  React.useEffect(() => {
-    async function fetchData() {
-      // Fetch parking list
-      const query = await parkingAllGet({
-        page: pagination.current,
-        size: pagination.pageSize,
-        keyword: keyword,
-      });
-
-      if (query.errors) {
-        message.error("Failed to fetch parking list.");
-      } else {
-        // Fetch additional info
-        const queryAdditionalInfo = query.content.map(
-          async (parking, index) => {
-            // Fetch owner
-            const queryOwner = await userGetByParkingLotUuid(
-              parking.parkingLotUuid ?? ""
-            );
-
-            const data = {
-              ...parking,
-              key: `parking-list-${index}`,
-              owner: {},
-            };
-
-            if (queryOwner.errors) {
-              message.error("Failed to fetch parking owner.");
-              return data;
-            }
-
-            data.owner = queryOwner.data;
-            return data;
-          }
-        );
-
-        // Wait for all additional info to be fetched
-        const processedData = await Promise.all(queryAdditionalInfo);
-
-        // Set data
-        setData(processedData);
-        setPagination((prev) => ({
-          ...prev,
-          total: query.pageInfo.totalElements,
-        }));
-      }
-
-      setLoading(false);
-    }
-
-    if (loading) {
-      fetchData();
-    }
-  }, [loading]);
-
-  React.useEffect(() => {
-    if (globalState.reset) {
-      setLoading(true);
-    }
-  }, [globalState.reset]);
 
   return (
     <div className="px-4 pb-4 w-full relative">
@@ -187,17 +69,7 @@ function ParkingPage() {
           </button>
         </section>
         <section>
-          <Table
-            loading={loading}
-            className={`my-table`}
-            dataSource={data}
-            columns={columns}
-            pagination={{
-              ...pagination,
-              current: pagination.current + 1,
-              onChange: handleNavigation,
-            }}
-          />
+          <ParkingTable />
         </section>
       </section>
     </div>
