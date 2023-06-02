@@ -32,6 +32,7 @@ function DynamicTable({ title, getData, columns }: Props) {
   const globalState = useSelector((state: any) => state.globalState);
   const current = searchParams.get("page") ?? "1";
   const pageSize = searchParams.get("pageSize") ?? "10";
+  const keyword = searchParams.get("keyword") ?? undefined;
 
   // Local States
   const [data, setData] = React.useState<Record<string, any>[]>([]);
@@ -67,7 +68,7 @@ function DynamicTable({ title, getData, columns }: Props) {
       const response = await getData({
         page: pagination.current - 1,
         size: pagination.pageSize,
-        keyword: undefined,
+        keyword: keyword,
       });
 
       if (response.errors) {
