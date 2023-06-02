@@ -12,19 +12,20 @@
 }
 
 .my-table .ant-table-thead > tr > th {
-  background: var(--bg1);
+  background: var(--bg3);
   color: var(--t1);
   border-color: var(--c1);
 }
 
 .my-table .ant-table-tbody > tr > td {
-  border-color: var(--bg4);
-  background: var(--bg3);
+  border-color: var(--t2);
+  background: var(--bg2);
+  color: var(--t2);
 }
 
 .my-table .ant-table-tbody > tr.ant-table-row:hover > td {
-  background: var(--bg1);
-  color: var(--text2) !important;
+  background: var(--bg2);
+  color: var(--t1) !important;
 }
 
 .my-table .ant-pagination-item-link {
