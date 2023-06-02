@@ -7,9 +7,9 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import UsersCreatePage from "./pages/users/UsersProfilePage";
 import UsersPage from "./pages/users/UsersPage";
-import ParkingPage from "./pages/parking/ParkingPage";
-import ParkingProfile from "./pages/parking/ParkingProfile";
 import HomePage from "./pages/HomePage";
+import ParkingLotsPage from "./pages/parking-lots/ParkingLotsPage";
+import ParkingLotsProfilePage from "./pages/parking-lots/ParkingLotsProfilePage";
 
 message.config({
   maxCount: 2,
@@ -42,19 +42,15 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "parking",
+        path: "parking-lots",
         children: [
           {
             path: "",
-            element: <ParkingPage />,
-          },
-          {
-            path: "create",
-            element: <h1>Parking Create</h1>,
+            element: <ParkingLotsPage />,
           },
           {
             path: ":identifier",
-            element: <ParkingProfile />,
+            element: <ParkingLotsProfilePage />,
           },
         ],
       },

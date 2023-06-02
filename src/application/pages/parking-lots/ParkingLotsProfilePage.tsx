@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import dayjs from "dayjs";
 
-function ParkingProfile() {
+function ParkingLotsProfilePage() {
   // Global states
   const globalState = useSelector((state: any) => state.globalState);
   const { identifier } = useParams();
@@ -249,4 +249,4 @@ function ParkingProfile() {
   );
 }
 
-export default ParkingProfile;
+export default ParkingLotsProfilePage;

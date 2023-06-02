@@ -26,12 +26,12 @@
         {
           "label": "List",
           "icon": "mdi:parking",
-          "path": "/parking"
+          "path": "/parking-lots"
         },
         {
           "label": "Create Parking Lot",
           "icon": "mdi:plus",
-          "path": "/parking/create"
+          "path": "/parking-lots/create"
         }
       ]
     },

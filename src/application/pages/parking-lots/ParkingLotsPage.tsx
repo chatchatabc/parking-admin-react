@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import ParkingTable from "../../components/tables/ParkingLotTable";
 
-function ParkingPage() {
+function ParkingLotsPage() {
   // React Router
   const dispatch = useDispatch();
 
@@ -40,4 +40,4 @@ function ParkingPage() {
   );
 }
 
-export default ParkingPage;
+export default ParkingLotsPage;
