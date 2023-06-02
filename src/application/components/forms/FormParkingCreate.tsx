@@ -11,8 +11,8 @@ import type { Dayjs } from "dayjs";
 import { userAllOptionsGet } from "../../../domain/services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import SelectAsyncSearch from "../select/SelectAsyncSearch";
-import { parkingCreate } from "../../../domain/services/parkingService";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import { parkingLotCreate } from "../../../domain/services/parkingService";
 
 type Props = {
   title: string;
@@ -37,7 +37,7 @@ function FormParkingCreate({ title, formRef }: Props) {
       return acc | curr;
     }, 0);
 
-    const response = await parkingCreate(e);
+    const response = await parkingLotCreate(e);
 
     if (response.errors) {
       return message.error("Parking lot creation failed");
