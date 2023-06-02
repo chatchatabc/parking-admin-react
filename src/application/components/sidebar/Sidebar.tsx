@@ -16,9 +16,9 @@ function Sidebar({ open }: Props) {
 
   return (
     <aside
-      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg4 border-r-2 border-bg9 ${
+      className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg4 border-r-2 border-t2 ${
         open ? "min-w-[250px]" : "min-w-[1px]"
-      } transition-all ease-linear group hover:min-w-[250px]`}
+      } transition-all ease-linear text-t2 group hover:min-w-[250px]`}
     >
       {/* Navigation */}
       <nav className="p-2 space-y-2">
@@ -32,7 +32,9 @@ function Sidebar({ open }: Props) {
                   <NavLink
                     className={({ isActive }) =>
                       `p-2 rounded-md flex items-center ${
-                        isActive ? "bg-accent1" : "hover:bg-accent1"
+                        isActive
+                          ? "bg-bg2 text-white"
+                          : "hover:bg-bg2 hover:text-white"
                       }`
                     }
                     to={navigation.path}
@@ -61,7 +63,9 @@ function Sidebar({ open }: Props) {
                 <NavLink
                   className={({ isActive }) =>
                     `p-2 rounded-md flex items-center ${
-                      isActive ? "bg-accent1" : "hover:bg-accent1"
+                      isActive
+                        ? "bg-bg2 text-white"
+                        : "hover:bg-bg2 hover:text-white"
                     } `
                   }
                   to={navigation.path}

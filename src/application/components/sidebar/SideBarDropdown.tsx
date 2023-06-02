@@ -30,7 +30,7 @@ function SideBarDropdown({ navigation, open }: DropDownProps) {
         onClick={() => {
           setHide(!hide);
         }}
-        className="p-2 w-full rounded-md flex items-center hover:bg-accent1"
+        className="p-2 w-full rounded-md flex items-center hover:bg-bg2 hover:text-white"
       >
         <span>
           <Icon className="w-6 h-6" icon={navigation.icon} />
@@ -61,7 +61,9 @@ function SideBarDropdown({ navigation, open }: DropDownProps) {
                   to={child.path}
                   className={({ isActive }) =>
                     `p-2 rounded-md flex items-center ${
-                      isActive ? "bg-accent1" : "hover:bg-accent1"
+                      isActive
+                        ? "bg-bg2 text-white"
+                        : "hover:bg-bg2 hover:text-white"
                     }`
                   }
                 >
