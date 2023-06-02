@@ -35,6 +35,11 @@
         }
       ]
     },
+    {
+      "label": "Search",
+      "icon": "mdi:magnify",
+      "path": "/search"
+    },
     { "label": "Settings", "icon": "mdi:cog", "path": "/settings" }
   ]
 }
