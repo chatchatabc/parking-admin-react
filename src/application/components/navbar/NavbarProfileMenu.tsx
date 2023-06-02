@@ -39,20 +39,20 @@ function NavbarProfileMenu({ setProfileMenu }: Props) {
   }
 
   return (
-    <div className="flex min-w-[200px] flex-col">
+    <div className="flex min-w-[200px] flex-col bg-bg2 text-t2 -m-2 rounded-lg">
       <button
         onClick={() => {
           setProfileMenu(false);
           navigate("/profile");
         }}
-        className="py-2 text-left block rounded-md transition hover:text-blue-500"
+        className="py-2 text-left block rounded-md transition px-2 hover:bg-bg3 hover:text-t1"
       >
         My Profile
       </button>
 
       <button
         onClick={handleLogout}
-        className="py-2 text-left block rounded-md transition hover:text-blue-500"
+        className="py-2 text-left block rounded-md transition px-2 hover:bg-bg3 hover:text-t1"
       >
         Logout
       </button>

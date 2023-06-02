@@ -110,7 +110,10 @@ function NavbarSearchBar() {
               </svg>
             )
           }
-          className="p-2 rounded-md"
+          className="p-2 rounded-md bg-bg3 text-t1"
+          classNames={{
+            input: "bg-bg3 text-t1 placeholder:text-t2",
+          }}
           placeholder="Search..."
         />
       </Popover>

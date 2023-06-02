@@ -32,13 +32,13 @@ function HomeLayout() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg0 text-text1">
+    <div className="flex min-h-screen flex-col bg-bg1 text-t1">
       {/* Navbar */}
-      <header className="bg-bg4 z-[10] sticky top-0 border-b-2 py-2 px-3 flex items-center border-bg9">
+      <header className="bg-bg2 z-[10] sticky top-0 border-b-2 py-2 px-3 flex items-center border-t2">
         {/* Left side */}
         <div className="flex space-x-4 items-center">
           {/* Sidebar show and hide btn */}
-          <button className="p-1 rounded-md hover:bg-accent1">
+          <button className="p-1 rounded-md hover:bg-bg3">
             <Icon
               className="w-8 h-8"
               icon={openSidebar ? "mdi:menu-open" : "mdi:menu"}
@@ -69,11 +69,12 @@ function HomeLayout() {
             trigger="click"
             onOpenChange={(open) => setProfileMenu(open)}
             zIndex={1001}
+            arrow={false}
           >
             <button
               className={`flex items-center space-x-2 p-1 rounded-md transition ${
-                openProfileMenu ? "bg-accent1" : ""
-              } hover:bg-accent1`}
+                openProfileMenu ? "bg-bg3" : ""
+              } hover:bg-bg3`}
             >
               <div className="w-10 h-10 rounded-full border border-accent1 bg-white"></div>
               <p>Admin</p>
