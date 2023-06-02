@@ -63,8 +63,6 @@ export async function parkingLotGetAllWithOwners({
       parkingLotUuid: parkingLot.parkingLotUuid,
     });
 
-    console.log(queryOwner);
-
     if (queryOwner.data.errors) {
       return newParkingLot;
     }
