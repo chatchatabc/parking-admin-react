@@ -9,6 +9,7 @@ import UsersCreatePage from "./pages/users/UsersProfilePage";
 import UsersPage from "./pages/users/UsersPage";
 import ParkingPage from "./pages/parking/ParkingPage";
 import ParkingProfile from "./pages/parking/ParkingProfile";
+import HomePage from "./pages/HomePage";
 
 message.config({
   maxCount: 2,
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <h1>Home</h1>,
+        element: <HomePage />,
       },
       {
         path: "users",
