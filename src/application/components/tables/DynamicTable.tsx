@@ -73,7 +73,14 @@ function DynamicTable({ title, getData, columns }: Props) {
       if (response.errors) {
         message.error("Failed to fetch data.");
       } else {
-        setData(response.data.content);
+        const processedData = response.data.content.map(
+          (item: any, index: number) => ({
+            ...item,
+            key: `${title}-${index}`,
+          })
+        );
+
+        setData(processedData);
         setPagination((prev) => ({
           ...prev,
           total: response.data.pageInfo.totalElements,
@@ -89,7 +96,6 @@ function DynamicTable({ title, getData, columns }: Props) {
   }, [loading]);
   return (
     <Table
-      caption={title}
       columns={columns}
       dataSource={data}
       pagination={{ ...pagination, onChange: handleNavigation }}
