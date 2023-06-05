@@ -6,6 +6,7 @@ import { User } from "../../domain/models/UserModel";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
+import MyButton from "../components/common/MyButton";
 
 interface Props {
   username?: string;
@@ -68,17 +69,15 @@ function ProfilePage({ username, phone }: Props) {
   }
 
   return (
-    <div className="flex-1 px-4 pb-4 relative">
+    <div className="flex-1 bg-bg1 p-4 relative">
       <section className="flex gap-4">
         {/* Left side */}
         <section className="w-1/4">
           {/* 1st row */}
-          <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
-            <header className="flex items-center">
+          <div className="border-2 border-primary bg-bg2 p-4 pb-8 rounded-lg">
+            <header className="flex items-center justify-between">
               <h2 className="text-lg font-bold">User Avatar</h2>
-              <button className="ml-auto bg-primary text-white px-4 py-1 rounded-md transition hover:bg-secondary">
-                Edit
-              </button>
+              <MyButton>Edit</MyButton>
             </header>
 
             <div className="w-1/2 mx-auto mt-2">
@@ -90,11 +89,11 @@ function ProfilePage({ username, phone }: Props) {
         {/* Right Side */}
         <section className="flex-1 space-y-4">
           {/* First Entry */}
-          <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
+          <div className="border-2 border-primary p-4 pb-8 bg-bg2 rounded-lg">
             {/* Header */}
-            <header className="flex items-center">
+            <header className="flex items-center justify-between">
               <h2 className="text-lg font-bold">User Information</h2>
-              <button
+              <MyButton
                 onClick={() => {
                   dispatch(
                     drawerFormUpdate({
@@ -106,10 +105,9 @@ function ProfilePage({ username, phone }: Props) {
                     })
                   );
                 }}
-                className="ml-auto bg-primary text-white px-4 py-1 rounded-md transition hover:bg-secondary"
               >
                 Edit
-              </button>
+              </MyButton>
             </header>
 
             {/* Body */}
