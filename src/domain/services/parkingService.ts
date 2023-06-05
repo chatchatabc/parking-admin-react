@@ -143,3 +143,9 @@ export async function parkingLotUpdate(values: Record<string, any>) {
 
   return response.data;
 }
+
+export async function parkingLotVerify(parkingLotUuid: string) {
+  const response = await restPut(`/parking-lot/verify/${parkingLotUuid}`, {});
+
+  return response.data;
+}
