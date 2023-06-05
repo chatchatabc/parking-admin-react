@@ -4,7 +4,7 @@ function MyButton({ ...props }: ButtonProps) {
   return (
     <Button
       {...props}
-      className={`py-1 px-4 rounded-md bg-bg3 text-t1 border-none ${props.className}`}
+      className={`py-1 px-4 rounded-md text-t1 border-none text-base bg-c1 ${props.className} hover:bg-bg3`}
     >
       {props.children}
     </Button>
