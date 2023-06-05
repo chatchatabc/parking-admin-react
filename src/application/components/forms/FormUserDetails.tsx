@@ -5,6 +5,7 @@ import {
 } from "../../../domain/services/userService";
 import { useSelector } from "react-redux";
 import SelectAsync from "../select/SelectAsync";
+import MyButton from "../common/MyButton";
 
 type Props = {
   title?: string;
@@ -20,13 +21,14 @@ function FormUserDetails({ formRef, title }: Props) {
 
   return (
     <Form name={title} onFinish={onFinish} layout="vertical" form={formRef}>
-      <div className="flex flex-wrap [&>*]:px-2 [&>*]:w-1/3">
+      <div className="flex flex-wrap [&>*]:px-2">
         <Form.Item name="userUuid" hidden />
-        <Form.Item name="username" label="Username">
+        <Form.Item name="username" className="w-1/3" label="Username">
           <Input placeholder="Username" />
         </Form.Item>
 
         <Form.Item
+          className="w-1/3"
           name="phone"
           label="Phone Number"
           rules={[
@@ -44,6 +46,7 @@ function FormUserDetails({ formRef, title }: Props) {
         </Form.Item>
 
         <Form.Item
+          className="w-1/3"
           name="email"
           label="Email"
           rules={[
@@ -57,6 +60,7 @@ function FormUserDetails({ formRef, title }: Props) {
         </Form.Item>
 
         <Form.Item
+          className="w-1/3"
           name="roles"
           label="Roles"
           rules={[
@@ -125,14 +129,14 @@ function FormUserDetails({ formRef, title }: Props) {
           <Input placeholder="Last Name" />
         </Form.Item> */}
 
-        <Form.Item hidden className="w-full">
-          <Button
+        <Form.Item className="w-full">
+          <MyButton
             loading={drawerForm.loading}
             htmlType="submit"
-            className="bg-primary text-white"
+            className="w-full block"
           >
             Submit
-          </Button>
+          </MyButton>
         </Form.Item>
       </div>
     </Form>

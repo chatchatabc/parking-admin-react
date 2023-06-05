@@ -14,6 +14,7 @@ import SelectAsyncSearch from "../select/SelectAsyncSearch";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { parkingLotCreate } from "../../../domain/services/parkingService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
+import MyButton from "../common/MyButton";
 
 type Props = {
   title: string;
@@ -225,13 +226,13 @@ function FormParkingCreate({ title, formRef }: Props) {
         </Form.Item>
 
         <Form.Item style={{ width: "100%" }}>
-          <Button
+          <MyButton
             loading={drawerForm.loading}
             htmlType="submit"
-            className="bg-primary text-white w-full block"
+            className="w-full block"
           >
             Submit
-          </Button>
+          </MyButton>
         </Form.Item>
       </div>
     </Form>

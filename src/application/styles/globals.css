@@ -17,27 +17,27 @@
   border-color: var(--c1);
 }
 
+/* Next and Prev icon */
 .myTable .ant-pagination-item-link {
   color: var(--t2) !important;
 }
-
 .myTable .ant-pagination-item-link:hover {
   color: var(--t1) !important;
 }
 
+/* Table Pagination item */
 .myTable .ant-pagination-item a {
   color: var(--t2) !important;
 }
-
 .myTable .ant-pagination-item a:hover {
   color: var(--t1) !important;
 }
 
+/* Table Active Pagination Item */
 .myTable .ant-pagination-item-active {
   background-color: var(--bg3) !important;
   border-color: var(--c1) !important;
 }
-
 .myTable .ant-pagination-item-active a {
   color: var(--t1) !important;
 }

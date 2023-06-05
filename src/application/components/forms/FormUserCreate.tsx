@@ -7,6 +7,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { globalStateUpdate } from "../../redux/slices/globalState";
+import MyButton from "../common/MyButton";
 
 type Props = {
   title: string;
@@ -101,13 +102,13 @@ function FormUserCreate({ formRef, title }: Props) {
         </Form.Item>
 
         <Form.Item className="w-full">
-          <Button
+          <MyButton
             loading={drawerForm.loading}
             htmlType="submit"
-            className="bg-primary text-white block w-full"
+            className="block w-full"
           >
             Submit
-          </Button>
+          </MyButton>
         </Form.Item>
       </div>
     </Form>

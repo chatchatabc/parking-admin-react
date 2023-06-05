@@ -7,6 +7,7 @@ import React from "react";
 import FormUserCreate from "../forms/FormUserCreate";
 import FormParkingCreate from "../forms/FormParkingCreate";
 import FormParkingUpdate from "../forms/FormParkingUpdate";
+import MyButton from "../common/MyButton";
 
 function DrawerForm() {
   const dispatch = useDispatch();
@@ -29,15 +30,14 @@ function DrawerForm() {
       }}
       open={drawerForm.show}
       extra={
-        <Button
-          className="bg-primary text-white"
+        <MyButton
           onClick={() => {
             form.submit();
           }}
           loading={drawerForm.loading}
         >
           {drawerForm.mode === "create" ? "Add" : "Update"}
-        </Button>
+        </MyButton>
       }
     >
       {drawerForm.content === "parkingCreate" && (

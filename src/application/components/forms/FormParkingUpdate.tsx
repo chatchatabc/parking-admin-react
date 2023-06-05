@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { parkingLotUpdate } from "../../../domain/services/parkingService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
+import MyButton from "../common/MyButton";
 
 type Props = {
   title: string;
@@ -243,13 +244,13 @@ function FormParkingUpdate({ title, formRef }: Props) {
         </Form.Item>
 
         <Form.Item className="w-full">
-          <Button
+          <MyButton
             loading={drawerForm.loading}
             htmlType="submit"
-            className="bg-primary text-white w-full block"
+            className="w-full block"
           >
             Submit
-          </Button>
+          </MyButton>
         </Form.Item>
       </div>
     </Form>
