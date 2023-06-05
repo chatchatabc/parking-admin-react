@@ -8,7 +8,7 @@ function NotFoundPage() {
   const port = window.location.port;
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex bg-bg1 flex-1 flex-col justify-center items-center w-full">
       <h1 className="text-4xl">Oh no! 404 Page not found.</h1>
       <p className="my-16">
         It seems that{" "}
