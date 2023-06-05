@@ -11,3 +11,7 @@ export function utilApiMessageGet(messageCode: string) {
 
   return `Unknown message code: ${messageCode}`;
 }
+
+export function utilGenerateRandomNumber() {
+  return Math.floor(Math.random() * 100000000);
+}
