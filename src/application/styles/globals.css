@@ -11,14 +11,30 @@
   --bg3: #374151;
 }
 
+/* Table Head */
 .myTable .ant-table-thead > tr > th {
   background: var(--bg3);
   color: var(--t1);
   border-color: var(--c1);
 }
 
+/* Table Body */
+.myTable tbody tr td {
+  background-color: var(--bg2) !important;
+  color: var(--t2) !important;
+  border-color: var(--t2) !important;
+}
+.myTable tbody tr:hover td {
+  background-color: var(--bg3) !important;
+  color: var(--t1) !important;
+  border-color: var(--t1) !important;
+}
+.myTable tbody tr td .ant-empty-description {
+  color: var(--t1);
+}
+
 /* Next and Prev icon */
-.myTable .ant-pagination-item-link {
+.myTable .ant-paginati on-item-link {
   color: var(--t2) !important;
 }
 .myTable .ant-pagination-item-link:hover {
@@ -39,17 +55,6 @@
   border-color: var(--c1) !important;
 }
 .myTable .ant-pagination-item-active a {
-  color: var(--t1) !important;
-}
-
-.myTableRow {
-  background-color: var(--bg2) !important;
-  color: var(--t2) !important;
-  border-color: var(--t2) !important;
-}
-
-.myTableRow .ant-table-cell-row-hover {
-  background-color: var(--bg3) !important;
   color: var(--t1) !important;
 }
 
