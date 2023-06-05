@@ -10,6 +10,7 @@ import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import dayjs from "dayjs";
 import { User } from "../../../domain/models/UserModel";
 import { userGetProfile } from "../../../domain/services/userService";
+import MyButton from "../../components/common/MyButton";
 
 function ParkingLotsProfilePage() {
   // Global states
@@ -120,16 +121,14 @@ function ParkingLotsProfilePage() {
   const businessHoursEnd = new Date(data.businessHoursEnd ?? "");
 
   return (
-    <div className="px-4 flex flex-1 gap-4">
+    <div className="p-4 bg-bg1 flex flex-1 gap-4">
       {/* Left */}
       <section className="w-1/3">
         {/* 1st Entry */}
-        <section className="border-2 bg-bg1 p-2 rounded-lg border-primary">
+        <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">User Profile</h2>
-            <button className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary">
-              View
-            </button>
+            <MyButton>View</MyButton>
           </header>
 
           <section>
@@ -144,11 +143,11 @@ function ParkingLotsProfilePage() {
       {/* Right */}
       <section className="w-2/3">
         {/* 1st Entry */}
-        <section className="border-2 bg-bg1 p-2 rounded-lg border-primary">
+        <section className="bg-bg2 p-4 rounded-lg">
           {/* Header */}
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">Parking Information</h2>
-            <button
+            <MyButton
               onClick={() => {
                 const openDaysFlag = dates.map((date) => {
                   if (activeDates.includes(date.name)) {
@@ -175,10 +174,9 @@ function ParkingLotsProfilePage() {
                   })
                 );
               }}
-              className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
             >
               Edit
-            </button>
+            </MyButton>
           </header>
 
           {/* Body */}
