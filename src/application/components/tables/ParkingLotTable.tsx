@@ -2,7 +2,14 @@ import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
 import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
-import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingService";
+import {
+  parkingLotGetAllWithOwners,
+  parkingLotVerify,
+} from "../../../domain/services/parkingService";
+import { Modal, message } from "antd";
+import { useDispatch } from "react-redux";
+import { globalStateUpdate } from "../../redux/slices/globalState";
+import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 
 type Props = {
   showPagination?: boolean;
@@ -10,6 +17,7 @@ type Props = {
 
 function ParkingTable({ showPagination }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const columns = [
     {
@@ -62,6 +70,56 @@ function ParkingTable({ showPagination }: Props) {
         return (
           <div>
             {record.availableSlots}/{record.capacity}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Verified",
+      key: "verified",
+      render: (record: Parking) => {
+        const date = new Date(record.verifiedAt ?? "");
+        return (
+          <div>
+            {record.verifiedAt ? (
+              date.toISOString()
+            ) : (
+              <div className="flex gap-4">
+                <p className="text-red-500">Not verified</p>
+                <button
+                  onClick={() => {
+                    Modal.confirm({
+                      title: `Proceed in verifying "${record.name}"?`,
+                      okButtonProps: {
+                        className: "bg-c1",
+                      },
+                      maskClosable: true,
+                      closable: true,
+                      onOk: async () => {
+                        const response = await parkingLotVerify(
+                          record.parkingLotUuid ?? ""
+                        );
+
+                        if (response.errors) {
+                          message.error("Failed to verify parking lot");
+                        } else {
+                          message.success("Successfully verified parking lot");
+
+                          dispatch(
+                            globalStateUpdate({
+                              reset: utilGenerateRandomNumber(),
+                            })
+                          );
+                        }
+                      },
+                    });
+                  }}
+                  className="text-xs text-blue-500 underline"
+                >
+                  (Click to verify)
+                </button>
+              </div>
+            )}
           </div>
         );
       },
