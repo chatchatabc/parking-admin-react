@@ -21,6 +21,27 @@
   color: var(--t2) !important;
 }
 
+.myTable .ant-pagination-item-link:hover {
+  color: var(--t1) !important;
+}
+
+.myTable .ant-pagination-item a {
+  color: var(--t2) !important;
+}
+
+.myTable .ant-pagination-item a:hover {
+  color: var(--t1) !important;
+}
+
+.myTable .ant-pagination-item-active {
+  background-color: var(--bg3) !important;
+  border-color: var(--c1) !important;
+}
+
+.myTable .ant-pagination-item-active a {
+  color: var(--t1) !important;
+}
+
 .myTableRow {
   background-color: var(--bg2) !important;
   color: var(--t2) !important;
