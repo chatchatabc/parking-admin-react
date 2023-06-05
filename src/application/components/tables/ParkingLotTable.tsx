@@ -82,7 +82,12 @@ function ParkingTable({ showPagination }: Props) {
         return (
           <div>
             {record.verifiedAt ? (
-              date.toISOString()
+              <p className="text-green-500">
+                {new Intl.DateTimeFormat("en", {
+                  dateStyle: "medium",
+                  timeStyle: "medium",
+                }).format(date)}
+              </p>
             ) : (
               <div className="flex gap-4">
                 <p className="text-red-500">Not verified</p>

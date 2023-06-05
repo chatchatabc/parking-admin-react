@@ -8,6 +8,7 @@ export function parkingLotGetAllDoc() {
           address
           capacity
           name
+          verifiedAt
 
           rate {
             id
