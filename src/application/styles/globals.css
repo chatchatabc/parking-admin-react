@@ -34,7 +34,7 @@
 }
 
 /* Next and Prev icon */
-.myTable .ant-paginati on-item-link {
+.myTable .ant-pagination-item-link {
   color: var(--t2) !important;
 }
 .myTable .ant-pagination-item-link:hover {
