@@ -31,3 +31,7 @@
 .my-table .ant-pagination-item-link {
   color: var(--t2) !important;
 }
+
+.myFormItem .ant-form-item-label > label {
+  color: var(--t1) !important;
+}

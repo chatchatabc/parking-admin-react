@@ -1,9 +1,10 @@
 import React from "react";
 import { authCheckSession, authLogin } from "../../domain/services/authService";
 import { useNavigate } from "react-router-dom";
-import { Button, Form, Input, message } from "antd";
+import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { utilApiMessageGet } from "../../domain/utils/commonUtils";
+import MyButton from "../components/common/MyButton";
 
 function LoginPage() {
   const [loading, setLoading] = React.useState(false);
@@ -34,9 +35,11 @@ function LoginPage() {
 
   return (
     <div className="h-screen flex items-center bg-bg1">
-      <div className="p-16 bg-bg0 rounded-lg w-fit mx-auto">
+      <div className="p-16 bg-bg2 rounded-lg w-fit mx-auto">
         <header className="text-center space-y-2">
-          <h1 className="text-4xl font-bold">Davao Parking Dashboard</h1>
+          <h1 className="text-4xl font-bold text-t1">
+            Davao Parking Dashboard
+          </h1>
         </header>
         <Form
           form={form}
@@ -45,6 +48,7 @@ function LoginPage() {
           className="max-w-[300px] mt-8 w-full mx-auto"
         >
           <Form.Item
+            className="myFormItem"
             name="username"
             label="Username"
             rules={[
@@ -58,6 +62,7 @@ function LoginPage() {
           </Form.Item>
 
           <Form.Item
+            className="myFormItem"
             name="password"
             label="Password"
             rules={[
@@ -71,13 +76,9 @@ function LoginPage() {
           </Form.Item>
 
           <Form.Item>
-            <Button
-              loading={loading}
-              htmlType="submit"
-              className="px-4 py-1 bg-blue-500 rounded-md text-white mx-auto block w-fit"
-            >
+            <MyButton className="w-full" loading={loading} htmlType="submit">
               Login
-            </Button>
+            </MyButton>
           </Form.Item>
         </Form>
       </div>
