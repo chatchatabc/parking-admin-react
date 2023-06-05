@@ -37,6 +37,7 @@ function MultiTabs() {
 
   return (
     <Tabs
+      className="bg-bg3 -mb-4 text-t1"
       size="small"
       activeKey={multiTabsState.activeKey}
       type="editable-card"

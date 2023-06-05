@@ -4,7 +4,7 @@ import UsersTable from "../components/tables/UsersTable";
 
 function HomePage() {
   return (
-    <div className="space-y-8 px-4 pb-4 [&>*]:p-2">
+    <div className="space-y-8 p-4 bg-bg1 [&>*]:p-2">
       <section className="w-full bg-bg1 rounded-lg">
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">Parking Lots Table</h2>

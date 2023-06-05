@@ -8,9 +8,9 @@ function ParkingLotsPage() {
   const dispatch = useDispatch();
 
   return (
-    <div className="px-4 pb-4 w-full relative">
+    <div className="p-4 bg-bg1 w-full relative">
       {/* {error && <ErrorMessageComp />} */}
-      <section className="bg-bg4 p-4 space-y-2 rounded-lg w-full">
+      <section className="bg-bg2 p-4 space-y-2 rounded-lg w-full">
         {/* Table Title */}
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">Parking Lots</h2>
