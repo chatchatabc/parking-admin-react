@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
 import UsersTable from "../../components/tables/UsersTable";
+import MyButton from "../../components/common/MyButton";
 
 function UsersPage() {
   // React Router
@@ -15,7 +16,7 @@ function UsersPage() {
         {/* Table Title */}
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">Users</h2>
-          <button
+          <MyButton
             onClick={() => {
               formRefHandler.resetFields();
               dispatch(
@@ -27,10 +28,9 @@ function UsersPage() {
                 })
               );
             }}
-            className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
             Create User +
-          </button>
+          </MyButton>
         </header>
 
         <section>

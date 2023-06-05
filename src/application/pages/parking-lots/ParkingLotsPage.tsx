@@ -2,6 +2,7 @@ import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import ParkingTable from "../../components/tables/ParkingLotTable";
+import MyButton from "../../components/common/MyButton";
 
 function ParkingLotsPage() {
   // React Router
@@ -14,7 +15,7 @@ function ParkingLotsPage() {
         {/* Table Title */}
         <header className="flex justify-between">
           <h2 className="text-xl font-bold">Parking Lots</h2>
-          <button
+          <MyButton
             onClick={() => {
               formRefHandler.resetFields();
               dispatch(
@@ -26,10 +27,9 @@ function ParkingLotsPage() {
                 })
               );
             }}
-            className="bg-primary ml-auto text-white px-4 py-1 rounded-md transition hover:bg-secondary"
           >
             Add Parking Lot +
-          </button>
+          </MyButton>
         </header>
 
         <section>
