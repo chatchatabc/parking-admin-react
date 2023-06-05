@@ -102,12 +102,13 @@ function DynamicTable({
   }, [loading]);
   return (
     <Table
-      className="my-table"
       columns={columns}
       dataSource={data}
       pagination={
         showPagination ? { ...pagination, onChange: handleNavigation } : false
       }
+      className="myTable"
+      rowClassName={"myTableRow"}
     />
   );
 }

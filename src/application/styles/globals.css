@@ -11,25 +11,25 @@
   --bg3: #374151;
 }
 
-.my-table .ant-table-thead > tr > th {
+.myTable .ant-table-thead > tr > th {
   background: var(--bg3);
   color: var(--t1);
   border-color: var(--c1);
 }
 
-.my-table .ant-table-tbody > tr > td {
-  border-color: var(--t2);
-  background: var(--bg2);
-  color: var(--t2);
-}
-
-.my-table .ant-table-tbody > tr.ant-table-row:hover > td {
-  background: var(--bg2);
-  color: var(--t1) !important;
-}
-
-.my-table .ant-pagination-item-link {
+.myTable .ant-pagination-item-link {
   color: var(--t2) !important;
+}
+
+.myTableRow {
+  background-color: var(--bg2) !important;
+  color: var(--t2) !important;
+  border-color: var(--t2) !important;
+}
+
+.myTableRow .ant-table-cell-row-hover {
+  background-color: var(--bg3) !important;
+  color: var(--t1) !important;
 }
 
 .myFormItem .ant-form-item-label > label {
