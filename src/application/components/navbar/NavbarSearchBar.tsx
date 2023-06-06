@@ -23,18 +23,23 @@ const dictionary: Record<string, any> = {
   },
   p: {
     name: "Parking Lots",
-    url: "/parking",
+    url: "/parking-lots",
     icon: (
       <svg
-        xmlns="http://www.w3.org/2000/svg"
         className="w-6 h-6"
-        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 48 48"
       >
-        <path fill="currentColor" d="M8 18h6v2H8zm0 4h10v2H8z" />
-        <path
-          fill="currentColor"
-          d="M26 4H6a2.002 2.002 0 0 0-2 2v20a2.002 2.002 0 0 0 2 2h20a2.002 2.002 0 0 0 2-2V6a2.002 2.002 0 0 0-2-2Zm-8 2v4h-4V6ZM6 26V6h6v6h8V6h6l.001 20Z"
-        />
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-linejoin="round"
+          stroke-width="4"
+        >
+          <path d="M24 44s16-12 16-25c0-8.284-7.163-15-16-15S8 10.716 8 19c0 13 16 25 16 25Z" />
+          <path stroke-linecap="round" d="M21 14v16" />
+          <path d="M21 14h6a4 4 0 0 1 0 8h-6v-8Z" />
+        </g>
       </svg>
     ),
   },
