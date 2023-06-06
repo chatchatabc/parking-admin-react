@@ -353,37 +353,7 @@ function ParkingLotsProfilePage() {
         <section className="bg-bg2 p-4 rounded-lg">
           {/* Header */}
           <header className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">Parking Rates</h2>
-            <MyButton
-              onClick={() => {
-                const openDaysFlag = dates.map((date) => {
-                  if (activeDates.includes(date.name)) {
-                    return date.value;
-                  }
-                  return 0;
-                });
-                const businessHoursEnd = dayjs(data.businessHoursEnd ?? "");
-                const businessHoursStart = dayjs(data.businessHoursStart ?? "");
-
-                console.log(businessHoursEnd, businessHoursStart);
-
-                dispatch(
-                  drawerFormUpdate({
-                    show: true,
-                    mode: "update",
-                    data: {
-                      ...data,
-                      openDaysFlag,
-                      businessHoursEnd,
-                      businessHoursStart,
-                    },
-                    content: "parkingUpdate",
-                  })
-                );
-              }}
-            >
-              Edit
-            </MyButton>
+            <h2 className="text-lg font-bold">Invoice History</h2>
           </header>
         </section>
       </section>

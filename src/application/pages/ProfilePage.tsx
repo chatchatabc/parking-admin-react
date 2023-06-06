@@ -73,7 +73,7 @@ function ProfilePage({ username, phone }: Props) {
         {/* Left side */}
         <section className="w-1/4">
           {/* 1st row */}
-          <div className="border-2 border-primary bg-bg2 p-4 pb-8 rounded-lg">
+          <div className="bg-bg2 p-4 pb-8 rounded-lg">
             <header className="flex items-center justify-between">
               <h2 className="text-lg font-bold">User Avatar</h2>
               <MyButton>Edit</MyButton>
@@ -88,7 +88,7 @@ function ProfilePage({ username, phone }: Props) {
         {/* Right Side */}
         <section className="flex-1 space-y-4">
           {/* First Entry */}
-          <div className="border-2 border-primary p-4 pb-8 bg-bg2 rounded-lg">
+          <div className="p-4 pb-8 bg-bg2 rounded-lg">
             {/* Header */}
             <header className="flex items-center justify-between">
               <h2 className="text-lg font-bold">User Information</h2>
@@ -140,14 +140,13 @@ function ProfilePage({ username, phone }: Props) {
             </div>
           </div>
 
-          {/* Second Entry */}
-          <div className="border-2 border-primary bg-bg1 p-2 pb-8 rounded-lg">
-            {/* <ProfileParking
-              username={username ?? authUsername()}
-              phone={phone}
-              userId={data?.userId}
-            /> */}
-          </div>
+          {/* 2nd Entry */}
+          <section className="bg-bg2 p-4 rounded-lg">
+            {/* Header */}
+            <header className="flex justify-between items-center">
+              <h2 className="text-lg font-bold">Invoice History</h2>
+            </header>
+          </section>
         </section>
       </section>
     </div>
