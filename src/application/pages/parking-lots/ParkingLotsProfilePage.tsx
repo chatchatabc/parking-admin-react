@@ -120,6 +120,8 @@ function ParkingLotsProfilePage() {
   const businessHoursStart = new Date(data.businessHoursStart ?? "");
   const businessHoursEnd = new Date(data.businessHoursEnd ?? "");
 
+  console.log(data);
+
   return (
     <div className="p-4 bg-bg1 flex flex-1 gap-4">
       {/* Left */}
@@ -141,7 +143,7 @@ function ParkingLotsProfilePage() {
       </section>
 
       {/* Right */}
-      <section className="w-2/3">
+      <section className="w-2/3 space-y-4">
         {/* 1st Entry */}
         <section className="bg-bg2 p-4 rounded-lg">
           {/* Header */}
@@ -226,10 +228,11 @@ function ParkingLotsProfilePage() {
             <div className="w-full">
               <p className="text-xs font-bold">Business Dates</p>
               <ul className="flex flex-wrap gap-1">
-                {dates.reverse().map((date) => {
+                {dates.reverse().map((date, index) => {
                   const isActive = activeDates.includes(date.name);
                   return (
                     <li
+                      key={`date-${index}`}
                       className={`pl-2 py-1 flex items-center rounded-sm ${
                         isActive
                           ? "bg-green-700 pr-3 text-white"
@@ -256,6 +259,44 @@ function ParkingLotsProfilePage() {
               </ul>
             </div>
           </section>
+        </section>
+
+        {/* 2nd Entry */}
+        <section className="bg-bg2 p-4 rounded-lg">
+          {/* Header */}
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Parking Rates</h2>
+            <MyButton
+              onClick={() => {
+                const openDaysFlag = dates.map((date) => {
+                  if (activeDates.includes(date.name)) {
+                    return date.value;
+                  }
+                  return 0;
+                });
+                const businessHoursEnd = dayjs(data.businessHoursEnd ?? "");
+                const businessHoursStart = dayjs(data.businessHoursStart ?? "");
+
+                console.log(businessHoursEnd, businessHoursStart);
+
+                dispatch(
+                  drawerFormUpdate({
+                    show: true,
+                    mode: "update",
+                    data: {
+                      ...data,
+                      openDaysFlag,
+                      businessHoursEnd,
+                      businessHoursStart,
+                    },
+                    content: "parkingUpdate",
+                  })
+                );
+              }}
+            >
+              Edit
+            </MyButton>
+          </header>
         </section>
       </section>
     </div>
