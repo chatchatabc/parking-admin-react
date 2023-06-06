@@ -4,36 +4,12 @@
     {
       "label": "Users",
       "icon": "mdi:account-group",
-      "path": "/users-parent",
-      "children": [
-        {
-          "label": "List",
-          "icon": "mdi:account-multiple",
-          "path": "/users"
-        },
-        {
-          "label": "Create User",
-          "icon": "mdi:account-plus",
-          "path": "/users/create"
-        }
-      ]
+      "path": "/users"
     },
     {
-      "label": "Parking Lot",
+      "label": "Parking Lots",
       "icon": "mdi:parking",
-      "path": "/parking-parent",
-      "children": [
-        {
-          "label": "List",
-          "icon": "mdi:parking",
-          "path": "/parking-lots"
-        },
-        {
-          "label": "Create Parking Lot",
-          "icon": "mdi:plus",
-          "path": "/parking-lots/create"
-        }
-      ]
+      "path": "/parking-lots"
     },
     {
       "label": "Vehicles",
@@ -45,6 +21,22 @@
       "icon": "mdi:magnify",
       "path": "/search"
     },
-    { "label": "Settings", "icon": "mdi:cog", "path": "/settings" }
+    {
+      "label": "Settings",
+      "icon": "mdi:cog",
+      "path": "/settings-parent",
+      "children": [
+        {
+          "label": "List",
+          "icon": "mdi:account-multiple",
+          "path": "/settings"
+        },
+        {
+          "label": "Create Setting",
+          "icon": "mdi:account-plus",
+          "path": "/settings/create"
+        }
+      ]
+    }
   ]
 }
