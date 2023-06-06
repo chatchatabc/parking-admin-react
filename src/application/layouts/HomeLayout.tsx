@@ -96,7 +96,7 @@ function HomeLayout() {
           <section className="uppercase">
             <MultiTabs />
           </section>
-          <section className="bg-bg1 flex flex-1">
+          <section className="bg-bg1 flex flex-1 flex-col">
             <Outlet />
           </section>
         </main>
