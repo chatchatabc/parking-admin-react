@@ -33,7 +33,7 @@ function HomePage() {
             <h2 className="text-xl font-bold">Users Verified</h2>
             <MyButton
               onClick={() => {
-                navigate("/parking-lots");
+                navigate("/users");
               }}
             >
               Open
@@ -52,7 +52,7 @@ function HomePage() {
             <h2 className="text-xl font-bold">Vehicles Verified</h2>
             <MyButton
               onClick={() => {
-                navigate("/parking-lots");
+                navigate("/vehicles");
               }}
             >
               Open
