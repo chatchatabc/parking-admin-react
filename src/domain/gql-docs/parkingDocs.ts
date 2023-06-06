@@ -18,6 +18,9 @@ export function parkingLotGetAllDoc() {
         pageInfo {
           size
           totalElements
+          first
+          last
+          empty
         }
       }
     }
