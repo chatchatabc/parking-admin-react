@@ -1,9 +1,12 @@
-import { Spin, message } from "antd";
+import { Modal, Spin, message } from "antd";
 import React from "react";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
-import { parkingLotGet } from "../../../domain/services/parkingService";
+import {
+  parkingLotGet,
+  parkingLotVerify,
+} from "../../../domain/services/parkingService";
 import { Parking } from "../../../domain/models/ParkingModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
@@ -11,6 +14,8 @@ import dayjs from "dayjs";
 import { User } from "../../../domain/models/UserModel";
 import { userGetProfile } from "../../../domain/services/userService";
 import MyButton from "../../components/common/MyButton";
+import { globalStateUpdate } from "../../redux/slices/globalState";
+import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 
 function ParkingLotsProfilePage() {
   // Global states
@@ -119,14 +124,97 @@ function ParkingLotsProfilePage() {
 
   const businessHoursStart = new Date(data.businessHoursStart ?? "");
   const businessHoursEnd = new Date(data.businessHoursEnd ?? "");
+  const dateVerified = new Date(data.verifiedAt ?? "");
 
   console.log(data);
 
   return (
     <div className="p-4 bg-bg1 flex flex-1 gap-4">
       {/* Left */}
-      <section className="w-1/3">
+      <section className="w-1/3 space-y-4">
         {/* 1st Entry */}
+        <section className="bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Parking Verification</h2>
+            {!data.verifiedAt && (
+              <MyButton
+                onClick={() => {
+                  Modal.confirm({
+                    title: `Proceed in verifying "${data.name}"?`,
+                    okButtonProps: {
+                      className: "bg-c1",
+                    },
+                    maskClosable: true,
+                    closable: true,
+                    onOk: async () => {
+                      const response = await parkingLotVerify(
+                        data.parkingLotUuid ?? ""
+                      );
+
+                      if (response.errors && response.errors.length > 0) {
+                        message.error("Failed to verify parking lot");
+                      } else {
+                        message.success("Successfully verified parking lot");
+
+                        dispatch(
+                          globalStateUpdate({
+                            reset: utilGenerateRandomNumber(),
+                          })
+                        );
+                      }
+                    },
+                  });
+                }}
+              >
+                Verify
+              </MyButton>
+            )}
+          </header>
+
+          <section className="flex flex-wrap mt-2">
+            <div className="flex-1">
+              <p className="text-xs font-bold">Status</p>
+              <p>
+                {data.verifiedAt ? (
+                  <span className="text-green-500">Verified</span>
+                ) : (
+                  <span className="text-red-500">Not yet verified</span>
+                )}
+              </p>
+            </div>
+
+            <div className="flex-1">
+              <p className="text-xs font-bold">Date</p>
+              <p>
+                {data.verifiedAt ? (
+                  <span className="text-green-500">
+                    {new Intl.DateTimeFormat("en", {
+                      dateStyle: "medium",
+                      timeStyle: "medium",
+                    }).format(dateVerified)}
+                  </span>
+                ) : (
+                  <span className="text-red-500">N/A</span>
+                )}
+              </p>
+            </div>
+          </section>
+        </section>
+
+        {/* 2nd Entry */}
+        <section className="bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Parking Lot Rate</h2>
+            <MyButton>Edit</MyButton>
+          </header>
+
+          <section className="flex justify-between mt-2">
+            <p>Type: Daily</p>
+            <p>Price: 1000php</p>
+          </section>
+        </section>
+
+        {/* 3rd Entry */}
         <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">User Profile</h2>
