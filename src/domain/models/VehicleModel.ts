@@ -1,5 +1,3 @@
-import { User } from "./UserModel";
-
 export type Vehicle = {
   vehicleUuid?: string | null;
   name?: string | null;
@@ -8,6 +6,4 @@ export type Vehicle = {
   updatedAt?: string | null;
 
   type?: number | null;
-
-  owner?: User | null;
 };
