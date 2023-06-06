@@ -7,6 +7,8 @@ import {
   multiTabsStateSetActiveKey,
 } from "../redux/slices/multiTabsState";
 import { useLocation, useNavigate } from "react-router-dom";
+import { globalStateUpdate } from "../redux/slices/globalState";
+import { utilGenerateRandomNumber } from "../../domain/utils/commonUtils";
 
 function MultiTabs() {
   const location = useLocation();
@@ -33,6 +35,12 @@ function MultiTabs() {
         })
       );
     }
+
+    dispatch(
+      globalStateUpdate({
+        reset: utilGenerateRandomNumber(),
+      })
+    );
   }, [location.pathname]);
 
   return (
