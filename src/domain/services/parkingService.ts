@@ -149,3 +149,36 @@ export async function parkingLotVerify(parkingLotUuid: string) {
 
   return response.data;
 }
+
+export async function parkingLotGetDonut() {
+  const query = await graphqlQuery(parkingLotGetAllDoc(), { size: 100000 });
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getParkingLots;
+
+  const verified = data.content.filter((parkingLot: Parking) => {
+    // If verifiedAt exists
+    if (parkingLot.verifiedAt) {
+      return true;
+    }
+    return false;
+  });
+
+  const series = [verified.length, data.content.length - verified.length];
+  const labels = ["Verified", "Unverified"];
+
+  return {
+    data: {
+      series,
+      labels,
+    },
+  } as AxiosResponseData & {
+    data: {
+      series: number[];
+      labels: string[];
+    };
+  };
+}
