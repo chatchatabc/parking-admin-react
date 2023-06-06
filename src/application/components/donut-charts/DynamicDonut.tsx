@@ -19,6 +19,11 @@ function DynamicDonut({ series, labels, loading }: Props) {
         series={series}
         options={{
           labels,
+          legend: {
+            labels: {
+              colors: "var(--t1)",
+            },
+          },
         }}
         type="donut"
         width="100%"
