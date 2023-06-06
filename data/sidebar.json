@@ -36,6 +36,11 @@
       ]
     },
     {
+      "label": "Vehicles",
+      "icon": "mdi:car",
+      "path": "/vehicles"
+    },
+    {
       "label": "Search",
       "icon": "mdi:magnify",
       "path": "/search"

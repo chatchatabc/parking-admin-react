@@ -11,6 +11,7 @@ import HomePage from "./pages/HomePage";
 import ParkingLotsPage from "./pages/parking-lots/ParkingLotsPage";
 import ParkingLotsProfilePage from "./pages/parking-lots/ParkingLotsProfilePage";
 import SearchPage from "./pages/SearchPage";
+import VehiclesPage from "./pages/vehicles/VehiclesPage";
 
 message.config({
   maxCount: 2,
@@ -52,6 +53,15 @@ const router = createBrowserRouter([
           {
             path: ":identifier",
             element: <ParkingLotsProfilePage />,
+          },
+        ],
+      },
+      {
+        path: "vehicles",
+        children: [
+          {
+            path: "",
+            element: <VehiclesPage />,
           },
         ],
       },
