@@ -96,7 +96,9 @@ function HomeLayout() {
           <section className="uppercase">
             <MultiTabs />
           </section>
-          <Outlet />
+          <section className="bg-bg1">
+            <Outlet />
+          </section>
         </main>
       </div>
 
