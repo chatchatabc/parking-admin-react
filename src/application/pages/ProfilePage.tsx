@@ -3,8 +3,7 @@ import { Spin, message } from "antd";
 import ErrorMessageComp from "../components/ErrorMessageComp";
 import { userGetProfile } from "../../domain/services/userService";
 import { User } from "../../domain/models/UserModel";
-import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
 import MyButton from "../components/common/MyButton";
 
@@ -14,7 +13,7 @@ interface Props {
 }
 
 function ProfilePage({ username, phone }: Props) {
-  const location = useLocation();
+  const globalState = useSelector((state: any) => state.globalState);
   const dispatch = useDispatch();
 
   // Local States
@@ -25,7 +24,7 @@ function ProfilePage({ username, phone }: Props) {
     if (!loading) {
       setLoading(true);
     }
-  }, [location.pathname]);
+  }, [globalState.reset]);
 
   React.useEffect(() => {
     async function fetchData() {
