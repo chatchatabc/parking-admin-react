@@ -27,6 +27,18 @@ export async function authLogin(values: Record<string, any>) {
     return response.data as AxiosResponseError;
   }
 
+  if (!response.data.data) {
+    authTokenRemove();
+    return {
+      errors: [
+        {
+          title: "No data received",
+          message: "No data received",
+        },
+      ],
+    };
+  }
+
   localStorage.setItem("user", JSON.stringify(response.data.data));
 
   const token = response.headers["x-access-token"];
