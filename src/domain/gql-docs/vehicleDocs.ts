@@ -19,5 +19,6 @@ export function vehicleGetAllDoc() {
         empty
       }
     }
+  }
   `;
 }
