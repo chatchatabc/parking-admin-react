@@ -1,4 +1,3 @@
-import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
@@ -18,7 +17,6 @@ function UsersPage() {
           <h2 className="text-xl font-bold">Users</h2>
           <MyButton
             onClick={() => {
-              formRefHandler.resetFields();
               dispatch(
                 drawerFormUpdate({
                   show: true,

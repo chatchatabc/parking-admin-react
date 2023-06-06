@@ -6,21 +6,15 @@ import { Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
 import DrawerForm from "../components/drawers/DrawerForm";
-import { FormInstance, useForm } from "antd/es/form/Form";
 import NavbarSearchBar from "../components/navbar/NavbarSearchBar";
 import MultiTabs from "../components/MultiTabs";
 import NoAccessPage from "../pages/NoAccessPage";
-
-export let formRefHandler: FormInstance<any>;
 
 function HomeLayout() {
   const [openSidebar, setOpenSidebar] = React.useState(
     JSON.parse(localStorage.getItem("sidebarState") ?? "true")
   );
   const [openProfileMenu, setProfileMenu] = React.useState(false);
-
-  const [form] = useForm();
-  formRefHandler = form;
 
   function handleSidebar() {
     setOpenSidebar(!openSidebar);

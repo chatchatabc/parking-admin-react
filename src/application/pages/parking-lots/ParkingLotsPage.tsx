@@ -1,4 +1,3 @@
-import { formRefHandler } from "../../layouts/HomeLayout";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import ParkingTable from "../../components/tables/ParkingLotTable";
@@ -17,7 +16,6 @@ function ParkingLotsPage() {
           <h2 className="text-xl font-bold">Parking Lots</h2>
           <MyButton
             onClick={() => {
-              formRefHandler.resetFields();
               dispatch(
                 drawerFormUpdate({
                   show: true,

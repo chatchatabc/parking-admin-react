@@ -17,6 +17,8 @@ function DrawerForm() {
   React.useEffect(() => {
     if (drawerForm.data) {
       form.setFieldsValue(drawerForm.data);
+    } else {
+      form.resetFields();
     }
   }, [drawerForm.data]);
 
