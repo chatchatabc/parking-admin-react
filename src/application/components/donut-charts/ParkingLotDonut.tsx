@@ -19,8 +19,6 @@ function ParkingLotDonut() {
       } else {
         const data = response.data;
 
-        message.success("Parking lot donut successfully");
-
         setSeries(data.series);
         setLabels(data.labels);
         setLoading(false);
