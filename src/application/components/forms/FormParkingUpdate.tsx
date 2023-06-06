@@ -35,7 +35,7 @@ function FormParkingUpdate({ title, formRef }: Props) {
       return message.error("Parking lot update failed");
     }
 
-    message.success("Parking lot created successfully");
+    message.success("Parking lot updated successfully");
     formRef.resetFields();
 
     dispatch(
