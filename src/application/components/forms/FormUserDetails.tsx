@@ -1,11 +1,14 @@
-import { Form, Input } from "antd";
+import { Form, Input, message } from "antd";
 import {
   userRoleOptionsGet,
   userUpdate,
 } from "../../../domain/services/userService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SelectAsync from "../select/SelectAsync";
 import MyButton from "../common/MyButton";
+import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import { globalStateUpdate } from "../../redux/slices/globalState";
+import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 
 type Props = {
   title?: string;
@@ -13,10 +16,34 @@ type Props = {
 };
 
 function FormUserDetails({ formRef, title }: Props) {
+  const dispatch = useDispatch();
   const drawerForm = useSelector((state: any) => state.drawerForm);
 
   async function onFinish(e: any) {
-    userUpdate(e);
+    const response = await userUpdate(e);
+
+    if (response.errors) {
+      if (response.errors.length > 0) {
+        return message.error("User update failed");
+      }
+    }
+
+    message.success("User updated successfully");
+    formRef.resetFields();
+
+    // Close the drawer
+    dispatch(
+      drawerFormUpdate({
+        show: false,
+      })
+    );
+
+    // This is a hack to force the table to refresh
+    dispatch(
+      globalStateUpdate({
+        reset: utilGenerateRandomNumber(),
+      })
+    );
   }
 
   return (
