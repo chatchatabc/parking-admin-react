@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
 import MyButton from "../components/common/MyButton";
 import UserBanTable from "../components/tables/UserBanTable";
+import InvoicesTable from "../components/tables/InvoicesTable";
 
 interface Props {
   username?: string;
@@ -72,7 +73,7 @@ function ProfilePage({ username, phone }: Props) {
     <div className="flex-1 bg-bg1 p-4 relative">
       <section className="flex gap-4">
         {/* Left side */}
-        <section className="w-1/4">
+        <section className="w-1/3 space-y-4">
           {/* 1st row */}
           <div className="bg-bg2 p-4 pb-8 rounded-lg">
             <header className="flex items-center justify-between">
@@ -84,6 +85,37 @@ function ProfilePage({ username, phone }: Props) {
               <div className="pb-[100%] border-2 border-primary rounded-full"></div>
             </div>
           </div>
+
+          {/* 2nd Entry */}
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
+            {/* Header */}
+            <header className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">Ban History</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      content: "userBan",
+                      mode: "create",
+                      show: true,
+                      title: "User Ban",
+                      data: {
+                        method: "BAN",
+                        userUuid: data.userUuid,
+                      },
+                    })
+                  );
+                }}
+              >
+                Add +
+              </MyButton>
+            </header>
+
+            {/* Body */}
+            <div className="mt-2">
+              <UserBanTable username={username} phone={phone} />
+            </div>
+          </section>
         </section>
 
         {/* Right Side */}
@@ -147,37 +179,10 @@ function ProfilePage({ username, phone }: Props) {
             <header className="flex justify-between items-center">
               <h2 className="text-lg font-bold">Invoice History</h2>
             </header>
-          </section>
 
-          {/* 3rd Entry */}
-          <section className="p-4 pb-8 bg-bg2 rounded-lg">
-            {/* Header */}
-            <header className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Ban History</h2>
-              <MyButton
-                onClick={() => {
-                  dispatch(
-                    drawerFormUpdate({
-                      content: "userBan",
-                      mode: "create",
-                      show: true,
-                      title: "User Ban",
-                      data: {
-                        method: "BAN",
-                        userUuid: data.userUuid,
-                      },
-                    })
-                  );
-                }}
-              >
-                Add +
-              </MyButton>
-            </header>
-
-            {/* Body */}
-            <div className="mt-2">
-              <UserBanTable username={username} phone={phone} />
-            </div>
+            <section className="mt-2">
+              <InvoicesTable />
+            </section>
           </section>
         </section>
       </section>
