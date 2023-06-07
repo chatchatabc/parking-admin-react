@@ -17,6 +17,7 @@ function UserBanTable({
 }: Props) {
   const columns: ColumnsType<UserBan> = [
     {
+      width: "50%",
       title: "Banned At",
       key: "bannedAt",
       render: (record: UserBan) => {
@@ -37,6 +38,7 @@ function UserBanTable({
       },
     },
     {
+      width: "50%",
       title: "Until",
       key: "until",
       render: (record: UserBan) => {
