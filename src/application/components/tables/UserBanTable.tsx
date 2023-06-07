@@ -6,12 +6,14 @@ import { ColumnsType } from "antd/es/table";
 
 type Props = {
   showPagination?: boolean;
+  localPagination?: boolean;
   username?: string;
   phone?: string;
 };
 
 function UserBanTable({
   showPagination,
+  localPagination,
   username = authUsername(),
   phone,
 }: Props) {
@@ -58,6 +60,7 @@ function UserBanTable({
   return (
     <DynamicTable
       showPagination={showPagination}
+      localPagination={localPagination}
       columns={columns}
       title="users-table"
       getData={(variables) => {

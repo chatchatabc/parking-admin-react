@@ -5,9 +5,10 @@ import { ColumnsType } from "antd/es/table";
 
 type Props = {
   showPagination?: boolean;
+  localPagination?: boolean;
 };
 
-function VehiclesTable({ showPagination }: Props) {
+function VehiclesTable({ showPagination, localPagination }: Props) {
   const columns: ColumnsType<Vehicle> = [
     {
       title: "Name",
@@ -34,6 +35,7 @@ function VehiclesTable({ showPagination }: Props) {
   return (
     <DynamicTable
       showPagination={showPagination}
+      localPagination={localPagination}
       columns={columns}
       title="vehicle-table"
       getData={vehicleGetAll}

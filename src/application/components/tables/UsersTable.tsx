@@ -5,9 +5,10 @@ import { userGetAll } from "../../../domain/services/userService";
 
 type Props = {
   showPagination?: boolean;
+  localPagination?: boolean;
 };
 
-function UsersTable({ showPagination }: Props) {
+function UsersTable({ showPagination, localPagination }: Props) {
   const navigate = useNavigate();
 
   const columns = [
@@ -119,6 +120,7 @@ function UsersTable({ showPagination }: Props) {
   return (
     <DynamicTable
       showPagination={showPagination}
+      localPagination={localPagination}
       columns={columns}
       title="users-table"
       getData={userGetAll}

@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router-dom";
 
 type Props = {
   showPagination?: boolean;
+  localPagination?: boolean;
   title: string;
   columns: ColumnsType<Record<string, any>>;
   getData: (variables: CommonVariables) => Promise<
@@ -28,6 +29,7 @@ function DynamicTable({
   title,
   getData,
   columns,
+  localPagination = true,
   showPagination = true,
 }: Props) {
   // React Router
@@ -51,11 +53,13 @@ function DynamicTable({
   function handleNavigation(page: number, pageSize: number) {
     setPagination({ ...pagination, current: page });
 
-    // Update URL
-    setSearchParams({
-      page: String(page),
-      pageSize: String(pageSize),
-    });
+    if (!localPagination) {
+      // Update URL
+      setSearchParams({
+        page: String(page),
+        pageSize: String(pageSize),
+      });
+    }
 
     // Reset loading state
     setLoading(true);
