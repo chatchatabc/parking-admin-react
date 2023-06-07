@@ -12,7 +12,7 @@ import ParkingLotsPage from "./pages/parking-lots/ParkingLotsPage";
 import ParkingLotsProfilePage from "./pages/parking-lots/ParkingLotsProfilePage";
 import SearchPage from "./pages/SearchPage";
 import VehiclesPage from "./pages/vehicles/VehiclesPage";
-import InvoicePage from "./pages/InvoicesPage";
+import InvoicePage from "./pages/invoices/InvoicesPage";
 
 message.config({
   maxCount: 2,
