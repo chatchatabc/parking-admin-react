@@ -323,7 +323,16 @@ function ParkingLotsProfilePage() {
 
             <div className="w-1/3">
               <p className="text-xs font-bold">Address</p>
-              <p>{data?.address}</p>
+              <p>
+                {data?.address}{" "}
+                <a
+                  target="_blank"
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${data.address}`}
+                  className="text-xs uppercase text-blue-500 underline hover:no-underline"
+                >
+                  (Get Directions)
+                </a>
+              </p>
             </div>
 
             <div className="w-1/3">
