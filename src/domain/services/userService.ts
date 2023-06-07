@@ -125,7 +125,7 @@ export async function userGetByParkingLotUuid(parkingLotUuid: string) {
 }
 
 export async function userGetBanHistory(
-  variables: CommonVariables & { uuid: string }
+  variables: CommonVariables & { username: string }
 ) {
   const response = await graphqlQuery(userGetBanHistoryDoc(), variables);
 
