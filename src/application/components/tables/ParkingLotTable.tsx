@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
 import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingService";
+import { ColumnsType } from "antd/es/table";
 
 type Props = {
   showPagination?: boolean;
@@ -15,7 +16,7 @@ type Props = {
 function ParkingTable({ showPagination, localPagination, variables }: Props) {
   const navigate = useNavigate();
 
-  const columns = [
+  const columns: ColumnsType<Record<string, any>> = [
     {
       title: "Parking Name",
       key: "name",
@@ -49,15 +50,25 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
       render: (record: Parking & { owner: User }) => {
         const owner = record.owner;
 
-        return (
-          <p>{owner.username ?? owner.phone ?? owner.email ?? "Unknown"}</p>
-        );
+        if (owner.username || owner.phone) {
+          return (
+            <button
+              className="text-blue-500 underline hover:no-underline"
+              onClick={() => {
+                navigate(
+                  `/users/${
+                    owner.username ? `u-${owner.username}` : `p-${owner.phone}`
+                  }`
+                );
+              }}
+            >
+              {owner.username ?? owner.phone}
+            </button>
+          );
+        }
+
+        return <p>{owner.email ?? "Unknown"}</p>;
       },
-    },
-    {
-      title: "Address",
-      key: "address",
-      dataIndex: "address",
     },
     {
       title: "Verified",
@@ -71,6 +82,21 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
               <p className="text-red-500">FALSE</p>
             )}
           </div>
+        );
+      },
+    },
+    {
+      title: "Address",
+      key: "address",
+      render: (record) => {
+        return (
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${record.address}`}
+            target="_blank"
+            className="text-blue-500 underline hover:no-underline"
+          >
+            {record.address}
+          </a>
         );
       },
     },
