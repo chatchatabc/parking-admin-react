@@ -12,6 +12,7 @@ import ParkingLotsPage from "./pages/parking-lots/ParkingLotsPage";
 import ParkingLotsProfilePage from "./pages/parking-lots/ParkingLotsProfilePage";
 import SearchPage from "./pages/SearchPage";
 import VehiclesPage from "./pages/vehicles/VehiclesPage";
+import InvoicePage from "./pages/InvoicesPage";
 
 message.config({
   maxCount: 2,
@@ -62,6 +63,15 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <VehiclesPage />,
+          },
+        ],
+      },
+      {
+        path: "invoices",
+        children: [
+          {
+            path: "",
+            element: <InvoicePage />,
           },
         ],
       },
