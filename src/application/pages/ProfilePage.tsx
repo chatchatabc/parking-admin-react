@@ -158,11 +158,13 @@ function ProfilePage({ username, phone }: Props) {
                 onClick={() => {
                   dispatch(
                     drawerFormUpdate({
-                      content: "userDetails",
-                      mode: "update",
+                      content: "userBan",
+                      mode: "create",
                       show: true,
-                      title: "User Details",
-                      data,
+                      title: "User Ban",
+                      data: {
+                        method: "BAN",
+                      },
                     })
                   );
                 }}
