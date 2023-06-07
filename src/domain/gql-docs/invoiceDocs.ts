@@ -47,3 +47,28 @@ export function invoiceGetByParkingLotUuidDoc() {
   }
   `;
 }
+
+export function invoiceGetByUserUuidDoc() {
+  return `
+  query GetInvoiceByUserUuid($page: Int = 0, $size: Int = 10, $userUuid: String!) {
+    getInvoicesByUserUuid(page: $page, size: $size, uuid: $userUuid) {
+      content {
+        id
+        startAt
+        endAt
+        plateNumber
+
+        parkingLotUuid
+        vehicleUuid
+      }
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
