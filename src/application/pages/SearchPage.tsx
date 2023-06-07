@@ -1,5 +1,6 @@
 import UsersTable from "../components/tables/UsersTable";
 import ParkingTable from "../components/tables/ParkingLotTable";
+import VehiclesTable from "../components/tables/VehiclesTable";
 
 function SearchPage() {
   return (
@@ -9,7 +10,7 @@ function SearchPage() {
           <h2 className="text-xl font-bold">Users Table</h2>
         </header>
         <section className="mt-2">
-          <UsersTable showPagination={false} />
+          <UsersTable />
         </section>
       </section>
 
@@ -18,7 +19,16 @@ function SearchPage() {
           <h2 className="text-xl font-bold">Parking Lots Table</h2>
         </header>
         <section className="mt-2">
-          <ParkingTable showPagination={false} />
+          <ParkingTable />
+        </section>
+      </section>
+
+      <section className="p-4 rounded-lg bg-bg2">
+        <header>
+          <h2 className="text-xl font-bold">Vehicles Table</h2>
+        </header>
+        <section className="mt-2">
+          <VehiclesTable />
         </section>
       </section>
     </div>
