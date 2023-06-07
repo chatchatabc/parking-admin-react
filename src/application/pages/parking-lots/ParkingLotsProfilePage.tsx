@@ -16,6 +16,7 @@ import { userGetProfile } from "../../../domain/services/userService";
 import MyButton from "../../components/common/MyButton";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
+import InvoicesTable from "../../components/tables/InvoicesTable";
 
 function ParkingLotsProfilePage() {
   const navigate = useNavigate();
@@ -379,6 +380,10 @@ function ParkingLotsProfilePage() {
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">Invoice History</h2>
           </header>
+
+          <section className="mt-2">
+            <InvoicesTable />
+          </section>
         </section>
       </section>
     </div>
