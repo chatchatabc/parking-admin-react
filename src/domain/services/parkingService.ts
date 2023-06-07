@@ -2,6 +2,7 @@ import {
   parkingLotGetAllDoc,
   parkingLotGetByPhoneDoc,
   parkingLotGetByUsernameDoc,
+  parkingLotGetByUuidDoc,
 } from "../gql-docs/parkingDocs";
 import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
@@ -10,6 +11,7 @@ import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
 import { Parking } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
+import { userGetByParkingLotUuid } from "./userService";
 
 export async function parkingLotGetAll({
   page = 0,
@@ -73,6 +75,46 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
       pageInfo: CommonPageInfo;
     };
   };
+}
+
+export async function parkingLotGetWithOwner(variables: {
+  parkingLotUuid: string;
+}) {
+  const response = await parkingLotGetByUuid(variables);
+
+  if (response.errors) {
+    return response;
+  }
+
+  const parkingLot = response.data as Parking;
+
+  const queryOwner = await userGetByParkingLotUuid(
+    parkingLot.parkingLotUuid ?? ""
+  );
+
+  if (queryOwner.errors) {
+    return queryOwner;
+  }
+
+  const owner = queryOwner.data as User;
+
+  const data = { ...parkingLot, owner };
+
+  return { data } as AxiosResponseData & { data: Parking & { owner: User } };
+}
+
+export async function parkingLotGetByUuid(variables: {
+  parkingLotUuid: string;
+}) {
+  const query = await graphqlQuery(parkingLotGetByUuidDoc(), variables);
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getParkingLotByUuid;
+
+  return { data } as AxiosResponseData & Parking;
 }
 
 export async function parkingLotGet({

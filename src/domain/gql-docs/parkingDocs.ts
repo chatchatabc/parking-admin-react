@@ -74,3 +74,27 @@ export function parkingLotGetByPhoneDoc() {
     }
   `;
 }
+
+export function parkingLotGetByUuidDoc() {
+  return `
+    query GetParkingLotByUuid($parkingLotUuid: String!) {
+      getParkingLotByUuid(uuid: $parkingLotUuid) {
+        parkingLotUuid
+        availableSlots
+        address
+        capacity
+        name
+        businessHoursEnd
+        businessHoursStart
+        latitude
+        longitude
+        description
+        openDaysFlag
+        verifiedAt
+        rate{
+          createdAt
+        }
+      }
+    }
+  `;
+}
