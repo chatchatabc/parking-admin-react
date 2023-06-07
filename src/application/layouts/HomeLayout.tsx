@@ -42,12 +42,14 @@ function HomeLayout() {
 
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-12">
+            <a href="/" className="block w-12">
               <div className="relative pb-[100%] rounded-full overflow-hidden bg-white">
                 <p className="absolute">Davao Parking logo</p>
               </div>
-            </div>
-            <h1 className="text-2xl font-bold">Parking Admin</h1>
+            </a>
+            <a href="/" className="text-2xl font-bold">
+              Parking Admin
+            </a>
           </div>
         </div>
 
