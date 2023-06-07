@@ -2,7 +2,6 @@ import {
   userGetAllDoc,
   userGetBanHistoryByPhoneDoc,
   userGetBanHistoryByUsernameDoc,
-  userGetBanHistoryDoc,
   userGetByParkingLotUuidDoc,
   userGetByPhoneDoc,
   userGetByUsernameDoc,

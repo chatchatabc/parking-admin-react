@@ -3,7 +3,6 @@ import { authCheckSession, authLogin } from "../../domain/services/authService";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { utilApiMessageGet } from "../../domain/utils/commonUtils";
 import MyButton from "../components/common/MyButton";
 
 function LoginPage() {
