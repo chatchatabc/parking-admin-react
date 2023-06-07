@@ -159,3 +159,20 @@ export async function userGetBanHistory(variables: CommonVariables) {
     };
   };
 }
+
+export async function userBanCreate(values: Record<string, any>) {
+  let response;
+
+  if (values.method === "BAN") {
+    response = await restPost(`/user/ban/${values.userUuid}`, {
+      reason: values.reason,
+      until: values.until,
+    });
+  } else {
+    response = await restPost(`/user/unban/${values.userUuid}`, {
+      unbanReason: values.unbanReason,
+    });
+  }
+
+  return response.data;
+}
