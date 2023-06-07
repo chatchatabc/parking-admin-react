@@ -1,10 +1,11 @@
 import { DatePicker, Form, FormInstance, Input, Select, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { parkingLotCreate } from "../../../domain/services/parkingService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import MyButton from "../common/MyButton";
 import React from "react";
+import type { Dayjs } from "dayjs";
+import { userBanCreate } from "../../../domain/services/userService";
 
 type Props = {
   title: string;
@@ -17,28 +18,16 @@ function UserBanForm({ title, formRef }: Props) {
   const drawerForm = useSelector((state: any) => state.drawerForm);
 
   async function onFinish(e: any) {
-    // const openDaysFlag = e.openDaysFlag as number[];
-    // const businessHoursEnd = e.businessHoursEnd as Dayjs;
-    // const businessHoursStart = e.businessHoursStart as Dayjs;
+    const until = e.until as Dayjs;
+    e.until = until.toISOString();
 
-    // e.businessHoursEnd = businessHoursEnd.toISOString();
-    // e.businessHoursStart = businessHoursStart.toISOString();
-    // e.capacity = Number(e.capacity);
-    // e.latitude = Number(e.latitude);
-    // e.longitude = Number(e.longitude);
-    // e.openDaysFlag = openDaysFlag.reduce((acc, curr) => {
-    //   return acc | curr;
-    // }, 0);
+    const response = await userBanCreate(e);
 
-    return console.log(e);
+    if (response.errors && response.errors.length > 0) {
+      return message.error("User ban creation failed");
+    }
 
-    const response = await parkingLotCreate(e);
-
-    // if (response.errors && response.errors.length > 0) {
-    //   return message.error("Parking lot creation failed");
-    // }
-
-    message.success("Parking lot created successfully");
+    message.success("User ban created successfully");
     formRef.resetFields();
 
     dispatch(
