@@ -17,18 +17,25 @@ type Props = {
 };
 
 function InvoicesTable({ showPagination }: Props) {
-  const columns: ColumnsType<Vehicle> = [
+  const columns: ColumnsType<Record<string, any>> = [
     {
       title: "Parking Lot",
       key: "parkingLot",
       render: (record: NewInvoice) => {
         if (record.parkingLot.owner.username || record.parkingLot.owner.phone) {
+          const { username, phone } = record.parkingLot.owner;
           return (
-            <a href={`/parking-lots/${record.parkingLot.owner}`}>
+            <a
+              className="text-blue-500 underline hover:no-underline"
+              href={`/parking-lots/${
+                username ? `u-${username}` : `p-${phone}`
+              }`}
+            >
               {record?.parkingLot?.name}
             </a>
           );
         }
+        return <p>Unknown</p>;
       },
     },
     {
