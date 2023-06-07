@@ -6,6 +6,7 @@ import { User } from "../../domain/models/UserModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
 import MyButton from "../components/common/MyButton";
+import UserBanTable from "../components/tables/UserBanTable";
 
 interface Props {
   username?: string;
@@ -88,7 +89,7 @@ function ProfilePage({ username, phone }: Props) {
         {/* Right Side */}
         <section className="flex-1 space-y-4">
           {/* First Entry */}
-          <div className="p-4 pb-8 bg-bg2 rounded-lg">
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
             {/* Header */}
             <header className="flex items-center justify-between">
               <h2 className="text-lg font-bold">User Information</h2>
@@ -138,7 +139,7 @@ function ProfilePage({ username, phone }: Props) {
                 <p>{data?.email}</p>
               </div>
             </div>
-          </div>
+          </section>
 
           {/* 2nd Entry */}
           <section className="bg-bg2 p-4 rounded-lg">
@@ -146,6 +147,34 @@ function ProfilePage({ username, phone }: Props) {
             <header className="flex justify-between items-center">
               <h2 className="text-lg font-bold">Invoice History</h2>
             </header>
+          </section>
+
+          {/* 3rd Entry */}
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
+            {/* Header */}
+            <header className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">Ban History</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      content: "userDetails",
+                      mode: "update",
+                      show: true,
+                      title: "User Details",
+                      data,
+                    })
+                  );
+                }}
+              >
+                Add +
+              </MyButton>
+            </header>
+
+            {/* Body */}
+            <div className="mt-2">
+              <UserBanTable />
+            </div>
           </section>
         </section>
       </section>
