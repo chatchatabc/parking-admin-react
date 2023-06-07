@@ -1,7 +1,7 @@
 import { Modal, Spin, message } from "antd";
 import React from "react";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
 import {
   parkingLotGet,
@@ -18,6 +18,8 @@ import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 
 function ParkingLotsProfilePage() {
+  const navigate = useNavigate();
+
   // Global states
   const globalState = useSelector((state: any) => state.globalState);
   const { identifier } = useParams();
@@ -217,15 +219,37 @@ function ParkingLotsProfilePage() {
         {/* 3rd Entry */}
         <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">User Profile</h2>
-            <MyButton>View</MyButton>
+            <h2 className="text-lg font-bold">Owner Information</h2>
+            <MyButton
+              onClick={() => {
+                navigate(
+                  `/users/${
+                    owner?.username
+                      ? `u-${owner?.username}`
+                      : `p-${owner?.phone}`
+                  }`
+                );
+              }}
+            >
+              View
+            </MyButton>
           </header>
 
-          <section>
-            <div className="w-[200px] mx-auto aspect-square rounded-full border border-primary"></div>
-            <p>Username: {owner?.username}</p>
-            <p>Phone: {owner?.phone}</p>
-            <p>Email: {owner?.email}</p>
+          <section className="mt-2 flex flex-wrap gap-y-2">
+            <div className="w-1/2">
+              <p className="text-xs font-bold">Username</p>
+              <p>{owner?.username}</p>
+            </div>
+
+            <div className="w-1/2">
+              <p className="text-xs font-bold">Phone</p>
+              <p>{owner?.phone}</p>
+            </div>
+
+            <div className="w-1/2">
+              <p className="text-xs font-bold">Email</p>
+              <p>{owner?.email}</p>
+            </div>
           </section>
         </section>
       </section>
