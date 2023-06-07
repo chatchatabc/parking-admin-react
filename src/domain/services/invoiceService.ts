@@ -1,4 +1,7 @@
-import { invoiceGetAllDoc } from "../gql-docs/invoiceDocs";
+import {
+  invoiceGetAllDoc,
+  invoiceGetByParkingLotUuidDoc,
+} from "../gql-docs/invoiceDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
@@ -9,6 +12,40 @@ import { parkingLotGetWithOwner } from "./parkingService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(invoiceGetAllDoc(), variables);
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getInvoices;
+  const additionalInfo = data.content.map(async (invoice: Invoice) => {
+    const parkingLot = await parkingLotGetWithOwner({
+      parkingLotUuid: invoice.parkingLotUuid ?? "",
+    });
+
+    if (parkingLot.errors) {
+      return invoice;
+    }
+
+    return {
+      ...invoice,
+      parkingLot: parkingLot.data,
+    };
+  });
+  const invoicesWithParkingLot = await Promise.all(additionalInfo);
+
+  return {
+    data: { ...data, content: invoicesWithParkingLot },
+  } as AxiosResponseData & {
+    data: {
+      content: (Invoice & { parkingLot: Parking & { owner: User } })[];
+      pageInfo: CommonPageInfo;
+    };
+  };
+}
+
+export async function invoiceGetByParkingLotUuid(variables: CommonVariables) {
+  const query = await graphqlQuery(invoiceGetByParkingLotUuidDoc(), variables);
 
   if (query.data.errors) {
     return query.data;

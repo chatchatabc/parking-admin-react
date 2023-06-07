@@ -22,3 +22,28 @@ export function invoiceGetAllDoc() {
   }
   `;
 }
+
+export function invoiceGetByParkingLotUuidDoc() {
+  return `
+  query GetInvoiceByParkingLotUuid($parkingLotUuid: String!) {
+    getInvoicesByParkingLotUuid(uuid: $parkingLotUuid) {
+      content {
+        id
+        startAt
+        endAt
+        plateNumber
+
+        parkingLotUuid
+        vehicleUuid
+      }
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
