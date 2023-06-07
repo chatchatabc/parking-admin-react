@@ -18,8 +18,10 @@ function UserBanForm({ title, formRef }: Props) {
   const drawerForm = useSelector((state: any) => state.drawerForm);
 
   async function onFinish(e: any) {
-    const until = e.until as Dayjs;
-    e.until = until.toISOString();
+    if (e.until) {
+      const until = e.until as Dayjs;
+      e.until = until.toISOString();
+    }
 
     const response = await userBanCreate(e);
 
