@@ -1,11 +1,18 @@
 import DynamicTable from "./DynamicTable";
 import { Vehicle } from "../../../domain/models/VehicleModel";
 import { ColumnsType } from "antd/es/table";
-import { invoiceGetAll } from "../../../domain/services/invoiceService";
 import { Invoice } from "../../../domain/models/InvoiceModel";
 import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
 import { useNavigate } from "react-router-dom";
+import {
+  CommonPageInfo,
+  CommonVariables,
+} from "../../../domain/models/CommonModel";
+import {
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../../../domain/models/AxiosModel";
 
 type NewInvoice = Invoice & {
   parkingLot: Parking & {
@@ -15,9 +22,15 @@ type NewInvoice = Invoice & {
 
 type Props = {
   showPagination?: boolean;
+  getData: (variables: CommonVariables) => Promise<
+    | (AxiosResponseData & {
+        data: { content: Record<string, any>[]; pageInfo: CommonPageInfo };
+      })
+    | AxiosResponseError
+  >;
 };
 
-function InvoicesTable({ showPagination }: Props) {
+function InvoicesTable({ showPagination, getData }: Props) {
   const navigate = useNavigate();
 
   const columns: ColumnsType<Record<string, any>> = [
@@ -65,7 +78,7 @@ function InvoicesTable({ showPagination }: Props) {
       showPagination={showPagination}
       columns={columns}
       title="invoices-table"
-      getData={invoiceGetAll}
+      getData={getData}
     />
   );
 }

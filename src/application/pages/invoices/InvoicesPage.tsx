@@ -1,3 +1,4 @@
+import { invoiceGetAll } from "../../../domain/services/invoiceService";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 
 function UsersPage() {
@@ -11,7 +12,7 @@ function UsersPage() {
         </header>
 
         <section>
-          <InvoicesTable />
+          <InvoicesTable getData={invoiceGetAll} />
         </section>
       </section>
     </div>
