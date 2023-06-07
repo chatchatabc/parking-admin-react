@@ -164,6 +164,7 @@ function ProfilePage({ username, phone }: Props) {
                       title: "User Ban",
                       data: {
                         method: "BAN",
+                        userUuid: data.userUuid,
                       },
                     })
                   );
