@@ -25,8 +25,8 @@ export function invoiceGetAllDoc() {
 
 export function invoiceGetByParkingLotUuidDoc() {
   return `
-  query GetInvoiceByParkingLotUuid($parkingLotUuid: String!) {
-    getInvoicesByParkingLotUuid(uuid: $parkingLotUuid) {
+  query GetInvoiceByParkingLotUuid($page: Int = 0, $size: Int = 10, $parkingLotUuid: String!) {
+    getInvoicesByParkingLotUuid(page: $page, size: $size, parkingLotUuid: $parkingLotUuid) {
       content {
         id
         startAt
