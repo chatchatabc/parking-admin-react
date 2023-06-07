@@ -20,7 +20,7 @@ function LoginPage() {
     if (response.errors) {
       message.error("Failed to login.");
     } else {
-      message.success(utilApiMessageGet(response.message));
+      message.success("Login successful.");
       navigate("/");
     }
 
