@@ -7,9 +7,9 @@ export type CommonPageInfo = {
 };
 
 export type CommonVariables = {
+  [key: string]: any;
   page: number;
   size: number;
-  keyword?: string;
 };
 
 export type CommonSeries = { name: string; data: number[] };
