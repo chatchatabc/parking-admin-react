@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "../components/common/MyButton";
 import { DashboardPieGraph } from "../../domain/models/DashboardModel";
 import React from "react";
-import DynamicDonut from "../components/donut-charts/DynamicDonut";
+import DynamicDonut from "../components/pie-charts/DynamicDonut";
 import { dashboardGetPieGraph } from "../../domain/services/dashboardService";
 import { message } from "antd";
 import ParkingTable from "../components/tables/ParkingLotTable";
