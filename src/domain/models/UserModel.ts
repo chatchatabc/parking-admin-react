@@ -45,6 +45,7 @@ export type UserBan = {
   until?: string | null;
   reason?: string | null;
   createdAt?: string | null;
+  unbannedAt?: string | null;
   unbanReason?: string | null;
 
   status?: number | null;

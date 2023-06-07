@@ -141,6 +141,7 @@ export function userGetBanHistoryByUsernameDoc() {
         until
         reason
         unbanReason
+        unbannedAt
       }
 
       pageInfo {
