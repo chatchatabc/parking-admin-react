@@ -60,17 +60,6 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
       dataIndex: "address",
     },
     {
-      title: "Slots",
-      key: "slots",
-      render: (record: Parking) => {
-        return (
-          <div>
-            {record.availableSlots}/{record.capacity}
-          </div>
-        );
-      },
-    },
-    {
       title: "Verified",
       key: "verified",
       render: (record: Parking) => {
