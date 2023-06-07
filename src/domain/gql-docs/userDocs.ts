@@ -130,3 +130,51 @@ export function userGetBanHistoryDoc() {
   }
   `;
 }
+
+export function userGetBanHistoryByUsernameDoc() {
+  return `
+  query GetBanHistory($username: String!, $page: Int! = 0, $size: Int! = 10) {
+    getBanHistoryLogsByUsername(username: $username, page: $page, size: $size) {
+      content {
+        id
+        createdAt
+        until
+        reason
+        unbanReason
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
+
+export function userGetBanHistoryByPhoneDoc() {
+  return `
+  query GetBanHistory($phone: String!, $page: Int! = 0, $size: Int! = 10) {
+    getBanHistoryLogsByPhone(phone: $phone, page: $page, size: $size) {
+      content {
+        id
+        createdAt
+        until
+        reason
+        unbanReason
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
