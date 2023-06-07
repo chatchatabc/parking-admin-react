@@ -7,9 +7,12 @@ import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingServ
 type Props = {
   showPagination?: boolean;
   localPagination?: boolean;
+  variables?: {
+    verified?: number;
+  };
 };
 
-function ParkingTable({ showPagination, localPagination }: Props) {
+function ParkingTable({ showPagination, localPagination, variables }: Props) {
   const navigate = useNavigate();
 
   const columns = [
@@ -90,7 +93,9 @@ function ParkingTable({ showPagination, localPagination }: Props) {
       localPagination={localPagination}
       title={"Parking Table"}
       columns={columns}
-      getData={parkingLotGetAllWithOwners}
+      getData={(commonVariables) => {
+        return parkingLotGetAllWithOwners({ ...commonVariables, ...variables });
+      }}
     />
   );
 }

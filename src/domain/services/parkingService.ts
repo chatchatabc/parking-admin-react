@@ -7,7 +7,7 @@ import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restAction";
 import { AxiosResponseData } from "../models/AxiosModel";
-import { CommonPageInfo } from "../models/CommonModel";
+import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
 import { Parking } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
 
@@ -36,16 +36,8 @@ export async function parkingLotGetAll({
   };
 }
 
-export async function parkingLotGetAllWithOwners({
-  page = 0,
-  size = 10,
-  keyword = undefined,
-}: Record<string, any>) {
-  const query = await graphqlQuery(parkingLotGetAllDoc(), {
-    page,
-    size,
-    keyword,
-  });
+export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
+  const query = await graphqlQuery(parkingLotGetAllDoc(), variables);
 
   if (query.data.errors) {
     return query.data;
