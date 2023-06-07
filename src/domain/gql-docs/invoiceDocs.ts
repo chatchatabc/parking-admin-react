@@ -6,28 +6,10 @@ export function invoiceGetAllDoc() {
         id
         startAt
         endAt
+        plateNumber
 
-        vehicle {
-          vehicleUuid
-          name
-          plateNumber
-          type
-          createdAt
-          updatedAt
-        }
-        
-        parkingLot {
-          parkingLotUuid
-          availableSlots
-          address
-          capacity
-          name
-          verifiedAt
-
-          rate {
-            id
-          }
-        }
+        parkingLotUuid
+        vehicleUuid
       }
       pageInfo {
         size
