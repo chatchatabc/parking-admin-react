@@ -176,7 +176,7 @@ function ProfilePage({ username, phone }: Props) {
 
             {/* Body */}
             <div className="mt-2">
-              <UserBanTable />
+              <UserBanTable username={username} phone={phone} />
             </div>
           </section>
         </section>
