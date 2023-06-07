@@ -5,6 +5,7 @@ import { invoiceGetAll } from "../../../domain/services/invoiceService";
 import { Invoice } from "../../../domain/models/InvoiceModel";
 import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
+import { useNavigate } from "react-router-dom";
 
 type NewInvoice = Invoice & {
   parkingLot: Parking & {
@@ -17,6 +18,8 @@ type Props = {
 };
 
 function InvoicesTable({ showPagination }: Props) {
+  const navigate = useNavigate();
+
   const columns: ColumnsType<Record<string, any>> = [
     {
       title: "Parking Lot",
@@ -25,14 +28,16 @@ function InvoicesTable({ showPagination }: Props) {
         if (record.parkingLot.owner.username || record.parkingLot.owner.phone) {
           const { username, phone } = record.parkingLot.owner;
           return (
-            <a
+            <button
               className="text-blue-500 underline hover:no-underline"
-              href={`/parking-lots/${
-                username ? `u-${username}` : `p-${phone}`
-              }`}
+              onClick={() => {
+                navigate(
+                  `/parking-lots/${username ? `u-${username}` : `p-${phone}`}`
+                );
+              }}
             >
               {record?.parkingLot?.name}
-            </a>
+            </button>
           );
         }
         return <p>Unknown</p>;
