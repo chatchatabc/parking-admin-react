@@ -1,10 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import UsersTable from "../components/tables/UsersTable";
 import MyButton from "../components/common/MyButton";
-import ParkingLotDonut from "../components/donut-charts/ParkingLotDonut";
+import { DashboardPieGraph } from "../../domain/models/DashboardModel";
+import React from "react";
+import DynamicDonut from "../components/donut-charts/DynamicDonut";
+import { dashboardGetPieGraph } from "../../domain/services/dashboardService";
+import { message } from "antd";
 
 function HomePage() {
   const navigate = useNavigate();
+  const [pieChart, setPieChart] = React.useState<DashboardPieGraph>({
+    parkingLotUnverifiedCount: 0,
+    parkingLotVerifiedCount: 0,
+    userUnverifiedCount: 0,
+    userVerifiedCount: 0,
+    vehicleUnverifiedCount: 0,
+    vehicleVerifiedCount: 0,
+  });
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const response = await dashboardGetPieGraph();
+
+      if (response.errors) {
+        if (response.errors.length > 0) {
+          message.error("Dashboard pie graph failed");
+        }
+      } else {
+        const data = response.data;
+        setPieChart(data);
+      }
+
+      setLoading(false);
+    }
+
+    if (loading) {
+      fetchData();
+    }
+  }, [loading]);
 
   return (
     <div className="flex flex-wrap p-2 bg-bg1">
@@ -22,7 +56,14 @@ function HomePage() {
           </header>
 
           <section>
-            <ParkingLotDonut />
+            <DynamicDonut
+              series={[
+                pieChart.parkingLotUnverifiedCount,
+                pieChart.parkingLotVerifiedCount,
+              ]}
+              labels={["Unverified", "Verified"]}
+              loading={loading}
+            />
           </section>
         </section>
       </section>
@@ -41,7 +82,14 @@ function HomePage() {
           </header>
 
           <section>
-            <ParkingLotDonut />
+            <DynamicDonut
+              series={[
+                pieChart.userUnverifiedCount,
+                pieChart.userVerifiedCount,
+              ]}
+              labels={["Unverified", "Verified"]}
+              loading={loading}
+            />
           </section>
         </section>
       </section>
@@ -60,7 +108,14 @@ function HomePage() {
           </header>
 
           <section>
-            <ParkingLotDonut />
+            <DynamicDonut
+              series={[
+                pieChart.vehicleUnverifiedCount,
+                pieChart.vehicleVerifiedCount,
+              ]}
+              labels={["Unverified", "Verified"]}
+              loading={loading}
+            />
           </section>
         </section>
       </section>
