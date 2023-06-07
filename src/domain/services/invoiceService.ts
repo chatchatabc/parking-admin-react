@@ -5,7 +5,7 @@ import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
 import { Parking } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
-import { userGetByParkingLotUuid } from "./userService";
+import { parkingLotGetWithOwner } from "./parkingService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(invoiceGetAllDoc(), variables);
@@ -16,25 +16,19 @@ export async function invoiceGetAll(variables: CommonVariables) {
 
   const data = query.data.data.getInvoices;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
-    const parkingLot: Parking & { owner: User } = {
-      ...invoice.parkingLot,
-      owner: {},
-    };
+    const parkingLot = await parkingLotGetWithOwner({
+      parkingLotUuid: invoice.parkingLotUuid ?? "",
+    });
 
-    const ownerQuery = await userGetByParkingLotUuid(
-      parkingLot.parkingLotUuid ?? ""
-    );
-
-    if (!ownerQuery.errors) {
-      parkingLot.owner = ownerQuery.data;
+    if (parkingLot.errors) {
+      return invoice;
     }
 
     return {
       ...invoice,
-      parkingLot,
+      parkingLot: parkingLot.data,
     };
   });
-
   const invoicesWithParkingLot = await Promise.all(additionalInfo);
 
   return {
