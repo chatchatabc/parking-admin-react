@@ -2,14 +2,7 @@ import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
 import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
-import {
-  parkingLotGetAllWithOwners,
-  parkingLotVerify,
-} from "../../../domain/services/parkingService";
-import { Modal, message } from "antd";
-import { useDispatch } from "react-redux";
-import { globalStateUpdate } from "../../redux/slices/globalState";
-import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
+import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingService";
 
 type Props = {
   showPagination?: boolean;
@@ -17,7 +10,6 @@ type Props = {
 
 function ParkingTable({ showPagination }: Props) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const columns = [
     {
@@ -29,7 +21,7 @@ function ParkingTable({ showPagination }: Props) {
         if (owner.username || owner.phone) {
           return (
             <button
-              className="text-blue-500 underline hover:no-underline"
+              className="text-blue-500 text-start underline hover:no-underline"
               onClick={() => {
                 navigate(
                   `/parking-lots/${
@@ -78,52 +70,12 @@ function ParkingTable({ showPagination }: Props) {
       title: "Verified",
       key: "verified",
       render: (record: Parking) => {
-        const date = new Date(record.verifiedAt ?? "");
         return (
           <div>
             {record.verifiedAt ? (
-              <p className="text-green-500">
-                {new Intl.DateTimeFormat("en", {
-                  dateStyle: "medium",
-                  timeStyle: "medium",
-                }).format(date)}
-              </p>
+              <p className="text-green-500">TRUE</p>
             ) : (
-              <div className="flex gap-4">
-                <p className="text-red-500">Not verified</p>
-                <button
-                  onClick={() => {
-                    Modal.confirm({
-                      title: `Proceed in verifying "${record.name}"?`,
-                      okButtonProps: {
-                        className: "bg-c1",
-                      },
-                      maskClosable: true,
-                      closable: true,
-                      onOk: async () => {
-                        const response = await parkingLotVerify(
-                          record.parkingLotUuid ?? ""
-                        );
-
-                        if (response.errors && response.errors.length > 0) {
-                          message.error("Failed to verify parking lot");
-                        } else {
-                          message.success("Successfully verified parking lot");
-
-                          dispatch(
-                            globalStateUpdate({
-                              reset: utilGenerateRandomNumber(),
-                            })
-                          );
-                        }
-                      },
-                    });
-                  }}
-                  className="text-xs text-blue-500 underline"
-                >
-                  (Click to verify)
-                </button>
-              </div>
+              <p className="text-red-500">FALSE</p>
             )}
           </div>
         );
