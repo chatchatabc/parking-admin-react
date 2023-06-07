@@ -17,26 +17,39 @@ function UserBanTable({
 }: Props) {
   const columns: ColumnsType<UserBan> = [
     {
-      title: "Status",
-      key: "status",
+      title: "Banned At",
+      key: "bannedAt",
       render: (record: UserBan) => {
-        if (record.unbanReason) {
-          return <p className="text-green-500">PERMITTED</p>;
+        if (record.unbannedAt) {
+          return (
+            <>
+              <p className="text-green-500">{record.createdAt}</p>
+              <p className="text-t2">{record.reason}</p>
+            </>
+          );
         }
-        return <p className="text-red-500">BANNED</p>;
+        return (
+          <>
+            <p className="text-green-500">{record.createdAt}</p>
+            <p className="text-t2">{record.reason}</p>
+          </>
+        );
       },
     },
     {
-      title: "Details",
-      key: "details",
+      title: "Until",
+      key: "until",
       render: (record: UserBan) => {
-        return <p>{record.unbanReason ?? record.reason}</p>;
+        if (record.unbannedAt) {
+          return (
+            <>
+              <p className="text-green-500">{record.unbannedAt}</p>
+              <p className="text-t2">{record.unbanReason}</p>
+            </>
+          );
+        }
+        return <p className="text-red-500">{record.until}</p>;
       },
-    },
-    {
-      title: "Date",
-      key: "date",
-      dataIndex: "createdAt",
     },
   ];
 
