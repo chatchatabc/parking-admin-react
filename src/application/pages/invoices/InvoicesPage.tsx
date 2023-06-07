@@ -1,4 +1,4 @@
-import InvoicesTable from "../components/tables/InvoicesTable";
+import InvoicesTable from "../../components/tables/InvoicesTable";
 
 function UsersPage() {
   return (
