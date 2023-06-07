@@ -1,5 +1,6 @@
 import {
   userGetAllDoc,
+  userGetBanHistoryDoc,
   userGetByParkingLotUuidDoc,
   userGetByPhoneDoc,
   userGetByUsernameDoc,
@@ -10,7 +11,7 @@ import { restPost, restPut } from "../infra/apis/restAction";
 import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
-import { User, UserRole } from "../models/UserModel";
+import { User, UserBan, UserRole } from "../models/UserModel";
 import { authUsername } from "./authService";
 
 export async function userGetProfile({
@@ -121,4 +122,23 @@ export async function userGetByParkingLotUuid(parkingLotUuid: string) {
   const data = response.data.data.getUserByParkingLotUuid;
 
   return { data: data } as AxiosResponseData & { data: User };
+}
+
+export async function userGetBanHistory(
+  variables: CommonVariables & { uuid: string }
+) {
+  const response = await graphqlQuery(userGetBanHistoryDoc(), variables);
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  const data = response.data.data.getBanHistoryLogsByUser;
+
+  return { data } as AxiosResponseData & {
+    data: {
+      content: UserBan[];
+      pageInfo: CommonPageInfo;
+    };
+  };
 }

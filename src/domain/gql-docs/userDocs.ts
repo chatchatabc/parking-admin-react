@@ -106,3 +106,27 @@ export function userRolesGetDoc() {
     }
   `;
 }
+
+export function userGetBanHistoryDoc() {
+  return `
+  query GetBanHistory($uuid: String!, $page: Int! = 0, $size: Int! = 10) {
+    getBanHistoryLogsByUser(uuid: $uuid, page: $page, size: $size) {
+      content {
+        id
+        createdAt
+        until
+        reason
+        unbanReason
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}

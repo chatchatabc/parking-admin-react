@@ -39,3 +39,13 @@ export type UserAuthorities = {
 export type UserRole = {
   name?: string;
 };
+
+export type UserBan = {
+  id?: string | null;
+  until?: string | null;
+  reason?: string | null;
+  createdAt?: string | null;
+  unbanReason?: string | null;
+
+  status?: number | null;
+};
