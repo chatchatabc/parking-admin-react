@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import UsersTable from "../components/tables/UsersTable";
 import MyButton from "../components/common/MyButton";
 import { DashboardPieGraph } from "../../domain/models/DashboardModel";
 import React from "react";
 import DynamicDonut from "../components/donut-charts/DynamicDonut";
 import { dashboardGetPieGraph } from "../../domain/services/dashboardService";
 import { message } from "antd";
+import ParkingTable from "../components/tables/ParkingLotTable";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -120,10 +120,10 @@ function HomePage() {
         </section>
       </section>
 
-      {/* <section className="p-2 w-full">
+      <section className="p-2 w-full">
         <section className="w-full bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between">
-            <h2 className="text-xl font-bold">Parking Lots Table</h2>
+            <h2 className="text-xl font-bold">Unverified Parking Lots Table</h2>
             <MyButton
               onClick={() => {
                 navigate("/parking-lots");
@@ -133,25 +133,7 @@ function HomePage() {
             </MyButton>
           </header>
           <section className="mt-2">
-            <ParkingTable showPagination={false} />
-          </section>
-        </section>
-      </section> */}
-
-      <section className="p-2 w-full">
-        <section className="w-full bg-bg2 p-4 rounded-lg">
-          <header className="flex justify-between">
-            <h2 className="text-xl font-bold">Users Table</h2>
-            <MyButton
-              onClick={() => {
-                navigate("/users");
-              }}
-            >
-              Open
-            </MyButton>
-          </header>
-          <section className="mt-2">
-            <UsersTable showPagination={false} />
+            <ParkingTable variables={{ verified: 0 }} />
           </section>
         </section>
       </section>
