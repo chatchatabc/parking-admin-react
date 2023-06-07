@@ -3,6 +3,7 @@ import DynamicTable from "./DynamicTable";
 import { userGetBanHistory } from "../../../domain/services/userService";
 import { authUsername } from "../../../domain/services/authService";
 import { ColumnsType } from "antd/es/table";
+import { Popover } from "antd";
 
 type Props = {
   showPagination?: boolean;
@@ -23,19 +24,32 @@ function UserBanTable({
       title: "Banned At",
       key: "bannedAt",
       render: (record: UserBan) => {
+        const date = new Date(record.createdAt ?? "");
         if (record.unbannedAt) {
           return (
-            <>
-              <p className="text-green-500">{record.createdAt}</p>
-              <p className="text-t2">{record.reason}</p>
-            </>
+            <Popover
+              content={<p className="text-xs max-w-xs">{record.reason}</p>}
+            >
+              <p className="text-green-500">
+                {new Intl.DateTimeFormat("en", {
+                  dateStyle: "medium",
+                  timeStyle: "medium",
+                }).format(date)}
+              </p>
+            </Popover>
           );
         }
         return (
-          <>
-            <p className="text-green-500">{record.createdAt}</p>
-            <p className="text-t2">{record.reason}</p>
-          </>
+          <Popover
+            content={<p className="text-xs max-w-xs">{record.reason}</p>}
+          >
+            <p className="text-red-500">
+              {new Intl.DateTimeFormat("en", {
+                dateStyle: "medium",
+                timeStyle: "medium",
+              }).format(date)}
+            </p>
+          </Popover>
         );
       },
     },
@@ -45,14 +59,30 @@ function UserBanTable({
       key: "until",
       render: (record: UserBan) => {
         if (record.unbannedAt) {
+          const unbannedAt = new Date(record.unbannedAt ?? "");
           return (
-            <>
-              <p className="text-green-500">{record.unbannedAt}</p>
-              <p className="text-t2">{record.unbanReason}</p>
-            </>
+            <Popover
+              content={<p className="text-xs max-w-xs">{record.unbanReason}</p>}
+            >
+              <p className="text-green-500">
+                {new Intl.DateTimeFormat("en", {
+                  dateStyle: "medium",
+                  timeStyle: "medium",
+                }).format(unbannedAt)}
+              </p>
+            </Popover>
           );
         }
-        return <p className="text-red-500">{record.until}</p>;
+
+        const until = new Date(record.until ?? "");
+        return (
+          <p className="text-red-500">
+            {new Intl.DateTimeFormat("en", {
+              dateStyle: "medium",
+              timeStyle: "medium",
+            }).format(until)}
+          </p>
+        );
       },
     },
   ];
