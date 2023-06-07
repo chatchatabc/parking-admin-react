@@ -51,7 +51,7 @@ export async function invoiceGetByParkingLotUuid(variables: CommonVariables) {
     return query.data;
   }
 
-  const data = query.data.data.getInvoices;
+  const data = query.data.data.getInvoicesByParkingLotUuid;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
       parkingLotUuid: invoice.parkingLotUuid ?? "",
