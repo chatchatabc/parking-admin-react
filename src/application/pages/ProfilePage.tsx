@@ -9,6 +9,7 @@ import MyButton from "../components/common/MyButton";
 import UserBanTable from "../components/tables/UserBanTable";
 import InvoicesTable from "../components/tables/InvoicesTable";
 import { invoiceGetByUserUuid } from "../../domain/services/invoiceService";
+import UserVehiclesTable from "../components/tables/UserVehiclesTable";
 
 interface Props {
   username?: string;
@@ -72,26 +73,12 @@ function ProfilePage({ username, phone }: Props) {
 
   return (
     <div className="grid grid-cols-12 p-2 relative">
-      {/* User Avatar */}
-      <section className="p-2 grid col-span-3">
-        <div className="bg-bg2 p-4 pb-8 rounded-lg">
-          <header className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">User Avatar</h2>
-            <MyButton>Edit</MyButton>
-          </header>
-
-          <div className="w-1/2 mx-auto mt-2">
-            <div className="pb-[100%] border-2 border-primary rounded-full"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Vehicles */}
-      <section className="p-2 grid col-span-3">
+      {/* Ban History */}
+      <section className="p-2 grid col-span-4 row-span-2">
         <section className="p-4 pb-8 bg-bg2 rounded-lg">
           {/* Header */}
           <header className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Vehicles</h2>
+            <h2 className="text-lg font-bold">Ban History</h2>
             <MyButton
               onClick={() => {
                 dispatch(
@@ -120,7 +107,7 @@ function ProfilePage({ username, phone }: Props) {
       </section>
 
       {/* User Information */}
-      <section className="p-2 grid col-span-6">
+      <section className="p-2 grid col-span-8">
         <section className="p-4 pb-8 bg-bg2 rounded-lg">
           {/* Header */}
           <header className="flex items-center justify-between">
@@ -174,41 +161,8 @@ function ProfilePage({ username, phone }: Props) {
         </section>
       </section>
 
-      {/* Ban History */}
-      <section className="p-2 grid col-span-4">
-        <section className="p-4 pb-8 bg-bg2 rounded-lg">
-          {/* Header */}
-          <header className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Ban History</h2>
-            <MyButton
-              onClick={() => {
-                dispatch(
-                  drawerFormUpdate({
-                    content: "userBan",
-                    mode: "create",
-                    show: true,
-                    title: "User Ban",
-                    data: {
-                      method: "BAN",
-                      userUuid: data.userUuid,
-                    },
-                  })
-                );
-              }}
-            >
-              Add +
-            </MyButton>
-          </header>
-
-          {/* Body */}
-          <div className="mt-2">
-            <UserBanTable username={username} phone={phone} />
-          </div>
-        </section>
-      </section>
-
       {/* Invoice history */}
-      <section className="p-2 grid col-span-8">
+      <section className="p-2 grid col-span-8 row-span-3">
         <section className="bg-bg2 p-4 rounded-lg">
           {/* Header */}
           <header className="flex justify-between items-center">
@@ -223,6 +177,22 @@ function ProfilePage({ username, phone }: Props) {
               }}
             />
           </section>
+        </section>
+      </section>
+
+      {/* Vehicles */}
+      <section className="p-2 grid col-span-4 row-span-4">
+        <section className="p-4 pb-8 bg-bg2 rounded-lg">
+          {/* Header */}
+          <header className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">Vehicles</h2>
+            <MyButton>Add +</MyButton>
+          </header>
+
+          {/* Body */}
+          <div className="mt-2">
+            <UserVehiclesTable userUuid={data.userUuid ?? ""} />
+          </div>
         </section>
       </section>
     </div>
