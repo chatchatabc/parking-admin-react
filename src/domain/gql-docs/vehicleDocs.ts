@@ -22,3 +22,28 @@ export function vehicleGetAllDoc() {
   }
   `;
 }
+
+export function vehicleGetAllByUserUuidDoc() {
+  return `
+  query GetAllVehiclesByUserUuid($page: Int, $size: Int, $userUuid: String!) {
+    getVehiclesByOwner(page: $page, size: $size, uuid: $userUuid) {
+      content {
+        vehicleUuid
+        name
+        plateNumber
+        type
+        createdAt
+        updatedAt
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}

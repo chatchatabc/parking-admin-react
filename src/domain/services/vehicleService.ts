@@ -44,3 +44,22 @@ export async function vehicleGetAllWithOwner(params: CommonVariables) {
 
   return { data: { ...query.data, content: vehiclesWithOwner } };
 }
+
+export async function vehicleGetAllByUserUuid(
+  params: CommonVariables & { userUuid: string }
+) {
+  const query = await graphqlQuery(vehicleGetAllDoc(), params);
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getVehicles;
+
+  return { data } as AxiosResponseData & {
+    data: {
+      content: Vehicle[];
+      pageInfo: CommonPageInfo;
+    };
+  };
+}
