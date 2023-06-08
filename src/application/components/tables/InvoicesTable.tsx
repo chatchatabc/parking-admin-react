@@ -35,6 +35,11 @@ function InvoicesTable({ showPagination, getData }: Props) {
 
   const columns: ColumnsType<Record<string, any>> = [
     {
+      title: "Invoice ID",
+      key: "id",
+      dataIndex: "id",
+    },
+    {
       title: "Parking Lot",
       key: "parkingLot",
       render: (record: NewInvoice) => {
@@ -42,7 +47,7 @@ function InvoicesTable({ showPagination, getData }: Props) {
           const { username, phone } = record.parkingLot.owner;
           return (
             <button
-              className="text-blue-500 underline hover:no-underline"
+              className="underline hover:no-underline"
               onClick={() => {
                 navigate(
                   `/parking-lots/${username ? `u-${username}` : `p-${phone}`}`
