@@ -7,9 +7,14 @@ import { Popover } from "antd";
 type Props = {
   showPagination?: boolean;
   localPagination?: boolean;
+  extraVariables?: Record<string, any>;
 };
 
-function UsersTable({ showPagination, localPagination }: Props) {
+function UsersTable({
+  showPagination,
+  localPagination,
+  extraVariables,
+}: Props) {
   const navigate = useNavigate();
 
   const columns = [
@@ -125,7 +130,9 @@ function UsersTable({ showPagination, localPagination }: Props) {
       localPagination={localPagination}
       columns={columns}
       title="users-table"
-      getData={userGetAll}
+      getData={(variables) => {
+        return userGetAll({ ...variables, ...extraVariables });
+      }}
     />
   );
 }
