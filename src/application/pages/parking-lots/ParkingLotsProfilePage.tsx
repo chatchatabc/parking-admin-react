@@ -133,10 +133,9 @@ function ParkingLotsProfilePage() {
   console.log(data);
 
   return (
-    <div className="p-4 bg-bg1 flex flex-1 gap-4">
-      {/* Left */}
-      <section className="w-1/3 space-y-4">
-        {/* 1st Entry */}
+    <div className="p-2 grid grid-cols-12 flex-1">
+      {/* Parking Verification */}
+      <section className="p-2 grid col-span-4">
         <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">Parking Verification</h2>
@@ -204,107 +203,10 @@ function ParkingLotsProfilePage() {
             </div>
           </section>
         </section>
-
-        {/* 2nd Entry */}
-        <section className="bg-bg2 p-4 rounded-lg">
-          <header className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">Parking Lot Rate</h2>
-            <MyButton
-              onClick={() => {
-                dispatch(
-                  drawerFormUpdate({
-                    show: true,
-                    content: "parkingLotRate",
-                    title: "Edit Parking Lot Rate",
-                    data: {
-                      parkingLotUuid: data.parkingLotUuid,
-                      ...data.rate,
-                    },
-                  })
-                );
-              }}
-            >
-              Edit
-            </MyButton>
-          </header>
-
-          <section className="flex flex-wrap gap-y-4 mt-2">
-            <div className="w-1/3">
-              <p className="text-xs font-bold">Interval</p>
-              <p>{data.rate?.interval === 0 ? "Hourly" : "Daily"}</p>
-            </div>
-            <div className="w-1/3">
-              <p className="text-xs font-bold">Rate</p>
-              <p>
-                {new Intl.NumberFormat("en", {
-                  style: "currency",
-                  currency: "PHP",
-                }).format(data.rate?.rate ?? 0)}
-              </p>
-            </div>
-            <div className="w-1/3">
-              <p className="text-xs font-bold">Starting Rate</p>
-              <p>
-                {new Intl.NumberFormat("en", {
-                  style: "currency",
-                  currency: "PHP",
-                }).format(data.rate?.startingRate ?? 0)}
-              </p>
-            </div>
-            <div className="w-1/3">
-              <p className="text-xs font-bold">Free Hours</p>
-              <p>{data.rate?.freeHours}</p>
-            </div>
-            <div className="w-1/3">
-              <p className="text-xs font-bold">Pay for free hours</p>
-              <p>
-                {data.rate?.payForFreeHoursWhenExceeding ? "TRUE" : "FALSE"}
-              </p>
-            </div>
-          </section>
-        </section>
-
-        {/* 3rd Entry */}
-        <section className="bg-bg2 p-4 rounded-lg">
-          <header className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">Owner Information</h2>
-            <MyButton
-              onClick={() => {
-                navigate(
-                  `/users/${
-                    owner?.username
-                      ? `u-${owner?.username}`
-                      : `p-${owner?.phone}`
-                  }`
-                );
-              }}
-            >
-              View
-            </MyButton>
-          </header>
-
-          <section className="mt-2 flex flex-wrap gap-y-2">
-            <div className="w-1/2">
-              <p className="text-xs font-bold">Username</p>
-              <p>{owner?.username}</p>
-            </div>
-
-            <div className="w-1/2">
-              <p className="text-xs font-bold">Phone</p>
-              <p>{owner?.phone}</p>
-            </div>
-
-            <div className="w-1/2">
-              <p className="text-xs font-bold">Email</p>
-              <p>{owner?.email}</p>
-            </div>
-          </section>
-        </section>
       </section>
 
-      {/* Right */}
-      <section className="w-2/3 space-y-4">
-        {/* 1st Entry */}
+      {/* Parking Information */}
+      <section className="p-2 grid row-span-2 col-span-8">
         <section className="bg-bg2 p-4 rounded-lg">
           {/* Header */}
           <header className="flex justify-between items-center">
@@ -426,8 +328,110 @@ function ParkingLotsProfilePage() {
             </div>
           </section>
         </section>
+      </section>
 
-        {/* 2nd Entry */}
+      {/* Parking Lot Rate */}
+      <section className="p-2 grid col-span-4">
+        <section className="bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Parking Lot Rate</h2>
+            <MyButton
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    show: true,
+                    content: "parkingLotRate",
+                    title: "Edit Parking Lot Rate",
+                    data: {
+                      parkingLotUuid: data.parkingLotUuid,
+                      ...data.rate,
+                    },
+                  })
+                );
+              }}
+            >
+              Edit
+            </MyButton>
+          </header>
+
+          <section className="flex flex-wrap gap-y-4 mt-2">
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Interval</p>
+              <p>{data.rate?.interval === 0 ? "Hourly" : "Daily"}</p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Rate</p>
+              <p>
+                {new Intl.NumberFormat("en", {
+                  style: "currency",
+                  currency: "PHP",
+                }).format(data.rate?.rate ?? 0)}
+              </p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Starting Rate</p>
+              <p>
+                {new Intl.NumberFormat("en", {
+                  style: "currency",
+                  currency: "PHP",
+                }).format(data.rate?.startingRate ?? 0)}
+              </p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Free Hours</p>
+              <p>{data.rate?.freeHours}</p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Pay for free hours</p>
+              <p>
+                {data.rate?.payForFreeHoursWhenExceeding ? "TRUE" : "FALSE"}
+              </p>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      {/* Owner Information */}
+      <section className="p-2 grid col-span-4">
+        <section className="bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Owner Information</h2>
+            <MyButton
+              onClick={() => {
+                navigate(
+                  `/users/${
+                    owner?.username
+                      ? `u-${owner?.username}`
+                      : `p-${owner?.phone}`
+                  }`
+                );
+              }}
+            >
+              View
+            </MyButton>
+          </header>
+
+          <section className="mt-2 flex flex-wrap gap-y-2">
+            <div className="w-1/2">
+              <p className="text-xs font-bold">Username</p>
+              <p>{owner?.username}</p>
+            </div>
+
+            <div className="w-1/2">
+              <p className="text-xs font-bold">Phone</p>
+              <p>{owner?.phone}</p>
+            </div>
+
+            <div className="w-1/2">
+              <p className="text-xs font-bold">Email</p>
+              <p>{owner?.email}</p>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      {/* Invoice History */}
+      <section className="p-2 grid col-span-8 row-span-2">
         <section className="bg-bg2 p-4 rounded-lg">
           {/* Header */}
           <header className="flex justify-between items-center">
