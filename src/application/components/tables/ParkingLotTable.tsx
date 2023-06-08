@@ -4,6 +4,9 @@ import { Parking } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
 import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingService";
 import { ColumnsType } from "antd/es/table";
+import { Popover } from "antd";
+import CheckIconAsset from "../../assets/CheckIconAsset";
+import XIconAsset from "../../assets/XIconAsset";
 
 type Props = {
   showPagination?: boolean;
@@ -22,6 +25,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
       key: "name",
       render: (record: Parking & { owner: User }) => {
         const owner = record.owner;
+        const date = new Date(record.verifiedAt ?? "");
 
         if (owner.username || owner.phone) {
           return (
@@ -47,6 +51,34 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
               >
                 {record.name}
               </button>
+              <Popover
+                color={record.verifiedAt ? "green" : "red"}
+                content={
+                  <p className="text-white text-xs">
+                    {record.verifiedAt ? (
+                      <span>
+                        Verified at <br />
+                        {new Intl.DateTimeFormat("en", {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        }).format(date)}
+                      </span>
+                    ) : (
+                      "Not yet verified"
+                    )}
+                  </p>
+                }
+              >
+                {record.verifiedAt ? (
+                  <div className="w-5 h-5 text-green-500 self-start">
+                    <CheckIconAsset />
+                  </div>
+                ) : (
+                  <div className="w-5 h-5 text-red-500 self-start">
+                    <XIconAsset />
+                  </div>
+                )}
+              </Popover>
             </div>
           );
         }
@@ -77,21 +109,6 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
         }
 
         return <p>{owner.email ?? "Unknown"}</p>;
-      },
-    },
-    {
-      title: "Verified",
-      key: "verified",
-      render: (record: Parking) => {
-        return (
-          <div>
-            {record.verifiedAt ? (
-              <p className="text-green-500">TRUE</p>
-            ) : (
-              <p className="text-red-500">FALSE</p>
-            )}
-          </div>
-        );
       },
     },
     {
