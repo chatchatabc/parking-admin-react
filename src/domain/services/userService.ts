@@ -175,3 +175,32 @@ export async function userBanCreate(values: Record<string, any>) {
 
   return response.data;
 }
+
+export function userGetFilters() {
+  return [
+    {
+      label: "Username, ASC",
+      value: "username,1",
+    },
+    {
+      label: "Username, DESC",
+      value: "username,0",
+    },
+    {
+      label: "Phone Verified, ASC",
+      value: "phoneVerifiedAt,1",
+    },
+    {
+      label: "Phone Verified, DESC",
+      value: "phoneVerifiedAt,0",
+    },
+    {
+      label: "Email Verified, ASC",
+      value: "emailVerifiedAt,1",
+    },
+    {
+      label: "Email Verified, DESC",
+      value: "emailVerifiedAt,0",
+    },
+  ];
+}

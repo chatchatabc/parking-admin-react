@@ -7,6 +7,7 @@ import { Select } from "antd";
 import React from "react";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
+import { userGetFilters } from "../../../domain/services/userService";
 
 function UsersPage() {
   // Local States
@@ -16,32 +17,7 @@ function UsersPage() {
   const dispatch = useDispatch();
 
   // Sort options
-  const options = [
-    {
-      label: "Username, ASC",
-      value: "username,1",
-    },
-    {
-      label: "Username, DESC",
-      value: "username,0",
-    },
-    {
-      label: "Phone Verified, ASC",
-      value: "phoneVerifiedAt,1",
-    },
-    {
-      label: "Phone Verified, DESC",
-      value: "phoneVerifiedAt,0",
-    },
-    {
-      label: "Email Verified, ASC",
-      value: "emailVerifiedAt,1",
-    },
-    {
-      label: "Email Verified, DESC",
-      value: "emailVerifiedAt,0",
-    },
-  ];
+  const options = userGetFilters();
 
   return (
     <div className="p-4 bg-bg1 w-full relative">
