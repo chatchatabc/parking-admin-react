@@ -209,12 +209,58 @@ function ParkingLotsProfilePage() {
         <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">Parking Lot Rate</h2>
-            <MyButton>Edit</MyButton>
+            <MyButton
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    show: true,
+                    content: "parkingLotRate",
+                    title: "Edit Parking Lot Rate",
+                    data: {
+                      parkingLotUuid: data.parkingLotUuid,
+                      ...data.rate,
+                    },
+                  })
+                );
+              }}
+            >
+              Edit
+            </MyButton>
           </header>
 
-          <section className="flex justify-between mt-2">
-            <p>Type: Daily</p>
-            <p>Price: 1000php</p>
+          <section className="flex flex-wrap gap-y-4 mt-2">
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Interval</p>
+              <p>{data.rate?.interval === 0 ? "Hourly" : "Daily"}</p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Rate</p>
+              <p>
+                {new Intl.NumberFormat("en", {
+                  style: "currency",
+                  currency: "PHP",
+                }).format(data.rate?.rate ?? 0)}
+              </p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Starting Rate</p>
+              <p>
+                {new Intl.NumberFormat("en", {
+                  style: "currency",
+                  currency: "PHP",
+                }).format(data.rate?.startingRate ?? 0)}
+              </p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Free Hours</p>
+              <p>{data.rate?.freeHours}</p>
+            </div>
+            <div className="w-1/3">
+              <p className="text-xs font-bold">Pay for free hours</p>
+              <p>
+                {data.rate?.payForFreeHoursWhenExceeding ? "TRUE" : "FALSE"}
+              </p>
+            </div>
           </section>
         </section>
 
