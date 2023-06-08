@@ -25,20 +25,29 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
 
         if (owner.username || owner.phone) {
           return (
-            <button
-              className="text-blue-500 text-start underline hover:no-underline"
-              onClick={() => {
-                navigate(
-                  `/parking-lots/${
-                    owner.username
-                      ? `u-${record.owner.username}`
-                      : `p-${record.owner.phone}`
-                  }`
-                );
-              }}
-            >
-              {record.name}
-            </button>
+            <div className="flex items-center gap-1">
+              <div className="w-8 h-8 overflow-hidden border border-c1 rounded-full">
+                <img
+                  className="w-full h-full object-cover"
+                  src={`/api/parking-lot/get-featured-image/${record.parkingLotUuid}`}
+                  alt={record.name ?? "Unknown"}
+                />
+              </div>
+              <button
+                className="text-start underline hover:no-underline"
+                onClick={() => {
+                  navigate(
+                    `/parking-lots/${
+                      owner.username
+                        ? `u-${record.owner.username}`
+                        : `p-${record.owner.phone}`
+                    }`
+                  );
+                }}
+              >
+                {record.name}
+              </button>
+            </div>
           );
         }
         return <p>Unknown</p>;
@@ -53,7 +62,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
         if (owner.username || owner.phone) {
           return (
             <button
-              className="text-blue-500 underline hover:no-underline"
+              className="underline hover:no-underline"
               onClick={() => {
                 navigate(
                   `/users/${
@@ -93,7 +102,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
           <a
             href={`https://www.google.com/maps/dir/?api=1&destination=${record.address}`}
             target="_blank"
-            className="text-blue-500 underline hover:no-underline"
+            className="underline hover:no-underline"
           >
             {record.address}
           </a>
