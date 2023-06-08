@@ -13,6 +13,8 @@ type Props = {
   localPagination?: boolean;
   variables?: {
     verified?: number;
+    sortField?: string;
+    sortBy?: number;
   };
 };
 

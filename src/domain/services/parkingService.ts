@@ -246,3 +246,24 @@ export async function parkingLotGetImagesByParkingLotUuid(
     data: string[];
   };
 }
+
+export function parkingLotGetFilters() {
+  return [
+    {
+      label: "Name, ASC",
+      value: "name,1",
+    },
+    {
+      label: "Name, DESC",
+      value: "name,0",
+    },
+    {
+      label: "Verified, ASC",
+      value: "verifiedAt,1",
+    },
+    {
+      label: "Verified, DESC",
+      value: "verifiedAt,0",
+    },
+  ];
+}
