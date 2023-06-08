@@ -448,6 +448,34 @@ function ParkingLotsProfilePage() {
           </section>
         </section>
       </section>
+
+      {/* Owner Information */}
+      <section className="p-2 grid col-span-4 row-span-2">
+        <section className="bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Parking Lot Photos</h2>
+            <MyButton>Add +</MyButton>
+          </header>
+
+          <section className="mt-2 grid grid-cols-4">
+            <div className="p-2">
+              <div className="pb-[100%] bg-t2"></div>
+            </div>
+            <div className="p-2">
+              <div className="pb-[100%] bg-t2"></div>
+            </div>
+            <div className="p-2">
+              <div className="pb-[100%] bg-t2"></div>
+            </div>
+            <div className="p-2">
+              <div className="pb-[100%] bg-t2"></div>
+            </div>
+            <div className="p-2">
+              <div className="pb-[100%] bg-t2"></div>
+            </div>
+          </section>
+        </section>
+      </section>
     </div>
   );
 }
