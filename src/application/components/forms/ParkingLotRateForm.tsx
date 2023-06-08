@@ -47,6 +47,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/2"
           name="parkingLotUuid"
           label="Parking Lot UUID"
+          tooltip="This is the parking lot UUID"
           rules={[
             {
               message: "Need some input",
@@ -61,6 +62,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/2"
           name="type"
           label="Type"
+          tooltip="This is the parking lot type"
           rules={[
             {
               message: "Need some input",
@@ -86,6 +88,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/3"
           name="interval"
           label="Interval"
+          tooltip="This is the parking lot interval. It can be hourly or daily."
           rules={[
             {
               message: "Need some input",
@@ -110,6 +113,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/3"
           name="startingRate"
           label="Starting Rate"
+          tooltip="This is the parking lot starting rate. Example: 2.50"
           rules={[
             {
               message: "Need some input",
@@ -128,6 +132,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/3"
           name="rate"
           label="Rate"
+          tooltip="This is the parking lot rate. Example: 2.50"
           rules={[
             {
               message: "Need some input",
@@ -146,6 +151,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/2"
           name="freeHours"
           label="Free Hours"
+          tooltip="This is the parking lot free hours. Example: 2"
           rules={[
             {
               message: "Need some input",
@@ -164,6 +170,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
           className="w-1/2"
           name="payForFreeHoursWhenExceeding"
           label="Pay Free Hours When Exceeding"
+          tooltip="This is the parking lot pay for free hours when exceeding. Example: 2"
           initialValue={true}
           rules={[
             {
