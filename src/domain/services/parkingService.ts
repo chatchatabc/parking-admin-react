@@ -216,3 +216,13 @@ export async function parkingLotGetDonut() {
     };
   };
 }
+
+export async function parkingLotUpdateRate(values: Record<string, any>) {
+  const parkingLotUuid = values.parkingLotUuid;
+
+  delete values.parkingLotUuid;
+
+  const response = await restPost(`/rate/update/${parkingLotUuid}`, values);
+
+  return response.data;
+}
