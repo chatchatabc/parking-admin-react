@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import MyButton from "../common/MyButton";
-import type { Dayjs } from "dayjs";
-import {
-  userAllOptionsGet,
-  userBanCreate,
-} from "../../../domain/services/userService";
+import { userAllOptionsGet } from "../../../domain/services/userService";
 import SelectAsyncSearch from "../select/SelectAsyncSearch";
 import { vehicleCreate } from "../../../domain/services/vehicleService";
 
