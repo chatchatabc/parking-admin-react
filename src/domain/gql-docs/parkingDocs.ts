@@ -10,8 +10,13 @@ export function parkingLotGetAllDoc() {
           name
           verifiedAt
 
-          rate {
-            id
+          rate{
+            freeHours
+            interval
+            payForFreeHoursWhenExceeding
+            rate
+            startingRate
+            type
           }
         }
 
@@ -44,7 +49,12 @@ export function parkingLotGetByUsernameDoc() {
         openDaysFlag
         verifiedAt
         rate{
-          createdAt
+          freeHours
+          interval
+          payForFreeHoursWhenExceeding
+          rate
+          startingRate
+          type
         }
       }
     }
@@ -68,7 +78,12 @@ export function parkingLotGetByPhoneDoc() {
         openDaysFlag
         verifiedAt
         rate{
-          createdAt
+          freeHours
+          interval
+          payForFreeHoursWhenExceeding
+          rate
+          startingRate
+          type
         }
       }
     }
@@ -92,7 +107,12 @@ export function parkingLotGetByUuidDoc() {
         openDaysFlag
         verifiedAt
         rate{
-          createdAt
+          freeHours
+          interval
+          payForFreeHoursWhenExceeding
+          rate
+          startingRate
+          type
         }
       }
     }
