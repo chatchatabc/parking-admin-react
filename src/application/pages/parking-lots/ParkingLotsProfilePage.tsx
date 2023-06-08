@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
 import {
   parkingLotGet,
+  parkingLotGetImagesByParkingLotUuid,
   parkingLotVerify,
 } from "../../../domain/services/parkingService";
 import { Parking } from "../../../domain/models/ParkingModel";
@@ -37,6 +38,7 @@ function ParkingLotsProfilePage() {
   // Local states
   const [owner, setOwner] = React.useState<User | null>(null);
   const [data, setData] = React.useState<Parking | null>(null);
+  const [images, setImages] = React.useState<string[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   const dates = [
@@ -89,15 +91,31 @@ function ParkingLotsProfilePage() {
     async function fetchData() {
       const response = await parkingLotGet({ username, phone });
       if (response.errors) {
-        message.error("Failed to fetch parking lot.");
+        if (response.errors.length > 0) {
+          message.error("Failed to fetch parking lot.");
+        }
       } else {
         setData(response.data);
+
+        const responseImages = await parkingLotGetImagesByParkingLotUuid({
+          parkingLotUuid: response?.data?.parkingLotUuid ?? "",
+          page: 0,
+          size: 100,
+        });
+        if (responseImages.errors) {
+          if (responseImages.errors.length > 0) {
+            message.error("Failed to fetch parking lot images.");
+          }
+        } else {
+          setImages(responseImages.data ?? []);
+        }
       }
 
       const responseOwner = await userGetProfile({ username, phone });
-
       if (responseOwner.errors) {
-        message.error("Failed to fetch owner.");
+        if (responseOwner.errors.length > 0) {
+          message.error("Failed to fetch parking lot owner.");
+        }
       } else {
         setOwner(responseOwner.data);
       }
@@ -131,6 +149,7 @@ function ParkingLotsProfilePage() {
   const dateVerified = new Date(data.verifiedAt ?? "");
 
   console.log(data);
+  console.log(images);
 
   return (
     <div className="p-2 grid grid-cols-12 flex-1">
@@ -488,21 +507,18 @@ function ParkingLotsProfilePage() {
           </header>
 
           <section className="mt-2 grid grid-cols-4">
-            <div className="p-2">
-              <div className="pb-[100%] bg-t2"></div>
-            </div>
-            <div className="p-2">
-              <div className="pb-[100%] bg-t2"></div>
-            </div>
-            <div className="p-2">
-              <div className="pb-[100%] bg-t2"></div>
-            </div>
-            <div className="p-2">
-              <div className="pb-[100%] bg-t2"></div>
-            </div>
-            <div className="p-2">
-              <div className="pb-[100%] bg-t2"></div>
-            </div>
+            {images.map((imageUuid) => {
+              return (
+                <div className="p-2">
+                  <div className="pb-[100%] bg-t2 relative">
+                    <img
+                      className="absolute h-full w-full object-cover"
+                      src={`/api/parking-lot/get-image/${imageUuid}`}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </section>
         </section>
       </section>
