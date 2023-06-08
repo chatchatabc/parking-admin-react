@@ -9,9 +9,39 @@ import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 
 function UsersPage() {
+  // Local States
   const [sort, setSort] = React.useState("username,1");
+
   // React Router
   const dispatch = useDispatch();
+
+  // Sort options
+  const options = [
+    {
+      label: "Username, ASC",
+      value: "username,1",
+    },
+    {
+      label: "Username, DESC",
+      value: "username,0",
+    },
+    {
+      label: "Phone Verified, ASC",
+      value: "phoneVerifiedAt,1",
+    },
+    {
+      label: "Phone Verified, DESC",
+      value: "phoneVerifiedAt,0",
+    },
+    {
+      label: "Email Verified, ASC",
+      value: "emailVerifiedAt,1",
+    },
+    {
+      label: "Email Verified, DESC",
+      value: "emailVerifiedAt,0",
+    },
+  ];
 
   return (
     <div className="p-4 bg-bg1 w-full relative">
@@ -43,16 +73,7 @@ function UsersPage() {
             }}
             className="w-48 ml-auto mr-2"
             value={sort}
-            options={[
-              {
-                label: "Username, ASC",
-                value: "username,1",
-              },
-              {
-                label: "Username, DESC",
-                value: "username,0",
-              },
-            ]}
+            options={options}
           />
           <MyButton
             onClick={() => {
