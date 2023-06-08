@@ -9,6 +9,7 @@ import FormParkingCreate from "../forms/FormParkingCreate";
 import FormParkingUpdate from "../forms/FormParkingUpdate";
 import MyButton from "../common/MyButton";
 import UserBanForm from "../forms/UserBanForm";
+import ParkingLotRateForm from "../forms/ParkingLotRateForm";
 
 function DrawerForm() {
   const dispatch = useDispatch();
@@ -57,6 +58,9 @@ function DrawerForm() {
       )}
       {drawerForm.content === "userBan" && (
         <UserBanForm formRef={form} title={drawerForm.title} />
+      )}
+      {drawerForm.content === "parkingLotRate" && (
+        <ParkingLotRateForm formRef={form} title={drawerForm.title} />
       )}
     </Drawer>
   );
