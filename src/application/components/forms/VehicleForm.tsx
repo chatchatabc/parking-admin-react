@@ -53,9 +53,9 @@ function VehicleForm({ title, formRef }: Props) {
               required: true,
             },
           ]}
+          hidden={formRef.getFieldValue("userUuid") !== undefined}
         >
           {SelectAsyncSearch({
-            disabled: formRef.getFieldValue("userUuid") !== undefined,
             placeholder: "Username",
             getData: userAllOptionsGet,
           })}
