@@ -20,31 +20,40 @@ function UsersPage() {
         {/* Table Title */}
         <header className="flex">
           <h2 className="text-xl font-bold">Users</h2>
-          <div className="flex ml-auto items-center px-2 space-x-2">
-            <p>Sort by:</p>
-            <Select
-              onChange={(value) => {
-                setSort(value);
-                dispatch(
-                  globalStateUpdate({
-                    reset: utilGenerateRandomNumber(),
-                  })
-                );
-              }}
-              className="w-48"
-              value={sort}
-              options={[
-                {
-                  label: "Username, ASC",
-                  value: "username,1",
-                },
-                {
-                  label: "Username, DESC",
-                  value: "username,0",
-                },
-              ]}
-            />
-          </div>
+          <Select
+            suffixIcon={
+              <svg
+                className="w-6 h-6 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M8 16H4l6 6V2H8zm6-11v17h2V8h4l-6-6z"
+                />
+              </svg>
+            }
+            onChange={(value) => {
+              setSort(value);
+              dispatch(
+                globalStateUpdate({
+                  reset: utilGenerateRandomNumber(),
+                })
+              );
+            }}
+            className="w-48 ml-auto mr-2"
+            value={sort}
+            options={[
+              {
+                label: "Username, ASC",
+                value: "username,1",
+              },
+              {
+                label: "Username, DESC",
+                value: "username,0",
+              },
+            ]}
+          />
           <MyButton
             onClick={() => {
               dispatch(
