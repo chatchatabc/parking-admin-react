@@ -18,8 +18,8 @@ function VehiclesPage() {
               dispatch(
                 drawerFormUpdate({
                   show: true,
-                  title: "Create User",
-                  content: "userCreate",
+                  title: "Add Vehicle",
+                  content: "vehicle",
                   mode: "create",
                 })
               );
