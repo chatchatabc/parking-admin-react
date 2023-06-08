@@ -20,7 +20,7 @@ function UsersTable({ showPagination, localPagination }: Props) {
         if (record.username || record.phone) {
           return (
             <button
-              className="text-blue-500 underline hover:no-underline"
+              className="underline hover:no-underline"
               onClick={() => {
                 navigate(
                   `/users/${
@@ -43,11 +43,21 @@ function UsersTable({ showPagination, localPagination }: Props) {
       key: "phone",
       render: (record: User) => {
         if (record.phone && record.phoneVerifiedAt) {
+          const date = new Date(record.phoneVerifiedAt);
           return (
             <div className="flex gap-2 items-center">
               <Popover
                 color="green"
-                content={<p className="text-white">Verified</p>}
+                content={
+                  <p className="text-white text-xs">
+                    Verified at
+                    <br />
+                    {new Intl.DateTimeFormat("en", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    }).format(date)}
+                  </p>
+                }
               >
                 <span className="text-green-500">{record.phone}</span>
               </Popover>
@@ -73,11 +83,20 @@ function UsersTable({ showPagination, localPagination }: Props) {
       key: "email",
       render: (record: User) => {
         if (record.email && record.emailVerifiedAt) {
+          const date = new Date(record.emailVerifiedAt);
           return (
             <div className="flex gap-2 items-center">
               <Popover
                 color="green"
-                content={<p className="text-white">Verified</p>}
+                content={
+                  <p className="text-white text-xs">
+                    Verified at <br />
+                    {new Intl.DateTimeFormat("en", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    }).format(date)}
+                  </p>
+                }
               >
                 <span className="text-green-500">{record.email}</span>
               </Popover>
