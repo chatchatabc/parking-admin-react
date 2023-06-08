@@ -26,7 +26,7 @@ export function vehicleGetAllDoc() {
 export function vehicleGetAllByUserUuidDoc() {
   return `
   query GetAllVehiclesByUserUuid($page: Int, $size: Int, $userUuid: String!) {
-    getVehiclesByOwner(page: $page, size: $size, uuid: $userUuid) {
+    getVehiclesByOwner(page: $page, size: $size, ownerUuid: $userUuid) {
       content {
         vehicleUuid
         name
