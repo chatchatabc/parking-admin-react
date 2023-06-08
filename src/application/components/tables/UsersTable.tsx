@@ -73,7 +73,7 @@ function UsersTable({
             <div className="flex items-center gap-2">
               <Popover
                 color="red"
-                content={<p className="text-white">Not yet verified</p>}
+                content={<p className="text-white text-xs">Not yet verified</p>}
               >
                 <span className="text-red-500">{record.phone}</span>
               </Popover>
@@ -112,7 +112,7 @@ function UsersTable({
             <div className="flex items-center gap-2">
               <Popover
                 color="red"
-                content={<p className="text-white">Not yet verified</p>}
+                content={<p className="text-white text-xs">Not yet verified</p>}
               >
                 <span className="text-red-500">{record.email}</span>
               </Popover>
