@@ -5,7 +5,8 @@ import React from "react";
 import DynamicDonut from "../components/pie-charts/DynamicDonut";
 import { dashboardGetPieGraph } from "../../domain/services/dashboardService";
 import { message } from "antd";
-import ParkingTable from "../components/tables/ParkingLotTable";
+import ParkingLotUnverifiedTable from "../components/tables/ParkingLotUnverifiedTable";
+import VehiclesUnverifiedTable from "../components/tables/VehiclesUnverifiedTable";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -120,10 +121,10 @@ function HomePage() {
         </section>
       </section>
 
-      <section className="p-2 w-full">
+      <section className="p-2 w-1/2">
         <section className="w-full bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between">
-            <h2 className="text-xl font-bold">Unverified Parking Lots Table</h2>
+            <h2 className="text-xl font-bold">Unverified Parking Lots</h2>
             <MyButton
               onClick={() => {
                 navigate("/parking-lots");
@@ -133,7 +134,25 @@ function HomePage() {
             </MyButton>
           </header>
           <section className="mt-2">
-            <ParkingTable variables={{ verified: 0 }} />
+            <ParkingLotUnverifiedTable />
+          </section>
+        </section>
+      </section>
+
+      <section className="p-2 w-1/2">
+        <section className="w-full bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between">
+            <h2 className="text-xl font-bold">Unverified Vehicles</h2>
+            <MyButton
+              onClick={() => {
+                navigate("/parking-lots");
+              }}
+            >
+              Open
+            </MyButton>
+          </header>
+          <section className="mt-2">
+            <VehiclesUnverifiedTable />
           </section>
         </section>
       </section>
