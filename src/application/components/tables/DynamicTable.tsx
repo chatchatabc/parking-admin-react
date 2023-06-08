@@ -68,6 +68,7 @@ function DynamicTable({
   // Reset loading state when globalState.reset is changed
   React.useEffect(() => {
     if (!loading) {
+      setPagination((prev) => ({ ...prev, current: 1 }));
       setLoading(true);
     }
   }, [globalState.reset]);
