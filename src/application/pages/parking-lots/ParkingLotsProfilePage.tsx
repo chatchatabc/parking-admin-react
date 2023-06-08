@@ -357,34 +357,64 @@ function ParkingLotsProfilePage() {
           <section className="flex flex-wrap gap-y-4 mt-2">
             <div className="w-1/3">
               <p className="text-xs font-bold">Interval</p>
-              <p>{data.rate?.interval === 0 ? "Hourly" : "Daily"}</p>
+              <p>
+                {data.rate?.interval ? (
+                  "Daily"
+                ) : data.rate?.interval === 0 ? (
+                  "Hourly"
+                ) : (
+                  <span className="text-red-500">N/A</span>
+                )}
+              </p>
             </div>
             <div className="w-1/3">
               <p className="text-xs font-bold">Rate</p>
               <p>
-                {new Intl.NumberFormat("en", {
-                  style: "currency",
-                  currency: "PHP",
-                }).format(data.rate?.rate ?? 0)}
+                {data.rate?.rate ? (
+                  new Intl.NumberFormat("en", {
+                    style: "currency",
+                    currency: "PHP",
+                  }).format(data.rate?.rate ?? 0)
+                ) : (
+                  <span className="text-red-500">N/A</span>
+                )}
               </p>
             </div>
             <div className="w-1/3">
               <p className="text-xs font-bold">Starting Rate</p>
               <p>
-                {new Intl.NumberFormat("en", {
-                  style: "currency",
-                  currency: "PHP",
-                }).format(data.rate?.startingRate ?? 0)}
+                {data.rate?.startingRate ? (
+                  new Intl.NumberFormat("en", {
+                    style: "currency",
+                    currency: "PHP",
+                  }).format(data.rate?.startingRate)
+                ) : (
+                  <span className="text-red-500">N/A</span>
+                )}
               </p>
             </div>
             <div className="w-1/3">
-              <p className="text-xs font-bold">Free Hours</p>
-              <p>{data.rate?.freeHours}</p>
+              <p className="text-xs font-bold">
+                Free {data.rate?.interval === 0 ? "hours" : "days"}
+              </p>
+              <p>
+                {data.rate?.freeHours ?? (
+                  <span className="text-red-500">N/A</span>
+                )}
+              </p>
             </div>
             <div className="w-1/3">
-              <p className="text-xs font-bold">Pay for free hours</p>
+              <p className="text-xs font-bold">
+                Pay for free {data.rate?.interval === 0 ? "hours" : "days"}
+              </p>
               <p>
-                {data.rate?.payForFreeHoursWhenExceeding ? "TRUE" : "FALSE"}
+                {data.rate?.payForFreeHoursWhenExceeding ? (
+                  "TRUE"
+                ) : data.rate?.payForFreeHoursWhenExceeding === false ? (
+                  "FALSE"
+                ) : (
+                  <span className="text-red-500">N/A</span>
+                )}
               </p>
             </div>
           </section>
