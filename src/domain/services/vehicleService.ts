@@ -3,6 +3,7 @@ import {
   vehicleGetAllDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
+import { restPost } from "../infra/apis/restAction";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
@@ -65,4 +66,14 @@ export async function vehicleGetAllByUserUuid(
       pageInfo: CommonPageInfo;
     };
   };
+}
+
+export async function vehicleCreate(values: Record<string, any>) {
+  const { userUuid } = values;
+
+  delete values.userUuid;
+
+  const response = await restPost(`/vehicle/register/${userUuid}`, values);
+
+  return response.data;
 }
