@@ -186,7 +186,23 @@ function ProfilePage({ username, phone }: Props) {
           {/* Header */}
           <header className="flex items-center justify-between">
             <h2 className="text-lg font-bold">Vehicles</h2>
-            <MyButton>Add +</MyButton>
+            <MyButton
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    data: {
+                      userUuid: data.userUuid,
+                    },
+                    mode: "create",
+                    show: true,
+                    title: "Add Vehicle",
+                    content: "vehicle",
+                  })
+                );
+              }}
+            >
+              Add +
+            </MyButton>
           </header>
 
           {/* Body */}
