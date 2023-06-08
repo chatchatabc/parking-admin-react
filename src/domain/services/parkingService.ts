@@ -3,6 +3,8 @@ import {
   parkingLotGetByPhoneDoc,
   parkingLotGetByUsernameDoc,
   parkingLotGetByUuidDoc,
+  parkingLotGetImagesByParkingLotUuidDoc,
+  parkingLotGetImagesDoc,
 } from "../gql-docs/parkingDocs";
 import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
@@ -225,4 +227,23 @@ export async function parkingLotUpdateRate(values: Record<string, any>) {
   const response = await restPost(`/rate/update/${parkingLotUuid}`, values);
 
   return response.data;
+}
+
+export async function parkingLotGetImagesByParkingLotUuid(
+  variables: CommonVariables & { parkingLotUuid: string }
+) {
+  const query = await graphqlQuery(
+    parkingLotGetImagesByParkingLotUuidDoc(),
+    variables
+  );
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getParkingLotImageKeysByParkingLotUuid;
+
+  return { data } as AxiosResponseData & {
+    data: string[];
+  };
 }

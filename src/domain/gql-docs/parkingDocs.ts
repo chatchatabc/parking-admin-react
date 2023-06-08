@@ -118,3 +118,11 @@ export function parkingLotGetByUuidDoc() {
     }
   `;
 }
+
+export function parkingLotGetImagesByParkingLotUuidDoc() {
+  return `
+    query GetParkingLotImages($page: Int! = 0, $size: Int! = 10, $parkingLotUuid: String!) {
+      getParkingLotImageKeysByParkingLotUuid(page: $page, size: $size, uuid: $parkingLotUuid) 
+    }
+  `;
+}
