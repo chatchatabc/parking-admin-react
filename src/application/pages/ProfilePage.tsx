@@ -71,124 +71,157 @@ function ProfilePage({ username, phone }: Props) {
   }
 
   return (
-    <div className="flex-1 bg-bg1 p-4 relative">
-      <section className="flex gap-4">
-        {/* Left side */}
-        <section className="w-1/3 space-y-4">
-          {/* 1st row */}
-          <div className="bg-bg2 p-4 pb-8 rounded-lg">
-            <header className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">User Avatar</h2>
-              <MyButton>Edit</MyButton>
-            </header>
+    <div className="grid grid-cols-12 p-2 relative">
+      {/* User Avatar */}
+      <section className="p-2 grid col-span-3">
+        <div className="bg-bg2 p-4 pb-8 rounded-lg">
+          <header className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">User Avatar</h2>
+            <MyButton>Edit</MyButton>
+          </header>
 
-            <div className="w-1/2 mx-auto mt-2">
-              <div className="pb-[100%] border-2 border-primary rounded-full"></div>
+          <div className="w-1/2 mx-auto mt-2">
+            <div className="pb-[100%] border-2 border-primary rounded-full"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Vehicles */}
+      <section className="p-2 grid col-span-3">
+        <section className="p-4 pb-8 bg-bg2 rounded-lg">
+          {/* Header */}
+          <header className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">Vehicles</h2>
+            <MyButton
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    content: "userBan",
+                    mode: "create",
+                    show: true,
+                    title: "User Ban",
+                    data: {
+                      method: "BAN",
+                      userUuid: data.userUuid,
+                    },
+                  })
+                );
+              }}
+            >
+              Add +
+            </MyButton>
+          </header>
+
+          {/* Body */}
+          <div className="mt-2">
+            <UserBanTable username={username} phone={phone} />
+          </div>
+        </section>
+      </section>
+
+      {/* User Information */}
+      <section className="p-2 grid col-span-6">
+        <section className="p-4 pb-8 bg-bg2 rounded-lg">
+          {/* Header */}
+          <header className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">User Information</h2>
+            <MyButton
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    content: "userDetails",
+                    mode: "update",
+                    show: true,
+                    title: "User Details",
+                    data,
+                  })
+                );
+              }}
+            >
+              Edit
+            </MyButton>
+          </header>
+
+          {/* Body */}
+          <div className="flex flex-wrap mt-2 gap-y-2 [&>*]:w-1/3">
+            <div>
+              <p className="text-xs font-bold uppercase">Username</p>
+              <p>{data?.username}</p>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase">
+                Phone{" "}
+                {data?.phoneVerifiedAt ? (
+                  <span className="text-green-500">(Verified)</span>
+                ) : (
+                  <span className="text-red-500">(Not Verified)</span>
+                )}
+              </p>
+              <p>{data?.phone}</p>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase">
+                Email{" "}
+                {data?.emailVerifiedAt ? (
+                  <span className="text-green-500">(Verified)</span>
+                ) : (
+                  <span className="text-red-500">(Not Verified)</span>
+                )}
+              </p>
+              <p>{data?.email}</p>
             </div>
           </div>
-
-          {/* 2nd Entry */}
-          <section className="p-4 pb-8 bg-bg2 rounded-lg">
-            {/* Header */}
-            <header className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">Ban History</h2>
-              <MyButton
-                onClick={() => {
-                  dispatch(
-                    drawerFormUpdate({
-                      content: "userBan",
-                      mode: "create",
-                      show: true,
-                      title: "User Ban",
-                      data: {
-                        method: "BAN",
-                        userUuid: data.userUuid,
-                      },
-                    })
-                  );
-                }}
-              >
-                Add +
-              </MyButton>
-            </header>
-
-            {/* Body */}
-            <div className="mt-2">
-              <UserBanTable username={username} phone={phone} />
-            </div>
-          </section>
         </section>
+      </section>
 
-        {/* Right Side */}
-        <section className="flex-1 space-y-4">
-          {/* First Entry */}
-          <section className="p-4 pb-8 bg-bg2 rounded-lg">
-            {/* Header */}
-            <header className="flex items-center justify-between">
-              <h2 className="text-lg font-bold">User Information</h2>
-              <MyButton
-                onClick={() => {
-                  dispatch(
-                    drawerFormUpdate({
-                      content: "userDetails",
-                      mode: "update",
-                      show: true,
-                      title: "User Details",
-                      data,
-                    })
-                  );
-                }}
-              >
-                Edit
-              </MyButton>
-            </header>
+      {/* Ban History */}
+      <section className="p-2 grid col-span-4">
+        <section className="p-4 pb-8 bg-bg2 rounded-lg">
+          {/* Header */}
+          <header className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">Ban History</h2>
+            <MyButton
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    content: "userBan",
+                    mode: "create",
+                    show: true,
+                    title: "User Ban",
+                    data: {
+                      method: "BAN",
+                      userUuid: data.userUuid,
+                    },
+                  })
+                );
+              }}
+            >
+              Add +
+            </MyButton>
+          </header>
 
-            {/* Body */}
-            <div className="flex flex-wrap mt-2 gap-y-2 [&>*]:w-1/3">
-              <div>
-                <p className="text-xs font-bold uppercase">Username</p>
-                <p>{data?.username}</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase">
-                  Phone{" "}
-                  {data?.phoneVerifiedAt ? (
-                    <span className="text-green-500">(Verified)</span>
-                  ) : (
-                    <span className="text-red-500">(Not Verified)</span>
-                  )}
-                </p>
-                <p>{data?.phone}</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase">
-                  Email{" "}
-                  {data?.emailVerifiedAt ? (
-                    <span className="text-green-500">(Verified)</span>
-                  ) : (
-                    <span className="text-red-500">(Not Verified)</span>
-                  )}
-                </p>
-                <p>{data?.email}</p>
-              </div>
-            </div>
-          </section>
+          {/* Body */}
+          <div className="mt-2">
+            <UserBanTable username={username} phone={phone} />
+          </div>
+        </section>
+      </section>
 
-          {/* 2nd Entry */}
-          <section className="bg-bg2 p-4 rounded-lg">
-            {/* Header */}
-            <header className="flex justify-between items-center">
-              <h2 className="text-lg font-bold">Invoice History</h2>
-            </header>
+      {/* Invoice history */}
+      <section className="p-2 grid col-span-8">
+        <section className="bg-bg2 p-4 rounded-lg">
+          {/* Header */}
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Invoice History</h2>
+          </header>
 
-            <section className="mt-2">
-              <InvoicesTable
-                getData={(variables) => {
-                  variables.userUuid = data.userUuid;
-                  return invoiceGetByUserUuid(variables);
-                }}
-              />
-            </section>
+          <section className="mt-2">
+            <InvoicesTable
+              getData={(variables) => {
+                variables.userUuid = data.userUuid;
+                return invoiceGetByUserUuid(variables);
+              }}
+            />
           </section>
         </section>
       </section>
