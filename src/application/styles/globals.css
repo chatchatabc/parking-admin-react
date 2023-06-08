@@ -21,7 +21,7 @@
 /* Table Body */
 .myTable tbody tr td {
   background-color: var(--bg2) !important;
-  color: var(--t2) !important;
+  color: var(--t1) !important;
   border-color: var(--t2) !important;
 }
 .myTable tbody tr:hover td {
