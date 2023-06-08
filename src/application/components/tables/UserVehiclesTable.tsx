@@ -1,7 +1,5 @@
-import { UserBan } from "../../../domain/models/UserModel";
 import DynamicTable from "./DynamicTable";
 import { ColumnsType } from "antd/es/table";
-import { Popover } from "antd";
 import { vehicleGetAllByUserUuid } from "../../../domain/services/vehicleService";
 import { Vehicle } from "../../../domain/models/VehicleModel";
 

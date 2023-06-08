@@ -4,7 +4,6 @@ import {
   parkingLotGetByUsernameDoc,
   parkingLotGetByUuidDoc,
   parkingLotGetImagesByParkingLotUuidDoc,
-  parkingLotGetImagesDoc,
 } from "../gql-docs/parkingDocs";
 import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
