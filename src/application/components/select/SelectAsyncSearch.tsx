@@ -1,14 +1,11 @@
-import { Select, message } from "antd";
+import { Select, SelectProps, message } from "antd";
 import React from "react";
 
-type Props = {
-  className?: string;
-  getData: Function;
-  placeholder?: string;
-  mode?: "multiple" | "tags";
+type Props = SelectProps & {
+  getData: (params: any) => Promise<any>;
 };
 
-function SelectAsyncSearch({ className, getData, placeholder, mode }: Props) {
+function SelectAsyncSearch({ className, getData, ...props }: Props) {
   const [keyword, setKeyword] = React.useState("");
   const [data, setData] = React.useState<any>([]);
   const [loading, setLoading] = React.useState(true);
@@ -45,16 +42,17 @@ function SelectAsyncSearch({ className, getData, placeholder, mode }: Props) {
   return (
     <Select
       className={`w-full ${className}`}
-      placeholder={placeholder}
       loading={loading && data.length === 0 && keyword === ""}
-      disabled={loading && data.length === 0 && keyword === ""}
+      disabled={
+        (loading && data.length === 0 && keyword === "") || props.disabled
+      }
       showSearch
       onSearch={(value) => {
         setKeyword(value);
       }}
       filterOption={false}
       options={data}
-      mode={mode}
+      {...props}
       onSelect={() => {
         setKeyword("");
         setLoading(true);
