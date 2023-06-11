@@ -21,15 +21,7 @@ export async function userGetProfile({
 }: User) {
   let query, data;
 
-  if (username) {
-    query = await graphqlQuery(userGetByUsernameDoc(), { username });
-
-    if (query.data.errors) {
-      return query.data;
-    }
-
-    data = query.data.data.getUserByUsername;
-  } else if (phone) {
+  if (phone) {
     query = await graphqlQuery(userGetByPhoneDoc(), { phone });
 
     if (query.data.errors) {
@@ -37,6 +29,14 @@ export async function userGetProfile({
     }
 
     data = query.data.data.getUserByPhone;
+  } else if (username) {
+    query = await graphqlQuery(userGetByUsernameDoc(), { username });
+
+    if (query.data.errors) {
+      return query.data;
+    }
+
+    data = query.data.data.getUserByUsername;
   }
 
   return { data } as AxiosResponseData & { data: User };
