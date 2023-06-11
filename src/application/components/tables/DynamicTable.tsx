@@ -105,6 +105,7 @@ function DynamicTable({
       fetchData();
     }
   }, [loading]);
+
   return (
     <Table
       loading={loading}
