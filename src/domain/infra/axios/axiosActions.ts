@@ -6,21 +6,38 @@ function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
     return {
       data: {
-        errors: [],
+        errors: [
+          {
+            title: "NO_SERVER_RESPONSE_ERROR",
+            message: "NO_SERVER_RESPONSE_ERROR",
+          },
+        ],
       },
     };
   }
 
   const errors = e.response?.data?.errors as AxiosErrorsItem[];
 
-  if (errors && errors.length > 0) {
+  if (errors) {
+    if (errors.length) {
+      return e.response;
+    }
+
+    e.response.data = {
+      errors: [
+        {
+          title: "EMPTY_LIST",
+          message: "EMPTY_LIST",
+        },
+      ],
+    };
     return e.response;
   } else {
     e.response.data = {
       errors: [
         {
-          title: "NO_ERR_TITLE",
-          message: "NO_ERR_MSG",
+          title: "NULL_OR_UNDEFINED_ERR",
+          message: "NULL_OR_UNDEFINED_ERR",
         },
       ],
     };
