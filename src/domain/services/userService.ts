@@ -11,7 +11,7 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restAction";
 import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
-import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
+import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
 import { authUsername } from "./authService";
 
@@ -39,7 +39,7 @@ export async function userGetProfile({
     data = query.data.data.getUserByUsername;
   }
 
-  return { data } as AxiosResponseData & { data: User };
+  return { data } as AxiosResponseData<User>;
 }
 
 export async function userUpdateProfile(values: Record<string, any>) {
@@ -57,12 +57,7 @@ export async function userGetAll(variables: CommonVariables) {
 
   const data = response.data.data.getUsers;
 
-  return { data } as AxiosResponseData & {
-    data: {
-      content: User[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  return { data } as AxiosResponseData<CommonContent<User>>;
 }
 
 export async function userAllOptionsGet(variables: { keyword: string }) {
@@ -79,7 +74,7 @@ export async function userAllOptionsGet(variables: { keyword: string }) {
     value: user.userUuid,
   }));
 
-  return { data } as AxiosResponseData;
+  return { data } as AxiosResponseData<typeof data>;
 }
 
 export async function userRoleOptionsGet() {
@@ -96,7 +91,7 @@ export async function userRoleOptionsGet() {
     value: role.name,
   }));
 
-  return { data } as AxiosResponseData;
+  return { data } as AxiosResponseData<typeof data>;
 }
 
 export async function userCreate(values: Record<string, any>) {
@@ -122,7 +117,7 @@ export async function userGetByParkingLotUuid(parkingLotUuid: string) {
 
   const data = response.data.data.getUserByParkingLotUuid;
 
-  return { data: data } as AxiosResponseData & { data: User };
+  return { data } as AxiosResponseData<User>;
 }
 
 export async function userGetBanHistory(variables: CommonVariables) {
@@ -151,12 +146,7 @@ export async function userGetBanHistory(variables: CommonVariables) {
     };
   }
 
-  return { data } as AxiosResponseData & {
-    data: {
-      content: UserBan[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  return { data } as AxiosResponseData<CommonContent<UserBan>>;
 }
 
 export async function userBanCreate(values: Record<string, any>) {
