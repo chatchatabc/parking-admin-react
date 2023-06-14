@@ -4,8 +4,8 @@ import {
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost } from "../infra/apis/restAction";
-import { AxiosResponseData } from "../models/AxiosModel";
-import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
+import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
+import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
 import { Vehicle } from "../models/VehicleModel";
 
@@ -13,17 +13,12 @@ export async function vehicleGetAll(params: CommonVariables) {
   const query = await graphqlQuery(vehicleGetAllDoc(), params);
 
   if (query.data.errors) {
-    return query.data;
+    return query.data as AxiosResponseError;
   }
 
   const data = query.data.data.getVehicles;
 
-  return { data } as AxiosResponseData & {
-    data: {
-      content: Vehicle[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
 export async function vehicleGetAllWithOwner(params: CommonVariables) {
@@ -60,12 +55,7 @@ export async function vehicleGetAllByUserUuid(
 
   const data = query.data.data.getVehiclesByOwner;
 
-  return { data } as AxiosResponseData & {
-    data: {
-      content: Vehicle[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
 export async function vehicleCreate(values: Record<string, any>) {
