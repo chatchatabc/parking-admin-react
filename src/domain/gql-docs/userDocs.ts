@@ -167,10 +167,10 @@ export function userGetBanHistoryDoc() {
   `;
 }
 
-export function userGetBanHistoryByUsernameDoc() {
+export function userGetBanHistoryByUserDoc() {
   return `
-  query GetBanHistory($username: String!, $page: Int! = 0, $size: Int! = 10) {
-    getBanHistoryLogsByUsername(username: $username, page: $page, size: $size) {
+  query GetBanHistory($keyword: String!, $page: Int! = 0, $size: Int! = 10) {
+    getBanHistoryLogsByUser(id: $keyword, page: $page, size: $size) {
       content {
         id
         createdAt

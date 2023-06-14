@@ -1,9 +1,9 @@
 import { UserBan } from "../../../domain/models/UserModel";
 import DynamicTable from "./DynamicTable";
-import { userGetBanHistory } from "../../../domain/services/userService";
 import { authUsername } from "../../../domain/services/authService";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
+import { userGetBanHistoryByUser } from "../../../domain/services/userService";
 
 type Props = {
   showPagination?: boolean;
@@ -94,7 +94,10 @@ function UserBanTable({
       columns={columns}
       title="users-table"
       getData={(variables) => {
-        return userGetBanHistory({ ...variables, username, phone });
+        return userGetBanHistoryByUser({
+          ...variables,
+          keyword: username ?? phone ?? "",
+        });
       }}
     />
   );

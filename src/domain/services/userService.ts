@@ -1,7 +1,6 @@
 import {
   userGetAllDoc,
-  userGetBanHistoryByPhoneDoc,
-  userGetBanHistoryByUsernameDoc,
+  userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
   userGetByParkingLotUuidDoc,
   userGetDoc,
@@ -116,31 +115,12 @@ export async function userGetByParkingLotUuid(parkingLotUuid: string) {
   return { data } as AxiosResponseData<User>;
 }
 
-export async function userGetBanHistory(variables: CommonVariables) {
-  let response, data;
-
-  if (variables.username) {
-    response = await graphqlQuery(userGetBanHistoryByUsernameDoc(), variables);
-    if (response.data.errors) {
-      return response.data;
-    }
-    data = response.data.data.getBanHistoryLogsByUsername;
-  } else if (variables.phone) {
-    response = await graphqlQuery(userGetBanHistoryByPhoneDoc(), variables);
-    if (response.data.errors) {
-      return response.data;
-    }
-    data = response.data.data.getBanHistoryLogsByPhone;
-  } else {
-    return {
-      errors: [
-        {
-          message: "Username or phone is required",
-          title: "Error",
-        },
-      ],
-    };
+export async function userGetBanHistoryByUser(variables: CommonVariables) {
+  const response = await graphqlQuery(userGetBanHistoryByUserDoc(), variables);
+  if (response.data.errors) {
+    return response.data;
   }
+  const data = response.data.data.getBanHistoryLogsByUser;
 
   return { data } as AxiosResponseData<CommonContent<UserBan>>;
 }
