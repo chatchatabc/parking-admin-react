@@ -32,6 +32,35 @@ export function parkingLotGetAllDoc() {
   `;
 }
 
+export function parkingLotGetByUserDoc() {
+  return `
+    query GetParkingLotByUser($keyword: String!) {
+      getParkingLotByUser(id: $keyword) {
+        parkingLotUuid
+        availableSlots
+        address
+        capacity
+        name
+        businessHoursEnd
+        businessHoursStart
+        latitude
+        longitude
+        description
+        openDaysFlag
+        verifiedAt
+        rate{
+          freeHours
+          interval
+          payForFreeHoursWhenExceeding
+          rate
+          startingRate
+          type
+        }
+      }
+    }
+  `;
+}
+
 export function parkingLotGetByUsernameDoc() {
   return `
     query GetParkingLotByUsername($username: String!) {
@@ -119,10 +148,10 @@ export function parkingLotGetByUuidDoc() {
   `;
 }
 
-export function parkingLotGetImagesByParkingLotUuidDoc() {
+export function parkingLotGetImagesByParkingLotDoc() {
   return `
-    query GetParkingLotImages($page: Int! = 0, $size: Int! = 10, $parkingLotUuid: String!) {
-      getParkingLotImageKeysByParkingLotUuid(page: $page, size: $size, uuid: $parkingLotUuid) 
+    query GetParkingLotImages($page: Int! = 0, $size: Int! = 10, $keyword: String!) {
+      getParkingLotImageKeysByParkingLot(page: $page, size: $size, id: $keyword) 
     }
   `;
 }

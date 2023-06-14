@@ -1,9 +1,8 @@
 import {
   parkingLotGetAllDoc,
-  parkingLotGetByPhoneDoc,
-  parkingLotGetByUsernameDoc,
+  parkingLotGetByUserDoc,
   parkingLotGetByUuidDoc,
-  parkingLotGetImagesByParkingLotUuidDoc,
+  parkingLotGetImagesByParkingLotDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restAction";
@@ -108,40 +107,14 @@ export async function parkingLotGetByUuid(variables: {
   return { data } as AxiosResponseData<ParkingLot>;
 }
 
-export async function parkingLotGet({
-  username = "",
-  phone = "",
-}: {
-  username?: string;
-  phone?: string;
-}) {
-  let response, data;
+export async function parkingLotGetByUser(variables: { keyword: string }) {
+  const response = await graphqlQuery(parkingLotGetByUserDoc(), variables);
 
-  if (username) {
-    response = await graphqlQuery(parkingLotGetByUsernameDoc(), { username });
-
-    if (response.data.errors) {
-      return response.data;
-    }
-
-    data = response.data.data.getParkingLotByUsername;
-  } else if (phone) {
-    response = await graphqlQuery(parkingLotGetByPhoneDoc(), { phone });
-
-    if (response.data.errors) {
-      return response.data;
-    }
-
-    data = response.data.data.getParkingLotByPhone;
-  } else {
-    return {
-      errors: [
-        {
-          message: "username or phone is required",
-        },
-      ],
-    };
+  if (response.data.errors) {
+    return response.data;
   }
+
+  const data = response.data.data.getParkingLotByUser;
 
   return { data } as AxiosResponseData<ParkingLot>;
 }
@@ -213,11 +186,13 @@ export async function parkingLotUpdateRate(values: Record<string, any>) {
   return response.data;
 }
 
-export async function parkingLotGetImagesByParkingLotUuid(
-  variables: CommonVariables & { parkingLotUuid: string }
+export async function parkingLotGetImagesByParkingLot(
+  variables: CommonVariables & {
+    keyword: string;
+  }
 ) {
   const query = await graphqlQuery(
-    parkingLotGetImagesByParkingLotUuidDoc(),
+    parkingLotGetImagesByParkingLotDoc(),
     variables
   );
 

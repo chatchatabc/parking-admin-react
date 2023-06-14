@@ -4,8 +4,8 @@ import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { useNavigate, useParams } from "react-router-dom";
 import NotFoundPage from "../NotFoundPage";
 import {
-  parkingLotGet,
-  parkingLotGetImagesByParkingLotUuid,
+  parkingLotGetByUser,
+  parkingLotGetImagesByParkingLot,
   parkingLotVerify,
 } from "../../../domain/services/parkingLotService";
 import { ParkingLot } from "../../../domain/models/ParkingModel";
@@ -13,12 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import dayjs from "dayjs";
 import { User } from "../../../domain/models/UserModel";
-import { userGetProfile } from "../../../domain/services/userService";
 import MyButton from "../../components/common/MyButton";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 import { invoiceGetByParkingLotUuid } from "../../../domain/services/invoiceService";
+import { userGet } from "../../../domain/services/userService";
 
 function ParkingLotsProfilePage() {
   const navigate = useNavigate();
@@ -89,33 +89,30 @@ function ParkingLotsProfilePage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await parkingLotGet({ username, phone });
+      const response = await parkingLotGetByUser({
+        keyword: username ?? phone ?? "",
+      });
+
       if (response.errors) {
-        if (response.errors.length > 0) {
-          message.error("Failed to fetch parking lot.");
-        }
+        message.error("Failed to fetch parking lot.");
       } else {
         setData(response.data);
 
-        const responseImages = await parkingLotGetImagesByParkingLotUuid({
-          parkingLotUuid: response?.data?.parkingLotUuid ?? "",
+        const responseImages = await parkingLotGetImagesByParkingLot({
+          keyword: response?.data?.parkingLotUuid ?? "",
           page: 0,
           size: 100,
         });
         if (responseImages.errors) {
-          if (responseImages.errors.length > 0) {
-            message.error("Failed to fetch parking lot images.");
-          }
+          message.error("Failed to fetch parking lot images.");
         } else {
           setImages(responseImages.data ?? []);
         }
       }
 
-      const responseOwner = await userGetProfile({ username, phone });
+      const responseOwner = await userGet({ keyword: username ?? phone ?? "" });
       if (responseOwner.errors) {
-        if (responseOwner.errors.length > 0) {
-          message.error("Failed to fetch parking lot owner.");
-        }
+        message.error("Failed to fetch parking lot owner.");
       } else {
         setOwner(responseOwner.data);
       }
@@ -147,9 +144,6 @@ function ParkingLotsProfilePage() {
   const businessHoursStart = new Date(data.businessHoursStart ?? "");
   const businessHoursEnd = new Date(data.businessHoursEnd ?? "");
   const dateVerified = new Date(data.verifiedAt ?? "");
-
-  console.log(data);
-  console.log(images);
 
   return (
     <div className="p-2 grid grid-cols-12 flex-1">
