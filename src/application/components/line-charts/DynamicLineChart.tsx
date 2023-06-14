@@ -9,9 +9,7 @@ import { CommonSeries } from "../../../domain/models/CommonModel";
 
 type Props = {
   getData: () => Promise<
-    | (AxiosResponseData & {
-        data: { series: CommonSeries[]; categories: string[] };
-      })
+    | AxiosResponseData<{ series: CommonSeries[]; categories: string[] }>
     | AxiosResponseError
   >;
 };
