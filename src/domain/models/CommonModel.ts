@@ -6,6 +6,11 @@ export type CommonPageInfo = {
   empty: Boolean;
 };
 
+export type CommonContent<T> = {
+  content: T[];
+  pageInfo: CommonPageInfo;
+};
+
 export type CommonVariables = {
   [key: string]: any;
   page: number;
