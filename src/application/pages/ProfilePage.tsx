@@ -8,8 +8,8 @@ import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
 import MyButton from "../components/common/MyButton";
 import UserBanTable from "../components/tables/UserBanTable";
 import InvoicesTable from "../components/tables/InvoicesTable";
-import { invoiceGetByUserUuid } from "../../domain/services/invoiceService";
 import UserVehiclesTable from "../components/tables/UserVehiclesTable";
+import { invoiceGetByUser } from "../../domain/services/invoiceService";
 
 interface Props {
   username?: string;
@@ -172,8 +172,8 @@ function ProfilePage({ username, phone }: Props) {
           <section className="mt-2">
             <InvoicesTable
               getData={(variables) => {
-                variables.userUuid = data.userUuid;
-                return invoiceGetByUserUuid(variables);
+                variables.keyword = data.userUuid;
+                return invoiceGetByUser(variables);
               }}
             />
           </section>
