@@ -1,7 +1,7 @@
 import React from "react";
 import { Spin, message } from "antd";
 import ErrorMessageComp from "../components/ErrorMessageComp";
-import { userGetProfile } from "../../domain/services/userService";
+import { userGet } from "../../domain/services/userService";
 import { User } from "../../domain/models/UserModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../redux/slices/drawers/drawerForm";
@@ -32,7 +32,7 @@ function ProfilePage({ username, phone }: Props) {
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await userGetProfile({ username, phone });
+      const response = await userGet({ keyword: username ?? phone ?? "" });
 
       if (response.errors) {
         message.error("Failed to fetch user.");

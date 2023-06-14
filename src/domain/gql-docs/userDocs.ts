@@ -16,6 +16,24 @@ export function userGetByUsernameDoc() {
   `;
 }
 
+export function userGetDoc() {
+  return `
+    query GetUser($keyword: String!) {
+      getUser(id: $keyword) {
+        userUuid
+        username
+        phone
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
+        authorities {
+          authority
+        }
+      }
+    }
+  `;
+}
+
 export function userGetByPhoneDoc() {
   return `
     query GetUserByPhone($phone: String!) {

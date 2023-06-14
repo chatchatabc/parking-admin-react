@@ -4,8 +4,7 @@ import {
   userGetBanHistoryByUsernameDoc,
   userGetByParkingLotDoc,
   userGetByParkingLotUuidDoc,
-  userGetByPhoneDoc,
-  userGetByUsernameDoc,
+  userGetDoc,
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
@@ -14,31 +13,15 @@ import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
-import { authUsername } from "./authService";
 
-export async function userGetProfile({
-  username = authUsername(),
-  phone,
-}: User) {
-  let query, data;
+export async function userGet(variables: { keyword: string }) {
+  const query = await graphqlQuery(userGetDoc(), variables);
 
-  if (phone) {
-    query = await graphqlQuery(userGetByPhoneDoc(), { phone });
-
-    if (query.data.errors) {
-      return query.data;
-    }
-
-    data = query.data.data.getUserByPhone;
-  } else if (username) {
-    query = await graphqlQuery(userGetByUsernameDoc(), { username });
-
-    if (query.data.errors) {
-      return query.data;
-    }
-
-    data = query.data.data.getUserByUsername;
+  if (query.data.errors) {
+    return query.data;
   }
+
+  const data = query.data.data.getUser;
 
   return { data } as AxiosResponseData<User>;
 }
