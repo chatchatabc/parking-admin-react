@@ -1,18 +1,18 @@
-export type AxiosErrorsItem = {
+export type AxiosResponse<T> = {
+  [key: string]: any;
+  data: AxiosResponseData<T> | AxiosResponseError;
+};
+
+export type AxiosResponseErrorItem = {
   title: string;
   message: string;
 };
 
-export type AxiosResponse = {
-  [key: string]: any;
-  data: AxiosResponseData | AxiosResponseError;
-};
-
-export type AxiosResponseData = {
-  [key: string]: any;
+export type AxiosResponseData<Data> = {
+  data: Data;
   errors?: null;
 };
 
 export type AxiosResponseError = {
-  errors: AxiosErrorsItem[];
+  errors: AxiosResponseErrorItem[];
 };
