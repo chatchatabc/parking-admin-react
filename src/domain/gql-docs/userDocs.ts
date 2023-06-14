@@ -46,6 +46,24 @@ export function userAddDoc() {
   `;
 }
 
+export function userGetByParkingLotDoc() {
+  return `
+    query GetUserByParkingLot($keyword: String!) {
+      getUserByParkingLot(id: $keyword) {
+        userUuid
+        username
+        phone
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
+        authorities {
+          authority
+        }
+      }
+    }
+  `;
+}
+
 export function userGetByParkingLotUuidDoc() {
   return `
     query GetUserByParkingLotUuid($parkingLotUuid: String!) {

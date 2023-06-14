@@ -5,14 +5,13 @@ import {
   parkingLotGetByUuidDoc,
   parkingLotGetImagesByParkingLotUuidDoc,
 } from "../gql-docs/parkingDocs";
-import { userGetByParkingLotUuidDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restAction";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
-import { userGetByParkingLotUuid } from "./userService";
+import { userGetByParkingLot, userGetByParkingLotUuid } from "./userService";
 
 export async function parkingLotGetAll({
   page = 0,
@@ -48,21 +47,23 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
       ...parkingLot,
     };
 
-    const queryOwner = await graphqlQuery(userGetByParkingLotUuidDoc(), {
-      parkingLotUuid: parkingLot.parkingLotUuid,
+    const queryOwner = await userGetByParkingLot({
+      keyword: parkingLot.parkingLotUuid ?? "",
     });
 
-    if (queryOwner.data.errors) {
+    if (queryOwner.errors) {
       return newParkingLot;
     }
 
-    newParkingLot.owner = queryOwner.data.data.getUserByParkingLotUuid;
+    newParkingLot.owner = queryOwner.data;
     return newParkingLot;
   });
 
   // Wait for all promises to resolve
   const newContent = await Promise.all(additionalInfo);
   const data = { ...query.data.data.getParkingLots, content: newContent };
+
+  console.log(data);
 
   return { data } as AxiosResponseData<CommonContent<ParkingLot<User>>>;
 }

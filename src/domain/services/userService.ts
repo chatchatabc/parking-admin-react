@@ -2,6 +2,7 @@ import {
   userGetAllDoc,
   userGetBanHistoryByPhoneDoc,
   userGetBanHistoryByUsernameDoc,
+  userGetByParkingLotDoc,
   userGetByParkingLotUuidDoc,
   userGetByPhoneDoc,
   userGetByUsernameDoc,
@@ -104,6 +105,18 @@ export async function userUpdate(values: Record<string, any>) {
   const response = await restPut(`/user/update/${values.userUuid}`, values);
 
   return response.data;
+}
+
+export async function userGetByParkingLot(variables: { keyword: string }) {
+  const response = await graphqlQuery(userGetByParkingLotDoc(), variables);
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  const data = response.data.data.getUserByParkingLot;
+
+  return { data } as AxiosResponseData<User>;
 }
 
 export async function userGetByParkingLotUuid(parkingLotUuid: string) {
