@@ -45,7 +45,7 @@ export async function authLogin(values: Record<string, any>) {
 
   authTokenSave(token);
 
-  return response.data as AuthLogin & AxiosResponseData;
+  return response.data as AxiosResponseData<AuthLogin>;
 }
 
 export async function authLogout() {
@@ -57,7 +57,7 @@ export async function authLogout() {
     return response.data as AxiosResponseError;
   }
 
-  return response.data as AuthLogout & AxiosResponseData;
+  return response.data as AxiosResponseData<AuthLogout>;
 }
 
 export function authCheckSession() {
