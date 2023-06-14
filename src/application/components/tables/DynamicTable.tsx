@@ -79,7 +79,7 @@ function DynamicTable({
       });
 
       if (response.errors) {
-        message.error("Failed to fetch data.");
+        message.error("Failed to fetch table data.");
       } else {
         const processedData = response.data.content.map(
           (item: any, index: number) => ({
