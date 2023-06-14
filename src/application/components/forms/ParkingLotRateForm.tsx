@@ -18,9 +18,7 @@ function ParkingLotRateForm({ title, formRef }: Props) {
     const response = await parkingLotUpdateRate(e);
 
     if (response.errors) {
-      if (response.errors.length > 0) {
-        return message.error("Parking lot rate update failed");
-      }
+      return message.error("Parking lot rate update failed");
     }
 
     message.success("Parking lot rate updated successfully");

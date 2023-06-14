@@ -33,7 +33,7 @@ function FormParkingCreate({ title, formRef }: Props) {
 
     const response = await parkingLotCreate(e);
 
-    if (response.errors && response.errors.length > 0) {
+    if (response.errors) {
       return message.error("Parking lot creation failed");
     }
 

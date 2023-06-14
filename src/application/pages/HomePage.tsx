@@ -25,9 +25,7 @@ function HomePage() {
       const response = await dashboardGetPieGraph();
 
       if (response.errors) {
-        if (response.errors.length > 0) {
-          message.error("Dashboard pie graph failed");
-        }
+        message.error("Dashboard pie graph failed");
       } else {
         const data = response.data;
         setPieChart(data);

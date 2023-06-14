@@ -167,7 +167,7 @@ function ParkingLotsProfilePage() {
                         data.parkingLotUuid ?? ""
                       );
 
-                      if (response.errors && response.errors.length > 0) {
+                      if (response.errors) {
                         message.error("Failed to verify parking lot");
                       } else {
                         message.success("Successfully verified parking lot");

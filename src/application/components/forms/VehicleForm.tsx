@@ -19,7 +19,7 @@ function VehicleForm({ title, formRef }: Props) {
   async function onFinish(e: any) {
     const response = await vehicleCreate(e);
 
-    if (response.errors && response.errors.length > 0) {
+    if (response.errors) {
       return message.error("Vehicle creation failed");
     }
 

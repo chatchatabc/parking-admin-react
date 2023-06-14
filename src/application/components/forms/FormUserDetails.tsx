@@ -23,9 +23,7 @@ function FormUserDetails({ formRef, title }: Props) {
     const response = await userUpdate(e);
 
     if (response.errors) {
-      if (response.errors.length > 0) {
-        return message.error("User update failed");
-      }
+      return message.error("User update failed");
     }
 
     message.success("User updated successfully");

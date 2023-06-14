@@ -22,9 +22,7 @@ function FormUserCreate({ formRef, title }: Props) {
     const response = await userCreate(e);
 
     if (response.errors) {
-      if (response.errors.length > 0) {
-        return message.error("User creation failed");
-      }
+      return message.error("User creation failed");
     }
 
     message.success("User created successfully");

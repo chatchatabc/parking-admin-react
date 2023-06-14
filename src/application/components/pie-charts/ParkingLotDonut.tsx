@@ -13,9 +13,7 @@ function ParkingLotDonut() {
       const response = await parkingLotGetDonut();
 
       if (response.errors) {
-        if (response.errors.length > 0) {
-          message.error("Parking lot donut failed");
-        }
+        message.error("Parking lot donut failed");
       } else {
         const data = response.data;
 
