@@ -6,6 +6,11 @@ export async function graphqlQuery(
 ) {
   const response = await axiosPost("/graphql", { query, variables });
 
+  if (response.data.errors && response.data.errors.length > 0) {
+    return response;
+  }
+  response.data.errors = null;
+
   return response;
 }
 
@@ -15,7 +20,10 @@ export async function graphqlMutation(
 ) {
   const response = await axiosPost("/graphql", { mutation, variables });
 
-  console.log(response);
+  if (response.data.errors && response.data.errors.length > 0) {
+    return response;
+  }
+  response.data.errors = null;
 
   return response;
 }
