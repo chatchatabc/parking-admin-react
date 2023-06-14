@@ -5,9 +5,9 @@ import {
 } from "../gql-docs/invoiceDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData } from "../models/AxiosModel";
-import { CommonPageInfo, CommonVariables } from "../models/CommonModel";
+import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
-import { Parking } from "../models/ParkingModel";
+import { ParkingLot } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
 import { parkingLotGetWithOwner } from "./parkingService";
 
@@ -37,12 +37,7 @@ export async function invoiceGetAll(variables: CommonVariables) {
 
   return {
     data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData & {
-    data: {
-      content: (Invoice & { parkingLot: Parking & { owner: User } })[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
 }
 
 export async function invoiceGetByParkingLotUuid(variables: CommonVariables) {
@@ -71,12 +66,7 @@ export async function invoiceGetByParkingLotUuid(variables: CommonVariables) {
 
   return {
     data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData & {
-    data: {
-      content: (Invoice & { parkingLot: Parking & { owner: User } })[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
 }
 
 export async function invoiceGetByUserUuid(variables: CommonVariables) {
@@ -105,10 +95,5 @@ export async function invoiceGetByUserUuid(variables: CommonVariables) {
 
   return {
     data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData & {
-    data: {
-      content: (Invoice & { parkingLot: Parking & { owner: User } })[];
-      pageInfo: CommonPageInfo;
-    };
-  };
+  } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
 }
