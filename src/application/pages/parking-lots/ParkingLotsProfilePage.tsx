@@ -17,8 +17,8 @@ import MyButton from "../../components/common/MyButton";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 import InvoicesTable from "../../components/tables/InvoicesTable";
-import { invoiceGetByParkingLotUuid } from "../../../domain/services/invoiceService";
 import { userGet } from "../../../domain/services/userService";
+import { invoiceGetByParkingLot } from "../../../domain/services/invoiceService";
 
 function ParkingLotsProfilePage() {
   const navigate = useNavigate();
@@ -484,8 +484,8 @@ function ParkingLotsProfilePage() {
           <section className="mt-2">
             <InvoicesTable
               getData={(variables) => {
-                variables.parkingLotUuid = data.parkingLotUuid;
-                return invoiceGetByParkingLotUuid(variables);
+                variables.keyword = data.parkingLotUuid;
+                return invoiceGetByParkingLot(variables);
               }}
             />
           </section>

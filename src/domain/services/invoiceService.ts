@@ -1,6 +1,6 @@
 import {
   invoiceGetAllDoc,
-  invoiceGetByParkingLotUuidDoc,
+  invoiceGetByParkingLotDoc,
   invoiceGetByUserUuidDoc,
 } from "../gql-docs/invoiceDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
@@ -40,14 +40,14 @@ export async function invoiceGetAll(variables: CommonVariables) {
   } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
 }
 
-export async function invoiceGetByParkingLotUuid(variables: CommonVariables) {
-  const query = await graphqlQuery(invoiceGetByParkingLotUuidDoc(), variables);
+export async function invoiceGetByParkingLot(variables: CommonVariables) {
+  const query = await graphqlQuery(invoiceGetByParkingLotDoc(), variables);
 
   if (query.data.errors) {
     return query.data;
   }
 
-  const data = query.data.data.getInvoicesByParkingLotUuid;
+  const data = query.data.data.getInvoicesByParkingLot;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
       parkingLotUuid: invoice.parkingLotUuid ?? "",

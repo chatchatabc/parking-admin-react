@@ -23,10 +23,10 @@ export function invoiceGetAllDoc() {
   `;
 }
 
-export function invoiceGetByParkingLotUuidDoc() {
+export function invoiceGetByParkingLotDoc() {
   return `
-  query GetInvoiceByParkingLotUuid($page: Int = 0, $size: Int = 10, $parkingLotUuid: String!) {
-    getInvoicesByParkingLotUuid(page: $page, size: $size, uuid: $parkingLotUuid) {
+  query GetInvoiceByParkingLot($page: Int = 0, $size: Int = 10, $keyword: String!) {
+    getInvoicesByParkingLot(page: $page, size: $size, id: $keyword) {
       content {
         id
         startAt
