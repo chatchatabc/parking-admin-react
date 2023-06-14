@@ -6,7 +6,7 @@ import { Select } from "antd";
 import React from "react";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
-import { parkingLotGetFilters } from "../../../domain/services/parkingService";
+import { parkingLotGetFilters } from "../../../domain/services/parkingLotService";
 
 function ParkingLotsPage() {
   // Local States

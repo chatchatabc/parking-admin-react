@@ -7,8 +7,8 @@ import {
   parkingLotGet,
   parkingLotGetImagesByParkingLotUuid,
   parkingLotVerify,
-} from "../../../domain/services/parkingService";
-import { Parking } from "../../../domain/models/ParkingModel";
+} from "../../../domain/services/parkingLotService";
+import { ParkingLot } from "../../../domain/models/ParkingModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import dayjs from "dayjs";
@@ -37,7 +37,7 @@ function ParkingLotsProfilePage() {
 
   // Local states
   const [owner, setOwner] = React.useState<User | null>(null);
-  const [data, setData] = React.useState<Parking | null>(null);
+  const [data, setData] = React.useState<ParkingLot | null>(null);
   const [images, setImages] = React.useState<string[]>([]);
   const [loading, setLoading] = React.useState(true);
 

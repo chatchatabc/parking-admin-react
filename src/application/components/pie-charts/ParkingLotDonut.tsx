@@ -1,5 +1,5 @@
 import React from "react";
-import { parkingLotGetDonut } from "../../../domain/services/parkingService";
+import { parkingLotGetDonut } from "../../../domain/services/parkingLotService";
 import { message } from "antd";
 import DynamicDonut from "./DynamicDonut";
 

@@ -4,7 +4,7 @@ import { userAllOptionsGet } from "../../../domain/services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import SelectAsyncSearch from "../select/SelectAsyncSearch";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { parkingLotCreate } from "../../../domain/services/parkingService";
+import { parkingLotCreate } from "../../../domain/services/parkingLotService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import MyButton from "../common/MyButton";
 

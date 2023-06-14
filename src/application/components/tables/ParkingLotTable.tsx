@@ -1,8 +1,8 @@
 import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
-import { Parking } from "../../../domain/models/ParkingModel";
+import { ParkingLot } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
-import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingService";
+import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingLotService";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
 import CheckIconAsset from "../../assets/CheckIconAsset";
@@ -25,11 +25,11 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
     {
       title: "Parking Name",
       key: "name",
-      render: (record: Parking & { owner: User }) => {
+      render: (record: ParkingLot<User>) => {
         const owner = record.owner;
         const date = new Date(record.verifiedAt ?? "");
 
-        if (owner.username || owner.phone) {
+        if (owner?.username || owner?.phone) {
           return (
             <div className="flex items-center gap-1">
               <div className="w-8 h-8 overflow-hidden border border-c1 rounded-full">
@@ -45,8 +45,8 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
                   navigate(
                     `/parking-lots/${
                       owner.username
-                        ? `u-${record.owner.username}`
-                        : `p-${record.owner.phone}`
+                        ? `u-${record.owner?.username}`
+                        : `p-${record.owner?.phone}`
                     }`
                   );
                 }}
@@ -90,10 +90,10 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
     {
       title: "Owner",
       key: "owner",
-      render: (record: Parking & { owner: User }) => {
+      render: (record: ParkingLot<User>) => {
         const owner = record.owner;
 
-        if (owner.username || owner.phone) {
+        if (owner?.username || owner?.phone) {
           return (
             <button
               className="underline hover:no-underline"
@@ -110,7 +110,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
           );
         }
 
-        return <p>{owner.email ?? "Unknown"}</p>;
+        return <p>{owner?.email ?? "Unknown"}</p>;
       },
     },
     {

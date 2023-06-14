@@ -2,7 +2,7 @@ import { Checkbox, Form, FormInstance, Input, TimePicker, message } from "antd";
 import type { Dayjs } from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { parkingLotUpdate } from "../../../domain/services/parkingService";
+import { parkingLotUpdate } from "../../../domain/services/parkingLotService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import MyButton from "../common/MyButton";
 

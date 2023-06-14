@@ -1,7 +1,7 @@
 import { Checkbox, Form, FormInstance, Input, Select, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { parkingLotUpdateRate } from "../../../domain/services/parkingService";
+import { parkingLotUpdateRate } from "../../../domain/services/parkingLotService";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import MyButton from "../common/MyButton";
 
