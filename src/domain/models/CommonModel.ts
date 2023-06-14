@@ -13,8 +13,8 @@ export type CommonContent<T> = {
 
 export type CommonVariables = {
   [key: string]: any;
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
 };
 
 export type CommonSeries = { name: string; data: number[] };
