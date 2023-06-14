@@ -1,4 +1,4 @@
-export type Invoice = {
+export type Invoice<ParkingLot = null> = {
   id?: string | null;
   createdAt?: string | null;
   endAt?: string | null;
@@ -11,4 +11,6 @@ export type Invoice = {
 
   total?: number | null;
   estimatedParkingDurationInHours?: number | null;
+
+  parkingLot?: ParkingLot | null;
 };
