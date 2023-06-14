@@ -2,11 +2,11 @@ import DynamicTable from "./DynamicTable";
 import { Vehicle } from "../../../domain/models/VehicleModel";
 import { ColumnsType } from "antd/es/table";
 import { Invoice } from "../../../domain/models/InvoiceModel";
-import { Parking } from "../../../domain/models/ParkingModel";
+import { ParkingLot } from "../../../domain/models/ParkingModel";
 import { User } from "../../../domain/models/UserModel";
 import { useNavigate } from "react-router-dom";
 import {
-  CommonPageInfo,
+  CommonContent,
   CommonVariables,
 } from "../../../domain/models/CommonModel";
 import {
@@ -14,19 +14,14 @@ import {
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
 
-type NewInvoice = Invoice & {
-  parkingLot: Parking & {
-    owner: User;
-  };
-};
+type NewInvoice = Invoice<ParkingLot<User>>;
 
 type Props = {
   showPagination?: boolean;
-  getData: (variables: CommonVariables) => Promise<
-    | (AxiosResponseData & {
-        data: { content: Record<string, any>[]; pageInfo: CommonPageInfo };
-      })
-    | AxiosResponseError
+  getData: (
+    variables: CommonVariables
+  ) => Promise<
+    AxiosResponseData<CommonContent<Record<string, any>>> | AxiosResponseError
   >;
 };
 
@@ -43,7 +38,10 @@ function InvoicesTable({ showPagination, getData }: Props) {
       title: "Parking Lot",
       key: "parkingLot",
       render: (record: NewInvoice) => {
-        if (record.parkingLot.owner.username || record.parkingLot.owner.phone) {
+        if (
+          record.parkingLot?.owner?.username ||
+          record.parkingLot?.owner?.phone
+        ) {
           const { username, phone } = record.parkingLot.owner;
           return (
             <button
