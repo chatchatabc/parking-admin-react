@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { authTokenGet } from "../../services/authService";
-import { AxiosErrorsItem, AxiosResponse } from "../../models/AxiosModel";
+import { AxiosResponse, AxiosResponseErrorItem } from "../../models/AxiosModel";
 
-function axiosHandleError(e: any): AxiosResponse {
+function axiosHandleError(e: any): AxiosResponse<any> {
   if (!e.response) {
     return {
       data: {
@@ -16,7 +16,7 @@ function axiosHandleError(e: any): AxiosResponse {
     };
   }
 
-  const errors = e.response?.data?.errors as AxiosErrorsItem[];
+  const errors: AxiosResponseErrorItem[] = e.response?.data?.errors;
 
   if (errors) {
     if (errors.length) {
@@ -80,7 +80,7 @@ function axiosConfig() {
 export async function axiosGet(
   url: string,
   params?: Record<string, any>
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<any>> {
   let response;
 
   const config = axiosConfig();
@@ -100,7 +100,7 @@ export async function axiosGet(
 export async function axiosPost(
   url: string,
   data: Record<string, any>
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<any>> {
   let response;
 
   const config = axiosConfig();
@@ -119,7 +119,7 @@ export async function axiosPost(
 export async function axiosPut(
   url: string,
   data: Record<string, any>
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<any>> {
   let response;
 
   const config = axiosConfig();
@@ -138,7 +138,7 @@ export async function axiosPut(
 export async function axiosDelete(
   url: string,
   data: Record<string, any>
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<any>> {
   let response;
 
   const config = axiosConfig();
