@@ -1,4 +1,4 @@
-export type Parking = {
+export type ParkingLot<Owner = null> = {
   parkingLotUuid?: string | null;
   address?: string | null;
   businessHoursEnd?: string | null;
@@ -15,10 +15,11 @@ export type Parking = {
   availableSlots?: number | null;
   openDaysFlag?: number | null;
 
-  rate?: ParkingRate | null;
+  rate?: ParkingLotRate | null;
+  owner?: Owner | null;
 };
 
-export type ParkingRate = {
+export type ParkingLotRate = {
   id?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
