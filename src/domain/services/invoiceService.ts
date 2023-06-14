@@ -9,7 +9,7 @@ import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
 import { ParkingLot } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
-import { parkingLotGetWithOwner } from "./parkingService";
+import { parkingLotGetWithOwner } from "./parkingLotService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(invoiceGetAllDoc(), variables);
