@@ -12,7 +12,5 @@ export async function dashboardGetPieGraph() {
 
   const data = query.data.data.getDashboardPieGraph;
 
-  return { data } as AxiosResponseData & {
-    data: DashboardPieGraph;
-  };
+  return { data } as AxiosResponseData<DashboardPieGraph>;
 }
