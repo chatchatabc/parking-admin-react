@@ -5,7 +5,7 @@ import {
 } from "../../../domain/models/AxiosModel";
 import { Table, message } from "antd";
 import {
-  CommonPageInfo,
+  CommonContent,
   CommonVariables,
 } from "../../../domain/models/CommonModel";
 import { ColumnsType } from "antd/es/table";
@@ -17,12 +17,9 @@ type Props = {
   localPagination?: boolean;
   title: string;
   columns: ColumnsType<Record<string, any>>;
-  getData: (variables: CommonVariables) => Promise<
-    | (AxiosResponseData & {
-        data: { content: Record<string, any>[]; pageInfo: CommonPageInfo };
-      })
-    | AxiosResponseError
-  >;
+  getData: (
+    variables: CommonVariables
+  ) => Promise<AxiosResponseData<CommonContent<any>> | AxiosResponseError>;
 };
 
 function DynamicTable({
