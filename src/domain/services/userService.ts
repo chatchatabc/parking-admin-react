@@ -13,7 +13,7 @@ import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
 
 export async function userGet(variables: { keyword: string }) {
-  const query = await graphqlQuery(userGetDoc(), variables);
+  const query = await graphqlQuery(userGetDoc(), variables, "UserGet");
 
   if (query.data.errors) {
     return query.data;
@@ -96,7 +96,11 @@ export async function userUpdate(values: Record<string, any>) {
 }
 
 export async function userGetByParkingLot(variables: { keyword: string }) {
-  const response = await graphqlQuery(userGetByParkingLotDoc(), variables);
+  const response = await graphqlQuery(
+    userGetByParkingLotDoc(),
+    variables,
+    "UserGetByParkingLot"
+  );
 
   if (response.data.errors) {
     return response.data;

@@ -41,7 +41,11 @@ export async function invoiceGetAll(variables: CommonVariables) {
 }
 
 export async function invoiceGetByParkingLot(variables: CommonVariables) {
-  const query = await graphqlQuery(invoiceGetByParkingLotDoc(), variables);
+  const query = await graphqlQuery(
+    invoiceGetByParkingLotDoc(),
+    variables,
+    "InvoiceGetByParkingLot"
+  );
 
   if (query.data.errors) {
     return query.data;

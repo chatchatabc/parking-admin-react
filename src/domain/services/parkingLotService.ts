@@ -18,11 +18,15 @@ export async function parkingLotGetAll({
   size = 10,
   keyword = "",
 }: Record<string, any>) {
-  const query = await graphqlQuery(parkingLotGetAllDoc(), {
-    page,
-    size,
-    keyword,
-  });
+  const query = await graphqlQuery(
+    parkingLotGetAllDoc(),
+    {
+      page,
+      size,
+      keyword,
+    },
+    "ParkingLotGetAll"
+  );
 
   if (query.data.errors) {
     return query.data;
@@ -34,14 +38,14 @@ export async function parkingLotGetAll({
 }
 
 export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
-  const query = await graphqlQuery(parkingLotGetAllDoc(), variables);
+  const query = await parkingLotGetAll(variables);
 
-  if (query.data.errors) {
-    return query.data;
+  if (query.errors) {
+    return query;
   }
 
   // Add owner info to each parking lot
-  const parkingLots = query.data.data.getParkingLots.content as ParkingLot[];
+  const parkingLots = query.data.content as ParkingLot[];
   const additionalInfo = parkingLots.map(async (parkingLot) => {
     const newParkingLot: ParkingLot<User> = {
       ...parkingLot,
@@ -61,9 +65,7 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
 
   // Wait for all promises to resolve
   const newContent = await Promise.all(additionalInfo);
-  const data = { ...query.data.data.getParkingLots, content: newContent };
-
-  console.log(data);
+  const data = { ...query.data, content: newContent };
 
   return { data } as AxiosResponseData<CommonContent<ParkingLot<User>>>;
 }
@@ -97,7 +99,11 @@ export async function parkingLotGetWithOwner(variables: {
 export async function parkingLotGetByUuid(variables: {
   parkingLotUuid: string;
 }) {
-  const query = await graphqlQuery(parkingLotGetByUuidDoc(), variables);
+  const query = await graphqlQuery(
+    parkingLotGetByUuidDoc(),
+    variables,
+    "ParkingLotGetByUuid"
+  );
 
   if (query.data.errors) {
     return query.data;
@@ -109,7 +115,11 @@ export async function parkingLotGetByUuid(variables: {
 }
 
 export async function parkingLotGetByUser(variables: { keyword: string }) {
-  const response = await graphqlQuery(parkingLotGetByUserDoc(), variables);
+  const response = await graphqlQuery(
+    parkingLotGetByUserDoc(),
+    variables,
+    "ParkingLotGetByUser"
+  );
 
   if (response.data.errors) {
     return response.data;
@@ -220,7 +230,8 @@ export async function parkingLotGetImagesByParkingLot(
 ) {
   const query = await graphqlQuery(
     parkingLotGetImagesByParkingLotDoc(),
-    variables
+    variables,
+    "ParkingLotGetImagesByParkingLot"
   );
 
   if (query.data.errors) {
