@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { authTokenGet } from "../../services/authService";
 import { AxiosResponse, AxiosResponseErrorItem } from "../../models/AxiosModel";
 
-function axiosHandleError(e: any): AxiosResponse<any> {
+function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
     return {
       data: {
@@ -82,15 +82,23 @@ export async function axiosGet(
   url: string,
   config: AxiosRequestConfig,
   title: string
-): Promise<AxiosResponse<any>> {
+): Promise<AxiosResponse> {
   let response;
 
   try {
     response = await axios.get(`${url}`, config);
-    axiosDebug({ url, method: "GET", response, title, success: true });
+
+    if (response.data.errors && response.data.errors.length === 0) {
+      response.data.errors = null;
+    }
   } catch (e: any) {
     response = axiosHandleError(e);
+  }
+
+  if (response.data.errors) {
     axiosDebug({ url, method: "GET", response, title, success: false });
+  } else {
+    axiosDebug({ url, method: "GET", response, title, success: true });
   }
 
   return response;
@@ -101,15 +109,23 @@ export async function axiosPost(
   data: Record<string, any>,
   config: AxiosRequestConfig,
   title: string
-): Promise<AxiosResponse<any>> {
+): Promise<AxiosResponse> {
   let response;
 
   try {
     response = await axios.post(`${url}`, data, config);
-    axiosDebug({ url, method: "POST", data, response, title, success: true });
+
+    if (response.data.errors && response.data.errors.length === 0) {
+      response.data.errors = null;
+    }
   } catch (e: any) {
     response = axiosHandleError(e);
+  }
+
+  if (response.data.errors) {
     axiosDebug({ url, method: "POST", data, response, title, success: false });
+  } else {
+    axiosDebug({ url, method: "POST", data, response, title, success: true });
   }
 
   return response;
@@ -120,15 +136,23 @@ export async function axiosPut(
   data: Record<string, any>,
   config: AxiosRequestConfig,
   title: string
-): Promise<AxiosResponse<any>> {
+): Promise<AxiosResponse> {
   let response;
 
   try {
     response = await axios.put(`${url}`, data, config);
-    axiosDebug({ url, method: "PUT", data, response, title, success: true });
+
+    if (response.data.errors && response.data.errors.length === 0) {
+      response.data.errors = null;
+    }
   } catch (e: any) {
     response = axiosHandleError(e);
+  }
+
+  if (response.data.errors) {
     axiosDebug({ url, method: "PUT", data, response, title, success: false });
+  } else {
+    axiosDebug({ url, method: "PUT", data, response, title, success: true });
   }
 
   return response;
@@ -138,16 +162,22 @@ export async function axiosDelete(
   url: string,
   data: Record<string, any>,
   title: string
-): Promise<AxiosResponse<any>> {
+): Promise<AxiosResponse> {
   let response;
 
   const config = axiosConfig();
 
   try {
     response = await axios.delete(`${url}`, config);
-    axiosDebug({ url, method: "DELETE", data, response, title, success: true });
+
+    if (response.data.errors && response.data.errors.length === 0) {
+      response.data.errors = null;
+    }
   } catch (e: any) {
     response = axiosHandleError(e);
+  }
+
+  if (response.data.errors) {
     axiosDebug({
       url,
       method: "DELETE",
@@ -155,6 +185,15 @@ export async function axiosDelete(
       response,
       title,
       success: false,
+    });
+  } else {
+    axiosDebug({
+      url,
+      method: "DELETE",
+      data,
+      response,
+      title,
+      success: true,
     });
   }
 

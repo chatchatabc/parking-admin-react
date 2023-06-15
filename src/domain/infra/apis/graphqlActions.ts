@@ -31,11 +31,6 @@ export async function graphqlQuery(
     title
   );
 
-  if (response.data.errors && response.data.errors.length > 0) {
-    return response;
-  }
-  response.data.errors = null;
-
   return response;
 }
 
@@ -52,11 +47,6 @@ export async function graphqlMutation(
     config,
     title
   );
-
-  if (response.data.errors && response.data.errors.length > 0) {
-    return response;
-  }
-  response.data.errors = null;
 
   return response;
 }

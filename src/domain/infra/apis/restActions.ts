@@ -29,11 +29,6 @@ export async function restGet(
 
   const response = await axiosGet(baseUrl + url, config, title);
 
-  if (response.data.errors && response.data.errors.length > 0) {
-    return response;
-  }
-  response.data.errors = null;
-
   return response;
 }
 
@@ -46,11 +41,6 @@ export async function restPost(
 
   const response = await axiosPost(baseUrl + url, values, config, title);
 
-  if (response.data.errors && response.data.errors.length > 0) {
-    return response;
-  }
-  response.data.errors = null;
-
   return response;
 }
 
@@ -62,11 +52,6 @@ export async function restPut(
   const config = restConfig();
 
   const response = await axiosPut(baseUrl + url, values, config, title);
-
-  if (response.data.errors && response.data.errors.length > 0) {
-    return response;
-  }
-  response.data.errors = null;
 
   return response;
 }
