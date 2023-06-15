@@ -78,6 +78,13 @@ export async function userRoleOptionsGet() {
 }
 
 export async function userCreate(values: Record<string, any>) {
+  values = {
+    email: values.email,
+    phone: values.phone,
+    username: values.username,
+    roles: values.roles,
+  };
+
   const response = await restPost("/user/create", values);
 
   return response.data;
