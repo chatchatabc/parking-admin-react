@@ -8,7 +8,6 @@ import {
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restAction";
-import { axiosPut } from "../infra/axios/axiosActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
@@ -26,7 +25,7 @@ export async function userGet(variables: { keyword: string }) {
 }
 
 export async function userUpdateProfile(values: Record<string, any>) {
-  const response = await axiosPut(`/user/update/${values.userId}`, values);
+  const response = await restPut(`/user/update/${values.userId}`, values);
 
   return response.data;
 }
