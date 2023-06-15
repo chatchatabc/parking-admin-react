@@ -26,8 +26,8 @@ function axiosHandleError(e: any): AxiosResponse<any> {
     e.response.data = {
       errors: [
         {
-          title: "EMPTY_LIST",
-          message: "EMPTY_LIST",
+          title: "EMPTY_ERROR_LIST",
+          message: "EMPTY_ERROR_LIST",
         },
       ],
     };
@@ -46,22 +46,22 @@ function axiosHandleError(e: any): AxiosResponse<any> {
   return e.response;
 }
 
-function axiosDebug(
-  url: string,
-  method: "GET" | "PUT" | "POST" | "DELETE",
-  params: Record<string, any>,
-  data: Record<string, any>,
-  response: Record<string, any>,
-  title: string
-) {
+function axiosDebug(params: {
+  url: string;
+  method: "GET" | "PUT" | "POST" | "DELETE";
+  params?: Record<string, any>;
+  data?: Record<string, any>;
+  response: Record<string, any>;
+  title?: string;
+  success: boolean;
+}) {
   if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-    console.log(`${title} Debug`, {
-      url,
-      method,
-      params,
-      data,
-      response,
-    });
+    const title = params.title;
+
+    console.log(
+      `${params.success ? "SUCCESS" : "FAILED"} ${title} Debug`,
+      params
+    );
   }
 }
 
@@ -90,11 +90,11 @@ export async function axiosGet(
 
   try {
     response = await axios.get(`${url}`, config);
+    axiosDebug({ url, method: "GET", params, response, title, success: true });
   } catch (e: any) {
     response = axiosHandleError(e);
+    axiosDebug({ url, method: "GET", params, response, title, success: false });
   }
-
-  axiosDebug(url, "GET", params ?? {}, {}, response, title);
 
   return response;
 }
@@ -110,11 +110,11 @@ export async function axiosPost(
 
   try {
     response = await axios.post(`${url}`, data, config);
+    axiosDebug({ url, method: "POST", data, response, title, success: true });
   } catch (e: any) {
     response = axiosHandleError(e);
+    axiosDebug({ url, method: "POST", data, response, title, success: false });
   }
-
-  axiosDebug(url, "POST", {}, data, response, title);
 
   return response;
 }
@@ -130,11 +130,11 @@ export async function axiosPut(
 
   try {
     response = await axios.put(`${url}`, data, config);
+    axiosDebug({ url, method: "PUT", data, response, title, success: true });
   } catch (e: any) {
     response = axiosHandleError(e);
+    axiosDebug({ url, method: "PUT", data, response, title, success: false });
   }
-
-  axiosDebug(url, "PUT", {}, data, response, title);
 
   return response;
 }
@@ -150,11 +150,18 @@ export async function axiosDelete(
 
   try {
     response = await axios.delete(`${url}`, config);
+    axiosDebug({ url, method: "DELETE", data, response, title, success: true });
   } catch (e: any) {
     response = axiosHandleError(e);
+    axiosDebug({
+      url,
+      method: "DELETE",
+      data,
+      response,
+      title,
+      success: false,
+    });
   }
-
-  axiosDebug(url, "DELETE", {}, data, response, title);
 
   return response;
 }
