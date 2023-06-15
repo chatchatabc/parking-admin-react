@@ -1,4 +1,4 @@
-import { restPost } from "../infra/apis/restAction";
+import { restPost } from "../infra/apis/restActions";
 import { AuthLogin, AuthLogout } from "../models/AuthModel";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 

@@ -80,20 +80,17 @@ function axiosConfig() {
 
 export async function axiosGet(
   url: string,
-  params: Record<string, any>,
+  config: AxiosRequestConfig,
   title: string
 ): Promise<AxiosResponse<any>> {
   let response;
 
-  const config = axiosConfig();
-  config.params = params;
-
   try {
     response = await axios.get(`${url}`, config);
-    axiosDebug({ url, method: "GET", params, response, title, success: true });
+    axiosDebug({ url, method: "GET", response, title, success: true });
   } catch (e: any) {
     response = axiosHandleError(e);
-    axiosDebug({ url, method: "GET", params, response, title, success: false });
+    axiosDebug({ url, method: "GET", response, title, success: false });
   }
 
   return response;
@@ -102,11 +99,10 @@ export async function axiosGet(
 export async function axiosPost(
   url: string,
   data: Record<string, any>,
+  config: AxiosRequestConfig,
   title: string
 ): Promise<AxiosResponse<any>> {
   let response;
-
-  const config = axiosConfig();
 
   try {
     response = await axios.post(`${url}`, data, config);
@@ -122,11 +118,10 @@ export async function axiosPost(
 export async function axiosPut(
   url: string,
   data: Record<string, any>,
+  config: AxiosRequestConfig,
   title: string
 ): Promise<AxiosResponse<any>> {
   let response;
-
-  const config = axiosConfig();
 
   try {
     response = await axios.put(`${url}`, data, config);

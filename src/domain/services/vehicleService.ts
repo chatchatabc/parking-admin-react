@@ -3,7 +3,7 @@ import {
   vehicleGetAllDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost } from "../infra/apis/restAction";
+import { restPost } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";

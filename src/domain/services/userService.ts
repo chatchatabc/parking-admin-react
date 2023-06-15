@@ -7,7 +7,7 @@ import {
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost, restPut } from "../infra/apis/restAction";
+import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
