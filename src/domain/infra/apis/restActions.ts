@@ -4,15 +4,17 @@ import { AxiosRequestConfig } from "axios";
 
 const baseUrl = "/api";
 
-function restConfig(): AxiosRequestConfig {
-  const token = authTokenGet();
-
-  const config = {
+function restConfig() {
+  const config: AxiosRequestConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
   };
+
+  const token = authTokenGet();
+  if (token) {
+    config.headers!.Authorization = `Bearer ${token}`;
+  }
 
   return config;
 }

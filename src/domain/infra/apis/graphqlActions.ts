@@ -1,15 +1,18 @@
+import { AxiosRequestConfig } from "axios";
 import { authTokenGet } from "../../services/authService";
 import { axiosPost } from "../axios/axiosActions";
 
 function graphqlConfig() {
-  const token = authTokenGet();
-
-  const config = {
+  const config: AxiosRequestConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
   };
+
+  const token = authTokenGet();
+  if (token) {
+    config.headers!.Authorization = `Bearer ${token}`;
+  }
 
   return config;
 }
