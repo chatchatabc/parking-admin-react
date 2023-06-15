@@ -24,7 +24,7 @@ export async function parkingLotGet(variables: { keyword: string }) {
     return query.data;
   }
 
-  const data = query.data.data.getParkingLotByUser;
+  const data = query.data.data.getParkingLot;
 
   return { data } as AxiosResponseData<ParkingLot>;
 }
