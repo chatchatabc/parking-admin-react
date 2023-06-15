@@ -7,6 +7,7 @@ import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
 import CheckIconAsset from "../../assets/CheckIconAsset";
 import XIconAsset from "../../assets/XIconAsset";
+import ImageComp from "../ImageComp";
 
 type Props = {
   showPagination?: boolean;
@@ -33,7 +34,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
           return (
             <div className="flex items-center gap-1">
               <div className="w-8 h-8 overflow-hidden border border-c1 rounded-full">
-                <img
+                <ImageComp
                   className="w-full h-full object-cover"
                   src={`/api/parking-lot/get-featured-image/${record.parkingLotUuid}`}
                   alt={record.name ?? "Unknown"}
