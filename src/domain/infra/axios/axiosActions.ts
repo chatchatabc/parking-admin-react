@@ -51,10 +51,11 @@ function axiosDebug(
   method: "GET" | "PUT" | "POST" | "DELETE",
   params: Record<string, any>,
   data: Record<string, any>,
-  response: Record<string, any>
+  response: Record<string, any>,
+  title: string
 ) {
   if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-    console.log("Axios Debug", {
+    console.log(`${title} Debug`, {
       url,
       method,
       params,
@@ -79,7 +80,8 @@ function axiosConfig() {
 
 export async function axiosGet(
   url: string,
-  params?: Record<string, any>
+  params: Record<string, any>,
+  title: string
 ): Promise<AxiosResponse<any>> {
   let response;
 
@@ -92,14 +94,15 @@ export async function axiosGet(
     response = axiosHandleError(e);
   }
 
-  axiosDebug(url, "GET", params ?? {}, {}, response);
+  axiosDebug(url, "GET", params ?? {}, {}, response, title);
 
   return response;
 }
 
 export async function axiosPost(
   url: string,
-  data: Record<string, any>
+  data: Record<string, any>,
+  title: string
 ): Promise<AxiosResponse<any>> {
   let response;
 
@@ -111,14 +114,15 @@ export async function axiosPost(
     response = axiosHandleError(e);
   }
 
-  axiosDebug(url, "POST", {}, data, response);
+  axiosDebug(url, "POST", {}, data, response, title);
 
   return response;
 }
 
 export async function axiosPut(
   url: string,
-  data: Record<string, any>
+  data: Record<string, any>,
+  title: string
 ): Promise<AxiosResponse<any>> {
   let response;
 
@@ -130,14 +134,15 @@ export async function axiosPut(
     response = axiosHandleError(e);
   }
 
-  axiosDebug(url, "PUT", {}, data, response);
+  axiosDebug(url, "PUT", {}, data, response, title);
 
   return response;
 }
 
 export async function axiosDelete(
   url: string,
-  data: Record<string, any>
+  data: Record<string, any>,
+  title: string
 ): Promise<AxiosResponse<any>> {
   let response;
 
@@ -149,7 +154,7 @@ export async function axiosDelete(
     response = axiosHandleError(e);
   }
 
-  axiosDebug(url, "DELETE", {}, data, response);
+  axiosDebug(url, "DELETE", {}, data, response, title);
 
   return response;
 }
