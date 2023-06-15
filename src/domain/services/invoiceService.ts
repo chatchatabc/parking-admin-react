@@ -21,7 +21,7 @@ export async function invoiceGetAll(variables: CommonVariables) {
   const data = query.data.data.getInvoices;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      parkingLotUuid: invoice.parkingLotUuid ?? "",
+      keyword: invoice.parkingLotUuid ?? "",
     });
 
     if (parkingLot.errors) {
@@ -54,7 +54,7 @@ export async function invoiceGetByParkingLot(variables: CommonVariables) {
   const data = query.data.data.getInvoicesByParkingLot;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      parkingLotUuid: invoice.parkingLotUuid ?? "",
+      keyword: invoice.parkingLotUuid ?? "",
     });
 
     if (parkingLot.errors) {
@@ -83,7 +83,7 @@ export async function invoiceGetByUser(variables: CommonVariables) {
   const data = query.data.data.getInvoicesByUser;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      parkingLotUuid: invoice.parkingLotUuid ?? "",
+      keyword: invoice.parkingLotUuid ?? "",
     });
 
     if (parkingLot.errors) {

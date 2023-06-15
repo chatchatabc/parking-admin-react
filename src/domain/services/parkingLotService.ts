@@ -1,17 +1,33 @@
 import {
   parkingLotGetAllDoc,
   parkingLotGetByUserDoc,
-  parkingLotGetByUuidDoc,
+  parkingLotGetDoc,
   parkingLotGetImagesByParkingLotDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost, restPut } from "../infra/apis/restAction";
+import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
 import { userGetByParkingLot, userGetByParkingLotUuid } from "./userService";
 import type { Dayjs } from "dayjs";
+
+export async function parkingLotGet(variables: { keyword: string }) {
+  const query = await graphqlQuery(
+    parkingLotGetDoc(),
+    variables,
+    "ParkingLotGet"
+  );
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getParkingLotByUser;
+
+  return { data } as AxiosResponseData<ParkingLot>;
+}
 
 export async function parkingLotGetAll({
   page = 0,
@@ -70,10 +86,8 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<ParkingLot<User>>>;
 }
 
-export async function parkingLotGetWithOwner(variables: {
-  parkingLotUuid: string;
-}) {
-  const response = await parkingLotGetByUuid(variables);
+export async function parkingLotGetWithOwner(variables: { keyword: string }) {
+  const response = await parkingLotGet(variables);
 
   if (response.errors) {
     return response;
@@ -94,24 +108,6 @@ export async function parkingLotGetWithOwner(variables: {
   const data = { ...parkingLot, owner };
 
   return { data } as AxiosResponseData<ParkingLot<User>>;
-}
-
-export async function parkingLotGetByUuid(variables: {
-  parkingLotUuid: string;
-}) {
-  const query = await graphqlQuery(
-    parkingLotGetByUuidDoc(),
-    variables,
-    "ParkingLotGetByUuid"
-  );
-
-  if (query.data.errors) {
-    return query.data;
-  }
-
-  const data = query.data.data.getParkingLotByUuid;
-
-  return { data } as AxiosResponseData<ParkingLot>;
 }
 
 export async function parkingLotGetByUser(variables: { keyword: string }) {
