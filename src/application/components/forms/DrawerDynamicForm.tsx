@@ -4,7 +4,6 @@ import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import FormUserDetails from "../forms/FormUserDetails";
 import { useForm } from "antd/es/form/Form";
 import React from "react";
-import FormParkingUpdate from "../forms/FormParkingUpdate";
 import MyButton from "../common/MyButton";
 import UserBanForm from "../forms/UserBanForm";
 import ParkingLotRateForm from "../forms/ParkingLotRateForm";
@@ -16,6 +15,7 @@ import {
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import UserCreateForm from "./UserCreateForm";
 import ParkingLotCreateForm from "./ParkingLotCreateForm";
+import ParkingLotUpdateForm from "./ParkingLotUpdateForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
@@ -94,7 +94,12 @@ function DrawerDynamicForm() {
         />
       )}
       {drawerForm.content === "parkingUpdate" && (
-        <FormParkingUpdate formRef={form} title={drawerForm.title} />
+        <ParkingLotUpdateForm
+          formRef={form}
+          title={drawerForm.title}
+          handleSubmit={handleSubmit}
+          loading={drawerForm.loading}
+        />
       )}
       {drawerForm.content === "userCreate" && (
         <UserCreateForm

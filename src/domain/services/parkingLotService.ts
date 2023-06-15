@@ -144,6 +144,19 @@ export async function parkingLotCreate(values: Record<string, any>) {
 }
 
 export async function parkingLotUpdate(values: Record<string, any>) {
+  const openDaysFlag = values.openDaysFlag as number[];
+  const businessHoursEnd = values.businessHoursEnd as Dayjs;
+  const businessHoursStart = values.businessHoursStart as Dayjs;
+
+  values.businessHoursEnd = businessHoursEnd.toISOString();
+  values.businessHoursStart = businessHoursStart.toISOString();
+  values.capacity = Number(values.capacity);
+  values.latitude = Number(values.latitude);
+  values.longitude = Number(values.longitude);
+  values.openDaysFlag = openDaysFlag.reduce((acc, curr) => {
+    return acc | curr;
+  }, 0);
+
   const parkingLotUuid = values.parkingLotUuid;
 
   delete values.parkingLotUuid;

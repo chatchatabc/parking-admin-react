@@ -11,7 +11,6 @@ import {
 import { ParkingLot } from "../../../domain/models/ParkingModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import dayjs from "dayjs";
 import { User } from "../../../domain/models/UserModel";
 import MyButton from "../../components/common/MyButton";
 import { globalStateUpdate } from "../../redux/slices/globalState";
@@ -232,10 +231,6 @@ function ParkingLotsProfilePage() {
                   }
                   return 0;
                 });
-                const businessHoursEnd = dayjs(data.businessHoursEnd ?? "");
-                const businessHoursStart = dayjs(data.businessHoursStart ?? "");
-
-                console.log(businessHoursEnd, businessHoursStart);
 
                 dispatch(
                   drawerFormUpdate({
