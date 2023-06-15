@@ -2,7 +2,6 @@ import {
   userGetAllDoc,
   userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
-  userGetByParkingLotUuidDoc,
   userGetDoc,
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
@@ -107,20 +106,6 @@ export async function userGetByParkingLot(variables: { keyword: string }) {
   }
 
   const data = response.data.data.getUserByParkingLot;
-
-  return { data } as AxiosResponseData<User>;
-}
-
-export async function userGetByParkingLotUuid(parkingLotUuid: string) {
-  const response = await graphqlQuery(userGetByParkingLotUuidDoc(), {
-    parkingLotUuid,
-  });
-
-  if (response.data.errors) {
-    return response.data;
-  }
-
-  const data = response.data.data.getUserByParkingLotUuid;
 
   return { data } as AxiosResponseData<User>;
 }

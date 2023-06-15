@@ -10,7 +10,7 @@ import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
-import { userGetByParkingLot, userGetByParkingLotUuid } from "./userService";
+import { userGetByParkingLot } from "./userService";
 import type { Dayjs } from "dayjs";
 
 export async function parkingLotGet(variables: { keyword: string }) {
@@ -95,9 +95,9 @@ export async function parkingLotGetWithOwner(variables: { keyword: string }) {
 
   const parkingLot = response.data as ParkingLot;
 
-  const queryOwner = await userGetByParkingLotUuid(
-    parkingLot.parkingLotUuid ?? ""
-  );
+  const queryOwner = await userGetByParkingLot({
+    keyword: parkingLot.parkingLotUuid ?? "",
+  });
 
   if (queryOwner.errors) {
     return queryOwner;
