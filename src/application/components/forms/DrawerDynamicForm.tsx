@@ -26,7 +26,8 @@ function DrawerDynamicForm() {
     sendData: (
       values: Record<string, any>
     ) => Promise<AxiosResponseData<any> | AxiosResponseError>,
-    values: Record<string, any>
+    values: Record<string, any>,
+    successMessage: string
   ): Promise<AxiosResponseData<any> | AxiosResponseError> {
     const response = await sendData(values);
 
@@ -34,11 +35,12 @@ function DrawerDynamicForm() {
       response.errors.forEach((error) => {
         message.error(error.message);
       });
-
       return response;
     }
 
+    message.success(successMessage);
     form.resetFields();
+
     // Close the drawer
     dispatch(
       drawerFormUpdate({
@@ -94,6 +96,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
+          loading={drawerForm.loading}
         />
       )}
       {drawerForm.content === "userDetails" && (
