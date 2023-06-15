@@ -5,10 +5,10 @@ import Sidebar from "../components/sidebar/Sidebar";
 import { Popover } from "antd";
 import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
 import { Icon } from "@iconify/react";
-import DrawerForm from "../components/drawers/DrawerForm";
 import NavbarSearchBar from "../components/navbar/NavbarSearchBar";
 import MultiTabs from "../components/MultiTabs";
 import NoAccessPage from "../pages/NoAccessPage";
+import DrawerDynamicForm from "../components/forms/DrawerDynamicForm";
 
 function HomeLayout() {
   const [openSidebar, setOpenSidebar] = React.useState(
@@ -98,7 +98,7 @@ function HomeLayout() {
         </main>
       </div>
 
-      <DrawerForm />
+      <DrawerDynamicForm />
     </div>
   );
 }
