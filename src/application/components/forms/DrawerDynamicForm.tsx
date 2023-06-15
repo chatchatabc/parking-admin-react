@@ -16,6 +16,7 @@ import {
 } from "../../../domain/models/AxiosModel";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import UserCreateForm from "./UserCreateForm";
+import ParkingLotCreateForm from "./ParkingLotCreateForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
@@ -85,8 +86,13 @@ function DrawerDynamicForm() {
         </MyButton>
       }
     >
-      {drawerForm.content === "parkingCreate" && (
-        <FormParkingCreate formRef={form} title={drawerForm.title} />
+      {drawerForm.content === "parkingLotCreate" && (
+        <ParkingLotCreateForm
+          formRef={form}
+          title={drawerForm.title}
+          handleSubmit={handleSubmit}
+          loading={drawerForm.loading}
+        />
       )}
       {drawerForm.content === "parkingUpdate" && (
         <FormParkingUpdate formRef={form} title={drawerForm.title} />

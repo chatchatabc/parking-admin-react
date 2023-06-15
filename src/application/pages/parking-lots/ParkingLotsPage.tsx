@@ -55,7 +55,7 @@ function ParkingLotsPage() {
                 drawerFormUpdate({
                   show: true,
                   title: "Add Parking Lot",
-                  content: "parkingCreate",
+                  content: "parkingLotCreate",
                   mode: "create",
                 })
               );

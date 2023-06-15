@@ -11,6 +11,7 @@ import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingModel";
 import { User } from "../models/UserModel";
 import { userGetByParkingLot, userGetByParkingLotUuid } from "./userService";
+import type { Dayjs } from "dayjs";
 
 export async function parkingLotGetAll({
   page = 0,
@@ -120,6 +121,19 @@ export async function parkingLotGetByUser(variables: { keyword: string }) {
 }
 
 export async function parkingLotCreate(values: Record<string, any>) {
+  const openDaysFlag = values.openDaysFlag as number[];
+  const businessHoursEnd = values.businessHoursEnd as Dayjs;
+  const businessHoursStart = values.businessHoursStart as Dayjs;
+
+  values.businessHoursEnd = businessHoursEnd.toISOString();
+  values.businessHoursStart = businessHoursStart.toISOString();
+  values.capacity = Number(values.capacity);
+  values.latitude = Number(values.latitude);
+  values.longitude = Number(values.longitude);
+  values.openDaysFlag = openDaysFlag.reduce((acc, curr) => {
+    return acc | curr;
+  }, 0);
+
   const userUuid = values.userUuid;
 
   delete values.userUuid;
