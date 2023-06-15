@@ -1,4 +1,4 @@
-export type AxiosResponse<T> = {
+export type AxiosResponse<T = any> = {
   [key: string]: any;
   data: AxiosResponseData<T> | AxiosResponseError;
 };
@@ -8,7 +8,7 @@ export type AxiosResponseErrorItem = {
   message: string;
 };
 
-export type AxiosResponseData<Data> = {
+export type AxiosResponseData<Data = any> = {
   data: Data;
   errors?: null;
 };
