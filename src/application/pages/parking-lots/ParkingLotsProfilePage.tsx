@@ -18,6 +18,7 @@ import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 import { userGet } from "../../../domain/services/userService";
 import { invoiceGetByParkingLot } from "../../../domain/services/invoiceService";
+import MapBoxComp from "../../components/MapBoxComp";
 
 function ParkingLotsProfilePage() {
   const navigate = useNavigate();
@@ -487,7 +488,7 @@ function ParkingLotsProfilePage() {
         </section>
       </section>
 
-      {/* Owner Information */}
+      {/* Parking Lot Photos */}
       <section className="p-2 grid col-span-4 row-span-2">
         <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
@@ -508,6 +509,22 @@ function ParkingLotsProfilePage() {
                 </div>
               );
             })}
+          </section>
+        </section>
+      </section>
+
+      {/* Parking Map Location */}
+      <section className="p-2 grid col-span-8 row-span-2">
+        <section className="bg-bg2 p-4 rounded-lg">
+          <header className="flex justify-between items-center">
+            <h2 className="text-lg font-bold">Parking Lot Map Location</h2>
+          </header>
+
+          <section className="mt-2 h-96">
+            <MapBoxComp
+              latitude={data.latitude ?? 0}
+              longitude={data.longitude ?? 0}
+            />
           </section>
         </section>
       </section>
