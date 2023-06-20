@@ -13,6 +13,8 @@ import ParkingLotsProfilePage from "./pages/parking-lots/ParkingLotsProfilePage"
 import SearchPage from "./pages/SearchPage";
 import VehiclesPage from "./pages/vehicles/VehiclesPage";
 import InvoicePage from "./pages/invoices/InvoicesPage";
+import CommutesJeepneysPage from "./pages/commutes/CommutesJeepneysPage";
+import CommutesRoutesPage from "./pages/commutes/CommutesRoutesPage";
 
 message.config({
   maxCount: 2,
@@ -72,6 +74,19 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <InvoicePage />,
+          },
+        ],
+      },
+      {
+        path: "commutes",
+        children: [
+          {
+            path: "jeepneys",
+            element: <CommutesJeepneysPage />,
+          },
+          {
+            path: "routes",
+            element: <CommutesRoutesPage />,
           },
         ],
       },

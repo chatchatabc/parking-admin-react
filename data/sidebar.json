@@ -22,6 +22,21 @@
       "path": "/invoices"
     },
     {
+      "label": "Commutes",
+      "icon": "mdi:bus",
+      "path": "/commute-parent",
+      "children": [
+        {
+          "label": "Jeepneys",
+          "path": "/commutes/jeepneys"
+        },
+        {
+          "label": "Routes",
+          "path": "/commutes/routes"
+        }
+      ]
+    },
+    {
       "label": "Search",
       "icon": "mdi:magnify",
       "path": "/search"
