@@ -29,7 +29,7 @@ function MapBoxComp({ latitude, longitude }: Props) {
     marker.addTo(map.current);
   }, []);
 
-  return <div className="w-full h-full block" id="map"></div>;
+  return <div className="w-full h-full block rounded-lg" id="map"></div>;
 }
 
 export default MapBoxComp;
