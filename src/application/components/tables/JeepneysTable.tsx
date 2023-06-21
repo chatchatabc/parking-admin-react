@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import DynamicTable from "./DynamicTable";
-import { jeepneyGetAll } from "../../../domain/services/jeepneyService";
+import { jeepneyGetAllWithRoute } from "../../../domain/services/jeepneyService";
 import { Jeepney } from "../../../domain/models/JeepneyModel";
 import { ColumnsType } from "antd/es/table";
 
@@ -41,6 +41,12 @@ function JeepneysTable({
     {
       title: "Route",
       key: "route",
+      render: (record: Jeepney) => {
+        if (record.route) {
+          return <p>{record.route?.name}</p>;
+        }
+        return <p>No route</p>;
+      },
     },
     {
       title: "Location",
@@ -55,7 +61,7 @@ function JeepneysTable({
       columns={columns}
       title="jeepney-table"
       getData={(variables) => {
-        return jeepneyGetAll({ ...variables, ...extraVariables });
+        return jeepneyGetAllWithRoute({ ...variables, ...extraVariables });
       }}
     />
   );
