@@ -1,7 +1,7 @@
-import { routeGetDoc } from "../gql-docs/routeDocs";
+import { routeGetAllDoc, routeGetDoc } from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonVariables } from "../models/CommonModel";
+import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Route } from "../models/RouteModel";
 
 // export async function routeCreate(params: {
@@ -13,6 +13,18 @@ import { Route } from "../models/RouteModel";
 
 //   return response.data as AxiosResponseData;
 // }
+
+export async function routeGetAll(variables: CommonVariables) {
+  const query = await graphqlQuery(routeGetAllDoc(), variables, "RouteGetAll");
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getRoutes;
+
+  return { data } as AxiosResponseData<CommonContent<Route>>;
+}
 
 export async function routeGet(
   variables: CommonVariables & {
