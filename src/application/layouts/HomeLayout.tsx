@@ -2,19 +2,15 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { authCheckSession } from "../../domain/services/authService";
 import Sidebar from "../components/sidebar/Sidebar";
-import { Popover } from "antd";
-import NavbarProfileMenu from "../components/navbar/NavbarProfileMenu";
-import { Icon } from "@iconify/react";
-import NavbarSearchBar from "../components/navbar/NavbarSearchBar";
 import MultiTabs from "../components/MultiTabs";
 import NoAccessPage from "../pages/NoAccessPage";
 import DrawerDynamicForm from "../components/forms/DrawerDynamicForm";
+import Navbar from "../components/navbar/Navbar";
 
 function HomeLayout() {
   const [openSidebar, setOpenSidebar] = React.useState(
     JSON.parse(localStorage.getItem("sidebarState") ?? "true")
   );
-  const [openProfileMenu, setProfileMenu] = React.useState(false);
 
   function handleSidebar() {
     setOpenSidebar(!openSidebar);
@@ -29,65 +25,21 @@ function HomeLayout() {
     <div className="flex min-h-screen flex-col bg-bg1 text-t1">
       {/* Navbar */}
       <header className="bg-bg2 z-[10] sticky top-0 border-b py-2 px-3 flex items-center border-t2">
-        {/* Left side */}
-        <div className="flex space-x-4 items-center">
-          {/* Sidebar show and hide btn */}
-          <button className="p-1 rounded-md hover:bg-bg3">
-            <Icon
-              className="w-8 h-8"
-              icon={openSidebar ? "mdi:menu-open" : "mdi:menu"}
-              onClick={handleSidebar}
-            />
-          </button>
-
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <a href="/" className="block w-12">
-              <div className="relative pb-[100%] rounded-full overflow-hidden bg-white">
-                <p className="absolute">Davao Parking logo</p>
-              </div>
-            </a>
-            <a href="/" className="text-2xl font-bold">
-              Parking Admin
-            </a>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <NavbarSearchBar />
-
-        {/* Right side */}
-        <div className="ml-auto">
-          <Popover
-            open={openProfileMenu}
-            content={<NavbarProfileMenu setProfileMenu={setProfileMenu} />}
-            placement="topRight"
-            trigger="click"
-            onOpenChange={(open) => setProfileMenu(open)}
-            zIndex={1001}
-            arrow={false}
-          >
-            <button
-              className={`flex items-center space-x-2 p-1 rounded-md transition ${
-                openProfileMenu ? "bg-bg3" : ""
-              } hover:bg-bg3`}
-            >
-              <div className="w-10 h-10 rounded-full border border-accent1 bg-white"></div>
-              <p>Admin</p>
-              <span
-                className={`transition ${openProfileMenu ? "rotate-180" : ""}`}
-              >
-                <Icon className="w-8 h-8" icon="mdi:caret-down" />
-              </span>
-            </button>
-          </Popover>
-        </div>
+        <Navbar open={openSidebar} handleSidebar={handleSidebar} />
       </header>
 
-      {/* Right Content */}
-      <div className="flex-1 flex">
+      {/* Bottom */}
+      <div className="flex w-screen">
         {/* Sidebar */}
-        <Sidebar open={openSidebar} />
+        <aside
+          className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg2 border-r border-t2 ${
+            openSidebar ? "min-w-[250px]" : "min-w-[1px]"
+          } transition-all ease-linear text-t2 group hover:min-w-[250px]`}
+        >
+          <Sidebar open={openSidebar} />
+        </aside>
+
+        {/* Main */}
         <main className="flex flex-col flex-1">
           <section className="uppercase">
             <MultiTabs />
