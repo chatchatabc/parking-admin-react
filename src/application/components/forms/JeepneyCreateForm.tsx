@@ -30,6 +30,16 @@ function JeepneyCreateForm({ formRef, title, handleSubmit, loading }: Props) {
       form={formRef}
     >
       <div className="flex flex-wrap [&>*]:px-2">
+        {/* Jeepney Uuid */}
+        <Form.Item
+          rules={[{ required: true, message: "Need some input" }]}
+          className="w-1/2"
+          name="jeepneyUuid"
+          label="Jeepney Uuid"
+        >
+          <Input placeholder="Jeepney Uuid" />
+        </Form.Item>
+
         {/* Name */}
         <Form.Item
           rules={[{ required: true, message: "Need some input" }]}
@@ -65,13 +75,13 @@ function JeepneyCreateForm({ formRef, title, handleSubmit, loading }: Props) {
             }),
           ]}
         >
-          <Input placeholder="NBC 1234" />
+          <Input placeholder="NBC-1234" />
         </Form.Item>
 
         {/* Drivers */}
         <Form.Item
           rules={[{ required: true, message: "Need some input" }]}
-          className="w-full"
+          className="w-1/2"
           name="drivers"
           label="Drivers"
         >
@@ -99,6 +109,7 @@ function JeepneyCreateForm({ formRef, title, handleSubmit, loading }: Props) {
 
         {/* Status */}
         <Form.Item
+          initialValue={1}
           className="w-1/2"
           name="status"
           label="Status"
