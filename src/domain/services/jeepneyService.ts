@@ -59,6 +59,7 @@ export async function jeepneyCreate(params: Record<string, any>) {
     longitude: Number(params.longitude),
     status: params.status,
     flag: 0,
+    routeUuid: params.routeUuid,
   };
 
   const response = await restPost("/jeepney", params, "JeepneyCreate");
