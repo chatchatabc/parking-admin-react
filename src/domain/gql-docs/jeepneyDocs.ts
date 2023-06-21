@@ -9,6 +9,7 @@ export function jeepneyGetAllDoc() {
         capacity
         status
         createdAt
+        routeUuid
       }
       pageInfo {
         size

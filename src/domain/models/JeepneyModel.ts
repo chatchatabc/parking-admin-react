@@ -5,4 +5,5 @@ export type Jeepney = {
   capacity?: number | null;
   createdAt?: string | null;
   status?: number;
+  routeUuid?: string | null;
 };
