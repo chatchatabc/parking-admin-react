@@ -31,7 +31,7 @@ export function vehicleGetAllByUserUuidDoc() {
         vehicleUuid
         name
         plateNumber
-        type
+        typeUuid
         createdAt
         updatedAt
       }
