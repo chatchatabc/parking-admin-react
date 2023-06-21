@@ -1,3 +1,5 @@
+import { Route } from "./RouteModel";
+
 export type Jeepney = {
   jeepneyUuid?: string | null;
   name?: string | null;
@@ -6,4 +8,6 @@ export type Jeepney = {
   createdAt?: string | null;
   status?: number;
   routeUuid?: string | null;
+
+  route?: Route | null;
 };
