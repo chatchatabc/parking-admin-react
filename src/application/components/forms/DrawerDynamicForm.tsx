@@ -16,6 +16,7 @@ import { globalStateUpdate } from "../../redux/slices/globalState";
 import UserCreateForm from "./UserCreateForm";
 import ParkingLotCreateForm from "./ParkingLotCreateForm";
 import ParkingLotUpdateForm from "./ParkingLotUpdateForm";
+import JeepneyCreateForm from "./JeepneyCreateForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
@@ -120,6 +121,14 @@ function DrawerDynamicForm() {
       )}
       {drawerForm.content === "vehicle" && (
         <VehicleForm formRef={form} title={drawerForm.title} />
+      )}
+      {drawerForm.content === "jeepneyCreate" && (
+        <JeepneyCreateForm
+          formRef={form}
+          title={drawerForm.title}
+          handleSubmit={handleSubmit}
+          loading={drawerForm.loading}
+        />
       )}
     </Drawer>
   );
