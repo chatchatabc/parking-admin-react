@@ -41,9 +41,12 @@ function HomeLayout() {
 
         {/* Main */}
         <main className="flex flex-col flex-1">
+          {/* Multitabs */}
           <section className="uppercase">
             <MultiTabs />
           </section>
+
+          {/* Outlet */}
           <section className="bg-bg1 flex flex-1 flex-col">
             <Outlet />
           </section>
