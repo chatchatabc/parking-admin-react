@@ -26,6 +26,28 @@ export async function routeGetAll(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<Route>>;
 }
 
+export async function routeGetAllOptions(variables: CommonVariables) {
+  const response = await routeGetAll(variables);
+
+  if (response.errors) {
+    return response as AxiosResponseError;
+  }
+
+  const data = response.data.content.map((route: Route) => {
+    return {
+      value: route.routeUuid ?? "",
+      label: route.name ?? "",
+    };
+  });
+
+  return { data } as AxiosResponseData<
+    {
+      value: string;
+      label: string;
+    }[]
+  >;
+}
+
 export async function routeGet(
   variables: CommonVariables & {
     keyword: string;
