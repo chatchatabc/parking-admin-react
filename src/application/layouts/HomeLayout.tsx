@@ -21,6 +21,18 @@ function HomeLayout() {
     return <NoAccessPage />;
   }
 
+  React.useEffect(() => {
+    let timer = setTimeout(() => {
+      const multitabs = document.querySelector<HTMLElement>("[data-multitabs]");
+      const multitabsWidth = multitabs?.offsetWidth ?? 0;
+      multitabs?.style.setProperty("max-width", `${multitabsWidth}px`);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [openSidebar]);
+
   return (
     <div className="flex min-h-screen flex-col bg-bg1 text-t1">
       {/* Navbar */}
@@ -42,7 +54,7 @@ function HomeLayout() {
         {/* Main */}
         <main className="flex flex-col flex-1">
           {/* Multitabs */}
-          <section className="uppercase">
+          <section data-multitabs className="uppercase">
             <MultiTabs />
           </section>
 
