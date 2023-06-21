@@ -23,6 +23,7 @@ export async function jeepneyGetAll(variables: CommonVariables) {
 
 export async function jeepneyCreate(params: Record<string, any>) {
   params = {
+    jeepneyUuid: params.jeepneyUuid,
     name: params.name,
     drivers: params.drivers,
     plateNumber: params.plateNumber,
