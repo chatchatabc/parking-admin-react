@@ -5,6 +5,8 @@ import {
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
 import { jeepneyCreate } from "../../../domain/services/jeepneyService";
+import SelectAsync from "../select/SelectAsync";
+import { routeGetAllOptions } from "../../../domain/services/routeService";
 
 type Props = {
   title: string;
@@ -30,6 +32,19 @@ function JeepneyCreateForm({ formRef, title, handleSubmit, loading }: Props) {
       form={formRef}
     >
       <div className="flex flex-wrap [&>*]:px-2">
+        {/* Route */}
+        <Form.Item
+          rules={[{ required: true, message: "Need some input" }]}
+          className="w-full"
+          name="routeUuid"
+          label="Route"
+        >
+          {SelectAsync({
+            placeholder: "Route Name",
+            getData: routeGetAllOptions,
+          })}
+        </Form.Item>
+
         {/* Jeepney Uuid */}
         <Form.Item
           rules={[{ required: true, message: "Need some input" }]}

@@ -1,0 +1,67 @@
+import { routeGetAllDoc, routeGetDoc } from "../gql-docs/routeDocs";
+import { graphqlQuery } from "../infra/apis/graphqlActions";
+import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
+import { CommonContent, CommonVariables } from "../models/CommonModel";
+import { Route } from "../models/RouteModel";
+
+// export async function routeCreate(params: {
+//   name: string;
+//   description: string;
+//   status: 0;
+// }) {
+//   const response = await restPost("/route/create", params, "RouteCreate");
+
+//   return response.data as AxiosResponseData;
+// }
+
+export async function routeGetAll(variables: CommonVariables) {
+  const query = await graphqlQuery(routeGetAllDoc(), variables, "RouteGetAll");
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getRoutes;
+
+  return { data } as AxiosResponseData<CommonContent<Route>>;
+}
+
+export async function routeGetAllOptions(variables: CommonVariables) {
+  const response = await routeGetAll(variables);
+
+  if (response.errors) {
+    return response as AxiosResponseError;
+  }
+
+  const data = response.data.content.map((route: Route) => {
+    return {
+      value: route.routeUuid ?? "",
+      label: route.name ?? "",
+    };
+  });
+
+  return { data } as AxiosResponseData<
+    {
+      value: string;
+      label: string;
+    }[]
+  >;
+}
+
+export async function routeGet(
+  variables: CommonVariables & {
+    keyword: string;
+  }
+) {
+  const query = await graphqlQuery(routeGetDoc(), variables, "RouteGet");
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getRoute;
+  return { data } as AxiosResponseData<Route>;
+}
+
+// 8080;
+// 6080;
