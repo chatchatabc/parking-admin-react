@@ -24,10 +24,11 @@ export async function jeepneyGetAll(variables: CommonVariables) {
 export async function jeepneyCreate(params: Record<string, any>) {
   params = {
     name: params.name,
+    drivers: params.drivers,
     plateNumber: params.plateNumber,
-    capacity: params.capacity,
-    latitude: params.latitude,
-    longitude: params.longitude,
+    capacity: Number(params.capacity),
+    latitude: Number(params.latitude),
+    longitude: Number(params.longitude),
     status: params.status,
     flag: 0,
   };
