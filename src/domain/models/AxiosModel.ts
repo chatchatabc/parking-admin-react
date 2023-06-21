@@ -1,5 +1,6 @@
-export type AxiosResponse<T = any> = {
-  [key: string]: any;
+import { AxiosResponse as AxiosResponseOriginal } from "axios";
+
+export type AxiosResponse<T = any> = AxiosResponseOriginal & {
   data: AxiosResponseData<T> | AxiosResponseError;
 };
 
