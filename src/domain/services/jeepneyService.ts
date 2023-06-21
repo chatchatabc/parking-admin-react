@@ -43,7 +43,9 @@ export async function jeepneyGetAllWithRoute(variables: CommonVariables) {
 
   const content = await Promise.all(dataWithRoutes);
 
-  return { data: { content } } as AxiosResponseData<CommonContent<Jeepney>>;
+  return { data: { ...query.data, content } } as AxiosResponseData<
+    CommonContent<Jeepney>
+  >;
 }
 
 export async function jeepneyCreate(params: Record<string, any>) {
