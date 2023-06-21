@@ -6,7 +6,7 @@ export function vehicleGetAllDoc() {
         vehicleUuid
         name
         plateNumber
-        type
+        typeUuid
         createdAt
         updatedAt
       }

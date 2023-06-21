@@ -5,5 +5,5 @@ export type Vehicle = {
   createdAt?: string | null;
   updatedAt?: string | null;
 
-  type?: number | null;
+  typeUuid?: string | null;
 };
