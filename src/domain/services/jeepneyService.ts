@@ -32,7 +32,7 @@ export async function jeepneyCreate(params: Record<string, any>) {
     flag: 0,
   };
 
-  const response = await restPost("/jeepney", params);
+  const response = await restPost("/jeepney", params, "JeepneyCreate");
 
   if (response.data.errors) {
     return response.data as AxiosResponseError;
