@@ -6,6 +6,9 @@ import MultiTabs from "../components/MultiTabs";
 import NoAccessPage from "../pages/NoAccessPage";
 import DrawerDynamicForm from "../components/forms/DrawerDynamicForm";
 import Navbar from "../components/navbar/Navbar";
+import { NatsConnection, connect } from "nats.ws";
+
+export let webSocketHandler: NatsConnection | null = null;
 
 function HomeLayout() {
   const [openSidebar, setOpenSidebar] = React.useState(
@@ -32,6 +35,27 @@ function HomeLayout() {
       clearTimeout(timer);
     };
   }, [openSidebar]);
+
+  // WebSocket
+  React.useEffect(() => {
+    const webSocketUrl = import.meta.env.VITE_WEB_SOCKET_URL as string;
+    (async () => {
+      try {
+        webSocketHandler = await connect({ servers: [webSocketUrl] });
+        console.log(`WebSocket connected to ${webSocketUrl}`);
+      } catch (e) {
+        console.log(e);
+        console.log(`WebSocket failed to connect to ${webSocketUrl}`);
+      }
+    })();
+
+    return () => {
+      if (webSocketHandler) {
+        webSocketHandler.drain();
+      }
+      webSocketHandler = null;
+    };
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col bg-bg1 text-t1">
@@ -65,6 +89,7 @@ function HomeLayout() {
         </main>
       </div>
 
+      {/* Global components */}
       <DrawerDynamicForm />
     </div>
   );
