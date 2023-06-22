@@ -3,6 +3,7 @@ import DynamicTable from "./DynamicTable";
 import { jeepneyGetAllWithRoute } from "../../../domain/services/jeepneyService";
 import { Jeepney } from "../../../domain/models/JeepneyModel";
 import { ColumnsType } from "antd/es/table";
+import JeepneyPositionComp from "../JeepneyPositionComp";
 
 type Props = {
   showPagination?: boolean;
@@ -51,6 +52,9 @@ function JeepneysTable({
     {
       title: "Location",
       key: "location",
+      render: (record: Jeepney) => {
+        return <JeepneyPositionComp jeepneyUuid={record.jeepneyUuid ?? ""} />;
+      },
     },
   ];
 
