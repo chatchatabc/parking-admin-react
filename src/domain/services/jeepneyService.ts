@@ -30,7 +30,6 @@ export async function jeepneyGetAllWithRoute(variables: CommonVariables) {
   }
 
   const dataWithRoutes = query.data.content.map(async (jeepney: Jeepney) => {
-    console.log(jeepney.routeUuid);
     const route = await routeGet({ keyword: jeepney.routeUuid ?? "" });
 
     if (route.errors) {
