@@ -11,3 +11,10 @@ export type Jeepney = {
 
   route?: Route | null;
 };
+
+export type JeepneyPosition = {
+  jeepneyUuid?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  direction?: number | null;
+};
