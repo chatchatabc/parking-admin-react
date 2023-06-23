@@ -33,6 +33,10 @@
         {
           "label": "Routes",
           "path": "/commutes/routes"
+        },
+        {
+          "label": "Nodes",
+          "path": "/commutes/nodes"
         }
       ]
     },
