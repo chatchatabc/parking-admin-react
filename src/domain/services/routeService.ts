@@ -1,6 +1,7 @@
 import {
   routeGetAllDoc,
   routeGetDoc,
+  routeGetNodesAndEdgesDoc,
   routeGetNodesDoc,
 } from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
@@ -8,7 +9,12 @@ import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
-import { Route, RouteNode, RouteNodeCreate } from "../models/RouteModel";
+import {
+  Route,
+  RouteEdge,
+  RouteNode,
+  RouteNodeCreate,
+} from "../models/RouteModel";
 
 // export async function routeCreate(params: {
 //   name: string;
@@ -138,4 +144,56 @@ export async function routeUpdateNodeMany(params: RouteNode[]) {
   }
 
   return response.data as AxiosResponseData;
+}
+
+export async function routeGetNodesAndEdges(variables: { keyword: string }) {
+  const query = await graphqlQuery(
+    routeGetNodesAndEdgesDoc(),
+    variables,
+    "RouteGetNodesAndEdges"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getRouteNodesAndEdges;
+
+  return { data } as AxiosResponseData<{
+    nodes: RouteNode[];
+    edges: RouteEdge[];
+  }>;
+}
+
+export async function routeGetAllNodesAndEdges(variables: CommonVariables) {
+  const routes = await routeGetAll(variables);
+
+  if (routes.errors) {
+    return routes as AxiosResponseError;
+  }
+
+  const moreInfoPromise = routes.data.content.map(async (route: Route) => {
+    const nodesAndEdges = await routeGetNodesAndEdges({
+      keyword: route.routeUuid ?? "",
+    });
+
+    if (nodesAndEdges.errors) {
+      return nodesAndEdges as AxiosResponseError;
+    }
+
+    return {
+      ...route,
+      nodes: nodesAndEdges.data.nodes,
+      edges: nodesAndEdges.data.edges,
+    };
+  });
+
+  const moreInfo = await Promise.all(moreInfoPromise);
+
+  return {
+    data: {
+      ...routes.data,
+      content: moreInfo,
+    },
+  } as AxiosResponseData<CommonContent<Route>>;
 }
