@@ -61,3 +61,27 @@ export function routeGetNodesDoc() {
   }
   `;
 }
+
+export function routeGetNodesAndEdgesDoc() {
+  return `
+  query GetRouteNodesAndEdges($keyword: String!) {
+    getRouteNodesAndEdges(id: $keyword) {
+      nodes {
+        id
+        latitude
+        longitude
+        poi
+        createdAt
+      }
+      edges {
+        id
+        routeId
+        nodeFrom
+        nodeTo
+        distance
+        createdAt
+      }
+    }
+  }
+  `;
+}
