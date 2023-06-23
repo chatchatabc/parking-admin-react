@@ -5,7 +5,7 @@ import {
 } from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
-import { restPost } from "../infra/apis/restActions";
+import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Route, RouteNode, RouteNodeCreate } from "../models/RouteModel";
@@ -97,8 +97,45 @@ export async function routeGetNodes(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<RouteNode>>;
 }
 
-export async function routeCreateNode(params: RouteNodeCreate) {
-  const response = await restPost("/route-node", params, "RouteCreateNode");
+export async function routeCreateNodeMany(nodes: RouteNodeCreate[]) {
+  const data = {
+    nodes,
+  };
 
-  return response.data;
+  const response = await restPost(
+    "/route-node/many",
+    data,
+    "RouteCreateNodeMany"
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData;
+}
+
+export async function routeUpdateNodeMany(params: RouteNode[]) {
+  const data = {
+    nodes: params.map((node) => {
+      return {
+        id: node.id,
+        latitude: node.latitude,
+        longitude: node.longitude,
+        poi: node.poi,
+      };
+    }),
+  };
+
+  const response = await restPut(
+    "/route-node/many",
+    data,
+    "RouteUpdateNodeAll"
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData;
 }
