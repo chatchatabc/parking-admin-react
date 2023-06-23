@@ -9,6 +9,7 @@ import { message } from "antd";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import { MapboxDrawOptions } from "mapbox__mapbox-gl-draw";
 import MyButton from "../common/MyButton";
 
@@ -185,7 +186,7 @@ function CommutesNodesMap() {
           Save Nodes
         </MyButton>
       </div>
-      <div className="h-96 w-full" id="commutesNodesMap"></div>
+      <div className="h-[600px] w-full" id="commutesNodesMap"></div>
     </div>
   );
 }
