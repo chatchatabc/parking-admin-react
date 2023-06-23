@@ -8,3 +8,14 @@ export type Route = {
 
   status?: number | null;
 };
+
+export type RouteNodeCreate = {
+  longitude: number;
+  latitude: number;
+  poi: string;
+};
+
+export type RouteNode = {
+  id: number;
+  createdAt: string;
+} & RouteNodeCreate;

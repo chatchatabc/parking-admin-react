@@ -1,11 +1,18 @@
-import { routeGetAllDoc, routeGetDoc } from "../gql-docs/routeDocs";
+import {
+  routeGetAllDoc,
+  routeGetDoc,
+  routeGetNodesDoc,
+} from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
+import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
+import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
-import { Route } from "../models/RouteModel";
+import { Route, RouteNode, RouteNodeCreate } from "../models/RouteModel";
 
 // export async function routeCreate(params: {
 //   name: string;
+//   slug: string;
 //   description: string;
 //   status: 0;
 // }) {
@@ -63,5 +70,72 @@ export async function routeGet(
   return { data } as AxiosResponseData<Route>;
 }
 
-// 8080;
-// 6080;
+export async function routeGetMapMatch(coordinations: number[][]) {
+  const formatCoordinations = coordinations.join(";");
+  const radiuses = coordinations.map(() => 25).join(";");
+
+  const response = await mapboxGet(
+    `/driving/${formatCoordinations}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxGetPublicToken()}`
+  );
+
+  return response.data;
+}
+
+export async function routeGetNodes(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    routeGetNodesDoc(),
+    variables,
+    "RouteGetNodes"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getRouteNodes;
+
+  return { data } as AxiosResponseData<CommonContent<RouteNode>>;
+}
+
+export async function routeCreateNodeMany(nodes: RouteNodeCreate[]) {
+  const data = {
+    nodes,
+  };
+
+  const response = await restPost(
+    "/route-node/many",
+    data,
+    "RouteCreateNodeMany"
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData;
+}
+
+export async function routeUpdateNodeMany(params: RouteNode[]) {
+  const data = {
+    nodes: params.map((node) => {
+      return {
+        id: node.id,
+        latitude: node.latitude,
+        longitude: node.longitude,
+        poi: node.poi,
+      };
+    }),
+  };
+
+  const response = await restPut(
+    "/route-node/many",
+    data,
+    "RouteUpdateNodeAll"
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData;
+}
