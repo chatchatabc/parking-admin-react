@@ -38,3 +38,26 @@ export function routeGetAllDoc() {
   }
   `;
 }
+
+export function routeGetNodesDoc() {
+  return `
+  query GetRouteNodes($size: Int = 10, $page: Int = 0) {
+    getRouteNodes {
+      content {
+        id
+        latitude
+        longitude
+        poi
+        createdAt
+      }
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
