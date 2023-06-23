@@ -42,7 +42,7 @@ export function routeGetAllDoc() {
 export function routeGetNodesDoc() {
   return `
   query GetRouteNodes($size: Int = 10, $page: Int = 0) {
-    getRouteNodes {
+    getRouteNodes(size: $size, page: $page) {
       content {
         id
         latitude
