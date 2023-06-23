@@ -1,5 +1,6 @@
 import { routeGetAllDoc, routeGetDoc } from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
+import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Route } from "../models/RouteModel";
@@ -63,5 +64,13 @@ export async function routeGet(
   return { data } as AxiosResponseData<Route>;
 }
 
-// 8080;
-// 6080;
+export async function routeGetMapMatch(coordinations: number[][]) {
+  const formatCoordinations = coordinations.join(";");
+  const radiuses = coordinations.map(() => 25).join(";");
+
+  const response = await mapboxGet(
+    `/driving/${formatCoordinations}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxGetPublicToken()}`
+  );
+
+  return response.data;
+}
