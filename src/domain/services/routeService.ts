@@ -1,12 +1,14 @@
 import { routeGetAllDoc, routeGetDoc } from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
+import { restPost } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
-import { Route } from "../models/RouteModel";
+import { Route, RouteNode } from "../models/RouteModel";
 
 // export async function routeCreate(params: {
 //   name: string;
+//   slug: string;
 //   description: string;
 //   status: 0;
 // }) {
@@ -71,6 +73,13 @@ export async function routeGetMapMatch(coordinations: number[][]) {
   const response = await mapboxGet(
     `/driving/${formatCoordinations}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxGetPublicToken()}`
   );
+
+  return response.data;
+}
+
+
+export async function routeCreateNode(params: RouteNode) {
+  const response = await restPost("/route-node", params, "RouteCreateNode");
 
   return response.data;
 }
