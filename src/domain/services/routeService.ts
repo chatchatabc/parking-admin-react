@@ -1,10 +1,14 @@
-import { routeGetAllDoc, routeGetDoc } from "../gql-docs/routeDocs";
+import {
+  routeGetAllDoc,
+  routeGetDoc,
+  routeGetNodesDoc,
+} from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
 import { restPost } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
-import { Route, RouteNode } from "../models/RouteModel";
+import { Route, RouteNode, RouteNodeCreate } from "../models/RouteModel";
 
 // export async function routeCreate(params: {
 //   name: string;
@@ -77,8 +81,23 @@ export async function routeGetMapMatch(coordinations: number[][]) {
   return response.data;
 }
 
+export async function routeGetNodes(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    routeGetNodesDoc(),
+    variables,
+    "RouteGetNodes"
+  );
 
-export async function routeCreateNode(params: RouteNode) {
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getRouteNodes;
+
+  return { data } as AxiosResponseData<CommonContent<RouteNode>>;
+}
+
+export async function routeCreateNode(params: RouteNodeCreate) {
   const response = await restPost("/route-node", params, "RouteCreateNode");
 
   return response.data;
