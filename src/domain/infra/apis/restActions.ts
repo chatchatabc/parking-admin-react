@@ -1,5 +1,10 @@
 import { authTokenGet } from "../../services/authService";
-import { axiosGet, axiosPost, axiosPut } from "../axios/axiosActions";
+import {
+  axiosDelete,
+  axiosGet,
+  axiosPost,
+  axiosPut,
+} from "../axios/axiosActions";
 import { AxiosRequestConfig } from "axios";
 
 const baseUrl = "/api";
@@ -52,6 +57,18 @@ export async function restPut(
   const config = restConfig();
 
   const response = await axiosPut(baseUrl + url, values, config, title);
+
+  return response;
+}
+
+export async function restDelete(
+  url: string,
+  values: Record<string, any> = {},
+  title: string = "REST DELETE"
+) {
+  const config = restConfig();
+
+  const response = await axiosDelete(baseUrl + url, values, config, title);
 
   return response;
 }

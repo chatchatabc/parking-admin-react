@@ -2,7 +2,9 @@ export function routeGetDoc() {
   return `
   query GetRoute($keyword: String!) {
     getRoute(id: $keyword) {
+      id
       routeUuid
+      slug
       name
       description
       status
@@ -19,7 +21,9 @@ export function routeGetAllDoc() {
   query GetRoutes($page: Int = 0, $size: Int = 10, $keyword: String = "", $sortField: String = "name", $sortBy: Int = 1) {
     getRoutes(page: $page, size: $size, keyword: $keyword, sortField: $sortField, sortBy: $sortBy) {
       content {
+        id
         routeUuid
+        slug
         name
         description
         status
@@ -56,6 +60,30 @@ export function routeGetNodesDoc() {
         first
         last
         empty
+      }
+    }
+  }
+  `;
+}
+
+export function routeGetNodesAndEdgesDoc() {
+  return `
+  query GetRouteNodesAndEdges($keyword: String!) {
+    getRouteNodesAndEdges(id: $keyword) {
+      nodes {
+        id
+        latitude
+        longitude
+        poi
+        createdAt
+      }
+      edges {
+        id
+        routeId
+        nodeFrom
+        nodeTo
+        distance
+        createdAt
       }
     }
   }

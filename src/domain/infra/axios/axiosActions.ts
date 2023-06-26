@@ -5,6 +5,7 @@ import { AxiosResponse, AxiosResponseErrorItem } from "../../models/AxiosModel";
 function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
     return {
+      ...e,
       data: {
         errors: [
           {
@@ -160,15 +161,14 @@ export async function axiosPut(
 
 export async function axiosDelete(
   url: string,
-  data: Record<string, any>,
+  data: Record<string, any> = {},
+  config: AxiosRequestConfig,
   title: string
 ): Promise<AxiosResponse> {
   let response;
 
-  const config = axiosConfig();
-
   try {
-    response = await axios.delete(`${url}`, config);
+    response = await axios.delete(`${url}`, { ...config, data });
 
     if (response.data.errors && response.data.errors.length === 0) {
       response.data.errors = null;
