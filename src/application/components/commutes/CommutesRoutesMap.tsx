@@ -1,8 +1,9 @@
 import React from "react";
-import { Route, RouteNode } from "../../../domain/models/RouteModel";
+import { Route, RouteEdge, RouteNode } from "../../../domain/models/RouteModel";
 import {
   routeGetAllNodesAndEdges,
   routeGetNodes,
+  routeGetNodesFromEdges,
 } from "../../../domain/services/routeService";
 import { message } from "antd";
 import mapboxgl from "mapbox-gl";
@@ -24,6 +25,7 @@ function CommutesRoutesMap() {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [nodes, setNodes] = React.useState<RouteNode[]>([]);
   const [selectedNodes, setSelectedNodes] = React.useState<RouteNode[]>([]);
+  const [selectedEdges, setSelectedEdges] = React.useState<RouteEdge[]>([]);
   const [routes, setRoutes] = React.useState<Route[]>([]);
 
   const columns: ColumnsType<Route> = [
@@ -40,13 +42,13 @@ function CommutesRoutesMap() {
           <div className="flex space-x-2 text-xs underline">
             <button
               onClick={() => {
-                // const nodesTest = routeGetNodesFromEdges({
-                //   edges: record.edges ?? [],
-                //   nodes: record.nodes ?? [],
-                // });
+                const nodesTest = routeGetNodesFromEdges({
+                  edges: record.edges ?? [],
+                  nodes: record.nodes ?? [],
+                });
 
-                // console.log(nodesTest, record.edges);
-                setSelectedNodes(record.nodes ?? []);
+                setSelectedNodes(nodesTest);
+                setSelectedEdges(record.edges ?? []);
                 setCreate(true);
 
                 form.setFieldsValue({
@@ -74,7 +76,11 @@ function CommutesRoutesMap() {
     values: Record<string, any>,
     successMessage: string
   ): Promise<AxiosResponseData | AxiosResponseError> {
-    let response = await sendData({ ...values, nodes: selectedNodes });
+    let response = await sendData({
+      ...values,
+      nodes: selectedNodes,
+      edges: selectedEdges,
+    });
 
     if (response.errors) {
       response.errors.forEach((error) => {
@@ -131,54 +137,18 @@ function CommutesRoutesMap() {
     }
   }, [loading]);
 
-  // Remove all layers and sources if available
-  React.useEffect(() => {
-    if (map?.current) {
-      nodes.forEach((node) => {
-        const nodeId = `node-${String(node.id)}`;
-        if (map?.current?.getLayer(nodeId)) {
-          map?.current?.removeLayer(nodeId);
-        }
-        if (map?.current?.getSource(nodeId)) {
-          map?.current?.removeSource(nodeId);
-        }
-      });
-
-      routes.forEach((route) => {
-        const routeId = `route-${String(route.routeUuid)}`;
-        if (map?.current?.getLayer(routeId)) {
-          map?.current?.removeLayer(routeId);
-        }
-        if (map?.current?.getSource(routeId)) {
-          map?.current?.removeSource(routeId);
-        }
-      });
-    }
-  }, [create, selectedNodes, routes]);
-
   // Draw routes
   React.useEffect(() => {
     if (map?.current && !create) {
       routes.forEach((route) => {
-        const sortedEdges = route.edges?.sort((a, b) => {
-          if (a.nodeFrom !== b.nodeFrom) {
-            return (a.nodeFrom ?? 0) - (b.nodeFrom ?? 0);
-          } else {
-            return (a.nodeTo ?? 0) - (b.nodeTo ?? 0);
-          }
+        const sortedNodes = routeGetNodesFromEdges({
+          edges: route.edges ?? [],
+          nodes: route.nodes ?? [],
         });
 
-        const coordinates = sortedEdges
-          ?.map((edge) => {
-            const node = nodes.find((node) => node.id === edge.nodeFrom);
-            return [node?.longitude, node?.latitude];
-          })
-          .filter((coordinate) => coordinate[0] !== undefined);
-        coordinates?.push(coordinates[0]);
-
-        // const coordinates = route.nodes?.map((node) => {
-        //   return [node.longitude, node.latitude];
-        // });
+        const coordinates = sortedNodes.map((node) => {
+          return [node.longitude, node.latitude];
+        });
 
         const routeId = `route-${String(route.routeUuid)}`;
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -211,6 +181,20 @@ function CommutesRoutesMap() {
         });
       });
     }
+
+    return () => {
+      if (map?.current) {
+        routes.forEach((route) => {
+          const routeId = `route-${String(route.routeUuid)}`;
+          if (map?.current?.getLayer(routeId)) {
+            map?.current?.removeLayer(routeId);
+          }
+          if (map?.current?.getSource(routeId)) {
+            map?.current?.removeSource(routeId);
+          }
+        });
+      }
+    };
   }, [create, routes]);
 
   // Draw nodes
@@ -271,6 +255,20 @@ function CommutesRoutesMap() {
         });
       });
     }
+
+    return () => {
+      if (map?.current) {
+        nodes.forEach((node) => {
+          const nodeId = `node-${String(node.id)}`;
+          if (map?.current?.getLayer(nodeId)) {
+            map?.current?.removeLayer(nodeId);
+          }
+          if (map?.current?.getSource(nodeId)) {
+            map?.current?.removeSource(nodeId);
+          }
+        });
+      }
+    };
   }, [create, selectedNodes]);
 
   // Draw edges
@@ -283,13 +281,6 @@ function CommutesRoutesMap() {
           const nodeTo = selectedNodes[index + 1].id;
 
           const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
-
-          if (map?.current?.getLayer(edgeId)) {
-            map?.current?.removeLayer(edgeId);
-          }
-          if (map?.current?.getSource(edgeId)) {
-            map?.current?.removeSource(edgeId);
-          }
 
           map.current?.addSource(edgeId, {
             type: "geojson",
@@ -323,6 +314,24 @@ function CommutesRoutesMap() {
         }
       });
     }
+
+    return () => {
+      selectedNodes.forEach((node, index) => {
+        if (index < selectedNodes.length - 1) {
+          const nodeFrom = node.id;
+          const nodeTo = selectedNodes[index + 1].id;
+
+          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
+
+          if (map?.current?.getLayer(edgeId)) {
+            map?.current?.removeLayer(edgeId);
+          }
+          if (map?.current?.getSource(edgeId)) {
+            map?.current?.removeSource(edgeId);
+          }
+        }
+      });
+    };
   }, [create, selectedNodes]);
 
   return (
@@ -371,10 +380,21 @@ function CommutesRoutesMap() {
 
                   <section>
                     <ul>
-                      {selectedNodes.map((node) => {
+                      {selectedNodes.map((node, index) => {
                         return (
                           <li key={node.id}>
-                            <span>{node.id}</span>
+                            <button
+                              onClick={() => {
+                                // Removed element based from index
+                                setSelectedNodes(
+                                  selectedNodes.filter(
+                                    (_, index1) => index1 !== index
+                                  )
+                                );
+                              }}
+                            >
+                              {node.id}
+                            </button>
                           </li>
                         );
                       })}
