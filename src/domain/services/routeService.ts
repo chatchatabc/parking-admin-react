@@ -56,8 +56,8 @@ export async function routeCreateEdgeMany(params: {
 }) {
   const { nodes, routeId } = params;
 
-  let edges: (RouteEdgeCreate | null)[] = nodes.map((node, index) => {
-    if (index === nodes.length - 1) {
+  const edges: (RouteEdgeCreate | null)[] = nodes.map((node, index) => {
+    if (index !== nodes.length - 1) {
       return {
         routeId: routeId,
         nodeFrom: node.id,
@@ -68,7 +68,8 @@ export async function routeCreateEdgeMany(params: {
     return null;
   });
 
-  edges = edges.filter((edge) => edge !== null) as RouteEdgeCreate[];
+  // Removed last item
+  edges.pop();
 
   const response = await restPost(
     "/route-edge/many",
