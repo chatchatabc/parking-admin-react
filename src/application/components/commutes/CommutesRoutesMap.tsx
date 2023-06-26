@@ -11,16 +11,47 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import type { MapboxDrawOptions } from "mapbox__mapbox-gl-draw";
 import RoutesTable from "../tables/RoutesTable";
 import MyButton from "../common/MyButton";
+import RouteCreateForm from "../forms/RouteCreateForm";
+import { useForm } from "antd/es/form/Form";
+import {
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../../../domain/models/AxiosModel";
 
 function CommutesRoutesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
   const draw = React.useRef<Record<string, any> | null>(null);
 
+  const [form] = useForm();
   const [create, setCreate] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [nodes, setNodes] = React.useState<RouteNode[]>([]);
+  const [selectedNodes, setSelectedNodes] = React.useState<RouteNode[]>([]);
   const [routes, setRoutes] = React.useState<Route[]>([]);
 
+  async function handleSubmit(
+    sendData: (
+      values: Record<string, any>
+    ) => Promise<AxiosResponseData | AxiosResponseError>,
+    values: Record<string, any>,
+    successMessage: string
+  ): Promise<AxiosResponseData | AxiosResponseError> {
+    const response = await sendData({ ...values, nodes: selectedNodes });
+
+    if (response.errors) {
+      response.errors.forEach((error) => {
+        message.error(error.message);
+      });
+    } else {
+      message.success(successMessage);
+      setCreate(false);
+      setLoading(true);
+    }
+
+    return response;
+  }
+
+  // Initialize Data
   React.useEffect(() => {
     if (loading) {
       (async () => {
@@ -70,8 +101,30 @@ function CommutesRoutesMap() {
     }
   }, [loading]);
 
+  // Clean map
   React.useEffect(() => {
-    if (map?.current && draw?.current) {
+    if (map?.current) {
+      routes.forEach((route) => {
+        const routeId = `route-${String(route.routeUuid)}`;
+        if (map.current?.getSource(routeId)) {
+          map.current.removeLayer(routeId);
+          map.current.removeSource(routeId);
+        }
+      });
+
+      nodes.forEach((node) => {
+        const nodeId = `node-${String(node.id)}`;
+        if (map.current?.getSource(nodeId)) {
+          map.current.removeLayer(nodeId);
+          map.current.removeSource(nodeId);
+        }
+      });
+    }
+  }, [create, loading]);
+
+  // Draw routes
+  React.useEffect(() => {
+    if (map?.current && draw?.current && !create) {
       routes.forEach((route) => {
         const sortedEdges = route.edges?.sort((a, b) => {
           if (a.nodeFrom !== b.nodeFrom) {
@@ -129,7 +182,7 @@ function CommutesRoutesMap() {
         });
       });
     }
-  }, [routes]);
+  }, [create, routes]);
 
   return (
     <div className="flex items-stretch">
@@ -139,6 +192,7 @@ function CommutesRoutesMap() {
             <h2 className="text-lg font-bold">{create ? "Form" : "List"}</h2>
             {create ? (
               <MyButton
+                style={{ backgroundColor: "#ff4d4f", borderColor: "#ff4d4f" }}
                 onClick={() => {
                   setCreate(!create);
                 }}
@@ -155,9 +209,41 @@ function CommutesRoutesMap() {
               </MyButton>
             )}
           </header>
-          <section className="mt-2 border rounded-lg">
+          <section className="mt-2 border rounded-lg  overflow-hidden">
             {create ? (
-              <div>Form</div>
+              <div className="bg-white p-2">
+                <section>
+                  <RouteCreateForm
+                    title="Route Create Form"
+                    loading={loading}
+                    formRef={form}
+                    handleSubmit={handleSubmit}
+                  />
+                </section>
+
+                <section className="text-black">
+                  <header>
+                    <h3 className="text-lg">Nodes</h3>
+                  </header>
+
+                  <section>
+                    <ul>
+                      {selectedNodes.map((node) => {
+                        return (
+                          <li>
+                            <span>{node.id}</span>
+                          </li>
+                        );
+                      })}
+                      {selectedNodes.length === 0 && (
+                        <li>
+                          <span>No nodes selected</span>
+                        </li>
+                      )}
+                    </ul>
+                  </section>
+                </section>
+              </div>
             ) : (
               <div>
                 <RoutesTable data={routes} />
