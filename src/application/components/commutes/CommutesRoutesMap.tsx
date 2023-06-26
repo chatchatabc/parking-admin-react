@@ -5,10 +5,8 @@ import {
   routeGetNodes,
 } from "../../../domain/services/routeService";
 import { Pagination, message } from "antd";
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import type { MapboxDrawOptions } from "mapbox__mapbox-gl-draw";
 import RoutesTable from "../tables/RoutesTable";
 import MyButton from "../common/MyButton";
 import RouteCreateForm from "../forms/RouteCreateForm";
@@ -20,7 +18,6 @@ import {
 
 function CommutesRoutesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
-  const draw = React.useRef<Record<string, any> | null>(null);
 
   const [form] = useForm();
   const [create, setCreate] = React.useState<boolean>(false);
@@ -51,7 +48,7 @@ function CommutesRoutesMap() {
     return response;
   }
 
-  // Initialize Data
+  // Initialize Data and Map
   React.useEffect(() => {
     if (loading) {
       (async () => {
@@ -82,13 +79,6 @@ function CommutesRoutesMap() {
       })();
     }
 
-    if (!draw?.current) {
-      const drawOptions: MapboxDrawOptions = {
-        displayControlsDefault: false,
-      };
-      draw.current = new MapboxDraw(drawOptions);
-    }
-
     if (!map?.current) {
       map.current = new mapboxgl.Map({
         container: "commutesRoutesMap",
@@ -97,34 +87,37 @@ function CommutesRoutesMap() {
         zoom: 13, // starting zoom
         useWebGL2: true,
       });
-      map.current?.addControl(draw.current);
     }
   }, [loading]);
 
-  // Clean map
+  // Remove all layers and sources if available
   React.useEffect(() => {
     if (map?.current) {
-      routes.forEach((route) => {
-        const routeId = `route-${String(route.routeUuid)}`;
-        if (map.current?.getSource(routeId)) {
-          map.current.removeLayer(routeId);
-          map.current.removeSource(routeId);
+      nodes.forEach((node) => {
+        const nodeId = `node-${String(node.id)}`;
+        if (map?.current?.getLayer(nodeId)) {
+          map?.current?.removeLayer(nodeId);
+        }
+        if (map?.current?.getSource(nodeId)) {
+          map?.current?.removeSource(nodeId);
         }
       });
 
-      nodes.forEach((node) => {
-        const nodeId = `node-${String(node.id)}`;
-        if (map.current?.getSource(nodeId)) {
-          map.current.removeLayer(nodeId);
-          map.current.removeSource(nodeId);
+      routes.forEach((route) => {
+        const routeId = `route-${String(route.routeUuid)}`;
+        if (map?.current?.getLayer(routeId)) {
+          map?.current?.removeLayer(routeId);
+        }
+        if (map?.current?.getSource(routeId)) {
+          map?.current?.removeSource(routeId);
         }
       });
     }
-  }, [create, loading]);
+  }, [create, selectedNodes, routes]);
 
   // Draw routes
   React.useEffect(() => {
-    if (map?.current && draw?.current && !create) {
+    if (map?.current && !create) {
       routes.forEach((route) => {
         const sortedEdges = route.edges?.sort((a, b) => {
           if (a.nodeFrom !== b.nodeFrom) {
@@ -148,11 +141,6 @@ function CommutesRoutesMap() {
 
         const routeId = `route-${String(route.routeUuid)}`;
         const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-
-        if (map.current?.getSource(routeId)) {
-          map.current.removeLayer(routeId);
-          map.current.removeSource(routeId);
-        }
 
         // Add name to the line
         map.current?.addSource(routeId, {
@@ -183,6 +171,118 @@ function CommutesRoutesMap() {
       });
     }
   }, [create, routes]);
+
+  // Draw nodes
+  React.useEffect(() => {
+    if (map?.current && create) {
+      console.log("Drawing nodes", nodes);
+      nodes.forEach((node) => {
+        const nodeId = `node-${String(node.id)}`;
+
+        map.current?.addSource(nodeId, {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [node.longitude, node.latitude],
+            },
+            properties: {
+              title: node.poi ?? nodeId,
+            },
+          },
+        });
+
+        map.current?.addLayer({
+          id: nodeId,
+          type: "circle",
+          source: nodeId,
+          paint: {
+            "circle-radius": 4,
+            "circle-color": selectedNodes.some(
+              (selectedNode) => selectedNode.id === node.id
+            )
+              ? "#007cbf"
+              : "#ff0000",
+          },
+        });
+
+        map.current?.on("click", nodeId, (e: any) => {
+          setSelectedNodes([...selectedNodes, node]);
+        });
+
+        map.current?.on("mouseenter", nodeId, (e: any) => {
+          const canvas = map.current?.getCanvas() as HTMLCanvasElement;
+          canvas.style.cursor = "pointer";
+          // const coordinates = e.features[0].geometry.coordinates.slice();
+          // const { description, title } = e.features[0].properties;
+
+          // enlarge the node
+          map.current?.setPaintProperty(nodeId, "circle-radius", 6);
+        });
+
+        map.current?.on("mouseleave", nodeId, () => {
+          const canvas = map.current?.getCanvas() as HTMLCanvasElement;
+          canvas.style.cursor = "";
+
+          // reset the node
+          map.current?.setPaintProperty(nodeId, "circle-radius", 4);
+        });
+      });
+    }
+  }, [create, selectedNodes]);
+
+  // Draw edges
+  React.useEffect(() => {
+    if (map?.current && create) {
+      console.log("Drawing edges", selectedNodes);
+      selectedNodes.forEach((node, index) => {
+        if (index < selectedNodes.length - 1) {
+          const nodeFrom = node.id;
+          const nodeTo = selectedNodes[index + 1].id;
+
+          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
+
+          if (map?.current?.getLayer(edgeId)) {
+            map?.current?.removeLayer(edgeId);
+          }
+          if (map?.current?.getSource(edgeId)) {
+            map?.current?.removeSource(edgeId);
+          }
+
+          map.current?.addSource(edgeId, {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              geometry: {
+                type: "LineString",
+                coordinates: [
+                  [node.longitude, node.latitude],
+                  [
+                    selectedNodes[index + 1].longitude,
+                    selectedNodes[index + 1].latitude,
+                  ],
+                ],
+              },
+            },
+          });
+
+          map.current?.addLayer({
+            id: edgeId,
+            type: "line",
+            source: edgeId,
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-width": 8,
+            },
+          });
+        }
+      });
+    }
+  }, [create, selectedNodes]);
 
   return (
     <div className="flex items-stretch">
@@ -230,7 +330,7 @@ function CommutesRoutesMap() {
                     <ul>
                       {selectedNodes.map((node) => {
                         return (
-                          <li>
+                          <li key={node.id}>
                             <span>{node.id}</span>
                           </li>
                         );
