@@ -1,11 +1,6 @@
 import { Tabs } from "antd";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  multiTabsStateAdd,
-  multiTabsStateRemove,
-  multiTabsStateSetActiveKey,
-} from "../redux/slices/multiTabsState";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { globalStateUpdate } from "../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../domain/utils/commonUtils";
@@ -14,8 +9,14 @@ function MultiTabs() {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const multiTabsState = useSelector((state: any) => state.multiTabsState);
-  const items = multiTabsState.items;
+
+  const [items, setItems] = React.useState([
+    {
+      key: "/",
+      label: "Home",
+    },
+  ]);
+  const [activeKey, setActiveKey] = React.useState("/");
 
   React.useEffect(() => {
     const path = location.pathname;
@@ -26,14 +27,10 @@ function MultiTabs() {
     }
 
     if (items.find((item: any) => item.key === path)) {
-      dispatch(multiTabsStateSetActiveKey({ key: path }));
+      setActiveKey(path);
     } else {
-      dispatch(
-        multiTabsStateAdd({
-          key: path,
-          label: pathName,
-        })
-      );
+      setItems([...items, { key: path, label: pathName }]);
+      setActiveKey(path);
     }
 
     dispatch(
@@ -47,7 +44,7 @@ function MultiTabs() {
     <Tabs
       className="bg-bg3 -mb-4 text-t1"
       size="small"
-      activeKey={multiTabsState.activeKey}
+      activeKey={activeKey}
       type="editable-card"
       onChange={(key: string) => {
         navigate(key);
@@ -59,8 +56,8 @@ function MultiTabs() {
       ) => {
         if (items.length > 1) {
           // If there are more than one tab
-          dispatch(multiTabsStateRemove({ key: targetKey }));
-          if (targetKey === multiTabsState.activeKey) {
+          setItems(items.filter((item: any) => item.key !== targetKey));
+          if (targetKey === activeKey) {
             // If the tab to be closed is the active tab
             const newItems = items.filter(
               (item: any) => item.key !== targetKey
@@ -72,7 +69,12 @@ function MultiTabs() {
           }
         } else if (items[0].key !== "/") {
           // If the last tab is not the home page
-          dispatch(multiTabsStateRemove({ key: targetKey }));
+          setItems([
+            {
+              key: "/",
+              label: "Home",
+            },
+          ]);
           navigate("/");
         }
       }}
