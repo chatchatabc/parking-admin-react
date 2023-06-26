@@ -13,16 +13,18 @@ import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
 type Props = {
+  dataProp?: Record<string, any>[];
   showPagination?: boolean;
   localPagination?: boolean;
   title: string;
   columns: ColumnsType<Record<string, any>>;
-  getData: (
+  getData?: (
     variables: CommonVariables
   ) => Promise<AxiosResponseData<CommonContent<any>> | AxiosResponseError>;
 };
 
 function DynamicTable({
+  dataProp,
   title,
   getData,
   columns,
@@ -44,7 +46,7 @@ function DynamicTable({
   const [pagination, setPagination] = React.useState({
     current: Number(current),
     pageSize: Number(pageSize),
-    total: 0,
+    total: dataProp?.length ?? 0,
   });
 
   function handleNavigation(page: number, pageSize: number) {
@@ -71,35 +73,35 @@ function DynamicTable({
   }, [globalState.reset]);
 
   React.useEffect(() => {
-    async function fetchData() {
-      const response = await getData({
-        page: pagination.current - 1,
-        size: pagination.pageSize,
-        keyword: keyword,
-      });
-
-      if (response.errors) {
-        message.error("Failed to fetch table data.");
-      } else {
-        const processedData = response.data.content.map(
-          (item: any, index: number) => ({
-            ...item,
-            key: `${title}-${index}`,
-          })
-        );
-
-        setData(processedData);
-        setPagination((prev) => ({
-          ...prev,
-          total: response.data.pageInfo.totalElements,
-        }));
-      }
-
-      setLoading(false);
-    }
-
     if (loading) {
-      fetchData();
+      (async () => {
+        if (getData) {
+          const response = await getData({
+            page: pagination.current - 1,
+            size: pagination.pageSize,
+            keyword: keyword,
+          });
+
+          if (response.errors) {
+            message.error("Failed to fetch table data.");
+          } else {
+            const processedData = response.data.content.map(
+              (item: any, index: number) => ({
+                ...item,
+                key: `${title}-${index}`,
+              })
+            );
+
+            setData(processedData);
+            setPagination((prev) => ({
+              ...prev,
+              total: response.data.pageInfo.totalElements,
+            }));
+          }
+        }
+
+        setLoading(false);
+      })();
     }
   }, [loading]);
 
@@ -107,7 +109,7 @@ function DynamicTable({
     <Table
       loading={loading}
       columns={columns}
-      dataSource={data}
+      dataSource={dataProp ?? data}
       pagination={
         showPagination ? { ...pagination, onChange: handleNavigation } : false
       }
