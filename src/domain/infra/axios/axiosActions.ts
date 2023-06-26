@@ -5,6 +5,7 @@ import { AxiosResponse, AxiosResponseErrorItem } from "../../models/AxiosModel";
 function axiosHandleError(e: any): AxiosResponse {
   if (!e.response) {
     return {
+      ...e,
       data: {
         errors: [
           {
