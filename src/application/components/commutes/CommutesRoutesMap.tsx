@@ -4,10 +4,9 @@ import {
   routeGetAllNodesAndEdges,
   routeGetNodes,
 } from "../../../domain/services/routeService";
-import { Pagination, message } from "antd";
+import { message } from "antd";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import RoutesTable from "../tables/RoutesTable";
 import MyButton from "../common/MyButton";
 import RouteCreateForm from "../forms/RouteCreateForm";
 import { useForm } from "antd/es/form/Form";
@@ -15,6 +14,7 @@ import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
+import Table, { ColumnsType } from "antd/es/table";
 
 function CommutesRoutesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
@@ -26,6 +26,47 @@ function CommutesRoutesMap() {
   const [selectedNodes, setSelectedNodes] = React.useState<RouteNode[]>([]);
   const [routes, setRoutes] = React.useState<Route[]>([]);
 
+  const columns: ColumnsType<Route> = [
+    {
+      title: "Name",
+      key: "name",
+      dataIndex: "name",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (record: Route) => {
+        return (
+          <div className="flex space-x-2 text-xs underline">
+            <button
+              onClick={() => {
+                // const nodesTest = routeGetNodesFromEdges({
+                //   edges: record.edges ?? [],
+                //   nodes: record.nodes ?? [],
+                // });
+
+                // console.log(nodesTest, record.edges);
+                setSelectedNodes(record.nodes ?? []);
+                setCreate(true);
+
+                form.setFieldsValue({
+                  routeUuid: record.routeUuid,
+                  routeId: record.id,
+                  name: record.name,
+                  slug: record.slug,
+                  status: record.status,
+                  description: record.description,
+                });
+              }}
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
+    },
+  ];
+
   async function handleSubmit(
     sendData: (
       values: Record<string, any>
@@ -33,7 +74,7 @@ function CommutesRoutesMap() {
     values: Record<string, any>,
     successMessage: string
   ): Promise<AxiosResponseData | AxiosResponseError> {
-    const response = await sendData({ ...values, nodes: selectedNodes });
+    let response = await sendData({ ...values, nodes: selectedNodes });
 
     if (response.errors) {
       response.errors.forEach((error) => {
@@ -303,6 +344,8 @@ function CommutesRoutesMap() {
               <MyButton
                 onClick={() => {
                   setCreate(!create);
+                  setSelectedNodes([]);
+                  form.resetFields();
                 }}
               >
                 Create Route +
@@ -346,10 +389,12 @@ function CommutesRoutesMap() {
               </div>
             ) : (
               <div>
-                <RoutesTable data={routes} />
-                <div className="myTable my-2 flex justify-end">
-                  <Pagination pageSize={10} current={1} total={10} />
-                </div>
+                <Table
+                  loading={loading}
+                  className="myTable"
+                  dataSource={routes}
+                  columns={columns}
+                />
               </div>
             )}
           </section>

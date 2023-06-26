@@ -35,6 +35,47 @@ export async function routeCreateWithNodes(params: Record<string, any>) {
   return responseRoute as AxiosResponseData<Route>;
 }
 
+export async function routeUpdateWithNodes(params: Record<string, any>) {
+  const { nodes, name, description, slug, status, routeId, routeUuid } = params;
+  const responseRoute = await routeUpdate({
+    routeUuid,
+    name,
+    description,
+    slug,
+    status,
+  });
+
+  if (responseRoute.errors) {
+    return responseRoute as AxiosResponseError;
+  }
+
+  const responseEdges = await routeUpdateEdgeMany({ nodes, routeId });
+
+  if (responseEdges.errors) {
+    return responseEdges as AxiosResponseError;
+  }
+
+  return responseRoute as AxiosResponseData<Route>;
+}
+
+export async function routeUpdate(params: {
+  routeUuid: number;
+  name: string;
+  description: string;
+  slug: string;
+  status: number;
+}) {
+  const { routeUuid, ...rest } = params;
+
+  const response = await restPut(`/route/${routeUuid}`, rest, "RouteUpdate");
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData<Route>;
+}
+
 export async function routeCreate(params: {
   name: string;
   description: string;
@@ -50,6 +91,38 @@ export async function routeCreate(params: {
   return response.data as AxiosResponseData<Route>;
 }
 
+export async function routeUpdateEdgeMany(params: {
+  nodes: RouteNode[];
+  routeId: number;
+}) {
+  const { nodes, routeId } = params;
+
+  const edges: (RouteEdge | null)[] = nodes.map((node, index) => {
+    return {
+      routeId: routeId,
+      nodeFrom: node.id,
+      nodeTo: nodes[index + 1]?.id,
+    };
+  });
+
+  // Removed last item
+  edges.pop();
+
+  const response = await restPut(
+    "/route-edge/many",
+    {
+      edges,
+    },
+    "RouteUpdateEdgeMany"
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData;
+}
+
 export async function routeCreateEdgeMany(params: {
   nodes: RouteNode[];
   routeId: number;
@@ -57,14 +130,13 @@ export async function routeCreateEdgeMany(params: {
   const { nodes, routeId } = params;
 
   const edges: (RouteEdgeCreate | null)[] = nodes.map((node, index) => {
-    if (index !== nodes.length - 1) {
+    if (index < nodes.length - 1) {
       return {
         routeId: routeId,
         nodeFrom: node.id,
         nodeTo: nodes[index + 1]?.id,
       };
     }
-
     return null;
   });
 
@@ -272,4 +344,43 @@ export function routeGetStatusOptions() {
       label: "Draft",
     },
   ];
+}
+
+export function routeGetSortedEdgeMany(edges: RouteEdge[]) {
+  const firstEdge =
+    edges.find(
+      (edge) => !edges.some((edge1) => edge1.nodeTo === edge.nodeFrom)
+    ) ?? edges[0];
+  let toEdge = firstEdge?.nodeTo ?? 0;
+
+  const sortedEdges = [firstEdge];
+
+  while (sortedEdges.length < edges.length) {
+    const nextEdge = edges.find((edge) => edge.nodeFrom === toEdge);
+    if (nextEdge) {
+      sortedEdges.push(nextEdge);
+      toEdge = nextEdge.nodeTo ?? 0;
+    }
+  }
+}
+
+export function routeGetNodesFromEdges(params: {
+  edges: RouteEdge[];
+  nodes: RouteNode[];
+}) {
+  const { edges, nodes } = params;
+
+  let sortedNodes = edges.map((edge) => {
+    const node = nodes.find((node) => node.id === edge.nodeFrom);
+    return node;
+  });
+  sortedNodes.push(
+    nodes.find((node) => node.id === edges[edges.length - 1].nodeTo)
+  );
+
+  sortedNodes = sortedNodes.filter((node) => {
+    return node !== undefined;
+  });
+
+  return sortedNodes as RouteNode[];
 }

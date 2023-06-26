@@ -6,6 +6,7 @@ import {
 import {
   routeCreateWithNodes,
   routeGetStatusOptions,
+  routeUpdateWithNodes,
 } from "../../../domain/services/routeService";
 import MyButton from "../common/MyButton";
 
@@ -27,12 +28,18 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
     <Form
       name={title}
       onFinish={(e) => {
-        handleSubmit(routeCreateWithNodes, e, "Route created successfully");
+        if (e.routeUuid) {
+          handleSubmit(routeUpdateWithNodes, e, "Route updated successfully");
+        } else {
+          handleSubmit(routeCreateWithNodes, e, "Route created successfully");
+        }
       }}
       layout="vertical"
       form={formRef}
     >
       <div className="flex flex-wrap [&>*]:px-2">
+        <Form.Item name="routeUuid" hidden></Form.Item>
+        <Form.Item name="routeId" hidden></Form.Item>
         <Form.Item
           className="w-full"
           name="name"
