@@ -41,7 +41,7 @@ export async function routeCreate(params: {
   slug: string;
   status: number;
 }) {
-  const response = await restPost("/route/create", params, "RouteCreate");
+  const response = await restPost("/route", params, "RouteCreate");
 
   if (response.data.errors) {
     return response.data as AxiosResponseError;
@@ -56,7 +56,7 @@ export async function routeCreateEdgeMany(params: {
 }) {
   const { nodes, routeId } = params;
 
-  const edges: (RouteEdgeCreate | null)[] = nodes.map((node, index) => {
+  let edges: (RouteEdgeCreate | null)[] = nodes.map((node, index) => {
     if (index === nodes.length - 1) {
       return {
         routeId: routeId,
@@ -67,6 +67,8 @@ export async function routeCreateEdgeMany(params: {
 
     return null;
   });
+
+  edges = edges.filter((edge) => edge !== null) as RouteEdgeCreate[];
 
   const response = await restPost(
     "/route-edge/many",
