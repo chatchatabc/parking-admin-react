@@ -16,16 +16,15 @@ import {
   RouteNodeCreate,
 } from "../models/RouteModel";
 
-// export async function routeCreate(params: {
-//   name: string;
-//   slug: string;
-//   description: string;
-//   status: 0;
-// }) {
-//   const response = await restPost("/route/create", params, "RouteCreate");
+export async function routeCreate(params: Record<string, any>) {
+  const response = await restPost("/route/create", params, "RouteCreate");
 
-//   return response.data as AxiosResponseData;
-// }
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData;
+}
 
 export async function routeGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(routeGetAllDoc(), variables, "RouteGetAll");
