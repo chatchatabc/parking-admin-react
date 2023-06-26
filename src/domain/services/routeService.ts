@@ -253,3 +253,20 @@ export async function routeGetAllNodesAndEdges(variables: CommonVariables) {
     },
   } as AxiosResponseData<CommonContent<Route>>;
 }
+
+export function routeGetStatusOptions() {
+  return [
+    {
+      value: -1,
+      label: "Inactive",
+    },
+    {
+      value: 1,
+      label: "Active",
+    },
+    {
+      value: 0,
+      label: "Draft",
+    },
+  ];
+}

@@ -3,7 +3,10 @@ import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
-import { routeCreateWithNodes } from "../../../domain/services/routeService";
+import {
+  routeCreateWithNodes,
+  routeGetStatusOptions,
+} from "../../../domain/services/routeService";
 import MyButton from "../common/MyButton";
 
 type Props = {
@@ -69,7 +72,7 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
             },
           ]}
         >
-          <Select placeholder="Status" />
+          <Select options={routeGetStatusOptions()} placeholder="Status" />
         </Form.Item>
 
         <Form.Item
