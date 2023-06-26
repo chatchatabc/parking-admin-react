@@ -14,6 +14,12 @@ export type Route = {
   edges?: RouteEdge[];
 };
 
+export type RouteEdgeCreate = {
+  routeId: number;
+  nodeFrom: number;
+  nodeTo: number;
+};
+
 export type RouteEdge = {
   id?: number;
   routeId?: number;

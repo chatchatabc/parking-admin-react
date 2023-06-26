@@ -12,12 +12,69 @@ import { CommonContent, CommonVariables } from "../models/CommonModel";
 import {
   Route,
   RouteEdge,
+  RouteEdgeCreate,
   RouteNode,
   RouteNodeCreate,
 } from "../models/RouteModel";
 
-export async function routeCreate(params: Record<string, any>) {
+export async function routeCreateWithNodes(params: Record<string, any>) {
+  const { nodes, name, description, slug, status } = params;
+  const responseRoute = await routeCreate({ name, description, slug, status });
+
+  if (responseRoute.errors) {
+    return responseRoute as AxiosResponseError;
+  }
+
+  const routeId = responseRoute.data.id ?? 0;
+  const responseEdges = await routeCreateEdgeMany({ nodes, routeId });
+
+  if (responseEdges.errors) {
+    return responseEdges as AxiosResponseError;
+  }
+
+  return responseRoute as AxiosResponseData<Route>;
+}
+
+export async function routeCreate(params: {
+  name: string;
+  description: string;
+  slug: string;
+  status: number;
+}) {
   const response = await restPost("/route/create", params, "RouteCreate");
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData<Route>;
+}
+
+export async function routeCreateEdgeMany(params: {
+  nodes: RouteNode[];
+  routeId: number;
+}) {
+  const { nodes, routeId } = params;
+
+  const edges: (RouteEdgeCreate | null)[] = nodes.map((node, index) => {
+    if (index === nodes.length - 1) {
+      return {
+        routeId: routeId,
+        nodeFrom: node.id,
+        nodeTo: nodes[index + 1]?.id,
+      };
+    }
+
+    return null;
+  });
+
+  const response = await restPost(
+    "/route-edge/many",
+    {
+      edges,
+    },
+    "RouteCreateEdgeMany"
+  );
 
   if (response.data.errors) {
     return response.data as AxiosResponseError;
