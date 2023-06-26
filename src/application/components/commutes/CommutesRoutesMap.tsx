@@ -4,16 +4,19 @@ import {
   routeGetAllNodesAndEdges,
   routeGetNodes,
 } from "../../../domain/services/routeService";
-import { message } from "antd";
+import { Pagination, message } from "antd";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { MapboxDrawOptions } from "mapbox__mapbox-gl-draw";
+import RoutesTable from "../tables/RoutesTable";
+import MyButton from "../common/MyButton";
 
 function CommutesRoutesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
   const draw = React.useRef<Record<string, any> | null>(null);
 
+  const [create, setCreate] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [nodes, setNodes] = React.useState<RouteNode[]>([]);
   const [routes, setRoutes] = React.useState<Route[]>([]);
@@ -129,8 +132,49 @@ function CommutesRoutesMap() {
   }, [routes]);
 
   return (
-    <div>
-      <div className="w-full h-[600px]" id="commutesRoutesMap"></div>
+    <div className="flex items-stretch">
+      <div className="w-1/3 flex">
+        <div className="border-2 p-2 rounded-lg w-full">
+          <header className="flex justify-between">
+            <h2 className="text-lg font-bold">{create ? "Form" : "List"}</h2>
+            {create ? (
+              <MyButton
+                onClick={() => {
+                  setCreate(!create);
+                }}
+              >
+                Cancel
+              </MyButton>
+            ) : (
+              <MyButton
+                onClick={() => {
+                  setCreate(!create);
+                }}
+              >
+                Create Route +
+              </MyButton>
+            )}
+          </header>
+          <section className="mt-2 border rounded-lg">
+            {create ? (
+              <div>Form</div>
+            ) : (
+              <div>
+                <RoutesTable data={routes} />
+                <div className="myTable my-2 flex justify-end">
+                  <Pagination pageSize={10} current={1} total={10} />
+                </div>
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
+      <div className="w-2/3 h-[600px] px-4">
+        <div
+          className="w-full h-full rounded-lg overflow-hidden"
+          id="commutesRoutesMap"
+        ></div>
+      </div>
     </div>
   );
 }
