@@ -7,7 +7,7 @@ import {
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
-import { AxiosResponseData } from "../models/AxiosModel";
+import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
 
@@ -15,7 +15,7 @@ export async function userGet(variables: { keyword: string }) {
   const query = await graphqlQuery(userGetDoc(), variables, "UserGet");
 
   if (query.data.errors) {
-    return query.data;
+    return query.data as AxiosResponseError;
   }
 
   const data = query.data.data.getUser;

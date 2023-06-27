@@ -1,4 +1,3 @@
-import React from "react";
 import CommutesRoutesMap from "../../components/commutes/CommutesRoutesMap";
 
 function CommutesRoutesPage() {

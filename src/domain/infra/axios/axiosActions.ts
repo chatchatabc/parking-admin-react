@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { authTokenGet } from "../../services/authService";
 import { AxiosResponse, AxiosResponseErrorItem } from "../../models/AxiosModel";
 
 function axiosHandleError(e: any): AxiosResponse {
@@ -64,19 +63,6 @@ function axiosDebug(params: {
       params
     );
   }
-}
-
-function axiosConfig() {
-  const token = authTokenGet();
-
-  const config: AxiosRequestConfig = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  return config;
 }
 
 export async function axiosGet(
