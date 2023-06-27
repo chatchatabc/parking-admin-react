@@ -19,10 +19,10 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       title: "Vehicle Type",
       key: "type",
       render: (record: Vehicle) => {
-        if (record.type === 1) {
-          return <p>Motorcycle</p>;
+        if (record.type) {
+          return <span>{record.type?.name}</span>;
         }
-        return <p>Car</p>;
+        return <span>Unknown</span>;
       },
     },
     {

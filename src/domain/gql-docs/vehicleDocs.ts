@@ -23,6 +23,20 @@ export function vehicleGetAllDoc() {
   `;
 }
 
+export function vehicleGetTypeDoc() {
+  return `
+  query GetVehicleType($keyword: String) {
+    getVehicleType(id: $keyword) {
+      typeUuid
+      name
+      status
+      createdAt
+      updatedAt
+    }
+  }
+  `;
+}
+
 export function vehicleGetAllByUserUuidDoc() {
   return `
   query GetAllVehiclesByUserUuid($page: Int, $size: Int, $userUuid: String!) {

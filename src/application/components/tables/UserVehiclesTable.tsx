@@ -14,11 +14,6 @@ function UserVehiclesTable({
   localPagination,
   userUuid,
 }: Props) {
-  const carTypes: Record<number, string> = {
-    0: "Motorcycle",
-    1: "Car",
-  };
-
   const columns: ColumnsType<Vehicle> = [
     {
       width: "50%",
@@ -31,7 +26,10 @@ function UserVehiclesTable({
       title: "Car Type",
       key: "car type",
       render: (record: Vehicle) => {
-        return <p>{carTypes[record.type ?? 1]}</p>;
+        if (record.type) {
+          return <span>{record.type?.name}</span>;
+        }
+        return <span>Unknown</span>;
       },
     },
   ];

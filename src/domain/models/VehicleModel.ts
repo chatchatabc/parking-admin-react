@@ -6,4 +6,15 @@ export type Vehicle = {
   updatedAt?: string | null;
 
   typeUuid?: string | null;
+
+  type?: VehicleType | null;
+};
+
+export type VehicleType = {
+  typeUuid?: string | null;
+  name?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+
+  status?: number | null;
 };
