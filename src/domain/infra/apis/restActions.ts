@@ -72,3 +72,21 @@ export async function restDelete(
 
   return response;
 }
+
+export async function restPostMultiPart(
+  url: string,
+  values: Record<string, any>,
+  title: string = "REST POST MULTI PART"
+) {
+  const config = restConfig();
+  config.headers!["Content-Type"] = "multipart/form-data";
+
+  const formData = new FormData();
+  Object.keys(values).forEach((key) => {
+    formData.append(key, values[key]);
+  });
+
+  const response = await axiosPost(baseUrl + url, formData, config, title);
+
+  return response;
+}
