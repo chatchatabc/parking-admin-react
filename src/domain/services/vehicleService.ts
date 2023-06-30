@@ -8,6 +8,7 @@ import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
 import { Vehicle } from "../models/VehicleModel";
+import { userGetByVehicle } from "./userService";
 
 export async function vehicleGetAll(params: CommonVariables) {
   const query = await graphqlQuery(vehicleGetAllDoc(), params);
@@ -36,6 +37,15 @@ export async function vehicleGetAllWithOwner(params: CommonVariables) {
       owner: {},
     };
 
+    const queryOwner = await userGetByVehicle({
+      id: vehicle.vehicleUuid ?? "",
+    });
+
+    if (queryOwner.data.errors) {
+      return newVehicle;
+    }
+
+    newVehicle.owner = queryOwner.data;
     return newVehicle;
   });
 
