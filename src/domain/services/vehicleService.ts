@@ -1,6 +1,7 @@
 import {
   vehicleGetAllByUserUuidDoc,
   vehicleGetAllDoc,
+  vehicleGetTypeDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost } from "../infra/apis/restActions";
@@ -10,8 +11,12 @@ import { User } from "../models/UserModel";
 import { Vehicle } from "../models/VehicleModel";
 import { userGetByVehicle } from "./userService";
 
-export async function vehicleGetAll(params: CommonVariables) {
-  const query = await graphqlQuery(vehicleGetAllDoc(), params);
+export async function vehicleGetAll(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    vehicleGetAllDoc(),
+    variables,
+    "VehicleGetAll"
+  );
 
   if (query.data.errors) {
     return query.data as AxiosResponseError;
@@ -20,6 +25,46 @@ export async function vehicleGetAll(params: CommonVariables) {
   const data = query.data.data.getVehicles;
 
   return { data } as AxiosResponseData<CommonContent<Vehicle>>;
+}
+
+export async function vehicleGetAllWithTypes(variables: CommonVariables) {
+  const vehicles = await vehicleGetAll(variables);
+
+  if (vehicles.errors) {
+    return vehicles;
+  }
+
+  const contentPromise = vehicles.data.content.map(async (vehicle) => {
+    const type = await vehicleGetType({ keyword: vehicle.typeUuid ?? "" });
+
+    if (!type.errors) {
+      vehicle.type = type.data;
+    }
+
+    return vehicle;
+  });
+
+  const content = await Promise.all(contentPromise);
+
+  return { data: { ...vehicles.data, content } } as AxiosResponseData<
+    CommonContent<Vehicle>
+  >;
+}
+
+export async function vehicleGetType(variables: { keyword: string }) {
+  const query = await graphqlQuery(
+    vehicleGetTypeDoc(),
+    variables,
+    "VehicleType"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleType;
+
+  return { data } as AxiosResponseData<VehicleType>;
 }
 
 export async function vehicleGetAllWithOwner(params: CommonVariables) {

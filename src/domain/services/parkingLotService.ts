@@ -1,3 +1,4 @@
+import { UploadFile } from "antd";
 import {
   parkingLotGetAllDoc,
   parkingLotGetByUserDoc,
@@ -5,7 +6,11 @@ import {
   parkingLotGetImagesByParkingLotDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost, restPut } from "../infra/apis/restActions";
+import {
+  restPost,
+  restPostMultiPart,
+  restPut,
+} from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingModel";
@@ -209,6 +214,26 @@ export async function parkingLotGetDonut() {
   } as AxiosResponseData<{ series: number[]; labels: string[] }>;
 }
 
+export async function parkingLotUploadImage(params: {
+  parkingLotUuid: string;
+  file: UploadFile;
+}) {
+  const { parkingLotUuid, file } = params;
+
+  const response = await restPostMultiPart(
+    `/parking-lot/upload-image/${parkingLotUuid}`,
+    {
+      file,
+    }
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  return response.data as AxiosResponseData<any>;
+}
+
 export async function parkingLotUpdateRate(values: Record<string, any>) {
   const parkingLotUuid = values.parkingLotUuid;
 
@@ -234,7 +259,7 @@ export async function parkingLotGetImagesByParkingLot(
     return query.data as AxiosResponseError;
   }
 
-  const data = query.data.data.getParkingLotImageKeysByParkingLotUuid;
+  const data = query.data.data.getParkingLotImageKeysByParkingLot;
 
   return { data } as AxiosResponseData<string[]>;
 }

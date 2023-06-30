@@ -232,11 +232,11 @@ function CommutesRoutesMap() {
           },
         });
 
-        map.current?.on("click", nodeId, (e: any) => {
+        map.current?.on("click", nodeId, () => {
           setSelectedNodes([...selectedNodes, node]);
         });
 
-        map.current?.on("mouseenter", nodeId, (e: any) => {
+        map.current?.on("mouseenter", nodeId, () => {
           const canvas = map.current?.getCanvas() as HTMLCanvasElement;
           canvas.style.cursor = "pointer";
           // const coordinates = e.features[0].geometry.coordinates.slice();

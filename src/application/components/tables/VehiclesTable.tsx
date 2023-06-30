@@ -18,14 +18,13 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       key: "plateNumber",
       render: (record: Vehicle) => {
         const date = new Date(record.verifiedAt ?? "");
-
         return (
-          <div className='flex items-center gap-1'>
+          <div className="flex items-center gap-1">
             <p>{record.plateNumber}</p>
             <Popover
               color={record.verifiedAt ? "green" : "red"}
               content={
-                <p className='text-white text-xs'>
+                <p className="text-white text-xs">
                   {record.verifiedAt ? (
                     <span>
                       Verified at <br />
@@ -41,11 +40,11 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
               }
             >
               {record.verifiedAt ? (
-                <div className='w-5 h-5 text-green-500 self-start'>
+                <div className="w-5 h-5 text-green-500 self-start">
                   <CheckIconAsset />
                 </div>
               ) : (
-                <div className='w-5 h-5 text-red-500 self-start'>
+                <div className="w-5 h-5 text-red-500 self-start">
                   <XIconAsset />
                 </div>
               )}
@@ -81,7 +80,7 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      title='vehicle-table'
+      title="vehicle-table"
       getData={vehicleGetAllWithOwner}
     />
   );
