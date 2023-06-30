@@ -1,5 +1,5 @@
 import DynamicTable from "./DynamicTable";
-import { vehicleGetAll } from "../../../domain/services/vehicleService";
+import { vehicleGetAllWithOwner } from "../../../domain/services/vehicleService";
 import { Vehicle } from "../../../domain/models/VehicleModel";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
@@ -55,13 +55,18 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       },
     },
     {
-      title: "Vehicle Type",
-      key: "type",
+      title: "Vehicle Details",
       render: (record: Vehicle) => {
-        if (record.type === 1) {
-          return <p>Motorcycle</p>;
-        }
-        return <p>Car</p>;
+        // TODO: Add vehicle type from API
+        // return <p>{record.typeUuid}</p>;
+        return <p>Type - Brand - Model - Year - Color</p>;
+      },
+    },
+    {
+      title: "Owner",
+      key: "owner",
+      render: (record: Vehicle) => {
+        return <p>{record.owner?.username}</p>;
       },
     },
     {
@@ -77,7 +82,7 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       localPagination={localPagination}
       columns={columns}
       title='vehicle-table'
-      getData={vehicleGetAll}
+      getData={vehicleGetAllWithOwner}
     />
   );
 }
