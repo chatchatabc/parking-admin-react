@@ -28,3 +28,12 @@ export type VehicleBrand = {
 
   status?: number | null;
 };
+
+export type VehicleType = {
+  typeUuid?: string | null;
+  name?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+
+  status?: number | null;
+};
