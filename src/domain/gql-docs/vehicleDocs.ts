@@ -76,3 +76,41 @@ export function vehicleGetOwnerByVehicleIdDoc() {
   }
   `;
 }
+
+export function vehicleGetAllBrandDoc() {
+  return `
+  query GetAllVehicleBrands($page: Int, $size: Int, $keyword: String, $sortField: String, $sortBy: Int) {
+    getVehicleBrands(page: $page, size: $size, keyword: $keyword, sortField: $sortField, sortBy: $sortBy) {
+      content {
+        brandUuid
+        name
+        status
+        createdAt
+        updatedAt
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
+
+export function vehicleGetBrandByIdDoc() {
+  return `
+  query GetVehicleBrandById($id: String!) {
+    getVehicleBrand(id: $id) {
+      brandUuid
+      name
+      status
+      createdAt
+      updatedAt
+    }
+  }
+  `;
+}
