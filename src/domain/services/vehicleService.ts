@@ -4,13 +4,15 @@ import {
   vehicleGetTypeDoc,
   vehicleGetAllBrandDoc,
   vehicleGetBrandByIdDoc,
+  vehicleGetAllTypeDoc,
+  vehicleGetTypeByIdDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
-import { Vehicle, VehicleBrand } from "../models/VehicleModel";
+import { Vehicle, VehicleBrand, VehicleType } from "../models/VehicleModel";
 import { userGetByVehicle } from "./userService";
 
 export async function vehicleGetAll(variables: CommonVariables) {
@@ -172,6 +174,69 @@ export async function vehicleUpdateBrand(params: Record<string, any>) {
 }
 
 export function vehicleGetAllBrandOptions() {
+  return [
+    {
+      label: "Active",
+      value: 1,
+    },
+    {
+      label: "Draft",
+      value: 0,
+    },
+    {
+      label: "Inactive",
+      value: -1,
+    },
+  ];
+}
+
+export async function vehicleGetAllType(params: CommonVariables) {
+  const query = await graphqlQuery(vehicleGetAllTypeDoc(), params);
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleTypes;
+
+  return { data } as AxiosResponseData<CommonContent<VehicleType>>;
+}
+
+export async function vehicleGetTypeById(params: { id: string }) {
+  const query = await graphqlQuery(vehicleGetTypeByIdDoc(), params);
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleType;
+
+  return { data } as AxiosResponseData<VehicleType>;
+}
+
+export async function vehicleCreateType(values: Record<string, any>) {
+  values = {
+    name: values.name,
+    status: values.status,
+  };
+
+  const response = await restPost("/vehicle-type", values);
+
+  return response.data;
+}
+
+export async function vehicleUpdateType(params: Record<string, any>) {
+  const values = {
+    name: params.name,
+    status: params.status,
+  };
+
+  const response = await restPut(`/vehicle-type/${params.typeUuid}`, values);
+
+  return response.data;
+}
+
+export function vehicleGetAllTypeOptions() {
   return [
     {
       label: "Active",
