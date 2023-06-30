@@ -14,14 +14,14 @@ type Props = {
 function VehiclesTable({ showPagination, localPagination }: Props) {
   const columns: ColumnsType<Vehicle> = [
     {
-      title: "Name",
-      key: "name",
+      title: "Plate Number",
+      key: "plateNumber",
       render: (record: Vehicle) => {
         const date = new Date(record.verifiedAt ?? "");
 
         return (
           <div className='flex items-center gap-1'>
-            <p>{record.name}</p>
+            <p>{record.plateNumber}</p>
             <Popover
               color={record.verifiedAt ? "green" : "red"}
               content={
@@ -65,9 +65,9 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       },
     },
     {
-      title: "Plate Number",
-      key: "plateNumber",
-      dataIndex: "plateNumber",
+      title: "Name",
+      key: "name",
+      dataIndex: "name",
     },
   ];
 
