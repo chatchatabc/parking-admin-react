@@ -1,3 +1,5 @@
+import { User } from "./UserModel";
+
 export type Vehicle = {
   vehicleUuid?: string | null;
   name?: string | null;
@@ -9,8 +11,11 @@ export type Vehicle = {
   year?: string | null;
   verifiedAt?: string | null;
   rejectionReason?: string | null;
-  status?: number | null;
-  verifiedBy?: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
+
+  status?: number | null;
+  verifiedBy?: number | null;
+
+  owner?: User | null;
 };
