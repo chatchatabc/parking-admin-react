@@ -8,7 +8,8 @@ import { restPost } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
-import { Vehicle, VehicleType } from "../models/VehicleModel";
+import { Vehicle } from "../models/VehicleModel";
+import { userGetByVehicle } from "./userService";
 
 export async function vehicleGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(
@@ -81,6 +82,15 @@ export async function vehicleGetAllWithOwner(params: CommonVariables) {
       owner: {},
     };
 
+    const queryOwner = await userGetByVehicle({
+      id: vehicle.vehicleUuid ?? "",
+    });
+
+    if (queryOwner.data.errors) {
+      return newVehicle;
+    }
+
+    newVehicle.owner = queryOwner.data;
     return newVehicle;
   });
 

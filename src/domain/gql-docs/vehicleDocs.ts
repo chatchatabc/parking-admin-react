@@ -61,3 +61,18 @@ export function vehicleGetAllByUserUuidDoc() {
   }
   `;
 }
+
+export function vehicleGetOwnerByVehicleIdDoc() {
+  return `
+  query GetOwnerByVehicleId($id: String!) {
+    getOwnerByVehicleId(id: $id) {
+      userUuid
+      username
+      email
+      phone
+      createdAt
+      updatedAt
+    }
+  }
+  `;
+}
