@@ -1,4 +1,4 @@
-import { Modal, Spin, message } from "antd";
+import { Empty, Modal, Spin, Upload, message } from "antd";
 import React from "react";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import NotFoundPage from "../NotFoundPage";
 import {
   parkingLotGetByUser,
   parkingLotGetImagesByParkingLot,
+  parkingLotUploadImage,
   parkingLotVerify,
 } from "../../../domain/services/parkingLotService";
 import { ParkingLot } from "../../../domain/models/ParkingModel";
@@ -103,6 +104,7 @@ function ParkingLotsProfilePage() {
           page: 0,
           size: 100,
         });
+
         if (responseImages.errors) {
           message.error("Failed to fetch parking lot images.");
         } else {
@@ -493,22 +495,66 @@ function ParkingLotsProfilePage() {
         <section className="bg-bg2 p-4 rounded-lg">
           <header className="flex justify-between items-center">
             <h2 className="text-lg font-bold">Parking Lot Photos</h2>
-            <MyButton>Add +</MyButton>
+            <Upload
+              showUploadList={false}
+              beforeUpload={(file) => {
+                Modal.confirm({
+                  title: "Are you sure you want to upload this image?",
+                  content: (
+                    <div className="flex justify-center items-center">
+                      <img
+                        className="h-48 w-48 object-cover"
+                        src={URL.createObjectURL(file)}
+                      />
+                    </div>
+                  ),
+                  onOk() {
+                    return new Promise(async (resolve, reject) => {
+                      const response = await parkingLotUploadImage({
+                        parkingLotUuid: data.parkingLotUuid ?? "",
+                        file,
+                      });
+
+                      if (response.errors) {
+                        message.error("Failed to upload image!");
+                        reject(response.errors);
+                      } else {
+                        message.success("Image uploaded successfully!");
+                        resolve(response.data);
+                        setLoading(true);
+                      }
+                    });
+                  },
+                  okButtonProps: {
+                    className: "bg-blue-500",
+                  },
+                  maskClosable: true,
+                });
+                return false;
+              }}
+            >
+              <MyButton>Add +</MyButton>
+            </Upload>
           </header>
 
           <section className="mt-2 grid grid-cols-4">
             {images.map((imageUuid) => {
               return (
-                <div className="p-2">
+                <div key={imageUuid} className="p-2">
                   <div className="pb-[100%] bg-t2 relative">
                     <img
                       className="absolute h-full w-full object-cover"
-                      src={`/api/parking-lot/get-image/${imageUuid}`}
+                      src={`/api/parking-lot/image/${imageUuid}`}
                     />
                   </div>
                 </div>
               );
             })}
+            {images.length === 0 && (
+              <div className="col-span-4 flex justify-center">
+                <Empty />
+              </div>
+            )}
           </section>
         </section>
       </section>
