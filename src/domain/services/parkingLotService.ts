@@ -259,7 +259,7 @@ export async function parkingLotGetImagesByParkingLot(
     return query.data as AxiosResponseError;
   }
 
-  const data = query.data.data.getParkingLotImageKeysByParkingLotUuid;
+  const data = query.data.data.getParkingLotImageKeysByParkingLot;
 
   return { data } as AxiosResponseData<string[]>;
 }
