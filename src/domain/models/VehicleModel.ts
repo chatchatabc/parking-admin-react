@@ -19,3 +19,12 @@ export type Vehicle = {
 
   owner?: User | null;
 };
+
+export type VehicleBrand = {
+  brandUuid?: string | null;
+  name?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+
+  status?: number | null;
+};
