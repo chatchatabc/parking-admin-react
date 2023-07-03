@@ -16,6 +16,7 @@ import InvoicePage from "./pages/invoices/InvoicesPage";
 import CommutesJeepneysPage from "./pages/commutes/CommutesJeepneysPage";
 import CommutesRoutesPage from "./pages/commutes/CommutesRoutesPage";
 import CommutesNodesPage from "./pages/commutes/CommutesNodesPage";
+import CommutesMapPage from "./pages/commutes/CommutesMapPage";
 import VehicleBrandPage from "./pages/vehicles/VehicleBrandPage";
 
 message.config({
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
           {
             path: "nodes",
             element: <CommutesNodesPage />,
+          },
+          {
+            path: "map",
+            element: <CommutesMapPage />,
           },
         ],
       },

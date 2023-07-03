@@ -21,9 +21,9 @@ function RoutesTable({ data, showPagination = false }: Props) {
   return (
     <DynamicTable
       showPagination={showPagination}
-      dataProp={data}
+      dataSource={data}
       columns={columns}
-      title="routes-table"
+      caption="routes-table"
     />
   );
 }

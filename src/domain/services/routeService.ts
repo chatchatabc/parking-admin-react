@@ -8,7 +8,11 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
 import { restDelete, restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import {
+  CommonContent,
+  CommonOptions,
+  CommonVariables,
+} from "../models/CommonModel";
 import {
   Route,
   RouteEdge,
@@ -260,12 +264,7 @@ export async function routeGetAllOptions(variables: CommonVariables) {
     };
   });
 
-  return { data } as AxiosResponseData<
-    {
-      value: string;
-      label: string;
-    }[]
-  >;
+  return { data } as AxiosResponseData<CommonOptions[]>;
 }
 
 export async function routeGet(
@@ -280,6 +279,31 @@ export async function routeGet(
   }
 
   const data = query.data.data.getRoute;
+  return { data } as AxiosResponseData<Route>;
+}
+
+export async function routeGetWithNodesAndEdges(
+  variables: CommonVariables & {
+    keyword: string;
+  }
+) {
+  const query = await routeGet(variables);
+
+  if (query.errors) {
+    return query as AxiosResponseError;
+  }
+
+  const data = query.data;
+
+  const nodesAndEdges = await routeGetNodesAndEdges(variables);
+
+  if (nodesAndEdges.errors) {
+    return nodesAndEdges as AxiosResponseError;
+  }
+
+  data.nodes = nodesAndEdges.data.nodes;
+  data.edges = nodesAndEdges.data.edges;
+
   return { data } as AxiosResponseData<Route>;
 }
 
@@ -365,6 +389,7 @@ export async function routeGetNodesAndEdges(variables: { keyword: string }) {
   }
 
   const data = query.data.data.getRouteNodesAndEdges;
+  data.nodes = routeGetNodesFromEdges({ edges: data.edges, nodes: data.nodes });
 
   return { data } as AxiosResponseData<{
     nodes: RouteNode[];
@@ -372,7 +397,7 @@ export async function routeGetNodesAndEdges(variables: { keyword: string }) {
   }>;
 }
 
-export async function routeGetAllNodesAndEdges(variables: CommonVariables) {
+export async function routeGetAllWithNodesAndEdges(variables: CommonVariables) {
   const routes = await routeGetAll(variables);
 
   if (routes.errors) {
@@ -388,10 +413,17 @@ export async function routeGetAllNodesAndEdges(variables: CommonVariables) {
       return nodesAndEdges as AxiosResponseError;
     }
 
+    const data = nodesAndEdges.data;
+
+    data.nodes = routeGetNodesFromEdges({
+      edges: data.edges,
+      nodes: data.nodes,
+    });
+
     return {
       ...route,
-      nodes: nodesAndEdges.data.nodes,
-      edges: nodesAndEdges.data.edges,
+      nodes: data.nodes,
+      edges: data.edges,
     };
   });
 

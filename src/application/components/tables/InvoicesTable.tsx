@@ -80,7 +80,7 @@ function InvoicesTable({ showPagination, getData }: Props) {
     <DynamicTable
       showPagination={showPagination}
       columns={columns}
-      title="invoices-table"
+      caption="invoices-table"
       getData={getData}
     />
   );

@@ -23,15 +23,15 @@ function ParkingLotUnverifiedTable() {
 
         if (owner?.username || owner?.phone) {
           return (
-            <div className='flex items-center gap-1'>
-              <div className='w-8 h-8 overflow-hidden border border-c1 rounded-full'>
+            <div className="flex items-center gap-1">
+              <div className="w-8 h-8 overflow-hidden border border-c1 rounded-full">
                 <ImageHandler
                   src={`/api/parking-lot/get-featured-image/${record.parkingLotUuid}`}
                   alt={record.name ?? "Unknown"}
                 />
               </div>
               <button
-                className='text-start underline hover:no-underline'
+                className="text-start underline hover:no-underline"
                 onClick={() => {
                   navigate(
                     `/parking-lots/${
@@ -47,7 +47,7 @@ function ParkingLotUnverifiedTable() {
               <Popover
                 color={record.verifiedAt ? "green" : "red"}
                 content={
-                  <p className='text-white text-xs'>
+                  <p className="text-white text-xs">
                     {record.verifiedAt ? (
                       <span>
                         Verified at <br />
@@ -63,11 +63,11 @@ function ParkingLotUnverifiedTable() {
                 }
               >
                 {record.verifiedAt ? (
-                  <div className='w-5 h-5 text-green-500 self-start'>
+                  <div className="w-5 h-5 text-green-500 self-start">
                     <CheckIconAsset />
                   </div>
                 ) : (
-                  <div className='w-5 h-5 text-red-500 self-start'>
+                  <div className="w-5 h-5 text-red-500 self-start">
                     <XIconAsset />
                   </div>
                 )}
@@ -86,8 +86,8 @@ function ParkingLotUnverifiedTable() {
         return (
           <a
             href={`https://www.google.com/maps/dir/?api=1&destination=${record.address}`}
-            target='_blank'
-            className='underline hover:no-underline'
+            target="_blank"
+            className="underline hover:no-underline"
           >
             {record.address}
           </a>
@@ -99,7 +99,7 @@ function ParkingLotUnverifiedTable() {
   return (
     <DynamicTable
       localPagination={true}
-      title={"Parking Table"}
+      caption={"parking-lot-table"}
       columns={columns}
       getData={(commonVariables) => {
         return parkingLotGetAllWithOwners({ ...commonVariables, verified: 0 });

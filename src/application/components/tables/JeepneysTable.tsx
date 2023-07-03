@@ -63,7 +63,7 @@ function JeepneysTable({
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      title="jeepney-table"
+      caption="jeepney-table"
       getData={(variables) => {
         return jeepneyGetAllWithRoute({ ...variables, ...extraVariables });
       }}
