@@ -1,7 +1,6 @@
 import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
-import { ParkingLot } from "../../../domain/models/ParkingModel";
-import { User } from "../../../domain/models/UserModel";
+import { ParkingLot } from "../../../domain/models/ParkingLotModel";
 import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingLotService";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
@@ -17,7 +16,7 @@ function ParkingLotUnverifiedTable() {
       width: "50%",
       title: "Parking Name",
       key: "name",
-      render: (record: ParkingLot<User>) => {
+      render: (record: ParkingLot) => {
         const owner = record.owner;
         const date = new Date(record.verifiedAt ?? "");
 

@@ -1,6 +1,6 @@
 import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
-import { ParkingLot } from "../../../domain/models/ParkingModel";
+import { ParkingLot } from "../../../domain/models/ParkingLotModel";
 import { User } from "../../../domain/models/UserModel";
 import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingLotService";
 import { ColumnsType } from "antd/es/table";
@@ -26,7 +26,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
     {
       title: "Parking Name",
       key: "name",
-      render: (record: ParkingLot<User>) => {
+      render: (record: ParkingLot) => {
         const owner = record.owner;
         const date = new Date(record.verifiedAt ?? "");
 
@@ -91,7 +91,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
     {
       title: "Owner",
       key: "owner",
-      render: (record: ParkingLot<User>) => {
+      render: (record: ParkingLot) => {
         const owner = record.owner;
 
         if (owner?.username || owner?.phone) {

@@ -9,7 +9,7 @@ import {
   parkingLotUploadImage,
   parkingLotVerify,
 } from "../../../domain/services/parkingLotService";
-import { ParkingLot } from "../../../domain/models/ParkingModel";
+import { ParkingLot } from "../../../domain/models/ParkingLotModel";
 import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import { User } from "../../../domain/models/UserModel";

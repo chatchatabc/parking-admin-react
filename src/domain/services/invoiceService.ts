@@ -7,7 +7,7 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
-import { ParkingLot } from "../models/ParkingModel";
+import { ParkingLot } from "../models/ParkingLotModel";
 import { User } from "../models/UserModel";
 import { parkingLotGetWithOwner } from "./parkingLotService";
 
@@ -37,7 +37,7 @@ export async function invoiceGetAll(variables: CommonVariables) {
 
   return {
     data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
+  } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
 export async function invoiceGetByParkingLot(variables: CommonVariables) {
@@ -70,7 +70,7 @@ export async function invoiceGetByParkingLot(variables: CommonVariables) {
 
   return {
     data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
+  } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
 export async function invoiceGetByUser(variables: CommonVariables) {
@@ -99,5 +99,5 @@ export async function invoiceGetByUser(variables: CommonVariables) {
 
   return {
     data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData<CommonContent<Invoice<ParkingLot<User>>>>;
+  } as AxiosResponseData<CommonContent<Invoice>>;
 }

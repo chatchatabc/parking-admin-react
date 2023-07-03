@@ -1,4 +1,6 @@
-export type ParkingLot<Owner = null> = {
+import { User } from "./UserModel";
+
+export type ParkingLot = {
   parkingLotUuid?: string | null;
   address?: string | null;
   businessHoursEnd?: string | null;
@@ -16,7 +18,7 @@ export type ParkingLot<Owner = null> = {
   openDaysFlag?: number | null;
 
   rate?: ParkingLotRate | null;
-  owner?: Owner | null;
+  owner?: User | null;
 };
 
 export type ParkingLotRate = {

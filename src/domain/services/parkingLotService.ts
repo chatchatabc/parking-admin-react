@@ -13,7 +13,7 @@ import {
 } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
-import { ParkingLot } from "../models/ParkingModel";
+import { ParkingLot } from "../models/ParkingLotModel";
 import { User } from "../models/UserModel";
 import { userGetByParkingLot } from "./userService";
 import type { Dayjs } from "dayjs";
@@ -68,7 +68,7 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
   // Add owner info to each parking lot
   const parkingLots = query.data.content as ParkingLot[];
   const additionalInfo = parkingLots.map(async (parkingLot) => {
-    const newParkingLot: ParkingLot<User> = {
+    const newParkingLot: ParkingLot = {
       ...parkingLot,
     };
 
@@ -88,7 +88,7 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
   const newContent = await Promise.all(additionalInfo);
   const data = { ...query.data, content: newContent };
 
-  return { data } as AxiosResponseData<CommonContent<ParkingLot<User>>>;
+  return { data } as AxiosResponseData<CommonContent<ParkingLot>>;
 }
 
 export async function parkingLotGetWithOwner(variables: { keyword: string }) {
@@ -112,7 +112,7 @@ export async function parkingLotGetWithOwner(variables: { keyword: string }) {
 
   const data = { ...parkingLot, owner };
 
-  return { data } as AxiosResponseData<ParkingLot<User>>;
+  return { data } as AxiosResponseData<ParkingLot>;
 }
 
 export async function parkingLotGetByUser(variables: { keyword: string }) {
