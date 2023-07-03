@@ -19,6 +19,7 @@ import CommutesNodesPage from "./pages/commutes/CommutesNodesPage";
 import CommutesMapPage from "./pages/commutes/CommutesMapPage";
 import VehicleBrandPage from "./pages/vehicles/VehicleBrandPage";
 import VehicleTypePage from "./pages/vehicles/VehicleTypePage";
+import VehicleModelPage from "./pages/vehicles/VehicleModelPage";
 
 message.config({
   maxCount: 2,
@@ -87,6 +88,15 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <VehicleTypePage />,
+          },
+        ],
+      },
+      {
+        path: "vehicle-models",
+        children: [
+          {
+            path: "",
+            element: <VehicleModelPage />,
           },
         ],
       },
