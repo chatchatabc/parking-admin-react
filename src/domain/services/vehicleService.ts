@@ -2,13 +2,15 @@ import {
   vehicleGetAllByUserUuidDoc,
   vehicleGetAllDoc,
   vehicleGetTypeDoc,
+  vehicleGetAllBrandDoc,
+  vehicleGetBrandByIdDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost } from "../infra/apis/restActions";
+import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
-import { Vehicle } from "../models/VehicleModel";
+import { Vehicle, VehicleBrand } from "../models/VehicleModel";
 import { userGetByVehicle } from "./userService";
 
 export async function vehicleGetAll(variables: CommonVariables) {
@@ -121,4 +123,67 @@ export async function vehicleCreate(values: Record<string, any>) {
   const response = await restPost(`/vehicle/register/${userUuid}`, values);
 
   return response.data;
+}
+
+export async function vehicleGetAllBrand(params: CommonVariables) {
+  const query = await graphqlQuery(vehicleGetAllBrandDoc(), params);
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleBrands;
+
+  return { data } as AxiosResponseData<CommonContent<VehicleBrand>>;
+}
+
+export async function vehicleGetBrandById(params: { id: string }) {
+  const query = await graphqlQuery(vehicleGetBrandByIdDoc(), params);
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleBrand;
+
+  return { data } as AxiosResponseData<VehicleBrand>;
+}
+
+export async function vehicleCreateBrand(values: Record<string, any>) {
+  values = {
+    name: values.name,
+    status: values.status,
+  };
+
+  const response = await restPost("/vehicle-brand", values);
+
+  return response.data;
+}
+
+export async function vehicleUpdateBrand(params: Record<string, any>) {
+  const values = {
+    name: params.name,
+    status: params.status,
+  };
+
+  const response = await restPut(`/vehicle-brand/${params.brandUuid}`, values);
+
+  return response.data;
+}
+
+export function vehicleGetAllBrandOptions() {
+  return [
+    {
+      label: "Active",
+      value: 1,
+    },
+    {
+      label: "Draft",
+      value: 0,
+    },
+    {
+      label: "Inactive",
+      value: -1,
+    },
+  ];
 }
