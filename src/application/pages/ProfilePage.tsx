@@ -10,6 +10,7 @@ import UserBanTable from "../components/tables/UserBanTable";
 import InvoicesTable from "../components/tables/InvoicesTable";
 import UserVehiclesTable from "../components/tables/UserVehiclesTable";
 import { invoiceGetByUser } from "../../domain/services/invoiceService";
+import { authUsername } from "../../domain/services/authService";
 
 interface Props {
   username?: string;
@@ -32,7 +33,9 @@ function ProfilePage({ username, phone }: Props) {
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await userGet({ keyword: username ?? phone ?? "" });
+      const response = await userGet({
+        keyword: phone ?? username ?? authUsername() ?? "",
+      });
 
       if (response.errors) {
         message.error("Failed to fetch user.");

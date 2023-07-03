@@ -10,6 +10,7 @@ export type Jeepney = {
   routeUuid?: string | null;
 
   route?: Route | null;
+  position?: JeepneyPosition | null;
 };
 
 export type JeepneyPosition = {
