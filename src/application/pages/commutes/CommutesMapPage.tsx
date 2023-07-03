@@ -2,7 +2,7 @@ import React from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Jeepney } from "../../../domain/models/JeepneyModel";
-import { jeepneyGetAllByRouteWithRoute } from "../../../domain/services/jeepneyService";
+import { jeepneyGetAllByRoute } from "../../../domain/services/jeepneyService";
 import { Spin, message } from "antd";
 import DynamicTable from "../../components/tables/DynamicTable";
 import SelectAsync from "../../components/select/SelectAsync";
@@ -13,6 +13,10 @@ import {
 import { Route } from "../../../domain/models/RouteModel";
 import { ColumnsType } from "antd/es/table";
 import JeepneyPositionComp from "../../components/JeepneyPositionComp";
+import { webSocketHandler } from "../../layouts/HomeLayout";
+import { StringCodec, Subscription } from "nats.ws";
+
+const sc = StringCodec();
 
 function CommutesMapPage() {
   const map = React.useRef<Record<string, any> | null>(null);
@@ -28,69 +32,10 @@ function CommutesMapPage() {
       key: "plateNumber",
       dataIndex: "plateNumber",
     },
-    {
-      title: "Route",
-      key: "route",
-      render: (record: Jeepney) => {
-        return <p>{record.route?.name}</p>;
-      },
-    },
-    {
-      title: "Location",
-      key: "location",
-      render: (record: Jeepney) => {
-        return <JeepneyPositionComp jeepneyUuid={record.jeepneyUuid ?? ""} />;
-      },
-    },
   ];
 
-  // Data fetch and map initialization
+  // Map initialization
   React.useEffect(() => {
-    if (loading) {
-      (async () => {
-        const responseJeepneysPromise = routeUuids.map(async (routeUuid) => {
-          const response = await jeepneyGetAllByRouteWithRoute({
-            page: 0,
-            size: 10000,
-            keyword: routeUuid,
-          });
-
-          if (response.errors) {
-            response.errors.forEach((error) => {
-              message.error(error.message);
-            });
-          } else {
-            return response.data.content;
-          }
-        });
-
-        const responseJeepneys = await Promise.all(
-          responseJeepneysPromise
-        ).then((values) => values.filter((value) => value) as Jeepney[][]);
-
-        setJeepneys(responseJeepneys.flat());
-
-        const responseRoutesPromise = routeUuids.map(async (routeUuid) => {
-          const response = await routeGetWithNodesAndEdges({
-            keyword: routeUuid,
-          });
-
-          if (response.errors) {
-            response.errors.forEach((error) => {
-              message.error(error.message);
-            });
-          } else {
-            return response.data;
-          }
-        });
-
-        const responseRoutes = await Promise.all(responseRoutesPromise);
-
-        setRoutes(responseRoutes.filter((route) => route) as Route[]);
-        setLoading(false);
-      })();
-    }
-
     if (!map.current) {
       map.current = new mapboxgl.Map({
         container: "realtimeMap", // container ID
@@ -99,49 +44,85 @@ function CommutesMapPage() {
         zoom: 13, // starting zoom
       });
     }
-  }, [loading]);
+  }, []);
 
-  // Drawing of routes
+  // Draw routes, and subscribe to websocket
   React.useEffect(() => {
-    if (map?.current) {
-      routes.forEach((route) => {
-        const coordinates = route.nodes?.map((node) => {
-          return [node.longitude, node.latitude];
-        });
+    // Websocket Channels
+    const channels: Subscription[] = [];
 
-        const routeId = `route-${String(route.routeUuid)}`;
-        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    (async () => {
+      // Drawing of routes
+      if (map?.current) {
+        routes.forEach((route) => {
+          const coordinates = route.nodes?.map((node) => {
+            return [node.longitude, node.latitude];
+          });
 
-        // Add name to the line
-        map.current?.addSource(routeId, {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "LineString",
-              coordinates,
+          const routeId = `route-${String(route.routeUuid)}`;
+          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+          // Add name to the line
+          map.current?.addSource(routeId, {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates,
+              },
             },
-          },
-        });
+          });
 
-        map.current?.addLayer({
-          id: routeId,
-          type: "line",
-          source: routeId,
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": `#${randomColor}`,
-            "line-width": 8,
-          },
+          map.current?.addLayer({
+            id: routeId,
+            type: "line",
+            source: routeId,
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-color": `#${randomColor}`,
+              "line-width": 8,
+            },
+          });
         });
+      }
+
+      // Subscribe to websocket
+      routes.forEach((route) => {
+        const channel = webSocketHandler?.subscribe(`route-${route.slug}`);
+        if (channel) {
+          (async () => {
+            for await (const m of channel) {
+              console.log(`[${channel.getProcessed()}]: ${sc.decode(m.data)}`);
+              const data = JSON.parse(sc.decode(m.data));
+              const jeepneyIndex = jeepneys.findIndex((jeepney) => {
+                return jeepney.jeepneyUuid === data.jeepneyUuid;
+              });
+
+              if (jeepneyIndex !== -1) {
+                const jeepney = jeepneys[jeepneyIndex];
+                jeepney.position = data;
+                setJeepneys((prev) => {
+                  prev[jeepneyIndex] = jeepney;
+                  return prev;
+                });
+              }
+            }
+          })();
+          channels.push(channel);
+        }
       });
-    }
+
+      // Set loading to false
+      setLoading(false);
+    })();
 
     return () => {
+      // Remove drawn routes
       if (map?.current) {
         routes.forEach((route) => {
           const routeId = `route-${String(route.routeUuid)}`;
@@ -153,13 +134,86 @@ function CommutesMapPage() {
           }
         });
       }
+
+      // Unsubscribe websocket
+      channels.forEach((channel) => {
+        channel.unsubscribe();
+      });
     };
   }, [routes]);
 
+  // Fetch routes and jeeps to be displayed
+  React.useEffect(() => {
+    if (routeUuids.length > routes.length) {
+      (async () => {
+        // Add routes
+        const newValues = [...routeUuids].filter(
+          (item) => !routes.some((route) => route.routeUuid === item)
+        );
+
+        const newRoutes = newValues.map(async (routeUuid) => {
+          const response = await routeGetWithNodesAndEdges({
+            keyword: routeUuid,
+          });
+
+          if (response.errors) {
+            response.errors.forEach((error) => {
+              message.error(error.message);
+            });
+            return null;
+          }
+
+          const route = response.data;
+
+          // Fetch jeepneys
+          const responseJeepneys = await jeepneyGetAllByRoute({
+            keyword: route.routeUuid ?? "",
+          });
+
+          if (responseJeepneys.errors) {
+            responseJeepneys.errors.forEach((error) => {
+              message.error(error.message);
+            });
+          } else {
+            // Add route to jeepney
+            const content = responseJeepneys.data.content.map((jeepney) => {
+              return {
+                ...jeepney,
+                route,
+              };
+            });
+
+            setJeepneys((prev) => [...prev, ...content]);
+          }
+
+          return route;
+        });
+
+        const newRoutesData = await Promise.all(newRoutes).then((values) => {
+          return values.filter((value) => value) as Route[];
+        });
+
+        setRoutes([...routes, ...newRoutesData]);
+      })();
+    } else {
+      // Remove routes
+      const newRoutes = [...routes].filter((route) =>
+        routeUuids.includes(route.routeUuid ?? "")
+      );
+
+      setRoutes(newRoutes);
+
+      // Remove jeepneys
+      const newJeepneys = [...jeepneys].filter((jeepney) =>
+        routeUuids.includes(jeepney.route?.routeUuid ?? "")
+      );
+
+      setJeepneys(newJeepneys);
+    }
+  }, [routeUuids]);
+
   // Drawing of jeepneys
   React.useEffect(() => {}, [jeepneys]);
-
-  console.log(routes);
 
   return (
     <div className="flex flex-wrap p-2 bg-bg1">
@@ -169,14 +223,12 @@ function CommutesMapPage() {
           <header className="flex justify-between space-x-4">
             <h2 className="text-xl font-bold w-2/3">Realtime Map</h2>
             {SelectAsync({
-              value: routes.map((route) => route.routeUuid),
-              className: "w-3/4",
               getData: routeGetAllOptions,
+              className: "w-3/4",
               placeholder: "Select Route",
               mode: "multiple",
-              onChange: (value) => {
-                setRouteUuids(value);
-                setLoading(true);
+              onChange: (values: string[]) => {
+                setRouteUuids(values);
               },
             })}
           </header>
