@@ -22,6 +22,11 @@
       "path": "/vehicle-brands"
     },
     {
+      "label": "Vehicle Types",
+      "icon": "mdi:car",
+      "path": "/vehicle-types"
+    },
+    {
       "label": "Invoices",
       "icon": "mdi:file-document",
       "path": "/invoices"
