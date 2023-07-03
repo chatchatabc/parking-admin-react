@@ -6,7 +6,11 @@ import { jeepneyGetAll } from "../../../domain/services/jeepneyService";
 import { Spin, message } from "antd";
 import DynamicTable from "../../components/tables/DynamicTable";
 import SelectAsync from "../../components/select/SelectAsync";
-import { routeGetAllOptions } from "../../../domain/services/routeService";
+import {
+  routeGet,
+  routeGetAllOptions,
+  routeGetWithNodesAndEdges,
+} from "../../../domain/services/routeService";
 import { Route } from "../../../domain/models/RouteModel";
 
 function CommutesMapPage() {
@@ -14,9 +18,10 @@ function CommutesMapPage() {
 
   const [loading, setLoading] = React.useState(true);
   const [routes, setRoutes] = React.useState<Route[]>([]);
-  const [routeSlugs, setRouteSlugs] = React.useState<string[]>([]);
+  const [selectedRoutes, setSelectedRoutes] = React.useState<string[]>([]);
   const [jeepneys, setJeepneys] = React.useState<Jeepney[]>([]);
 
+  // Data fetch and map initialization
   React.useEffect(() => {
     if (loading) {
       (async () => {
@@ -33,6 +38,25 @@ function CommutesMapPage() {
           setJeepneys(responseJeepneys.data.content);
         }
 
+        const responseRoutesPromise = selectedRoutes.map(
+          async (selectedRoute) => {
+            const response = await routeGetWithNodesAndEdges({
+              keyword: selectedRoute,
+            });
+
+            if (response.errors) {
+              response.errors.forEach((error) => {
+                message.error(error.message);
+              });
+            } else {
+              return response.data;
+            }
+          }
+        );
+
+        const responseRoutes = await Promise.all(responseRoutesPromise);
+
+        setRoutes(responseRoutes.filter((route) => route) as Route[]);
         setLoading(false);
       })();
     }
@@ -47,11 +71,62 @@ function CommutesMapPage() {
     }
   }, [loading]);
 
+  // Drawing of routes
   React.useEffect(() => {
-    if (loading) {
-      (async () => {})();
+    if (map?.current) {
+      routes.forEach((route) => {
+        const coordinates = route.nodes?.map((node) => {
+          return [node.longitude, node.latitude];
+        });
+
+        const routeId = `route-${String(route.routeUuid)}`;
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+        // Add name to the line
+        map.current?.addSource(routeId, {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "LineString",
+              coordinates,
+            },
+          },
+        });
+
+        map.current?.addLayer({
+          id: routeId,
+          type: "line",
+          source: routeId,
+          layout: {
+            "line-join": "round",
+            "line-cap": "round",
+          },
+          paint: {
+            "line-color": `#${randomColor}`,
+            "line-width": 8,
+          },
+        });
+      });
     }
-  }, [routeSlugs]);
+
+    return () => {
+      if (map?.current) {
+        routes.forEach((route) => {
+          const routeId = `route-${String(route.routeUuid)}`;
+          if (map?.current?.getLayer(routeId)) {
+            map?.current?.removeLayer(routeId);
+          }
+          if (map?.current?.getSource(routeId)) {
+            map?.current?.removeSource(routeId);
+          }
+        });
+      }
+    };
+  }, [routes]);
+
+  console.log(routes);
 
   return (
     <div className="flex flex-wrap p-2 bg-bg1">
@@ -74,12 +149,14 @@ function CommutesMapPage() {
           <header className="flex justify-between space-x-4">
             <h2 className="text-xl font-bold shrink-0">Realtime Map</h2>
             {SelectAsync({
+              value: routes.map((route) => route.routeUuid),
               className: "w-3/4",
               getData: routeGetAllOptions,
               placeholder: "Select Route",
               mode: "multiple",
               onChange: (value) => {
-                setRouteSlugs([...routeSlugs, value]);
+                setSelectedRoutes(value);
+                setLoading(true);
               },
             })}
           </header>
