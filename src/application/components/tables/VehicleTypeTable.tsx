@@ -1,12 +1,12 @@
-import { ColumnsType } from "antd/es/table";
+import { useDispatch } from "react-redux";
+import { VehicleType } from "../../../domain/models/VehicleModel";
 import DynamicTable from "./DynamicTable";
-import { VehicleBrand } from "../../../domain/models/VehicleModel";
+import { ColumnsType } from "antd/es/table";
 import {
-  vehicleGetAllBrand,
-  vehicleGetAllBrandOptions,
+  vehicleGetAllType,
+  vehicleGetAllTypeOptions,
 } from "../../../domain/services/vehicleService";
 import MyButton from "../common/MyButton";
-import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
 type Props = {
@@ -14,10 +14,10 @@ type Props = {
   localPagination?: boolean;
 };
 
-function VehicleBrandTable({ showPagination, localPagination }: Props) {
+function VehicleTypeTable({ showPagination, localPagination }: Props) {
   const dispatch = useDispatch();
 
-  const columns: ColumnsType<VehicleBrand> = [
+  const columns: ColumnsType<VehicleType> = [
     {
       title: "Name",
       key: "name",
@@ -26,15 +26,15 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
     {
       title: "Status",
       key: "status",
-      render: (record: VehicleBrand) => {
-        const options = vehicleGetAllBrandOptions();
+      render: (record: VehicleType) => {
+        const options = vehicleGetAllTypeOptions();
         return options.find((option) => option.value === record.status)?.label;
       },
     },
     {
       title: "Actions",
       key: "actions",
-      render: (record: VehicleBrand) => {
+      render: (record: VehicleType) => {
         return (
           <div>
             <MyButton
@@ -44,7 +44,7 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
                   drawerFormUpdate({
                     show: true,
                     title: "Edit",
-                    content: "vehicleBrandUpdate",
+                    content: "vehicleTypeUpdate",
                     mode: "update",
                     data: record,
                   })
@@ -64,10 +64,10 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="vehicle-brand-table"
-      getData={vehicleGetAllBrand}
+      caption="vehicle-type-table"
+      getData={vehicleGetAllType}
     />
   );
 }
 
-export default VehicleBrandTable;
+export default VehicleTypeTable;
