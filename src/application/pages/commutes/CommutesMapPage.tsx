@@ -2,57 +2,87 @@ import React from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Jeepney } from "../../../domain/models/JeepneyModel";
-import { jeepneyGetAll } from "../../../domain/services/jeepneyService";
+import { jeepneyGetAllByRouteWithRoute } from "../../../domain/services/jeepneyService";
 import { Spin, message } from "antd";
 import DynamicTable from "../../components/tables/DynamicTable";
 import SelectAsync from "../../components/select/SelectAsync";
 import {
-  routeGet,
   routeGetAllOptions,
   routeGetWithNodesAndEdges,
 } from "../../../domain/services/routeService";
 import { Route } from "../../../domain/models/RouteModel";
+import { ColumnsType } from "antd/es/table";
+import JeepneyPositionComp from "../../components/JeepneyPositionComp";
 
 function CommutesMapPage() {
   const map = React.useRef<Record<string, any> | null>(null);
 
   const [loading, setLoading] = React.useState(true);
   const [routes, setRoutes] = React.useState<Route[]>([]);
-  const [selectedRoutes, setSelectedRoutes] = React.useState<string[]>([]);
+  const [routeUuids, setRouteUuids] = React.useState<string[]>([]);
   const [jeepneys, setJeepneys] = React.useState<Jeepney[]>([]);
+
+  const columns: ColumnsType<Jeepney> = [
+    {
+      title: "Plate Number",
+      key: "plateNumber",
+      dataIndex: "plateNumber",
+    },
+    {
+      title: "Route",
+      key: "route",
+      render: (record: Jeepney) => {
+        return <p>{record.route?.name}</p>;
+      },
+    },
+    {
+      title: "Location",
+      key: "location",
+      render: (record: Jeepney) => {
+        return <JeepneyPositionComp jeepneyUuid={record.jeepneyUuid ?? ""} />;
+      },
+    },
+  ];
 
   // Data fetch and map initialization
   React.useEffect(() => {
     if (loading) {
       (async () => {
-        const responseJeepneys = await jeepneyGetAll({
-          page: 0,
-          size: 100000,
+        const responseJeepneysPromise = routeUuids.map(async (routeUuid) => {
+          const response = await jeepneyGetAllByRouteWithRoute({
+            page: 0,
+            size: 10000,
+            keyword: routeUuid,
+          });
+
+          if (response.errors) {
+            response.errors.forEach((error) => {
+              message.error(error.message);
+            });
+          } else {
+            return response.data.content;
+          }
         });
 
-        if (responseJeepneys.errors) {
-          responseJeepneys.errors.forEach((error) => {
-            message.error(error.message);
+        const responseJeepneys = await Promise.all(
+          responseJeepneysPromise
+        ).then((values) => values.filter((value) => value) as Jeepney[][]);
+
+        setJeepneys(responseJeepneys.flat());
+
+        const responseRoutesPromise = routeUuids.map(async (routeUuid) => {
+          const response = await routeGetWithNodesAndEdges({
+            keyword: routeUuid,
           });
-        } else {
-          setJeepneys(responseJeepneys.data.content);
-        }
 
-        const responseRoutesPromise = selectedRoutes.map(
-          async (selectedRoute) => {
-            const response = await routeGetWithNodesAndEdges({
-              keyword: selectedRoute,
+          if (response.errors) {
+            response.errors.forEach((error) => {
+              message.error(error.message);
             });
-
-            if (response.errors) {
-              response.errors.forEach((error) => {
-                message.error(error.message);
-              });
-            } else {
-              return response.data;
-            }
+          } else {
+            return response.data;
           }
-        );
+        });
 
         const responseRoutes = await Promise.all(responseRoutesPromise);
 
@@ -126,28 +156,18 @@ function CommutesMapPage() {
     };
   }, [routes]);
 
+  // Drawing of jeepneys
+  React.useEffect(() => {}, [jeepneys]);
+
   console.log(routes);
 
   return (
     <div className="flex flex-wrap p-2 bg-bg1">
-      <div className="p-2 w-1/3">
-        <div className="bg-bg2 rounded-lg p-4">
-          {/* Table Title */}
-          <header className="flex justify-between">
-            <h2 className="text-xl font-bold">Jeepneys</h2>
-          </header>
-
-          <section className="mt-2">
-            <DynamicTable title="Jeepneys Table" columns={[]} />
-          </section>
-        </div>
-      </div>
-
-      <div className="p-2 w-2/3">
+      <div className="p-2 w-full">
         <div className="bg-bg2 rounded-lg p-4">
           {/* Table Title */}
           <header className="flex justify-between space-x-4">
-            <h2 className="text-xl font-bold shrink-0">Realtime Map</h2>
+            <h2 className="text-xl font-bold w-2/3">Realtime Map</h2>
             {SelectAsync({
               value: routes.map((route) => route.routeUuid),
               className: "w-3/4",
@@ -155,7 +175,7 @@ function CommutesMapPage() {
               placeholder: "Select Route",
               mode: "multiple",
               onChange: (value) => {
-                setSelectedRoutes(value);
+                setRouteUuids(value);
                 setLoading(true);
               },
             })}
@@ -168,6 +188,24 @@ function CommutesMapPage() {
                 <Spin />
               </div>
             )}
+          </section>
+        </div>
+      </div>
+
+      <div className="p-2 w-full">
+        <div className="bg-bg2 rounded-lg p-4">
+          {/* Table Title */}
+          <header className="flex justify-between">
+            <h2 className="text-xl font-bold">Jeepneys</h2>
+          </header>
+
+          <section className="mt-2">
+            <DynamicTable
+              loading={loading}
+              dataSource={jeepneys}
+              caption="Jeepneys Table"
+              columns={columns}
+            />
           </section>
         </div>
       </div>
