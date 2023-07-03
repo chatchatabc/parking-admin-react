@@ -6,13 +6,21 @@ import {
   vehicleGetBrandByIdDoc,
   vehicleGetAllTypeDoc,
   vehicleGetTypeByIdDoc,
+  vehicleGetAllModelDoc,
+  vehicleGetModelDoc,
+  vehicleGetAllModelByBrandDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User } from "../models/UserModel";
-import { Vehicle, VehicleBrand, VehicleType } from "../models/VehicleModel";
+import {
+  Vehicle,
+  VehicleBrand,
+  VehicleModel,
+  VehicleType,
+} from "../models/VehicleModel";
 import { userGetByVehicle } from "./userService";
 
 export async function vehicleGetAll(variables: CommonVariables) {
@@ -59,7 +67,7 @@ export async function vehicleGetType(variables: { keyword: string }) {
   const query = await graphqlQuery(
     vehicleGetTypeDoc(),
     variables,
-    "VehicleType"
+    "VehicleGetType"
   );
 
   if (query.data.errors) {
@@ -140,7 +148,11 @@ export async function vehicleGetAllBrand(params: CommonVariables) {
 }
 
 export async function vehicleGetBrandById(params: { id: string }) {
-  const query = await graphqlQuery(vehicleGetBrandByIdDoc(), params);
+  const query = await graphqlQuery(
+    vehicleGetBrandByIdDoc(),
+    params,
+    "VehicleGetBrand"
+  );
 
   if (query.data.errors) {
     return query.data as AxiosResponseError;
@@ -237,6 +249,118 @@ export async function vehicleUpdateType(params: Record<string, any>) {
 }
 
 export function vehicleGetAllTypeOptions() {
+  return [
+    {
+      label: "Active",
+      value: 1,
+    },
+    {
+      label: "Draft",
+      value: 0,
+    },
+    {
+      label: "Inactive",
+      value: -1,
+    },
+  ];
+}
+
+export async function vehicleGetAllModel(params: CommonVariables) {
+  const query = await graphqlQuery(
+    vehicleGetAllModelDoc(),
+    params,
+    "VehicleGetModel"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleModels;
+
+  return { data } as AxiosResponseData<CommonContent<VehicleModel>>;
+}
+
+export async function vehicleGetAllModelWithBrand(params: CommonVariables) {
+  const query = await vehicleGetAllModel(params);
+
+  if (query.errors) {
+    return query;
+  }
+
+  // Add brand info to each model
+  const models = query.data.content as VehicleModel[];
+  const additionalInfo = models.map(async (model) => {
+    const newModel: VehicleModel = {
+      ...model,
+    };
+    console.log(model);
+    const queryBrand = await vehicleGetBrandById({ id: model.brandUuid ?? "" });
+    console.log(queryBrand);
+    if (queryBrand.errors) {
+      return newModel;
+    }
+
+    newModel.brand = queryBrand.data;
+    return newModel;
+  });
+
+  // Wait for all promises to resolve
+  const newContent = await Promise.all(additionalInfo);
+  const data = { ...query.data, content: newContent };
+
+  return { data } as AxiosResponseData<CommonContent<VehicleModel>>;
+}
+
+export async function vehicleGetModel(params: { id: string }) {
+  const query = await graphqlQuery(vehicleGetModelDoc(), params);
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleModel;
+
+  return { data } as AxiosResponseData<VehicleType>;
+}
+
+export async function vehicleGetAllModelByBrand(params: CommonVariables) {
+  const query = await graphqlQuery(vehicleGetAllModelByBrandDoc(), params);
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleModels;
+
+  return { data } as AxiosResponseData<CommonContent<VehicleType>>;
+}
+
+export async function vehicleCreateModel(values: Record<string, any>) {
+  values = {
+    name: values.name,
+    status: values.status,
+    brandUuid: values.brandUuid,
+  };
+
+  const response = await restPost("/vehicle-model", values);
+
+  return response.data;
+}
+
+export async function vehicleUpdateModel(params: Record<string, any>) {
+  const values = {
+    name: params.name,
+    status: params.status,
+    brandUuid: params.brandUuid,
+  };
+
+  const response = await restPut(`/vehicle-model/${params.modelUuid}`, values);
+
+  return response.data;
+}
+
+export function vehicleGetAllModelOptions() {
   return [
     {
       label: "Active",
