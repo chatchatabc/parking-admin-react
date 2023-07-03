@@ -103,7 +103,7 @@ export function vehicleGetAllBrandDoc() {
 
 export function vehicleGetBrandByIdDoc() {
   return `
-  query GetVehicleBrandById($id: String!) {
+  query GetVehicleBrandById($id: String) {
     getVehicleBrand(id: $id) {
       brandUuid
       name
@@ -148,6 +148,71 @@ export function vehicleGetTypeByIdDoc() {
       status
       createdAt
       updatedAt
+    }
+  }
+  `;
+}
+
+export function vehicleGetAllModelDoc() {
+  return `
+  query GetAllVehicleModels($page: Int, $size: Int, $keyword: String, $sortField: String, $sortBy: Int) {
+    getVehicleModels(page: $page, size: $size, keyword: $keyword, sortField: $sortField, sortBy: $sortBy) {
+      content {
+        modelUuid
+        brandUuid
+        name
+        status
+        createdAt
+        updatedAt
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
+    }
+  }
+  `;
+}
+
+export function vehicleGetModelDoc() {
+  return `
+  query GetVehicleModel($id: String!) {
+    getVehicleModel(id: $id) {
+      modelUuid
+      brandUuid
+      name
+      status
+      createdAt
+      updatedAt
+    }
+  }
+  `;
+}
+
+export function vehicleGetAllModelByBrandDoc() {
+  return `
+  query GetAllVehicleModelsByBrand($page: Int, $size: Int, $brandUuid: String!) {
+    getVehicleModelsByBrand(page: $page, size: $size, brandUuid: $brandUuid) {
+      content {
+        modelUuid
+        brandUuid
+        name
+        status
+        createdAt
+        updatedAt
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
     }
   }
   `;
