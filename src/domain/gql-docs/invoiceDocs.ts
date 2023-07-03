@@ -4,12 +4,16 @@ export function invoiceGetAllDoc() {
     getInvoices(page: $page, size: $size) {
       content {
         id
-        startAt
+        createdAt
         endAt
+        paidAt
         plateNumber
-
+        startAt
+        updatedAt
         parkingLotUuid
         vehicleUuid
+        total
+        estimatedParkingDurationInHours
       }
       pageInfo {
         size
@@ -29,12 +33,16 @@ export function invoiceGetByParkingLotDoc() {
     getInvoicesByParkingLot(page: $page, size: $size, id: $keyword) {
       content {
         id
-        startAt
+        createdAt
         endAt
+        paidAt
         plateNumber
-
+        startAt
+        updatedAt
         parkingLotUuid
         vehicleUuid
+        total
+        estimatedParkingDurationInHours
       }
       pageInfo {
         size
@@ -54,12 +62,16 @@ export function invoiceGetByUserDoc() {
     getInvoicesByUser(page: $page, size: $size, id: $keyword) {
       content {
         id
-        startAt
+        createdAt
         endAt
+        paidAt
         plateNumber
-
+        startAt
+        updatedAt
         parkingLotUuid
         vehicleUuid
+        total
+        estimatedParkingDurationInHours
       }
       pageInfo {
         size
