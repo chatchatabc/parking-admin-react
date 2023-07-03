@@ -37,3 +37,15 @@ export type VehicleType = {
 
   status?: number | null;
 };
+
+export type VehicleModel = {
+  modelUuid?: string | null;
+  brandUuid?: string | null;
+  name?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+
+  status?: number | null;
+
+  brand?: VehicleBrand | null;
+};
