@@ -42,6 +42,10 @@
         {
           "label": "Nodes",
           "path": "/commutes/nodes"
+        },
+        {
+          "label": "Maps",
+          "path": "/commutes/map"
         }
       ]
     },

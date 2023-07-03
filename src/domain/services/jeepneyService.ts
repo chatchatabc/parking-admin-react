@@ -1,4 +1,7 @@
-import { jeepneyGetAllDoc } from "../gql-docs/jeepneyDocs";
+import {
+  jeepneyGetAllByRouteDoc,
+  jeepneyGetAllDoc,
+} from "../gql-docs/jeepneyDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
@@ -18,6 +21,51 @@ export async function jeepneyGetAll(variables: CommonVariables) {
   }
 
   const data = response.data.data.getJeepneys;
+
+  return { data } as AxiosResponseData<CommonContent<Jeepney>>;
+}
+
+export async function jeepneyGetAllByRouteWithRoute(
+  variables: CommonVariables & { keyword: string }
+) {
+  const query = await jeepneyGetAllByRoute(variables);
+
+  if (query.errors) {
+    return query as AxiosResponseError;
+  }
+
+  const dataWithRoutes = query.data.content.map(async (jeepney: Jeepney) => {
+    const route = await routeGet({ keyword: jeepney.routeUuid ?? "" });
+
+    if (route.errors) {
+      return jeepney;
+    }
+    jeepney.route = route.data;
+
+    return jeepney;
+  });
+
+  const content = await Promise.all(dataWithRoutes);
+
+  return { data: { ...query.data, content } } as AxiosResponseData<
+    CommonContent<Jeepney>
+  >;
+}
+
+export async function jeepneyGetAllByRoute(
+  variables: CommonVariables & { keyword: string }
+) {
+  const query = await graphqlQuery(
+    jeepneyGetAllByRouteDoc(),
+    variables,
+    "JeepneyGetAllByRoute"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getJeepneysByRoute;
 
   return { data } as AxiosResponseData<CommonContent<Jeepney>>;
 }

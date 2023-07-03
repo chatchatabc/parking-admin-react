@@ -11,6 +11,11 @@ export type CommonContent<T> = {
   pageInfo: CommonPageInfo;
 };
 
+export type CommonOptions = {
+  label: any;
+  value: any;
+};
+
 export type CommonVariables = {
   [key: string]: any;
   page?: number;
