@@ -8,28 +8,24 @@ import {
   CommonContent,
   CommonVariables,
 } from "../../../domain/models/CommonModel";
-import { ColumnsType } from "antd/es/table";
+import { TableProps } from "antd/es/table";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
-type Props = {
-  dataProp?: Record<string, any>[];
+type Props = TableProps<any> & {
   showPagination?: boolean;
   localPagination?: boolean;
-  title: string;
-  columns: ColumnsType<Record<string, any>>;
   getData?: (
     variables: CommonVariables
   ) => Promise<AxiosResponseData<CommonContent<any>> | AxiosResponseError>;
 };
 
 function DynamicTable({
-  dataProp,
-  title,
+  dataSource,
   getData,
-  columns,
   localPagination = true,
   showPagination = true,
+  ...props
 }: Props) {
   // React Router
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,7 +42,7 @@ function DynamicTable({
   const [pagination, setPagination] = React.useState({
     current: Number(current),
     pageSize: Number(pageSize),
-    total: dataProp?.length ?? 0,
+    total: dataSource?.length ?? 0,
   });
 
   function handleNavigation(page: number, pageSize: number) {
@@ -88,7 +84,7 @@ function DynamicTable({
             const processedData = response.data.content.map(
               (item: any, index: number) => ({
                 ...item,
-                key: `${title}-${index}`,
+                key: `${props.caption}-${index}`,
               })
             );
 
@@ -108,13 +104,13 @@ function DynamicTable({
   return (
     <Table
       loading={loading}
-      columns={columns}
-      dataSource={dataProp ?? data}
+      dataSource={dataSource ?? data}
       pagination={
         showPagination ? { ...pagination, onChange: handleNavigation } : false
       }
       className="myTable"
       rowClassName={"myTableRow"}
+      {...props}
     />
   );
 }
