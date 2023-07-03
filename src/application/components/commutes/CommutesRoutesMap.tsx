@@ -1,9 +1,8 @@
 import React from "react";
 import { Route, RouteEdge, RouteNode } from "../../../domain/models/RouteModel";
 import {
-  routeGetAllNodesAndEdges,
+  routeGetAllWithNodesAndEdges,
   routeGetNodes,
-  routeGetNodesFromEdges,
 } from "../../../domain/services/routeService";
 import { message } from "antd";
 import mapboxgl from "mapbox-gl";
@@ -42,12 +41,7 @@ function CommutesRoutesMap() {
           <div className="flex space-x-2 text-xs underline">
             <button
               onClick={() => {
-                const nodesTest = routeGetNodesFromEdges({
-                  edges: record.edges ?? [],
-                  nodes: record.nodes ?? [],
-                });
-
-                setSelectedNodes(nodesTest);
+                setSelectedNodes(record.nodes ?? []);
                 setSelectedEdges(record.edges ?? []);
                 setCreate(true);
 
@@ -112,7 +106,7 @@ function CommutesRoutesMap() {
           setNodes(response.data?.content || []);
         }
 
-        const response2 = await routeGetAllNodesAndEdges({});
+        const response2 = await routeGetAllWithNodesAndEdges({});
 
         if (response2.errors) {
           response2.errors.forEach((error) => {
@@ -141,12 +135,7 @@ function CommutesRoutesMap() {
   React.useEffect(() => {
     if (map?.current && !create) {
       routes.forEach((route) => {
-        const sortedNodes = routeGetNodesFromEdges({
-          edges: route.edges ?? [],
-          nodes: route.nodes ?? [],
-        });
-
-        const coordinates = sortedNodes.map((node) => {
+        const coordinates = route.nodes?.map((node) => {
           return [node.longitude, node.latitude];
         });
 
