@@ -12,7 +12,6 @@ import {
 } from "../../../domain/services/routeService";
 import { Route } from "../../../domain/models/RouteModel";
 import { ColumnsType } from "antd/es/table";
-import JeepneyPositionComp from "../../components/JeepneyPositionComp";
 import { webSocketHandler } from "../../layouts/HomeLayout";
 import { StringCodec, Subscription } from "nats.ws";
 
@@ -31,6 +30,28 @@ function CommutesMapPage() {
       title: "Plate Number",
       key: "plateNumber",
       dataIndex: "plateNumber",
+    },
+    {
+      title: "Route",
+      key: "route",
+      render: (record: Jeepney) => {
+        return <p>{record.route?.name ?? ""}</p>;
+      },
+    },
+    {
+      title: "Location",
+      key: "location",
+      render: (record: Jeepney) => {
+        if (record.position) {
+          return (
+            <p>
+              {record.position?.latitude ?? ""},{" "}
+              {record.position?.longitude ?? ""}
+            </p>
+          );
+        }
+        return <p>loading...</p>;
+      },
     },
   ];
 
@@ -170,37 +191,17 @@ function CommutesMapPage() {
               const json = JSON.parse(sc.decode(m.data));
               const data = json.payload;
 
-              // Jeepney marker id
-              const jeepneyId = `jeepney-${String(data.plateNumber)}`;
+              const jeepneyIndex = jeepneys.findIndex(
+                (jeepney) => jeepney.jeepneyUuid === data.jeepneyUuid
+              );
 
-              // If jeepney marker is already drawn, remove it
-              if (map?.current?.getLayer(jeepneyId)) {
-                map?.current?.removeLayer(jeepneyId);
-                map?.current?.removeSource(jeepneyId);
+              if (jeepneyIndex !== -1) {
+                setJeepneys((prev) => {
+                  const newJeepneys = [...prev];
+                  newJeepneys[jeepneyIndex].position = data;
+                  return newJeepneys;
+                });
               }
-
-              // Add jeepney drawing layer and source
-              map?.current?.addSource(jeepneyId, {
-                type: "geojson",
-                data: {
-                  type: "Feature",
-                  properties: {},
-                  geometry: {
-                    type: "Point",
-                    coordinates: [data.longitude, data.latitude],
-                  },
-                },
-              });
-
-              map.current?.addLayer({
-                id: jeepneyId,
-                type: "circle",
-                source: jeepneyId,
-                paint: {
-                  "circle-radius": 8,
-                  "circle-color": "#007cbf",
-                },
-              });
             }
           })();
           channels.push(channel);
@@ -231,6 +232,59 @@ function CommutesMapPage() {
       });
     };
   }, [routes]);
+
+  React.useEffect(() => {
+    if (map?.current) {
+      jeepneys.forEach((jeepney) => {
+        // Jeepney position
+        const position = jeepney.position ?? {
+          latitude: 0,
+          longitude: 0,
+        };
+
+        // Jeepney marker id
+        const jeepneyId = `jeepney-${String(jeepney.plateNumber)}`;
+
+        // Add jeepney drawing layer and source
+        map?.current?.addSource(jeepneyId, {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "Point",
+              coordinates: [position.longitude, position.latitude],
+            },
+          },
+        });
+
+        map.current?.addLayer({
+          id: jeepneyId,
+          type: "circle",
+          source: jeepneyId,
+          paint: {
+            "circle-radius": 8,
+            "circle-color": "#007cbf",
+          },
+        });
+      });
+    }
+
+    return () => {
+      // Remove drawn jeepneys
+      if (map?.current) {
+        jeepneys.forEach((jeepney) => {
+          const routeId = `jeepney-${String(jeepney.plateNumber)}`;
+          if (map?.current?.getLayer(routeId)) {
+            map?.current?.removeLayer(routeId);
+          }
+          if (map?.current?.getSource(routeId)) {
+            map?.current?.removeSource(routeId);
+          }
+        });
+      }
+    };
+  }, [jeepneys]);
 
   return (
     <div className="flex flex-wrap p-2 bg-bg1">
