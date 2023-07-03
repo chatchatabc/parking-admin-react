@@ -44,16 +44,25 @@ function CommutesMapPage() {
       render: (record: Jeepney) => {
         if (record.position) {
           return (
-            <p>
+            <button onClick={() => handleLocateJeepney(record)}>
               {record.position?.latitude ?? ""},{" "}
               {record.position?.longitude ?? ""}
-            </p>
+            </button>
           );
         }
         return <p>loading...</p>;
       },
     },
   ];
+
+  function handleLocateJeepney(jeepney: Jeepney) {
+    if (jeepney.position) {
+      map.current?.flyTo({
+        center: [jeepney.position.longitude, jeepney.position.latitude],
+        zoom: 17,
+      });
+    }
+  }
 
   // Map initialization
   React.useEffect(() => {
@@ -63,6 +72,17 @@ function CommutesMapPage() {
         style: "mapbox://styles/mapbox/streets-v12", // style URL
         center: [125.60355, 7.077729], // starting position [lng, lat]
         zoom: 13, // starting zoom
+      });
+
+      map.current?.on("load", () => {
+        // add car image
+        map.current?.loadImage(
+          "/images/car-top-view.png",
+          (error: any, image: any) => {
+            if (error) throw error;
+            map.current?.addImage("jeepney", image);
+          }
+        );
       });
     }
   }, []);
@@ -233,6 +253,7 @@ function CommutesMapPage() {
     };
   }, [routes]);
 
+  // Draw jeepneys
   React.useEffect(() => {
     if (map?.current) {
       jeepneys.forEach((jeepney) => {
@@ -244,6 +265,7 @@ function CommutesMapPage() {
 
         // Jeepney marker id
         const jeepneyId = `jeepney-${String(jeepney.plateNumber)}`;
+        const rotation = jeepney.position?.direction ?? 0;
 
         // Add jeepney drawing layer and source
         map?.current?.addSource(jeepneyId, {
@@ -258,13 +280,15 @@ function CommutesMapPage() {
           },
         });
 
-        map.current?.addLayer({
+        map?.current?.addLayer({
           id: jeepneyId,
-          type: "circle",
+          type: "symbol",
           source: jeepneyId,
-          paint: {
-            "circle-radius": 8,
-            "circle-color": "#007cbf",
+          layout: {
+            "icon-image": "jeepney",
+            "icon-size": 0.08,
+            "icon-rotate": rotation,
+            "icon-allow-overlap": true,
           },
         });
       });
