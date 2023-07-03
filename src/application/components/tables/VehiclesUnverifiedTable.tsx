@@ -34,7 +34,7 @@ function VehiclesUnverifiedTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      title="vehicle-table"
+      caption="vehicles-table"
       getData={vehicleGetAllWithTypes}
     />
   );
