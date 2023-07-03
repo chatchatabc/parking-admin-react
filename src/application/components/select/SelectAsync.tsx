@@ -1,20 +1,30 @@
-import { Select, message } from "antd";
+import { Select, SelectProps, message } from "antd";
 import React from "react";
+import {
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../../../domain/models/AxiosModel";
+import {
+  CommonOptions,
+  CommonVariables,
+} from "../../../domain/models/CommonModel";
 
-type Props = {
-  className?: string;
-  getData: Function;
-  placeholder?: string;
-  mode?: "multiple" | "tags";
-}
+type Props = SelectProps & {
+  getData: (
+    variables: CommonVariables
+  ) => Promise<AxiosResponseData<CommonOptions[]> | AxiosResponseError>;
+};
 
-function SelectAsync({ className, getData, placeholder, mode }: Props) {
+function SelectAsync({ getData, className, ...props }: Props) {
   const [data, setData] = React.useState<any>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await getData();
+      const response = await getData({
+        page: 0,
+        size: 100000,
+      });
 
       if (response.errors) {
         message.error("Failed to fetch data.");
@@ -36,8 +46,7 @@ function SelectAsync({ className, getData, placeholder, mode }: Props) {
       loading={loading}
       disabled={loading}
       options={data}
-      placeholder={placeholder}
-      mode={mode}
+      {...props}
     />
   );
 }
