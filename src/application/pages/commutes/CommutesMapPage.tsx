@@ -46,102 +46,6 @@ function CommutesMapPage() {
     }
   }, []);
 
-  // Draw routes, and subscribe to websocket
-  React.useEffect(() => {
-    // Websocket Channels
-    const channels: Subscription[] = [];
-
-    (async () => {
-      // Drawing of routes
-      if (map?.current) {
-        routes.forEach((route) => {
-          const coordinates = route.nodes?.map((node) => {
-            return [node.longitude, node.latitude];
-          });
-
-          const routeId = `route-${String(route.routeUuid)}`;
-          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-
-          // Add name to the line
-          map.current?.addSource(routeId, {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              properties: {},
-              geometry: {
-                type: "LineString",
-                coordinates,
-              },
-            },
-          });
-
-          map.current?.addLayer({
-            id: routeId,
-            type: "line",
-            source: routeId,
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            paint: {
-              "line-color": `#${randomColor}`,
-              "line-width": 8,
-            },
-          });
-        });
-      }
-
-      // Subscribe to websocket
-      routes.forEach((route) => {
-        const channel = webSocketHandler?.subscribe(`route-${route.slug}`);
-        if (channel) {
-          (async () => {
-            for await (const m of channel) {
-              console.log(`[${channel.getProcessed()}]: ${sc.decode(m.data)}`);
-              const data = JSON.parse(sc.decode(m.data));
-              const jeepneyIndex = jeepneys.findIndex((jeepney) => {
-                return jeepney.jeepneyUuid === data.jeepneyUuid;
-              });
-
-              if (jeepneyIndex !== -1) {
-                const jeepney = jeepneys[jeepneyIndex];
-                jeepney.position = data;
-                setJeepneys((prev) => {
-                  prev[jeepneyIndex] = jeepney;
-                  return prev;
-                });
-              }
-            }
-          })();
-          channels.push(channel);
-        }
-      });
-
-      // Set loading to false
-      setLoading(false);
-    })();
-
-    return () => {
-      // Remove drawn routes
-      if (map?.current) {
-        routes.forEach((route) => {
-          const routeId = `route-${String(route.routeUuid)}`;
-          if (map?.current?.getLayer(routeId)) {
-            map?.current?.removeLayer(routeId);
-          }
-          if (map?.current?.getSource(routeId)) {
-            map?.current?.removeSource(routeId);
-          }
-        });
-      }
-
-      // Unsubscribe websocket
-      channels.forEach((channel) => {
-        channel.unsubscribe();
-      });
-    };
-  }, [routes]);
-
   // Fetch routes and jeeps to be displayed
   React.useEffect(() => {
     if (routeUuids.length > routes.length) {
@@ -212,8 +116,121 @@ function CommutesMapPage() {
     }
   }, [routeUuids]);
 
-  // Drawing of jeepneys
-  React.useEffect(() => {}, [jeepneys]);
+  // Draw routes, and subscribe to websocket
+  React.useEffect(() => {
+    // Websocket Channels
+    const channels: Subscription[] = [];
+
+    (async () => {
+      // Drawing of routes
+      if (map?.current) {
+        routes.forEach((route) => {
+          const coordinates = route.nodes?.map((node) => {
+            return [node.longitude, node.latitude];
+          });
+
+          const routeId = `route-${String(route.routeUuid)}`;
+          const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+          // Add name to the line
+          map.current?.addSource(routeId, {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates,
+              },
+            },
+          });
+
+          map.current?.addLayer({
+            id: routeId,
+            type: "line",
+            source: routeId,
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-color": `#${randomColor}`,
+              "line-width": 8,
+            },
+          });
+        });
+      }
+
+      // Subscribe to websocket
+      routes.forEach((route) => {
+        const channel = webSocketHandler?.subscribe(`route-${route.slug}`);
+        if (channel) {
+          (async () => {
+            for await (const m of channel) {
+              const json = JSON.parse(sc.decode(m.data));
+              const data = json.payload;
+
+              // Jeepney marker id
+              const jeepneyId = `jeepney-${String(data.plateNumber)}`;
+
+              // If jeepney marker is already drawn, remove it
+              if (map?.current?.getLayer(jeepneyId)) {
+                map?.current?.removeLayer(jeepneyId);
+                map?.current?.removeSource(jeepneyId);
+              }
+
+              // Add jeepney drawing layer and source
+              map?.current?.addSource(jeepneyId, {
+                type: "geojson",
+                data: {
+                  type: "Feature",
+                  properties: {},
+                  geometry: {
+                    type: "Point",
+                    coordinates: [data.longitude, data.latitude],
+                  },
+                },
+              });
+
+              map.current?.addLayer({
+                id: jeepneyId,
+                type: "circle",
+                source: jeepneyId,
+                paint: {
+                  "circle-radius": 8,
+                  "circle-color": "#007cbf",
+                },
+              });
+            }
+          })();
+          channels.push(channel);
+        }
+      });
+
+      // Set loading to false
+      setLoading(false);
+    })();
+
+    return () => {
+      // Remove drawn routes
+      if (map?.current) {
+        routes.forEach((route) => {
+          const routeId = `route-${String(route.routeUuid)}`;
+          if (map?.current?.getLayer(routeId)) {
+            map?.current?.removeLayer(routeId);
+          }
+          if (map?.current?.getSource(routeId)) {
+            map?.current?.removeSource(routeId);
+          }
+        });
+      }
+
+      // Unsubscribe websocket
+      channels.forEach((channel) => {
+        channel.unsubscribe();
+      });
+    };
+  }, [routes]);
 
   return (
     <div className="flex flex-wrap p-2 bg-bg1">
