@@ -1,3 +1,18 @@
+export function vehicleGetDoc() {
+  return `
+  query GetVehicle($keyword: String!) {
+    getVehicle(id: $keyword) {
+      vehicleUuid
+      name
+      plateNumber
+      typeUuid
+      createdAt
+      updatedAt
+    }
+  }
+  `;
+}
+
 export function vehicleGetAllDoc() {
   return `
   query GetAllVehicles($page: Int, $size: Int) {

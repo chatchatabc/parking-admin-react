@@ -84,3 +84,23 @@ export function invoiceGetByUserDoc() {
   }
   `;
 }
+
+export function invoiceGetDoc() {
+  return `
+  query GetInvoice($keyword: String!) {
+    getInvoice(id: $keyword) {
+      id
+      createdAt
+      endAt
+      paidAt
+      plateNumber
+      startAt
+      updatedAt
+      parkingLotUuid
+      vehicleUuid
+      total
+      estimatedParkingDurationInHours
+    }
+  }
+  `;
+}
