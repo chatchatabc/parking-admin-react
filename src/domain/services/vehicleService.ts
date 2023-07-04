@@ -7,6 +7,7 @@ import {
   vehicleGetDoc,
   vehicleGetBrandDoc,
   vehicleGetModelDoc,
+  vehicleGetAllModelDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
@@ -155,6 +156,42 @@ export async function vehicleGetAllByUserUuid(
   const data = query.data.data.getVehiclesByOwner;
 
   return { data } as AxiosResponseData<CommonContent<Vehicle>>;
+}
+
+export async function vehicleGetAllModel(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    vehicleGetAllModelDoc(),
+    variables,
+    "VehicleGetAllModel"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleModels;
+
+  const modelsPromise = data.content.map(async (model: VehicleModel) => {
+    const brand = await vehicleGetBrand({ keyword: model.brandUuid ?? "" });
+
+    if (!brand.errors) {
+      model.brand = brand.data;
+    }
+
+    const type = await vehicleGetType({ keyword: model.typeUuid ?? "" });
+
+    if (!type.errors) {
+      model.type = type.data;
+    }
+
+    return model;
+  });
+
+  const content = await Promise.all(modelsPromise);
+
+  data.content = content;
+
+  return { data } as AxiosResponseData<CommonContent<VehicleModel>>;
 }
 
 export async function vehicleGetModel(variables: { keyword: string }) {
