@@ -19,6 +19,7 @@ import CommutesNodesPage from "./pages/commutes/CommutesNodesPage";
 import CommutesMapPage from "./pages/commutes/CommutesMapPage";
 import VehicleBrandPage from "./pages/vehicles/VehicleBrandPage";
 import VehicleTypePage from "./pages/vehicles/VehicleTypePage";
+import InvoiceProfilePage from "./pages/invoices/InvoiceProfilePage";
 
 message.config({
   maxCount: 2,
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <InvoicePage />,
+          },
+          {
+            path: ":invoiceId",
+            element: <InvoiceProfilePage />,
           },
         ],
       },

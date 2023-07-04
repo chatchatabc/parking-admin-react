@@ -2,7 +2,7 @@ import { ParkingLot } from "./ParkingLotModel";
 import { Vehicle } from "./VehicleModel";
 
 export type Invoice = {
-  id: string;
+  invoiceUuid: string;
   createdAt: string;
   endAt: string;
   paidAt: string;

@@ -3,13 +3,17 @@ export function invoiceGetAllDoc() {
   query GetAllInvoices($page: Int = 0, $size: Int = 10) {
     getInvoices(page: $page, size: $size) {
       content {
-        id
-        startAt
+        invoiceUuid
+        createdAt
         endAt
+        paidAt
         plateNumber
-
+        startAt
+        updatedAt
         parkingLotUuid
         vehicleUuid
+        total
+        estimatedParkingDurationInHours
       }
       pageInfo {
         size
@@ -28,13 +32,17 @@ export function invoiceGetByParkingLotDoc() {
   query GetInvoiceByParkingLot($page: Int = 0, $size: Int = 10, $keyword: String!) {
     getInvoicesByParkingLot(page: $page, size: $size, id: $keyword) {
       content {
-        id
-        startAt
+        invoiceUuid
+        createdAt
         endAt
+        paidAt
         plateNumber
-
+        startAt
+        updatedAt
         parkingLotUuid
         vehicleUuid
+        total
+        estimatedParkingDurationInHours
       }
       pageInfo {
         size
@@ -53,13 +61,17 @@ export function invoiceGetByUserDoc() {
   query GetInvoiceByUser($page: Int = 0, $size: Int = 10, $keyword: String!) {
     getInvoicesByUser(page: $page, size: $size, id: $keyword) {
       content {
-        id
-        startAt
+        invoiceUuid
+        createdAt
         endAt
+        paidAt
         plateNumber
-
+        startAt
+        updatedAt
         parkingLotUuid
         vehicleUuid
+        total
+        estimatedParkingDurationInHours
       }
       pageInfo {
         size
@@ -68,6 +80,26 @@ export function invoiceGetByUserDoc() {
         last
         empty
       }
+    }
+  }
+  `;
+}
+
+export function invoiceGetDoc() {
+  return `
+  query GetInvoice($keyword: String!) {
+    getInvoice(id: $keyword) {
+      invoiceUuid
+      createdAt
+      endAt
+      paidAt
+      plateNumber
+      startAt
+      updatedAt
+      parkingLotUuid
+      vehicleUuid
+      total
+      estimatedParkingDurationInHours
     }
   }
   `;

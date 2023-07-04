@@ -4,9 +4,7 @@ export type Vehicle = {
   vehicleUuid?: string | null;
   name?: string | null;
   plateNumber?: string | null;
-  brandUuid?: string | null;
   modelUuid?: string | null;
-  typeUuid?: string | null;
   color?: string | null;
   year?: string | null;
   verifiedAt?: string | null;
@@ -18,6 +16,7 @@ export type Vehicle = {
   verifiedBy?: number | null;
 
   owner?: User | null;
+  model?: VehicleModel | null;
 };
 
 export type VehicleBrand = {
@@ -36,4 +35,18 @@ export type VehicleType = {
   updatedAt?: string | null;
 
   status?: number | null;
+};
+
+export type VehicleModel = {
+  modelUuid?: string | null;
+  name?: string | null;
+  brandUuid?: string | null;
+  typeUuid?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+
+  status?: number | null;
+
+  brand?: VehicleBrand | null;
+  type?: VehicleType | null;
 };
