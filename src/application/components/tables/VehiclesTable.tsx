@@ -7,6 +7,7 @@ import CheckIconAsset from "../../assets/CheckIconAsset";
 import XIconAsset from "../../assets/XIconAsset";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   showPagination?: boolean;
@@ -14,7 +15,9 @@ type Props = {
 };
 
 function VehiclesTable({ showPagination, localPagination }: Props) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const columns: ColumnsType<Vehicle> = [
     {
       title: "Plate Number",
@@ -23,7 +26,14 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
         const date = new Date(record.verifiedAt ?? "");
         return (
           <div className="flex items-center gap-1">
-            <p>{record.plateNumber}</p>
+            <button
+              className="underline hover:no-underline"
+              onClick={() => {
+                navigate(`/vehicles/${record.plateNumber}`);
+              }}
+            >
+              {record.plateNumber}
+            </button>
             <Popover
               color={record.verifiedAt ? "green" : "red"}
               content={
