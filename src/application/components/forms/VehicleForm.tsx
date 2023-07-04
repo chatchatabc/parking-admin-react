@@ -83,9 +83,15 @@ function VehicleForm({ formRef, title, handleSubmit, loading }: Props) {
               message: "Need some input",
               required: true,
             },
+            {
+              message: "Invalid plate number",
+              pattern: new RegExp(
+                /^[A-Z]{2}-\d{5}$|^[A-Z]{3}-\d{4}$|^\d{4}-\d{7}$|^[A-Z]{2}-\d{5}$/
+              ),
+            },
           ]}
         >
-          <Input placeholder="Plate Number" />
+          <Input placeholder="ABC-1234" />
         </Form.Item>
 
         <Form.Item
