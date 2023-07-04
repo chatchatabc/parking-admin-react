@@ -1,9 +1,6 @@
 import DynamicTable from "./DynamicTable";
-import { Vehicle } from "../../../domain/models/VehicleModel";
 import { ColumnsType } from "antd/es/table";
 import { Invoice } from "../../../domain/models/InvoiceModel";
-import { ParkingLot } from "../../../domain/models/ParkingModel";
-import { User } from "../../../domain/models/UserModel";
 import { useNavigate } from "react-router-dom";
 import {
   CommonContent,
@@ -13,8 +10,6 @@ import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
-
-type NewInvoice = Invoice<ParkingLot<User>>;
 
 type Props = {
   showPagination?: boolean;
@@ -28,16 +23,27 @@ type Props = {
 function InvoicesTable({ showPagination, getData }: Props) {
   const navigate = useNavigate();
 
-  const columns: ColumnsType<Record<string, any>> = [
+  const columns: ColumnsType<Invoice> = [
     {
       title: "Invoice ID",
-      key: "id",
-      dataIndex: "id",
+      key: "invoiceUuid",
+      render: (record: Invoice) => {
+        return (
+          <button
+            className="underline hover:no-underline"
+            onClick={() => {
+              navigate(`/invoices/${record.invoiceUuid}`);
+            }}
+          >
+            {record.invoiceUuid}
+          </button>
+        );
+      },
     },
     {
       title: "Parking Lot",
       key: "parkingLot",
-      render: (record: NewInvoice) => {
+      render: (record: Invoice) => {
         if (
           record.parkingLot?.owner?.username ||
           record.parkingLot?.owner?.phone
@@ -60,19 +66,23 @@ function InvoicesTable({ showPagination, getData }: Props) {
       },
     },
     {
-      title: "Vehicle Type",
-      key: "type",
-      render: (record: Vehicle) => {
-        if (record.type) {
-          return <span>{record.type?.name}</span>;
-        }
-        return <span>Unknown</span>;
-      },
-    },
-    {
       title: "Plate Number",
       key: "plateNumber",
-      dataIndex: "plateNumber",
+      render: (record) => {
+        if (record.vehicle) {
+          return (
+            <button
+              className="underline hover:no-underline"
+              onClick={() => {
+                navigate(`/vehicles/${record.vehicle.id}`);
+              }}
+            >
+              {record.id}
+            </button>
+          );
+        }
+        return <p>{record.plateNumber ?? "Unknown"}</p>;
+      },
     },
   ];
 
