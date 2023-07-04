@@ -227,8 +227,8 @@ export async function vehicleGetModel(variables: { keyword: string }) {
 }
 
 export async function vehicleCreateModel(values: Record<string, any>) {
-  const { name, brandUuid, status } = values;
-  const data = { name, brandUuid, status };
+  const { name, brandUuid, status, typeUuid } = values;
+  const data = { name, brandUuid, status, typeUuid };
 
   const response = await restPost("/vehicle-model", data);
 
