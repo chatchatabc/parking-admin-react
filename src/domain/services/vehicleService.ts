@@ -190,11 +190,10 @@ export async function vehicleGetModel(variables: { keyword: string }) {
 }
 
 export async function vehicleCreate(values: Record<string, any>) {
-  const { userUuid } = values;
+  const { userUuid, name, plateNumber, modelUuid, color, year } = values;
+  const data = { name, plateNumber, modelUuid, color, year };
 
-  delete values.userUuid;
-
-  const response = await restPost(`/vehicle/register/${userUuid}`, values);
+  const response = await restPost(`/vehicle/${userUuid}`, data);
 
   return response.data;
 }
