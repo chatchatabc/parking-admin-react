@@ -7,11 +7,16 @@ import {
   vehicleGetDoc,
   vehicleGetBrandDoc,
   vehicleGetModelDoc,
+  vehicleGetAllModelDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import {
+  CommonContent,
+  CommonOptions,
+  CommonVariables,
+} from "../models/CommonModel";
 import { User } from "../models/UserModel";
 import {
   Vehicle,
@@ -74,31 +79,25 @@ export async function vehicleGetAll(variables: CommonVariables) {
 
   const data = query.data.data.getVehicles;
 
-  return { data } as AxiosResponseData<CommonContent<Vehicle>>;
-}
+  const vehiclesPromise = data.content.map(async (vehicle: Vehicle) => {
+    const user = await userGetByVehicle({ keyword: vehicle.vehicleUuid ?? "" });
+    if (!user.errors) {
+      vehicle.owner = user.data;
+    }
 
-export async function vehicleGetAllWithTypes(variables: CommonVariables) {
-  const vehicles = await vehicleGetAll(variables);
-
-  if (vehicles.errors) {
-    return vehicles;
-  }
-
-  const contentPromise = vehicles.data.content.map(async (vehicle) => {
-    const type = await vehicleGetType({ keyword: vehicle.typeUuid ?? "" });
-
-    if (!type.errors) {
-      vehicle.type = type.data;
+    const model = await vehicleGetModel({ keyword: vehicle.modelUuid ?? "" });
+    if (!model.errors) {
+      vehicle.model = model.data;
     }
 
     return vehicle;
   });
 
-  const content = await Promise.all(contentPromise);
+  const content = await Promise.all(vehiclesPromise);
 
-  return { data: { ...vehicles.data, content } } as AxiosResponseData<
-    CommonContent<Vehicle>
-  >;
+  data.content = content;
+
+  return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
 export async function vehicleGetType(variables: { keyword: string }) {
@@ -163,6 +162,42 @@ export async function vehicleGetAllByUserUuid(
   return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
+export async function vehicleGetAllModel(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    vehicleGetAllModelDoc(),
+    variables,
+    "VehicleGetAllModel"
+  );
+
+  if (query.data.errors) {
+    return query.data as AxiosResponseError;
+  }
+
+  const data = query.data.data.getVehicleModels;
+
+  const modelsPromise = data.content.map(async (model: VehicleModel) => {
+    const brand = await vehicleGetBrand({ keyword: model.brandUuid ?? "" });
+
+    if (!brand.errors) {
+      model.brand = brand.data;
+    }
+
+    const type = await vehicleGetType({ keyword: model.typeUuid ?? "" });
+
+    if (!type.errors) {
+      model.type = type.data;
+    }
+
+    return model;
+  });
+
+  const content = await Promise.all(modelsPromise);
+
+  data.content = content;
+
+  return { data } as AxiosResponseData<CommonContent<VehicleModel>>;
+}
+
 export async function vehicleGetModel(variables: { keyword: string }) {
   const query = await graphqlQuery(
     vehicleGetModelDoc(),
@@ -195,12 +230,63 @@ export async function vehicleGetModel(variables: { keyword: string }) {
   return { data: model } as AxiosResponseData<VehicleModel>;
 }
 
+export async function vehicleCreateModel(values: Record<string, any>) {
+  const { name, brandUuid, status, typeUuid } = values;
+  const data = { name, brandUuid, status, typeUuid };
+
+  const response = await restPost("/vehicle-model", data);
+
+  return response.data;
+}
+
+export async function vehicleUpdateModel(values: Record<string, any>) {
+  const { name, brandUuid, status, typeUuid, modelUuid } = values;
+  const data = { name, brandUuid, status, typeUuid };
+
+  const response = await restPost(`/vehicle-model/${modelUuid}`, data);
+
+  return response.data;
+}
+
+export async function vehicleOptionsTypeUuid() {
+  const query = await vehicleGetAllType({ page: 0, size: 100000 });
+
+  if (query.errors) {
+    return query;
+  }
+
+  const data = query.data.content.map((type) => {
+    return {
+      label: type.name,
+      value: type.typeUuid,
+    };
+  });
+
+  return { data } as AxiosResponseData<CommonOptions[]>;
+}
+
+export async function vehicleOptionsBrandUuid() {
+  const query = await vehicleGetAllBrand({ page: 0, size: 100000 });
+
+  if (query.errors) {
+    return query;
+  }
+
+  const data = query.data.content.map((brand) => {
+    return {
+      label: brand.name,
+      value: brand.brandUuid,
+    };
+  });
+
+  return { data } as AxiosResponseData<CommonOptions[]>;
+}
+
 export async function vehicleCreate(values: Record<string, any>) {
-  const { userUuid } = values;
+  const { userUuid, name, plateNumber, modelUuid, color, year } = values;
+  const data = { name, plateNumber, modelUuid, color, year };
 
-  delete values.userUuid;
-
-  const response = await restPost(`/vehicle/register/${userUuid}`, values);
+  const response = await restPost(`/vehicle/${userUuid}`, data);
 
   return response.data;
 }
@@ -307,6 +393,23 @@ export async function vehicleUpdateType(params: Record<string, any>) {
 }
 
 export function vehicleGetAllTypeOptions() {
+  return [
+    {
+      label: "Active",
+      value: 1,
+    },
+    {
+      label: "Draft",
+      value: 0,
+    },
+    {
+      label: "Inactive",
+      value: -1,
+    },
+  ];
+}
+
+export function vehicleOptionsModelStatus() {
   return [
     {
       label: "Active",

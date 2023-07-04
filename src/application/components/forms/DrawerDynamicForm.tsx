@@ -21,6 +21,7 @@ import VehicleBrandCreateForm from "./VehicleBrandCreateForm";
 import VehicleBrandUpdateForm from "./VehicleBrandUpdateForm";
 import VehicleTypeCreateForm from "./VehicleTypeCreateForm";
 import VehicleTypeUpdateForm from "./VehicleTypeUpdateForm";
+import VehicleModelForm from "./VehicleModelForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
@@ -160,6 +161,14 @@ function DrawerDynamicForm() {
       )}
       {drawerForm.content === "jeepneyCreate" && (
         <JeepneyCreateForm
+          formRef={form}
+          title={drawerForm.title}
+          handleSubmit={handleSubmit}
+          loading={drawerForm.loading}
+        />
+      )}
+      {drawerForm.content === "vehicleModel" && (
+        <VehicleModelForm
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}

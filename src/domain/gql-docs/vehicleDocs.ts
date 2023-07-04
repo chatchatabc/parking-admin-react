@@ -27,7 +27,13 @@ export function vehicleGetAllDoc() {
         vehicleUuid
         name
         plateNumber
-        typeUuid
+        modelUuid
+        color
+        year
+        verifiedAt
+        verifiedBy
+        rejectionReason
+        status
         createdAt
         updatedAt
       }
@@ -147,7 +153,7 @@ export function vehicleGetAllTypeDoc() {
 
 export function vehicleGetModelDoc() {
   return `
-  query GetVehicleModelById($keyword: String!) {
+  query GetVehicleModel($keyword: String!) {
     getVehicleModel(id: $keyword) {
       modelUuid
       brandUuid
@@ -156,6 +162,32 @@ export function vehicleGetModelDoc() {
       status
       createdAt
       updatedAt
+    }
+  }
+  `;
+}
+
+export function vehicleGetAllModelDoc() {
+  return `
+  query GetAllVehicleModels($page: Int, $size: Int, $keyword: String, $sortField: String, $sortBy: Int) {
+    getVehicleModels(page: $page, size: $size, keyword: $keyword, sortField: $sortField, sortBy: $sortBy) {
+      content {
+        modelUuid
+        brandUuid
+        typeUuid
+        name
+        status
+        createdAt
+        updatedAt
+      }
+
+      pageInfo {
+        size
+        totalElements
+        first
+        last
+        empty
+      }
     }
   }
   `;
