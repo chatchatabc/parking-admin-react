@@ -74,31 +74,25 @@ export async function vehicleGetAll(variables: CommonVariables) {
 
   const data = query.data.data.getVehicles;
 
-  return { data } as AxiosResponseData<CommonContent<Vehicle>>;
-}
+  const vehiclesPromise = data.content.map(async (vehicle: Vehicle) => {
+    const user = await userGetByVehicle({ keyword: vehicle.vehicleUuid ?? "" });
+    if (!user.errors) {
+      vehicle.owner = user.data;
+    }
 
-export async function vehicleGetAllWithTypes(variables: CommonVariables) {
-  const vehicles = await vehicleGetAll(variables);
-
-  if (vehicles.errors) {
-    return vehicles;
-  }
-
-  const contentPromise = vehicles.data.content.map(async (vehicle) => {
-    const type = await vehicleGetType({ keyword: vehicle.typeUuid ?? "" });
-
-    if (!type.errors) {
-      vehicle.type = type.data;
+    const model = await vehicleGetModel({ keyword: vehicle.modelUuid ?? "" });
+    if (!model.errors) {
+      vehicle.model = model.data;
     }
 
     return vehicle;
   });
 
-  const content = await Promise.all(contentPromise);
+  const content = await Promise.all(vehiclesPromise);
 
-  return { data: { ...vehicles.data, content } } as AxiosResponseData<
-    CommonContent<Vehicle>
-  >;
+  data.content = content;
+
+  return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
 export async function vehicleGetType(variables: { keyword: string }) {

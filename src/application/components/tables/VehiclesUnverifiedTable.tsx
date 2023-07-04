@@ -1,5 +1,5 @@
 import DynamicTable from "./DynamicTable";
-import { vehicleGetAllWithTypes } from "../../../domain/services/vehicleService";
+import { vehicleGetAll } from "../../../domain/services/vehicleService";
 import { Vehicle } from "../../../domain/models/VehicleModel";
 import { ColumnsType } from "antd/es/table";
 
@@ -21,8 +21,8 @@ function VehiclesUnverifiedTable({ showPagination, localPagination }: Props) {
       title: "Vehicle Type",
       key: "type",
       render: (record: Vehicle) => {
-        if (record.type) {
-          return <span>{record.type?.name}</span>;
+        if (record.model?.type) {
+          return <span>{record.model?.type?.name}</span>;
         }
         return <span>Unknown</span>;
       },
@@ -35,7 +35,7 @@ function VehiclesUnverifiedTable({ showPagination, localPagination }: Props) {
       localPagination={localPagination}
       columns={columns}
       caption="vehicles-table"
-      getData={vehicleGetAllWithTypes}
+      getData={vehicleGetAll}
     />
   );
 }
