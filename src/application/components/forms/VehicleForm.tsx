@@ -49,7 +49,7 @@ function VehicleForm({ formRef, title, handleSubmit, loading }: Props) {
           rules={[
             {
               message: "Need some input",
-              required: true,
+              required: !formRef.getFieldValue("updating"),
             },
           ]}
           hidden={formRef.getFieldValue("updating")}

@@ -5,6 +5,8 @@ import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
 import CheckIconAsset from "../../assets/CheckIconAsset";
 import XIconAsset from "../../assets/XIconAsset";
+import { useDispatch } from "react-redux";
+import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
 type Props = {
   showPagination?: boolean;
@@ -12,6 +14,7 @@ type Props = {
 };
 
 function VehiclesTable({ showPagination, localPagination }: Props) {
+  const dispatch = useDispatch();
   const columns: ColumnsType<Vehicle> = [
     {
       title: "Plate Number",
@@ -77,6 +80,32 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       title: "Name",
       key: "name",
       dataIndex: "name",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (record: Vehicle) => {
+        return (
+          <div className="flex items-center gap-2">
+            <button
+              className="text-blue-500 hover:text-blue-600"
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    title: "Edit Vehicle",
+                    mode: "update",
+                    content: "vehicle",
+                    data: { ...record, updating: true },
+                    show: true,
+                  })
+                );
+              }}
+            >
+              Edit
+            </button>
+          </div>
+        );
+      },
     },
   ];
 
