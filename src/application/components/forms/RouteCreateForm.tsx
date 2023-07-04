@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, Select } from "antd";
+import { ColorPicker, Form, FormInstance, Input, Select } from "antd";
 import {
   AxiosResponseData,
   AxiosResponseError,
@@ -28,6 +28,7 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
     <Form
       name={title}
       onFinish={(e) => {
+        e.color = e.color.toHexString();
         if (e.routeUuid) {
           handleSubmit(routeUpdateWithNodes, e, "Route updated successfully");
         } else {
@@ -41,7 +42,7 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
         <Form.Item name="routeUuid" hidden></Form.Item>
         <Form.Item name="routeId" hidden></Form.Item>
         <Form.Item
-          className="w-full"
+          className="w-5/6"
           name="name"
           label="Name"
           rules={[
@@ -52,6 +53,22 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
           ]}
         >
           <Input placeholder="Name" />
+        </Form.Item>
+
+        <Form.Item
+          className="w-1/6"
+          name="color"
+          label="Color"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
+          initialValue={"#ffffff"}
+          valuePropName="hex"
+        >
+          <ColorPicker format="hex" className="w-full" />
         </Form.Item>
 
         <Form.Item

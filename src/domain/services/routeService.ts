@@ -22,8 +22,14 @@ import {
 } from "../models/RouteModel";
 
 export async function routeCreateWithNodes(params: Record<string, any>) {
-  const { nodes, name, description, slug, status } = params;
-  const responseRoute = await routeCreate({ name, description, slug, status });
+  const { nodes, name, description, slug, status, color } = params;
+  const responseRoute = await routeCreate({
+    name,
+    description,
+    slug,
+    status,
+    color,
+  });
 
   if (responseRoute.errors) {
     return responseRoute as AxiosResponseError;
@@ -46,13 +52,15 @@ export async function routeCreateWithNodes(params: Record<string, any>) {
 }
 
 export async function routeUpdateWithNodes(params: Record<string, any>) {
-  const { nodes, name, description, slug, status, routeId, routeUuid } = params;
+  const { nodes, name, description, slug, status, routeId, routeUuid, color } =
+    params;
   const responseRoute = await routeUpdate({
     routeUuid,
     name,
     description,
     slug,
     status,
+    color,
   });
   const edges = params.edges.map((edge: RouteEdge) => {
     return {
@@ -80,6 +88,7 @@ export async function routeUpdate(params: {
   description: string;
   slug: string;
   status: number;
+  color: string;
 }) {
   const { routeUuid, ...rest } = params;
 
@@ -97,6 +106,7 @@ export async function routeCreate(params: {
   description: string;
   slug: string;
   status: number;
+  color: string;
 }) {
   const response = await restPost("/route", params, "RouteCreate");
 
