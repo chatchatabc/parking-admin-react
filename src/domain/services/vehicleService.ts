@@ -12,7 +12,11 @@ import {
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import {
+  CommonContent,
+  CommonOptions,
+  CommonVariables,
+} from "../models/CommonModel";
 import { User } from "../models/UserModel";
 import {
   Vehicle,
@@ -235,6 +239,49 @@ export async function vehicleCreateModel(values: Record<string, any>) {
   return response.data;
 }
 
+export async function vehicleUpdateModel(values: Record<string, any>) {
+  const { name, brandUuid, status, typeUuid, modelUuid } = values;
+  const data = { name, brandUuid, status, typeUuid };
+
+  const response = await restPost(`/vehicle-model/${modelUuid}`, data);
+
+  return response.data;
+}
+
+export async function vehicleOptionsTypeUuid() {
+  const query = await vehicleGetAllType({ page: 0, size: 100000 });
+
+  if (query.errors) {
+    return query;
+  }
+
+  const data = query.data.content.map((type) => {
+    return {
+      label: type.name,
+      value: type.typeUuid,
+    };
+  });
+
+  return { data } as AxiosResponseData<CommonOptions[]>;
+}
+
+export async function vehicleOptionsBrandUuid() {
+  const query = await vehicleGetAllBrand({ page: 0, size: 100000 });
+
+  if (query.errors) {
+    return query;
+  }
+
+  const data = query.data.content.map((brand) => {
+    return {
+      label: brand.name,
+      value: brand.brandUuid,
+    };
+  });
+
+  return { data } as AxiosResponseData<CommonOptions[]>;
+}
+
 export async function vehicleCreate(values: Record<string, any>) {
   const { userUuid, name, plateNumber, modelUuid, color, year } = values;
   const data = { name, plateNumber, modelUuid, color, year };
@@ -346,6 +393,23 @@ export async function vehicleUpdateType(params: Record<string, any>) {
 }
 
 export function vehicleGetAllTypeOptions() {
+  return [
+    {
+      label: "Active",
+      value: 1,
+    },
+    {
+      label: "Draft",
+      value: 0,
+    },
+    {
+      label: "Inactive",
+      value: -1,
+    },
+  ];
+}
+
+export function vehicleOptionsModelStatus() {
   return [
     {
       label: "Active",
