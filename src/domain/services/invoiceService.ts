@@ -9,7 +9,7 @@ import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
 import { parkingLotGet, parkingLotGetWithOwner } from "./parkingLotService";
-import { vehicleGet } from "./vehicleService";
+import { vehicleGetWithAllInfo } from "./vehicleService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(invoiceGetAllDoc(), variables);
@@ -129,7 +129,9 @@ export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
   }
   invoice.parkingLot = queryParkingLot.data;
 
-  const queryVehicle = await vehicleGet({ keyword: invoice.vehicleUuid ?? "" });
+  const queryVehicle = await vehicleGetWithAllInfo({
+    keyword: invoice.vehicleUuid ?? "",
+  });
   if (queryVehicle.errors) {
     return queryVehicle;
   }

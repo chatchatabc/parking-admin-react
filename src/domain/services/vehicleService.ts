@@ -4,7 +4,6 @@ import {
   vehicleGetTypeDoc,
   vehicleGetAllBrandDoc,
   vehicleGetAllTypeDoc,
-  vehicleGetTypeByIdDoc,
   vehicleGetDoc,
   vehicleGetBrandDoc,
 } from "../gql-docs/vehicleDocs";
@@ -108,7 +107,7 @@ export async function vehicleGetType(variables: { keyword: string }) {
   const query = await graphqlQuery(
     vehicleGetTypeDoc(),
     variables,
-    "VehicleType"
+    "VehicleGetType"
   );
 
   if (query.data.errors) {
@@ -253,18 +252,6 @@ export async function vehicleGetAllType(params: CommonVariables) {
   const data = query.data.data.getVehicleTypes;
 
   return { data } as AxiosResponseData<CommonContent<VehicleType>>;
-}
-
-export async function vehicleGetTypeById(params: { id: string }) {
-  const query = await graphqlQuery(vehicleGetTypeByIdDoc(), params);
-
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
-  }
-
-  const data = query.data.data.getVehicleType;
-
-  return { data } as AxiosResponseData<VehicleType>;
 }
 
 export async function vehicleCreateType(values: Record<string, any>) {
