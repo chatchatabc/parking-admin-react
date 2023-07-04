@@ -77,21 +77,6 @@ export function vehicleGetAllByUserUuidDoc() {
   `;
 }
 
-export function vehicleGetOwnerByVehicleIdDoc() {
-  return `
-  query GetOwnerByVehicleId($id: String!) {
-    getOwnerByVehicleId(id: $id) {
-      userUuid
-      username
-      email
-      phone
-      createdAt
-      updatedAt
-    }
-  }
-  `;
-}
-
 export function vehicleGetAllBrandDoc() {
   return `
   query GetAllVehicleBrands($page: Int, $size: Int, $keyword: String, $sortField: String, $sortBy: Int) {
@@ -116,10 +101,10 @@ export function vehicleGetAllBrandDoc() {
   `;
 }
 
-export function vehicleGetBrandByIdDoc() {
+export function vehicleGetBrandDoc() {
   return `
-  query GetVehicleBrandById($id: String!) {
-    getVehicleBrand(id: $id) {
+  query GetVehicleBrandById($keyword: String!) {
+    getVehicleBrand(id: $keyword) {
       brandUuid
       name
       status
