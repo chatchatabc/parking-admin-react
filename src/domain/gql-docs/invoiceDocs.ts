@@ -3,7 +3,7 @@ export function invoiceGetAllDoc() {
   query GetAllInvoices($page: Int = 0, $size: Int = 10) {
     getInvoices(page: $page, size: $size) {
       content {
-        id
+        invoiceUuid
         createdAt
         endAt
         paidAt
@@ -32,7 +32,7 @@ export function invoiceGetByParkingLotDoc() {
   query GetInvoiceByParkingLot($page: Int = 0, $size: Int = 10, $keyword: String!) {
     getInvoicesByParkingLot(page: $page, size: $size, id: $keyword) {
       content {
-        id
+        invoiceUuid
         createdAt
         endAt
         paidAt
@@ -61,7 +61,7 @@ export function invoiceGetByUserDoc() {
   query GetInvoiceByUser($page: Int = 0, $size: Int = 10, $keyword: String!) {
     getInvoicesByUser(page: $page, size: $size, id: $keyword) {
       content {
-        id
+        invoiceUuid
         createdAt
         endAt
         paidAt
@@ -89,7 +89,7 @@ export function invoiceGetDoc() {
   return `
   query GetInvoice($keyword: String!) {
     getInvoice(id: $keyword) {
-      id
+      invoiceUuid
       createdAt
       endAt
       paidAt
