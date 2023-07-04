@@ -42,6 +42,26 @@ export async function userGetAll(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<User>>;
 }
 
+export async function userOptionsUuid() {
+  const response = await graphqlQuery(userGetAllDoc(), {
+    page: 0,
+    size: 10000,
+  });
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  const responseData = response.data.data.getUsers.content as User[];
+
+  const data = responseData.map((user) => ({
+    label: user.username ?? user.phone ?? user.email ?? "",
+    value: user.userUuid ?? "",
+  }));
+
+  return { data } as AxiosResponseData<typeof data>;
+}
+
 export async function userAllOptionsGet(variables: { keyword: string }) {
   const response = await graphqlQuery(userGetAllDoc(), variables);
 
