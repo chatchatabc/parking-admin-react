@@ -64,7 +64,6 @@ function VehicleTypeTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="vehicle-type-table"
       getData={vehicleGetAllType}
     />
   );

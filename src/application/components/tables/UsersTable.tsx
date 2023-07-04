@@ -129,7 +129,6 @@ function UsersTable({
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="users-table"
       getData={(variables) => {
         return userGetAll({ ...variables, ...extraVariables });
       }}

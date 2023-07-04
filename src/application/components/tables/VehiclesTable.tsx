@@ -85,7 +85,6 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="vehicles-table"
       getData={vehicleGetAll}
     />
   );

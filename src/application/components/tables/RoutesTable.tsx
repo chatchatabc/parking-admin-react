@@ -23,7 +23,6 @@ function RoutesTable({ data, showPagination = false }: Props) {
       showPagination={showPagination}
       dataSource={data}
       columns={columns}
-      caption="routes-table"
     />
   );
 }

@@ -98,7 +98,6 @@ function ParkingLotUnverifiedTable() {
   return (
     <DynamicTable
       localPagination={true}
-      caption={"parking-lot-table"}
       columns={columns}
       getData={(commonVariables) => {
         return parkingLotGetAllWithOwners({ ...commonVariables, verified: 0 });

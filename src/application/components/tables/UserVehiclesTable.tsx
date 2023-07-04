@@ -39,7 +39,6 @@ function UserVehiclesTable({
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="users-vehicles-table"
       getData={(variables) => {
         return vehicleGetAllByUserUuid({ ...variables, userUuid });
       }}

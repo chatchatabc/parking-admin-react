@@ -135,7 +135,6 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
     <DynamicTable
       showPagination={showPagination}
       localPagination={localPagination}
-      caption={"parking-lot-table"}
       columns={columns}
       getData={(commonVariables) => {
         return parkingLotGetAllWithOwners({ ...commonVariables, ...variables });

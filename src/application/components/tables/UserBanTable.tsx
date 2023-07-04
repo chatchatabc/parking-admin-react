@@ -92,7 +92,6 @@ function UserBanTable({
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="users-table"
       getData={(variables) => {
         return userGetBanHistoryByUser({
           ...variables,

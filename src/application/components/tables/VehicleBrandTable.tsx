@@ -64,7 +64,6 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="vehicle-brand-table"
       getData={vehicleGetAllBrand}
     />
   );
