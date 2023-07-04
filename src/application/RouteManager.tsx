@@ -74,24 +74,6 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "vehicle-brands",
-        children: [
-          {
-            path: "",
-            element: <VehicleBrandPage />,
-          },
-        ],
-      },
-      {
-        path: "vehicle-types",
-        children: [
-          {
-            path: "",
-            element: <VehicleTypePage />,
-          },
-        ],
-      },
-      {
         path: "invoices",
         children: [
           {
