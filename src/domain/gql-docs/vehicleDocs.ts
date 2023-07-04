@@ -5,9 +5,7 @@ export function vehicleGetDoc() {
       vehicleUuid
       name
       plateNumber
-      brandUuid
       modelUuid
-      typeUuid
       color
       year
       verifiedAt
@@ -142,6 +140,22 @@ export function vehicleGetAllTypeDoc() {
         last
         empty
       }
+    }
+  }
+  `;
+}
+
+export function vehicleGetModelDoc() {
+  return `
+  query GetVehicleModelById($keyword: String!) {
+    getVehicleModel(id: $keyword) {
+      modelUuid
+      brandUuid
+      typeUuid
+      name
+      status
+      createdAt
+      updatedAt
     }
   }
   `;
