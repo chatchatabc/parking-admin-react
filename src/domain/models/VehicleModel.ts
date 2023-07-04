@@ -18,6 +18,8 @@ export type Vehicle = {
   verifiedBy?: number | null;
 
   owner?: User | null;
+  type?: VehicleType | null;
+  brand?: VehicleBrand | null;
 };
 
 export type VehicleBrand = {

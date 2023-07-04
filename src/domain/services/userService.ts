@@ -2,10 +2,10 @@ import {
   userGetAllDoc,
   userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
+  userGetByVehicleDoc,
   userGetDoc,
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
-import { vehicleGetOwnerByVehicleIdDoc } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
@@ -111,15 +111,15 @@ export async function userGetByParkingLot(variables: { keyword: string }) {
   return { data } as AxiosResponseData<User>;
 }
 
-export async function userGetByVehicle(variables: { id: string }) {
+export async function userGetByVehicle(variables: { keyword: string }) {
   const response = await graphqlQuery(
-    vehicleGetOwnerByVehicleIdDoc(),
+    userGetByVehicleDoc(),
     variables,
-    "GetOwnerByVehicleId"
+    "UserGetByVehicle"
   );
 
   if (response.data.errors) {
-    return response.data;
+    return response.data as AxiosResponseError;
   }
 
   const data = response.data.data.getOwnerByVehicleId;

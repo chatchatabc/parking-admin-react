@@ -3,10 +3,10 @@ import {
   vehicleGetAllDoc,
   vehicleGetTypeDoc,
   vehicleGetAllBrandDoc,
-  vehicleGetBrandByIdDoc,
   vehicleGetAllTypeDoc,
   vehicleGetTypeByIdDoc,
   vehicleGetDoc,
+  vehicleGetBrandDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
@@ -26,6 +26,42 @@ export async function vehicleGet(variables: { keyword: string }) {
   const data = query.data.data.getVehicle;
 
   return { data } as AxiosResponseData<Vehicle>;
+}
+
+export async function vehicleGetWithAllInfo(variables: { keyword: string }) {
+  const query = await vehicleGet(variables);
+
+  if (query.errors) {
+    return query;
+  }
+
+  const vehicle = query.data;
+
+  const user = await userGetByVehicle({ keyword: vehicle.vehicleUuid ?? "" });
+
+  if (user.errors) {
+    return user;
+  }
+
+  vehicle.owner = user.data;
+
+  const type = await vehicleGetType({ keyword: vehicle.typeUuid ?? "" });
+
+  if (type.errors) {
+    return type;
+  }
+
+  vehicle.type = type.data;
+
+  const brand = await vehicleGetBrand({ keyword: vehicle.brandUuid ?? "" });
+
+  if (brand.errors) {
+    return brand;
+  }
+
+  vehicle.brand = brand.data;
+
+  return { data: vehicle } as AxiosResponseData<Vehicle>;
 }
 
 export async function vehicleGetAll(variables: CommonVariables) {
@@ -100,10 +136,10 @@ export async function vehicleGetAllWithOwner(params: CommonVariables) {
     };
 
     const queryOwner = await userGetByVehicle({
-      id: vehicle.vehicleUuid ?? "",
+      keyword: vehicle.vehicleUuid ?? "",
     });
 
-    if (queryOwner.data.errors) {
+    if (queryOwner.errors) {
       return newVehicle;
     }
 
@@ -152,8 +188,12 @@ export async function vehicleGetAllBrand(params: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<VehicleBrand>>;
 }
 
-export async function vehicleGetBrandById(params: { id: string }) {
-  const query = await graphqlQuery(vehicleGetBrandByIdDoc(), params);
+export async function vehicleGetBrand(variables: { keyword: string }) {
+  const query = await graphqlQuery(
+    vehicleGetBrandDoc(),
+    variables,
+    "VehicleGetBrand"
+  );
 
   if (query.data.errors) {
     return query.data as AxiosResponseError;
