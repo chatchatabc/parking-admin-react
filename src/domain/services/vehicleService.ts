@@ -239,6 +239,15 @@ export async function vehicleCreateModel(values: Record<string, any>) {
   return response.data;
 }
 
+export async function vehicleUpdate(values: Record<string, any>) {
+  const { name, plateNumber, modelUuid, color, year, vehicleUuid } = values;
+  const data = { name, plateNumber, modelUuid, color, year };
+
+  const response = await restPut(`/vehicle/${vehicleUuid}`, data);
+
+  return response.data;
+}
+
 export async function vehicleUpdateModel(values: Record<string, any>) {
   const { name, brandUuid, status, typeUuid, modelUuid } = values;
   const data = { name, brandUuid, status, typeUuid };
@@ -259,6 +268,23 @@ export async function vehicleOptionsTypeUuid() {
     return {
       label: type.name,
       value: type.typeUuid,
+    };
+  });
+
+  return { data } as AxiosResponseData<CommonOptions[]>;
+}
+
+export async function vehicleOptionsModelUuid() {
+  const query = await vehicleGetAllModel({ page: 0, size: 100000 });
+
+  if (query.errors) {
+    return query;
+  }
+
+  const data = query.data.content.map((model) => {
+    return {
+      label: model.name,
+      value: model.modelUuid,
     };
   });
 

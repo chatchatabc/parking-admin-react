@@ -125,7 +125,12 @@ function DrawerDynamicForm() {
         <ParkingLotRateForm formRef={form} title={drawerForm.title} />
       )}
       {drawerForm.content === "vehicle" && (
-        <VehicleForm formRef={form} title={drawerForm.title} />
+        <VehicleForm
+          formRef={form}
+          title={drawerForm.title}
+          handleSubmit={handleSubmit}
+          loading={drawerForm.loading}
+        />
       )}
       {drawerForm.content === "vehicleBrandCreate" && (
         <VehicleBrandCreateForm

@@ -1,110 +1,147 @@
-import { Form, FormInstance, Input, Select, message } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
-import { globalStateUpdate } from "../../redux/slices/globalState";
+import { Form, FormInstance, Input } from "antd";
+import {
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../../../domain/models/AxiosModel";
+import {
+  vehicleCreate,
+  vehicleOptionsModelUuid,
+  vehicleUpdate,
+} from "../../../domain/services/vehicleService";
 import MyButton from "../common/MyButton";
-import { userAllOptionsGet } from "../../../domain/services/userService";
-import SelectAsyncSearch from "../select/SelectAsyncSearch";
-import { vehicleCreate } from "../../../domain/services/vehicleService";
+import SelectAsync from "../select/SelectAsync";
+import { userOptionsUuid } from "../../../domain/services/userService";
 
 type Props = {
   title: string;
   formRef: FormInstance;
+  handleSubmit: (
+    sendData: (
+      values: Record<string, any>
+    ) => Promise<AxiosResponseData<any> | AxiosResponseError>,
+    values: Record<string, any>,
+    successMessage: string
+  ) => Promise<AxiosResponseData<any> | AxiosResponseError>;
+  loading: boolean;
 };
 
-function VehicleForm({ title, formRef }: Props) {
-  const dispatch = useDispatch();
-  const drawerForm = useSelector((state: any) => state.drawerForm);
-
-  async function onFinish(e: any) {
-    const response = await vehicleCreate(e);
-
-    if (response.errors) {
-      return message.error("Vehicle creation failed");
-    }
-
-    message.success("Vehicle created successfully");
-    formRef.resetFields();
-
-    dispatch(
-      drawerFormUpdate({
-        show: false,
-      })
-    );
-
-    // This is a hack to force the table to refresh
-    dispatch(
-      globalStateUpdate({
-        reset: Math.random() * 100000000000000000,
-      })
-    );
-  }
-
+function VehicleForm({ formRef, title, handleSubmit, loading }: Props) {
   return (
-    <Form name={title} onFinish={onFinish} layout="vertical" form={formRef}>
+    <Form
+      name={title}
+      onFinish={(e) => {
+        if (e.vehicleUuid) {
+          handleSubmit(vehicleUpdate, e, "Vehicle updated successfully");
+        } else {
+          handleSubmit(vehicleCreate, e, "Vehicle created successfully");
+        }
+      }}
+      layout="vertical"
+      form={formRef}
+    >
       <div className="flex flex-wrap [&>*]:px-2">
+        <Form.Item name="vehicleUuid" hidden></Form.Item>
+
         <Form.Item
-          className="w-1/2"
+          className="w-full"
           name="userUuid"
-          label="Username"
+          label="User"
           rules={[
             {
               message: "Need some input",
               required: true,
             },
           ]}
-          hidden={formRef.getFieldValue("userUuid") !== undefined}
+          hidden={formRef.getFieldValue("updating")}
         >
-          {SelectAsyncSearch({
-            placeholder: "Username",
-            getData: userAllOptionsGet,
+          {SelectAsync({
+            placeholder: "User",
+            getData: userOptionsUuid,
           })}
         </Form.Item>
 
         <Form.Item
-          name="plateNumber"
+          className="w-full"
+          name="name"
+          label="Name"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="Name" />
+        </Form.Item>
+
+        <Form.Item
           className="w-1/2"
+          name="plateNumber"
           label="Plate Number"
-          rules={[{ message: "Need some input", required: true }]}
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
         >
           <Input placeholder="Plate Number" />
         </Form.Item>
 
         <Form.Item
-          name="name"
           className="w-1/2"
-          label="Vehicle Name"
-          rules={[{ message: "Need some input", required: true }]}
+          name="modelUuid"
+          label="Model"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
         >
-          <Input placeholder="Vehicle Name" />
+          {SelectAsync({
+            placeholder: "Model",
+            getData: vehicleOptionsModelUuid,
+          })}
         </Form.Item>
 
         <Form.Item
-          name="type"
           className="w-1/2"
-          label="Vehicle Type"
-          rules={[{ message: "Need some input", required: true }]}
-          initialValue={1}
+          name="year"
+          label="Year"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+            {
+              message: "Invalid year",
+              pattern: new RegExp(/^[0-9]{4}$/),
+            },
+          ]}
         >
-          <Select
-            options={[
-              {
-                label: "Car",
-                value: 1,
-              },
-              {
-                label: "Motorcycle",
-                value: 0,
-              },
-            ]}
-          />
+          <Input placeholder="Year" />
+        </Form.Item>
+
+        <Form.Item
+          className="w-1/2"
+          name="color"
+          label="Color"
+          rules={[
+            {
+              message: "Need some input",
+              required: true,
+            },
+          ]}
+        >
+          <Input placeholder="Color" />
         </Form.Item>
 
         <Form.Item className="w-full">
           <MyButton
-            loading={drawerForm.loading}
+            loading={loading}
             htmlType="submit"
-            className="w-full block"
+            className="block w-full"
           >
             Submit
           </MyButton>

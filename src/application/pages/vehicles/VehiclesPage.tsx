@@ -22,6 +22,7 @@ function VehiclesPage() {
                   title: "Add Vehicle",
                   content: "vehicle",
                   mode: "create",
+                  data: {},
                 })
               );
             }}
