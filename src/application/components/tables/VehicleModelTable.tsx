@@ -2,7 +2,7 @@ import { ColumnsType } from "antd/es/table";
 import DynamicTable from "./DynamicTable";
 import { VehicleModel } from "../../../domain/models/VehicleModel";
 import {
-  vehicleGetAllBrand,
+  vehicleGetAllModel,
   vehicleOptionsModelStatus,
 } from "../../../domain/services/vehicleService";
 import MyButton from "../common/MyButton";
@@ -78,8 +78,7 @@ function VehicleModelTable({ showPagination, localPagination }: Props) {
       showPagination={showPagination}
       localPagination={localPagination}
       columns={columns}
-      caption="vehicle-brand-table"
-      getData={vehicleGetAllBrand}
+      getData={vehicleGetAllModel}
     />
   );
 }
