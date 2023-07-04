@@ -17,11 +17,9 @@ import UserCreateForm from "./UserCreateForm";
 import ParkingLotCreateForm from "./ParkingLotCreateForm";
 import ParkingLotUpdateForm from "./ParkingLotUpdateForm";
 import JeepneyCreateForm from "./JeepneyCreateForm";
-import VehicleBrandCreateForm from "./VehicleBrandCreateForm";
-import VehicleBrandUpdateForm from "./VehicleBrandUpdateForm";
-import VehicleTypeCreateForm from "./VehicleTypeCreateForm";
-import VehicleTypeUpdateForm from "./VehicleTypeUpdateForm";
 import VehicleModelForm from "./VehicleModelForm";
+import VehicleTypeForm from "./VehicleTypeForm";
+import VehicleBrandForm from "./VehicleBrandForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
@@ -132,32 +130,16 @@ function DrawerDynamicForm() {
           loading={drawerForm.loading}
         />
       )}
-      {drawerForm.content === "vehicleBrandCreate" && (
-        <VehicleBrandCreateForm
+      {drawerForm.content === "vehicleBrand" && (
+        <VehicleBrandForm
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
           loading={drawerForm.loading}
         />
       )}
-      {drawerForm.content === "vehicleBrandUpdate" && (
-        <VehicleBrandUpdateForm
-          formRef={form}
-          title={drawerForm.title}
-          handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
-        />
-      )}
-      {drawerForm.content === "vehicleTypeCreate" && (
-        <VehicleTypeCreateForm
-          formRef={form}
-          title={drawerForm.title}
-          handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
-        />
-      )}
-      {drawerForm.content === "vehicleTypeUpdate" && (
-        <VehicleTypeUpdateForm
+      {drawerForm.content === "vehicleType" && (
+        <VehicleTypeForm
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}

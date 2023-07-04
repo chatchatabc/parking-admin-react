@@ -7,6 +7,7 @@ import {
 import {
   vehicleCreateBrand,
   vehicleGetAllBrandOptions,
+  vehicleUpdateBrand,
 } from "../../../domain/services/vehicleService";
 
 type Props = {
@@ -22,31 +23,56 @@ type Props = {
   loading: boolean;
 };
 
-function VehicleBrandCreateFrom({
-  formRef,
-  title,
-  handleSubmit,
-  loading,
-}: Props) {
+function VehicleBrandForm({ formRef, title, handleSubmit, loading }: Props) {
   return (
     <Form
       name={title}
       onFinish={(e) => {
-        handleSubmit(
-          vehicleCreateBrand,
-          e,
-          "Vehicle Brand created successfully"
-        );
+        if (e.brandUuid) {
+          handleSubmit(
+            vehicleUpdateBrand,
+            e,
+            "Vehicle Brand updated successfully"
+          );
+        } else {
+          handleSubmit(
+            vehicleCreateBrand,
+            e,
+            "Vehicle Brand created successfully"
+          );
+        }
       }}
       layout="vertical"
       form={formRef}
     >
       <div className="flex flex-wrap [&>*]:px-2">
-        <Form.Item className="w-1/2" name="name" label="Name">
+        <Form.Item name="brandUuid" hidden />
+
+        <Form.Item
+          className="w-1/2"
+          name="name"
+          label="Name"
+          rules={[
+            {
+              message: "Need some input!",
+              required: true,
+            },
+          ]}
+        >
           <Input placeholder="Name" />
         </Form.Item>
 
-        <Form.Item className="w-1/2" name="status" label="Status">
+        <Form.Item
+          className="w-1/2"
+          name="status"
+          label="Status"
+          rules={[
+            {
+              message: "Need some input!",
+              required: true,
+            },
+          ]}
+        >
           <Select
             placeholder="Status"
             defaultValue={0}
@@ -68,4 +94,4 @@ function VehicleBrandCreateFrom({
   );
 }
 
-export default VehicleBrandCreateFrom;
+export default VehicleBrandForm;

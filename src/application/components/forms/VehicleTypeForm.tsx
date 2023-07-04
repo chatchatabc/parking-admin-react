@@ -1,13 +1,14 @@
 import { Form, FormInstance, Input, Select } from "antd";
-import MyButton from "../common/MyButton";
 import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
 import {
-  vehicleUpdateBrand,
-  vehicleGetAllBrandOptions,
+  vehicleCreateType,
+  vehicleGetAllTypeOptions,
+  vehicleUpdateType,
 } from "../../../domain/services/vehicleService";
+import MyButton from "../common/MyButton";
 
 type Props = {
   title: string;
@@ -22,38 +23,60 @@ type Props = {
   loading: boolean;
 };
 
-function VehicleBrandUpdateForm({
-  formRef,
-  title,
-  handleSubmit,
-  loading,
-}: Props) {
+function VehicleTypeForm({ formRef, title, handleSubmit, loading }: Props) {
   return (
     <Form
       name={title}
       onFinish={(e) => {
-        console.log(e);
-        handleSubmit(
-          vehicleUpdateBrand,
-          e,
-          "Vehicle Brand updated successfully"
-        );
+        if (e.typeUuid) {
+          handleSubmit(
+            vehicleUpdateType,
+            e,
+            "Vehicle Type updated successfully"
+          );
+        } else {
+          handleSubmit(
+            vehicleCreateType,
+            e,
+            "Vehicle Type created successfully"
+          );
+        }
       }}
       layout="vertical"
       form={formRef}
     >
       <div className="flex flex-wrap [&>*]:px-2">
-        <Form.Item name="brandUuid" hidden />
+        <Form.Item name="typeUuid" hidden />
 
-        <Form.Item className="w-1/2" name="name" label="Name">
+        <Form.Item
+          className="w-1/2"
+          name="name"
+          label="Name"
+          rules={[
+            {
+              message: "Need some input!",
+              required: true,
+            },
+          ]}
+        >
           <Input placeholder="Name" />
         </Form.Item>
 
-        <Form.Item className="w-1/2" name="status" label="Status">
+        <Form.Item
+          className="w-1/2"
+          name="status"
+          label="Status"
+          rules={[
+            {
+              message: "Need some input!",
+              required: true,
+            },
+          ]}
+        >
           <Select
             placeholder="Status"
             defaultValue={0}
-            options={vehicleGetAllBrandOptions()}
+            options={vehicleGetAllTypeOptions()}
           ></Select>
         </Form.Item>
 
@@ -71,4 +94,4 @@ function VehicleBrandUpdateForm({
   );
 }
 
-export default VehicleBrandUpdateForm;
+export default VehicleTypeForm;
