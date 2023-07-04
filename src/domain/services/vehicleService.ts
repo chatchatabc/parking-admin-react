@@ -189,6 +189,15 @@ export async function vehicleGetModel(variables: { keyword: string }) {
   return { data: model } as AxiosResponseData<VehicleModel>;
 }
 
+export async function vehicleCreateModel(values: Record<string, any>) {
+  const { name, brandUuid, status } = values;
+  const data = { name, brandUuid, status };
+
+  const response = await restPost("/vehicle-model", data);
+
+  return response.data;
+}
+
 export async function vehicleCreate(values: Record<string, any>) {
   const { userUuid, name, plateNumber, modelUuid, color, year } = values;
   const data = { name, plateNumber, modelUuid, color, year };
