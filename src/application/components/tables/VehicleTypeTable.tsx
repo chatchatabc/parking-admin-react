@@ -6,7 +6,6 @@ import {
   vehicleGetAllType,
   vehicleGetAllTypeOptions,
 } from "../../../domain/services/vehicleService";
-import MyButton from "../common/MyButton";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
 type Props = {
@@ -37,14 +36,15 @@ function VehicleTypeTable({ showPagination, localPagination }: Props) {
       render: (record: VehicleType) => {
         return (
           <div>
-            <MyButton
+            <button
+              className="text-blue-500 hover:text-blue-600"
               onClick={() => {
                 console.log(record);
                 dispatch(
                   drawerFormUpdate({
                     show: true,
-                    title: "Edit",
-                    content: "vehicleTypeUpdate",
+                    title: "Edit Type",
+                    content: "vehicleType",
                     mode: "update",
                     data: record,
                   })
@@ -52,7 +52,7 @@ function VehicleTypeTable({ showPagination, localPagination }: Props) {
               }}
             >
               Edit
-            </MyButton>
+            </button>
           </div>
         );
       },

@@ -5,7 +5,6 @@ import {
   vehicleGetAllBrand,
   vehicleGetAllBrandOptions,
 } from "../../../domain/services/vehicleService";
-import MyButton from "../common/MyButton";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
@@ -37,14 +36,14 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
       render: (record: VehicleBrand) => {
         return (
           <div>
-            <MyButton
+            <button
+              className="text-blue-500 hover:text-blue-600"
               onClick={() => {
-                console.log(record);
                 dispatch(
                   drawerFormUpdate({
                     show: true,
-                    title: "Edit",
-                    content: "vehicleBrandUpdate",
+                    title: "Edit Vehicle Brand",
+                    content: "vehicleBrand",
                     mode: "update",
                     data: record,
                   })
@@ -52,7 +51,7 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
               }}
             >
               Edit
-            </MyButton>
+            </button>
           </div>
         );
       },

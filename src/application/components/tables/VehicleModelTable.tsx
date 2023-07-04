@@ -5,7 +5,6 @@ import {
   vehicleGetAllModel,
   vehicleOptionsModelStatus,
 } from "../../../domain/services/vehicleService";
-import MyButton from "../common/MyButton";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 
@@ -51,7 +50,8 @@ function VehicleModelTable({ showPagination, localPagination }: Props) {
       render: (record: VehicleModel) => {
         return (
           <div>
-            <MyButton
+            <button
+              className="text-blue-500 hover:text-blue-600"
               onClick={() => {
                 console.log(record);
                 dispatch(
@@ -66,7 +66,7 @@ function VehicleModelTable({ showPagination, localPagination }: Props) {
               }}
             >
               Edit
-            </MyButton>
+            </button>
           </div>
         );
       },
