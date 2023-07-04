@@ -23,11 +23,11 @@ function UserVehiclesTable({
     },
     {
       width: "50%",
-      title: "Car Type",
+      title: "Model",
       key: "car type",
       render: (record: Vehicle) => {
-        if (record.type) {
-          return <span>{record.type?.name}</span>;
+        if (record.model) {
+          return <span>{record.model?.name}</span>;
         }
         return <span>Unknown</span>;
       },
