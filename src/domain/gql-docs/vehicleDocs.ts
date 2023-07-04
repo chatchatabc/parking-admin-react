@@ -5,7 +5,15 @@ export function vehicleGetDoc() {
       vehicleUuid
       name
       plateNumber
+      brandUuid
+      modelUuid
       typeUuid
+      color
+      year
+      verifiedAt
+      verifiedBy
+      rejectionReason
+      status
       createdAt
       updatedAt
     }
