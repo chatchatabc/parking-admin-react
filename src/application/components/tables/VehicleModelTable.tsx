@@ -3,7 +3,6 @@ import DynamicTable from "./DynamicTable";
 import { VehicleModel } from "../../../domain/models/VehicleModel";
 import {
   vehicleGetAllBrand,
-  vehicleGetAllBrandOptions,
   vehicleOptionsModelStatus,
 } from "../../../domain/services/vehicleService";
 import MyButton from "../common/MyButton";
@@ -15,7 +14,7 @@ type Props = {
   localPagination?: boolean;
 };
 
-function VehicleBrandTable({ showPagination, localPagination }: Props) {
+function VehicleModelTable({ showPagination, localPagination }: Props) {
   const dispatch = useDispatch();
 
   const columns: ColumnsType<VehicleModel> = [
@@ -85,4 +84,4 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
   );
 }
 
-export default VehicleBrandTable;
+export default VehicleModelTable;
