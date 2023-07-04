@@ -138,17 +138,3 @@ export function vehicleGetAllTypeDoc() {
   }
   `;
 }
-
-export function vehicleGetTypeByIdDoc() {
-  return `
-  query GetVehicleTypeById($id: String!) {
-    getVehicleType(id: $id) {
-      typeUuid
-      name
-      status
-      createdAt
-      updatedAt
-    }
-  }
-  `;
-}
