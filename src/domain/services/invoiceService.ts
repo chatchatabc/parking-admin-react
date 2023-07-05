@@ -25,20 +25,26 @@ export async function invoiceGetAll(variables: CommonVariables) {
       keyword: invoice.parkingLotUuid ?? "",
     });
 
-    if (parkingLot.errors) {
-      return invoice;
+    if (!parkingLot.errors) {
+      invoice.parkingLot = parkingLot.data;
     }
 
-    return {
-      ...invoice,
-      parkingLot: parkingLot.data,
-    };
-  });
-  const invoicesWithParkingLot = await Promise.all(additionalInfo);
+    const vehicle = await vehicleGetWithAllInfo({
+      keyword: invoice.vehicleUuid ?? "",
+    });
 
-  return {
-    data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData<CommonContent<Invoice>>;
+    if (!vehicle.errors) {
+      invoice.vehicle = vehicle.data;
+    }
+    console.log(invoice);
+
+    return invoice;
+  });
+
+  const content = await Promise.all(additionalInfo);
+  data.content = content;
+
+  return { data } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
 export async function invoiceGetByParkingLot(variables: CommonVariables) {
