@@ -58,8 +58,8 @@ export function invoiceGetByParkingLotDoc() {
 
 export function invoiceGetByUserDoc() {
   return `
-  query GetInvoiceByUser($page: Int = 0, $size: Int = 10, $keyword: String!) {
-    getInvoicesByUser(page: $page, size: $size, id: $keyword) {
+  query GetInvoiceByUser($page: Int = 0, $size: Int = 10, $id: String!) {
+    getInvoicesByUser(page: $page, size: $size, id: $id) {
       content {
         invoiceUuid
         createdAt

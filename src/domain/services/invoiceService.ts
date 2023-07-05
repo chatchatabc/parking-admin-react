@@ -74,7 +74,9 @@ export async function invoiceGetByParkingLot(variables: CommonVariables) {
   } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
-export async function invoiceGetByUser(variables: CommonVariables) {
+export async function invoiceGetByUser(
+  variables: CommonVariables & { id: string }
+) {
   const query = await graphqlQuery(invoiceGetByUserDoc(), variables);
 
   if (query.data.errors) {
@@ -82,19 +84,25 @@ export async function invoiceGetByUser(variables: CommonVariables) {
   }
 
   const data = query.data.data.getInvoicesByUser;
+
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
       keyword: invoice.parkingLotUuid ?? "",
     });
 
-    if (parkingLot.errors) {
-      return invoice;
+    if (!parkingLot.errors) {
+      invoice.parkingLot = parkingLot.data;
     }
 
-    return {
-      ...invoice,
-      parkingLot: parkingLot.data,
-    };
+    const vehicle = await vehicleGetWithAllInfo({
+      keyword: invoice.vehicleUuid ?? "",
+    });
+
+    if (!vehicle.errors) {
+      invoice.vehicle = vehicle.data;
+    }
+
+    return invoice;
   });
   const invoicesWithParkingLot = await Promise.all(additionalInfo);
 

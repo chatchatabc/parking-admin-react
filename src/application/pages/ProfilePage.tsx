@@ -11,6 +11,7 @@ import InvoicesTable from "../components/tables/InvoicesTable";
 import UserVehiclesTable from "../components/tables/UserVehiclesTable";
 import { invoiceGetByUser } from "../../domain/services/invoiceService";
 import { authUsername } from "../../domain/services/authService";
+import { CommonVariables } from "../../domain/models/CommonModel";
 
 interface Props {
   id?: string;
@@ -174,8 +175,10 @@ function ProfilePage({ id = authUsername() }: Props) {
           <section className="mt-2">
             <InvoicesTable
               getData={(variables) => {
-                variables.keyword = data.userUuid;
-                return invoiceGetByUser(variables);
+                variables.id = data.userUuid;
+                return invoiceGetByUser(
+                  variables as CommonVariables & { id: string }
+                );
               }}
             />
           </section>
