@@ -24,6 +24,7 @@ export function routeGetAllDoc() {
         id
         routeUuid
         slug
+        color
         name
         description
         status

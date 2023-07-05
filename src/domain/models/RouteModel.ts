@@ -6,6 +6,7 @@ export type Route = {
   points?: string | null;
   createdAt?: string | null;
   updatedAt?: string | null;
+  color?: string | null;
 
   id?: number;
   status?: number | null;

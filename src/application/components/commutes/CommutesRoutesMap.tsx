@@ -52,6 +52,7 @@ function CommutesRoutesMap() {
                   slug: record.slug,
                   status: record.status,
                   description: record.description,
+                  color: record.color,
                 });
               }}
             >
