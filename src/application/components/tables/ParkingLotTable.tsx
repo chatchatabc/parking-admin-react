@@ -1,7 +1,6 @@
 import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
 import { ParkingLot } from "../../../domain/models/ParkingLotModel";
-import { User } from "../../../domain/models/UserModel";
 import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingLotService";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
@@ -99,11 +98,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
             <button
               className="underline hover:no-underline"
               onClick={() => {
-                navigate(
-                  `/users/${
-                    owner.username ? `u-${owner.username}` : `p-${owner.phone}`
-                  }`
-                );
+                navigate(`/users/${owner.username ?? owner.phone}`);
               }}
             >
               {owner.username ?? owner.phone}
