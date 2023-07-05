@@ -197,6 +197,7 @@ function ProfilePage({ id = authUsername() }: Props) {
                   drawerFormUpdate({
                     data: {
                       userUuid: data.userUuid,
+                      updating: true,
                     },
                     mode: "create",
                     show: true,
