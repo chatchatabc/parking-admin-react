@@ -4,7 +4,7 @@ import { Vehicle } from "../../../domain/models/VehicleModel";
 import { Spin, message } from "antd";
 import MyButton from "../../components/common/MyButton";
 import { vehicleGetWithAllInfo } from "../../../domain/services/vehicleService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 import { invoiceGetAllByVehicle } from "../../../domain/services/invoiceService";
@@ -14,9 +14,14 @@ function VehiclesProfilePage() {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [vehicle, setVehicle] = React.useState<Vehicle | null>(null);
 
+  const globalState = useSelector((state: any) => state.globalState);
   const dispatch = useDispatch();
   const { plateNumber } = useParams();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    setLoading(true);
+  }, [globalState.reset]);
 
   React.useEffect(() => {
     if (loading) {
@@ -34,7 +39,7 @@ function VehiclesProfilePage() {
         setLoading(false);
       })();
     }
-  }, []);
+  }, [loading]);
 
   if (loading) {
     return (
@@ -168,6 +173,21 @@ function VehiclesProfilePage() {
           <section className="bg-bg2 p-4 rounded-lg w-full">
             <header className="flex justify-between items-center">
               <h2 className="text-lg font-bold">Vehicle Information</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      show: true,
+                      title: "Edit Vehicle",
+                      content: "vehicle",
+                      mode: "update",
+                      data: { ...vehicle, updating: true },
+                    })
+                  );
+                }}
+              >
+                Edit
+              </MyButton>
             </header>
 
             <section className="mt-2 flex flex-wrap gap-y-2">
