@@ -56,6 +56,14 @@ function VehicleVerifyForm({ formRef, title, handleSubmit, loading }: Props) {
             placeholder="Status"
             options={[
               {
+                label: "Draft",
+                value: 0,
+              },
+              {
+                label: "Pending",
+                value: 1,
+              },
+              {
                 label: "Verify",
                 value: 3,
               },
