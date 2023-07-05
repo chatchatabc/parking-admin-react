@@ -56,6 +56,8 @@ function InvoiceProfilePage() {
     );
   }
 
+  console.log(invoice);
+
   const timeFormatter = new Intl.DateTimeFormat("en-US", {
     timeStyle: "short",
   });
@@ -67,15 +69,21 @@ function InvoiceProfilePage() {
     style: "currency",
     currency: "PHP",
   });
-  const startAtDate = new Date(invoice?.startAt ?? "");
-  const endAtDate = new Date(invoice?.endAt ?? "");
-  const paidAtDate = new Date(invoice?.paidAt ?? "");
-  const parkingLotStartDate = new Date(
-    invoice?.parkingLot?.businessHoursStart ?? ""
-  );
-  const parkingLotEndDate = new Date(
-    invoice?.parkingLot?.businessHoursEnd ?? ""
-  );
+  const startAtDate = invoice?.startAt
+    ? dateFormatter.format(new Date(invoice.startAt))
+    : null;
+  const endAtDate = invoice?.endAt
+    ? dateFormatter.format(new Date(invoice.endAt))
+    : null;
+  const paidAtDate = invoice?.paidAt
+    ? dateFormatter.format(new Date(invoice.paidAt))
+    : null;
+  const parkingLotStartDate = invoice?.parkingLot?.businessHoursStart
+    ? timeFormatter.format(new Date(invoice.parkingLot.businessHoursStart))
+    : null;
+  const parkingLotEndDate = invoice?.parkingLot?.businessHoursEnd
+    ? timeFormatter.format(new Date(invoice.parkingLot.businessHoursEnd))
+    : null;
 
   return (
     <div className="p-2 flex flex-wrap">
@@ -99,17 +107,17 @@ function InvoiceProfilePage() {
 
             <div className="w-1/5">
               <p className="text-xs font-bold">Start At</p>
-              <p>{dateFormatter.format(startAtDate)}</p>
+              <p>{startAtDate ?? "N/A"}</p>
             </div>
 
             <div className="w-1/5">
               <p className="text-xs font-bold">End At</p>
-              <p>{dateFormatter.format(endAtDate)}</p>
+              <p>{endAtDate ?? "N/A"}</p>
             </div>
 
             <div className="w-1/5">
               <p className="text-xs font-bold">Paid At</p>
-              <p>{dateFormatter.format(paidAtDate)}</p>
+              <p>{paidAtDate ?? "N/A"}</p>
             </div>
           </section>
         </section>
@@ -123,7 +131,10 @@ function InvoiceProfilePage() {
               <h2 className="text-lg font-bold">Customer Information</h2>
               <MyButton
                 onClick={() => {
-                  navigate("/users/" + invoice?.parkingLotUuid);
+                  navigate(
+                    "/users/" + invoice?.vehicle?.owner?.username ??
+                      invoice?.vehicle?.owner?.phone
+                  );
                 }}
               >
                 View
@@ -199,7 +210,10 @@ function InvoiceProfilePage() {
               <h2 className="text-lg font-bold">Parking Lot Information</h2>
               <MyButton
                 onClick={() => {
-                  navigate("/parking-lots/" + invoice?.parkingLotUuid);
+                  navigate(
+                    "/parking-lots/" + invoice?.parkingLot?.owner?.username ??
+                      invoice?.parkingLot?.owner?.phone
+                  );
                 }}
               >
                 View
@@ -214,12 +228,12 @@ function InvoiceProfilePage() {
 
               <div className="w-1/3">
                 <p className="text-xs font-bold">Open hours</p>
-                <p>{timeFormatter.format(parkingLotStartDate)}</p>
+                <p>{parkingLotStartDate ?? "N/A"}</p>
               </div>
 
               <div className="w-1/3">
                 <p className="text-xs font-bold">Closing hours</p>
-                <p>{timeFormatter.format(parkingLotEndDate)}</p>
+                <p>{parkingLotEndDate ?? "N/A"}</p>
               </div>
 
               <div className="w-full">
@@ -245,14 +259,14 @@ function InvoiceProfilePage() {
 
               <div className="w-1/3">
                 <p className="text-xs font-bold">Free hours</p>
-                <p>{invoice?.parkingLot?.rate?.freeHours} Hours</p>
+                <p>{invoice?.parkingLot?.rate?.freeHours ?? "Unknown"} Hours</p>
               </div>
 
               <div className="w-1/3">
                 <p className="text-xs font-bold">Rate</p>
                 <p>
                   {moneyFormatter.format(invoice?.parkingLot?.rate?.rate ?? 0)}{" "}
-                  / {invoice?.parkingLot?.rate?.interval}
+                  / {invoice?.parkingLot?.rate?.interval ?? "Unknown"}
                 </p>
               </div>
             </section>
