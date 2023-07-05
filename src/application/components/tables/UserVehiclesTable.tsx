@@ -1,7 +1,8 @@
 import DynamicTable from "./DynamicTable";
 import { ColumnsType } from "antd/es/table";
-import { vehicleGetAllByUserUuid } from "../../../domain/services/vehicleService";
+import { vehicleGetAllByUser } from "../../../domain/services/vehicleService";
 import { Vehicle } from "../../../domain/models/VehicleModel";
+import { CommonVariables } from "../../../domain/models/CommonModel";
 
 type Props = {
   showPagination?: boolean;
@@ -40,7 +41,10 @@ function UserVehiclesTable({
       localPagination={localPagination}
       columns={columns}
       getData={(variables) => {
-        return vehicleGetAllByUserUuid({ ...variables, userUuid });
+        variables.id = userUuid;
+        return vehicleGetAllByUser(
+          variables as CommonVariables & { id: string }
+        );
       }}
     />
   );

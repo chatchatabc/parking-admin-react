@@ -64,15 +64,21 @@ export function vehicleGetTypeDoc() {
   `;
 }
 
-export function vehicleGetAllByUserUuidDoc() {
+export function vehicleGetAllByUserDoc() {
   return `
-  query GetAllVehiclesByUserUuid($page: Int, $size: Int, $userUuid: String!) {
-    getVehiclesByOwner(page: $page, size: $size, ownerUuid: $userUuid) {
+  query GetAllVehiclesByUserUuid($page: Int, $size: Int, $id: String!) {
+    getVehiclesByUser(page: $page, size: $size, id: $id) {
       content {
         vehicleUuid
         name
         plateNumber
-        typeUuid
+        modelUuid
+        color
+        year
+        verifiedAt
+        verifiedBy
+        rejectionReason
+        status
         createdAt
         updatedAt
       }
