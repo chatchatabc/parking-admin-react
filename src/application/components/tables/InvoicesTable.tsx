@@ -68,16 +68,16 @@ function InvoicesTable({ showPagination, getData }: Props) {
     {
       title: "Plate Number",
       key: "plateNumber",
-      render: (record) => {
+      render: (record: Invoice) => {
         if (record.vehicle) {
           return (
             <button
               className="underline hover:no-underline"
               onClick={() => {
-                navigate(`/vehicles/${record.vehicle.id}`);
+                navigate(`/vehicles/${record.vehicle?.vehicleUuid}`);
               }}
             >
-              {record.id}
+              {record.vehicle?.plateNumber}
             </button>
           );
         }
