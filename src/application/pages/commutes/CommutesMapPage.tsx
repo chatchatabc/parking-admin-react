@@ -98,7 +98,7 @@ function CommutesMapPage() {
 
         const newRoutes = newValues.map(async (routeUuid) => {
           const response = await routeGetWithNodesAndEdges({
-            keyword: routeUuid,
+            id: routeUuid,
           });
 
           if (response.errors) {
@@ -112,7 +112,7 @@ function CommutesMapPage() {
 
           // Fetch jeepneys
           const responseJeepneys = await jeepneyGetAllByRoute({
-            keyword: route.routeUuid ?? "",
+            id: route.routeUuid ?? "",
           });
 
           if (responseJeepneys.errors) {
