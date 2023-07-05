@@ -24,17 +24,19 @@ function HomeLayout() {
     return <NoAccessPage />;
   }
 
+  // Addeventlistener for sidebar resize
   React.useEffect(() => {
-    let timer = setTimeout(() => {
-      const multitabs = document.querySelector<HTMLElement>("[data-multitabs]");
-      const multitabsWidth = multitabs?.offsetWidth ?? 0;
-      multitabs?.style.setProperty("max-width", `${multitabsWidth}px`);
-    }, 2000);
+    const multitabs = document.querySelector<HTMLElement>("[data-multitabs]");
+    const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [openSidebar]);
+    // Resize multitabs during sidebar resize
+    sidebar?.addEventListener("transitionend", () => {
+      const sidebarWidth = sidebar?.offsetWidth ?? 0;
+      const documentWidth = document.body.offsetWidth;
+      const multitabsWidth = documentWidth - sidebarWidth;
+      multitabs?.style.setProperty("max-width", `${multitabsWidth}px`);
+    });
+  }, []);
 
   // WebSocket
   React.useEffect(() => {
@@ -68,6 +70,7 @@ function HomeLayout() {
       <div className="flex w-screen">
         {/* Sidebar */}
         <aside
+          data-sidebar
           className={`sticky top-[66px] h-[calc(100vh-66px)] bg-bg2 border-r border-t2 ${
             openSidebar ? "min-w-[250px]" : "min-w-[1px]"
           } transition-all ease-linear text-t2 group hover:min-w-[250px]`}
