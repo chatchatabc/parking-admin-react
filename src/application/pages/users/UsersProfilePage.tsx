@@ -1,20 +1,10 @@
 import { useParams } from "react-router-dom";
-import NotFoundPage from "../NotFoundPage";
 import ProfilePage from "../ProfilePage";
 
 function UsersProfilePage() {
-  const { profile } = useParams();
+  const { id } = useParams();
 
-  const identifiers = profile?.split("-");
-
-  if (!identifiers || (identifiers[0] !== "u" && identifiers[0] !== "p")) {
-    return <NotFoundPage />;
-  }
-
-  const username = identifiers[0] === "u" ? identifiers[1] : undefined;
-  const phone = identifiers[0] === "p" ? identifiers[1] : undefined;
-
-  return <ProfilePage username={username} phone={phone} />;
+  return <ProfilePage id={id} />;
 }
 
 export default UsersProfilePage;

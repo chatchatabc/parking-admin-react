@@ -8,15 +8,13 @@ import { userGetBanHistoryByUser } from "../../../domain/services/userService";
 type Props = {
   showPagination?: boolean;
   localPagination?: boolean;
-  username?: string;
-  phone?: string;
+  id?: string;
 };
 
 function UserBanTable({
   showPagination,
   localPagination,
-  username = authUsername(),
-  phone,
+  id = authUsername(),
 }: Props) {
   const columns: ColumnsType<UserBan> = [
     {
@@ -95,7 +93,7 @@ function UserBanTable({
       getData={(variables) => {
         return userGetBanHistoryByUser({
           ...variables,
-          keyword: username ?? phone ?? "",
+          keyword: id,
         });
       }}
     />

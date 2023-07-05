@@ -13,11 +13,10 @@ import { invoiceGetByUser } from "../../domain/services/invoiceService";
 import { authUsername } from "../../domain/services/authService";
 
 interface Props {
-  username?: string;
-  phone?: string;
+  id?: string;
 }
 
-function ProfilePage({ username, phone }: Props) {
+function ProfilePage({ id = authUsername() }: Props) {
   const globalState = useSelector((state: any) => state.globalState);
   const dispatch = useDispatch();
 
@@ -34,7 +33,7 @@ function ProfilePage({ username, phone }: Props) {
   React.useEffect(() => {
     async function fetchData() {
       const response = await userGet({
-        keyword: phone ?? username ?? authUsername() ?? "",
+        keyword: id,
       });
 
       if (response.errors) {
@@ -104,7 +103,7 @@ function ProfilePage({ username, phone }: Props) {
 
           {/* Body */}
           <div className="mt-2">
-            <UserBanTable username={username} phone={phone} />
+            <UserBanTable id={id} />
           </div>
         </section>
       </section>

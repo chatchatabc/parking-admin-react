@@ -27,13 +27,7 @@ function UsersTable({
             <button
               className="underline hover:no-underline"
               onClick={() => {
-                navigate(
-                  `/users/${
-                    record.username
-                      ? `u-${record.username}`
-                      : `p-${record.phone}`
-                  }`
-                );
+                navigate(`/users/${record.username ?? record.phone}`);
               }}
             >
               {record.username ?? record.phone}
