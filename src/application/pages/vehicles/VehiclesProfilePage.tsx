@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 import { invoiceGetAllByVehicle } from "../../../domain/services/invoiceService";
+import { CommonVariables } from "../../../domain/models/CommonModel";
 
 function VehiclesProfilePage() {
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -216,7 +217,14 @@ function VehiclesProfilePage() {
             </header>
 
             <section className="mt-2">
-              <InvoicesTable getData={invoiceGetAllByVehicle} />
+              <InvoicesTable
+                getData={(variables: CommonVariables) => {
+                  variables.keyword = vehicle.vehicleUuid;
+                  return invoiceGetAllByVehicle(
+                    variables as CommonVariables & { keyword: string }
+                  );
+                }}
+              />
             </section>
           </section>
         </section>

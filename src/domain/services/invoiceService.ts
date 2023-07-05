@@ -115,7 +115,9 @@ export async function invoiceGet(variables: { keyword: string }) {
   return { data } as AxiosResponseData<Invoice>;
 }
 
-export async function invoiceGetAllByVehicle(variables: CommonVariables) {
+export async function invoiceGetAllByVehicle(
+  variables: CommonVariables & { keyword: string }
+) {
   const query = await graphqlQuery(
     invoiceGetAllByVehicleDoc(),
     variables,
