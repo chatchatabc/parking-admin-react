@@ -189,7 +189,6 @@ function CommutesRoutesMap() {
   // Draw nodes
   React.useEffect(() => {
     if (map?.current && create) {
-      console.log("Drawing nodes", nodes);
       nodes.forEach((node) => {
         const nodeId = `node-${String(node.id)}`;
 
@@ -263,7 +262,6 @@ function CommutesRoutesMap() {
   // Draw edges
   React.useEffect(() => {
     if (map?.current && create) {
-      console.log("Drawing edges", selectedNodes);
       selectedNodes.forEach((node, index) => {
         if (index < selectedNodes.length - 1) {
           const nodeFrom = node.id;

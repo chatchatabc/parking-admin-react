@@ -12,7 +12,6 @@ function SelectAsyncSearch({ className, getData, ...props }: Props) {
 
   React.useEffect(() => {
     async function fetchData() {
-      console.log(keyword);
       const response = await getData({ keyword });
 
       if (response.errors) {

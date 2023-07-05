@@ -36,7 +36,6 @@ export async function invoiceGetAll(variables: CommonVariables) {
     if (!vehicle.errors) {
       invoice.vehicle = vehicle.data;
     }
-    console.log(invoice);
 
     return invoice;
   });

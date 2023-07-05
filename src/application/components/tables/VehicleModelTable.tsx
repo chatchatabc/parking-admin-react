@@ -53,7 +53,6 @@ function VehicleModelTable({ showPagination, localPagination }: Props) {
             <button
               className="text-blue-500 hover:text-blue-600"
               onClick={() => {
-                console.log(record);
                 dispatch(
                   drawerFormUpdate({
                     show: true,

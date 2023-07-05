@@ -23,7 +23,6 @@ function CommutesNodesMap() {
   async function getAllNodes() {
     const mapNodes = draw.current?.getAll();
     const mapFeatures = mapNodes?.features;
-    console.log(mapFeatures);
     const updatedOldNodes = nodes.map((node) => {
       const newFeature = mapFeatures.find(
         (mapFeature: any) => mapFeature.id === node.id
@@ -71,7 +70,6 @@ function CommutesNodesMap() {
             message.error(error.message);
           });
         } else {
-          console.log(response.data.content);
           setNodes(response.data.content);
         }
 
