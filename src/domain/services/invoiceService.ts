@@ -130,7 +130,31 @@ export async function invoiceGetAllByVehicle(
 
   const data = query.data.data.getInvoicesByVehicle;
 
-  return { data } as AxiosResponseData<CommonContent<Invoice>>;
+  const additionalInfo = data.content.map(async (invoice: Invoice) => {
+    const parkingLot = await parkingLotGet({
+      keyword: invoice.parkingLotUuid ?? "",
+    });
+
+    if (!parkingLot.errors) {
+      invoice.parkingLot = parkingLot.data;
+    }
+
+    const vehicle = await vehicleGetWithAllInfo({
+      keyword: invoice.vehicleUuid ?? "",
+    });
+
+    if (!vehicle.errors) {
+      invoice.vehicle = vehicle.data;
+    }
+
+    return invoice;
+  });
+
+  data.content = await Promise.all(additionalInfo);
+
+  return {
+    data,
+  } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
 export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
