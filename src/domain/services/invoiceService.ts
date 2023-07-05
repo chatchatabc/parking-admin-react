@@ -1,4 +1,5 @@
 import {
+  invoiceGetAllByVehicleDoc,
   invoiceGetAllDoc,
   invoiceGetByParkingLotDoc,
   invoiceGetByUserDoc,
@@ -112,6 +113,22 @@ export async function invoiceGet(variables: { keyword: string }) {
   const data = query.data.data.getInvoice;
 
   return { data } as AxiosResponseData<Invoice>;
+}
+
+export async function invoiceGetAllByVehicle(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    invoiceGetAllByVehicleDoc(),
+    variables,
+    "InvoiceGetAllByVehicle"
+  );
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getInvoicesByVehicle;
+
+  return { data } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
 export async function invoiceGetWithAllInfo(variables: { keyword: string }) {

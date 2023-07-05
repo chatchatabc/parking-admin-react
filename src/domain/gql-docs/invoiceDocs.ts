@@ -85,6 +85,35 @@ export function invoiceGetByUserDoc() {
   `;
 }
 
+export function invoiceGetAllByVehicleDoc() {
+  return `
+    query GetAllInvoicesByVehicle($page: Int = 0, $size: Int = 10, $keyword: String = "") {
+      getInvoicesByVehicle(page: $page, size: $size, id: $keyword) {
+        content {
+          invoiceUuid
+          createdAt
+          endAt
+          paidAt
+          plateNumber
+          startAt
+          updatedAt
+          parkingLotUuid
+          vehicleUuid
+          total
+          estimatedParkingDurationInHours
+        }
+        pageInfo {
+          size
+          totalElements
+          first
+          last
+          empty
+        }
+      }
+    }
+  `;
+}
+
 export function invoiceGetDoc() {
   return `
   query GetInvoice($keyword: String!) {
