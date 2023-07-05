@@ -74,7 +74,7 @@ function InvoicesTable({ showPagination, getData }: Props) {
             <button
               className="underline hover:no-underline"
               onClick={() => {
-                navigate(`/vehicles/${record.vehicle?.vehicleUuid}`);
+                navigate(`/vehicles/${record.vehicle?.plateNumber}`);
               }}
             >
               {record.vehicle?.plateNumber}
