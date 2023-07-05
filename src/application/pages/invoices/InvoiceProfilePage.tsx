@@ -163,9 +163,20 @@ function InvoiceProfilePage() {
               </div>
             </section>
           </section>
+
+          {/* Vehicle Information */}
           <section className="mt-8">
             <header className="flex justify-between items-center">
               <h2 className="text-lg font-bold">Customer Vehicle</h2>
+              {invoice?.vehicle && (
+                <MyButton
+                  onClick={() => {
+                    navigate("/vehicles/" + invoice?.vehicle?.plateNumber);
+                  }}
+                >
+                  View
+                </MyButton>
+              )}
             </header>
 
             <section className="mt-2 flex flex-wrap gap-y-2">
