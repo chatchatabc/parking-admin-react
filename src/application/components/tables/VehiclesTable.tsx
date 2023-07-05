@@ -83,12 +83,14 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       title: "Owner",
       key: "owner",
       render: (record: Vehicle) => {
-        if (record.owner) {
+        if (record.owner && (record.owner?.username || record.owner?.phone)) {
           return (
             <button
               className="underline hover:no-underline"
               onClick={() => {
-                navigate(`/users/${record.plateNumber}`);
+                navigate(
+                  `/users/${record.owner?.username ?? record.owner?.phone}`
+                );
               }}
             >
               {record.owner?.username ?? record.owner?.phone}
