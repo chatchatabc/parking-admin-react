@@ -117,8 +117,8 @@ export async function vehicleGetType(variables: { keyword: string }) {
 }
 
 export async function vehicleVerify(values: Record<string, any>) {
-  const { vehicleUuid, rejectionReason } = values;
-  const values1 = { rejectionReason };
+  const { vehicleUuid, rejectionReason, status } = values;
+  const values1 = { rejectionReason, status };
 
   const response = await restPut(
     `/vehicle/verify/${vehicleUuid}`,
