@@ -24,6 +24,7 @@ import VehicleVerifyForm from "./VehicleVerifyForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(false);
   const drawerForm = useSelector((state: any) => state.drawerForm);
   const [form] = useForm();
 
@@ -34,12 +35,15 @@ function DrawerDynamicForm() {
     values: Record<string, any>,
     successMessage: string
   ): Promise<AxiosResponseData<any> | AxiosResponseError> {
+    setLoading(true);
+
     const response = await sendData(values);
 
     if (response.errors) {
       response.errors.forEach((error) => {
         message.error(error.message);
       });
+      setLoading(false);
       return response;
     }
 
@@ -59,6 +63,7 @@ function DrawerDynamicForm() {
       })
     );
 
+    setLoading(false);
     return response;
   }
 
@@ -84,7 +89,7 @@ function DrawerDynamicForm() {
           onClick={() => {
             form.submit();
           }}
-          loading={drawerForm.loading}
+          loading={loading}
         >
           {drawerForm.mode === "create" ? "Add" : "Update"}
         </MyButton>
@@ -95,7 +100,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "parkingUpdate" && (
@@ -103,7 +108,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "userCreate" && (
@@ -111,7 +116,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "userDetails" && (
@@ -128,7 +133,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "vehicleBrand" && (
@@ -136,7 +141,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "vehicleType" && (
@@ -144,7 +149,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "jeepneyCreate" && (
@@ -152,7 +157,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "vehicleModel" && (
@@ -160,7 +165,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
       {drawerForm.content === "vehicleVerify" && (
@@ -168,7 +173,7 @@ function DrawerDynamicForm() {
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
-          loading={drawerForm.loading}
+          loading={loading}
         />
       )}
     </Drawer>
