@@ -18,6 +18,45 @@ function MultiTabs() {
   ]);
   const [activeKey, setActiveKey] = React.useState("/");
 
+  function handleRemove(targetKey: string) {
+    if (items.length > 1) {
+      // If there are more than one tab
+      setItems(items.filter((item: any) => item.key !== targetKey));
+      if (targetKey === activeKey) {
+        // If the tab to be closed is the active tab
+        const newItems = items.filter((item: any) => item.key !== targetKey);
+        const targetKeyIndex = items.findIndex(
+          (item: any) => item.key === targetKey
+        );
+        navigate(newItems[targetKeyIndex - 1].key);
+      }
+    } else if (items[0].key !== "/") {
+      // If the last tab is not the home page
+      setItems([
+        {
+          key: "/",
+          label: "Home",
+        },
+      ]);
+      navigate("/");
+    }
+  }
+
+  React.useEffect(() => {
+    // Remove tab using hotkey ctrl + w
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "w") {
+        handleRemove(activeKey);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   React.useEffect(() => {
     const path = location.pathname;
     let pathName = path.split("/").join(" ");
@@ -54,29 +93,7 @@ function MultiTabs() {
         targetKey: React.MouseEvent | React.KeyboardEvent | string,
         _: string
       ) => {
-        if (items.length > 1) {
-          // If there are more than one tab
-          setItems(items.filter((item: any) => item.key !== targetKey));
-          if (targetKey === activeKey) {
-            // If the tab to be closed is the active tab
-            const newItems = items.filter(
-              (item: any) => item.key !== targetKey
-            );
-            const targetKeyIndex = items.findIndex(
-              (item: any) => item.key === targetKey
-            );
-            navigate(newItems[targetKeyIndex - 1].key);
-          }
-        } else if (items[0].key !== "/") {
-          // If the last tab is not the home page
-          setItems([
-            {
-              key: "/",
-              label: "Home",
-            },
-          ]);
-          navigate("/");
-        }
+        handleRemove(targetKey as string);
       }}
       hideAdd
     />
