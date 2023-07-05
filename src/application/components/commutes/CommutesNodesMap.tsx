@@ -17,6 +17,7 @@ function CommutesNodesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
   const draw = React.useRef<Record<string, any> | null>(null);
 
+  const [selectedNode, setSelectedNode] = React.useState<number | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [nodes, setNodes] = React.useState<RouteNode[]>([]);
 
@@ -100,6 +101,15 @@ function CommutesNodesMap() {
       });
 
       map.current?.addControl(draw.current);
+      map.current?.on("draw.selectionchange", (e: any) => {
+        if (e.features.length > 0) {
+          const nodeId = e.features[0].id;
+
+          setSelectedNode(Number(nodeId));
+        } else {
+          setSelectedNode(null);
+        }
+      });
 
       // map.current?.on("draw.create", (e: any) => {
       //   setNewNodes((prev) => {
@@ -172,8 +182,19 @@ function CommutesNodesMap() {
       <div className="mb-2 flex justify-between">
         <div>
           <input
+            disabled={!selectedNode}
+            value={nodes.find((node) => node.id === selectedNode)?.poi || ""}
             placeholder="Select a node to change POI"
-            className="px-2 py-1 rounded-md w-96"
+            className="px-2 py-1 rounded-md w-96 text-black"
+            onChange={(e) => {
+              const newNodes = nodes.map((node) => {
+                if (node.id === selectedNode) {
+                  node.poi = e.target.value;
+                }
+                return node;
+              });
+              setNodes(newNodes);
+            }}
           />
         </div>
         <MyButton
