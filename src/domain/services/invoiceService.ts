@@ -65,14 +65,19 @@ export async function invoiceGetByParkingLot(
       id: invoice.parkingLotUuid ?? "",
     });
 
-    if (parkingLot.errors) {
-      return invoice;
+    if (!parkingLot.errors) {
+      invoice.parkingLot = parkingLot.data;
     }
 
-    return {
-      ...invoice,
-      parkingLot: parkingLot.data,
-    };
+    const vehicle = await vehicleGetWithAllInfo({
+      id: invoice.vehicleUuid ?? "",
+    });
+
+    if (!vehicle.errors) {
+      invoice.vehicle = vehicle.data;
+    }
+
+    return invoice;
   });
   const invoicesWithParkingLot = await Promise.all(additionalInfo);
 
