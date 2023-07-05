@@ -32,6 +32,7 @@ function VehiclesProfilePage() {
 
         if (response.errors) {
           message.error("Vehicle not found.");
+          setVehicle(null);
         } else {
           setVehicle(response.data);
         }
@@ -134,6 +135,15 @@ function VehiclesProfilePage() {
           <section className="bg-bg2 p-4 rounded-lg w-full">
             <header className="flex justify-between items-center">
               <h2 className="text-lg font-bold">Owner Information</h2>
+              <MyButton
+                onClick={() => {
+                  navigate(
+                    "/users/" + vehicle.owner?.username ?? vehicle?.owner?.phone
+                  );
+                }}
+              >
+                View
+              </MyButton>
             </header>
 
             <section className="mt-2 flex flex-wrap gap-y-2">
