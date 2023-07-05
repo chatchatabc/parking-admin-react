@@ -32,13 +32,7 @@ function ParkingLotUnverifiedTable() {
               <button
                 className="text-start underline hover:no-underline"
                 onClick={() => {
-                  navigate(
-                    `/parking-lots/${
-                      owner.username
-                        ? `u-${record.owner?.username}`
-                        : `p-${record.owner?.phone}`
-                    }`
-                  );
+                  navigate(`/parking-lots/${owner.username ?? owner.phone}`);
                 }}
               >
                 {record.name}

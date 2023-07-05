@@ -58,7 +58,7 @@ const router = createBrowserRouter([
             element: <ParkingLotsPage />,
           },
           {
-            path: ":identifier",
+            path: ":id",
             element: <ParkingLotsProfilePage />,
           },
         ],

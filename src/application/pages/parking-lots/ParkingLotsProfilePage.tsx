@@ -2,7 +2,6 @@ import { Empty, Modal, Spin, Upload, message } from "antd";
 import React from "react";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { useNavigate, useParams } from "react-router-dom";
-import NotFoundPage from "../NotFoundPage";
 import {
   parkingLotGetByUser,
   parkingLotGetImagesByParkingLot,
@@ -26,15 +25,8 @@ function ParkingLotsProfilePage() {
 
   // Global states
   const globalState = useSelector((state: any) => state.globalState);
-  const { identifier } = useParams();
+  const { id = "" } = useParams();
   const dispatch = useDispatch();
-
-  const identifiers = identifier?.split("-");
-  if (!identifiers || (identifiers[0] !== "u" && identifiers[0] !== "p")) {
-    return <NotFoundPage />;
-  }
-  const username = identifiers[0] === "u" ? identifiers[1] : undefined;
-  const phone = identifiers[0] === "p" ? identifiers[1] : undefined;
 
   // Local states
   const [owner, setOwner] = React.useState<User | null>(null);
@@ -91,7 +83,7 @@ function ParkingLotsProfilePage() {
   React.useEffect(() => {
     async function fetchData() {
       const response = await parkingLotGetByUser({
-        keyword: username ?? phone ?? "",
+        keyword: id,
       });
 
       if (response.errors) {
@@ -112,7 +104,7 @@ function ParkingLotsProfilePage() {
         }
       }
 
-      const responseOwner = await userGet({ keyword: username ?? phone ?? "" });
+      const responseOwner = await userGet({ keyword: id });
       if (responseOwner.errors) {
         message.error("Failed to fetch parking lot owner.");
       } else {

@@ -53,9 +53,7 @@ function InvoicesTable({ showPagination, getData }: Props) {
             <button
               className="underline hover:no-underline"
               onClick={() => {
-                navigate(
-                  `/parking-lots/${username ? `u-${username}` : `p-${phone}`}`
-                );
+                navigate(`/parking-lots/${username ?? phone}`);
               }}
             >
               {record?.parkingLot?.name}
