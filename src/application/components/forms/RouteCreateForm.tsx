@@ -28,7 +28,9 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
     <Form
       name={title}
       onFinish={(e) => {
-        e.color = e.color.toHexString();
+        if (e.color !== "#ffffff") {
+          e.color = e.color.toHexString();
+        }
         if (e.routeUuid) {
           handleSubmit(routeUpdateWithNodes, e, "Route updated successfully");
         } else {
@@ -66,9 +68,8 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
             },
           ]}
           initialValue={"#ffffff"}
-          valuePropName="hex"
         >
-          <ColorPicker format="hex" className="w-full" />
+          <ColorPicker className="w-full" />
         </Form.Item>
 
         <Form.Item
