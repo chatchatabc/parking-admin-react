@@ -18,8 +18,8 @@ export function userGetByUsernameDoc() {
 
 export function userGetByVehicleDoc() {
   return `
-    query GetUserByVehicle($keyword: String!) {
-      getUserByVehicle(id: $keyword) {
+    query GetUserByVehicle($id: String!) {
+      getUserByVehicle(id: $id) {
         userUuid
         username
         phone
@@ -36,8 +36,8 @@ export function userGetByVehicleDoc() {
 
 export function userGetDoc() {
   return `
-    query GetUser($keyword: String!) {
-      getUser(id: $keyword) {
+    query GetUser($id: String!) {
+      getUser(id: $id) {
         userUuid
         username
         phone
@@ -84,8 +84,8 @@ export function userAddDoc() {
 
 export function userGetByParkingLotDoc() {
   return `
-    query GetUserByParkingLot($keyword: String!) {
-      getUserByParkingLot(id: $keyword) {
+    query GetUserByParkingLot($id: String!) {
+      getUserByParkingLot(id: $id) {
         userUuid
         username
         phone
@@ -187,8 +187,8 @@ export function userGetBanHistoryDoc() {
 
 export function userGetBanHistoryByUserDoc() {
   return `
-  query GetBanHistory($keyword: String!, $page: Int! = 0, $size: Int! = 10) {
-    getBanHistoryLogsByUser(id: $keyword, page: $page, size: $size) {
+  query GetBanHistory($id: String!, $page: Int! = 0, $size: Int! = 10) {
+    getBanHistoryLogsByUser(id: $id, page: $page, size: $size) {
       content {
         id
         createdAt

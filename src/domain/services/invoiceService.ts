@@ -22,7 +22,7 @@ export async function invoiceGetAll(variables: CommonVariables) {
   const data = query.data.data.getInvoices;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      keyword: invoice.parkingLotUuid ?? "",
+      id: invoice.parkingLotUuid ?? "",
     });
 
     if (!parkingLot.errors) {
@@ -30,7 +30,7 @@ export async function invoiceGetAll(variables: CommonVariables) {
     }
 
     const vehicle = await vehicleGetWithAllInfo({
-      keyword: invoice.vehicleUuid ?? "",
+      id: invoice.vehicleUuid ?? "",
     });
 
     if (!vehicle.errors) {
@@ -46,7 +46,9 @@ export async function invoiceGetAll(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
-export async function invoiceGetByParkingLot(variables: CommonVariables) {
+export async function invoiceGetByParkingLot(
+  variables: CommonVariables & { id: string }
+) {
   const query = await graphqlQuery(
     invoiceGetByParkingLotDoc(),
     variables,
@@ -60,7 +62,7 @@ export async function invoiceGetByParkingLot(variables: CommonVariables) {
   const data = query.data.data.getInvoicesByParkingLot;
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      keyword: invoice.parkingLotUuid ?? "",
+      id: invoice.parkingLotUuid ?? "",
     });
 
     if (parkingLot.errors) {
@@ -92,7 +94,7 @@ export async function invoiceGetByUser(
 
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      keyword: invoice.parkingLotUuid ?? "",
+      id: invoice.parkingLotUuid ?? "",
     });
 
     if (!parkingLot.errors) {
@@ -100,7 +102,7 @@ export async function invoiceGetByUser(
     }
 
     const vehicle = await vehicleGetWithAllInfo({
-      keyword: invoice.vehicleUuid ?? "",
+      id: invoice.vehicleUuid ?? "",
     });
 
     if (!vehicle.errors) {
@@ -116,7 +118,7 @@ export async function invoiceGetByUser(
   } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
-export async function invoiceGet(variables: { keyword: string }) {
+export async function invoiceGet(variables: { id: string }) {
   const query = await graphqlQuery(invoiceGetDoc(), variables, "InvoiceGet");
 
   if (query.data.errors) {
@@ -129,7 +131,7 @@ export async function invoiceGet(variables: { keyword: string }) {
 }
 
 export async function invoiceGetAllByVehicle(
-  variables: CommonVariables & { keyword: string }
+  variables: CommonVariables & { id: string }
 ) {
   const query = await graphqlQuery(
     invoiceGetAllByVehicleDoc(),
@@ -145,7 +147,7 @@ export async function invoiceGetAllByVehicle(
 
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
     const parkingLot = await parkingLotGetWithOwner({
-      keyword: invoice.parkingLotUuid ?? "",
+      id: invoice.parkingLotUuid ?? "",
     });
 
     if (!parkingLot.errors) {
@@ -153,7 +155,7 @@ export async function invoiceGetAllByVehicle(
     }
 
     const vehicle = await vehicleGetWithAllInfo({
-      keyword: invoice.vehicleUuid ?? "",
+      id: invoice.vehicleUuid ?? "",
     });
 
     if (!vehicle.errors) {
@@ -170,7 +172,7 @@ export async function invoiceGetAllByVehicle(
   } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
-export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
+export async function invoiceGetWithAllInfo(variables: { id: string }) {
   const query = await invoiceGet(variables);
   if (query.errors) {
     return query;
@@ -178,7 +180,7 @@ export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
   const invoice = query.data as Invoice;
 
   const queryParkingLot = await parkingLotGetWithOwner({
-    keyword: invoice.parkingLotUuid ?? "",
+    id: invoice.parkingLotUuid ?? "",
   });
   if (queryParkingLot.errors) {
     return queryParkingLot;
@@ -186,7 +188,7 @@ export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
   invoice.parkingLot = queryParkingLot.data;
 
   const queryVehicle = await vehicleGetWithAllInfo({
-    keyword: invoice.vehicleUuid ?? "",
+    id: invoice.vehicleUuid ?? "",
   });
   if (queryVehicle.errors) {
     return queryVehicle;

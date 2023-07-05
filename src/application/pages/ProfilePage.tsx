@@ -34,7 +34,7 @@ function ProfilePage({ id = authUsername() }: Props) {
   React.useEffect(() => {
     async function fetchData() {
       const response = await userGet({
-        keyword: id,
+        id,
       });
 
       if (response.errors) {

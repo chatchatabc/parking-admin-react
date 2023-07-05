@@ -26,7 +26,7 @@ export async function jeepneyGetAll(variables: CommonVariables) {
 }
 
 export async function jeepneyGetAllByRouteWithRoute(
-  variables: CommonVariables & { keyword: string }
+  variables: CommonVariables & { id: string }
 ) {
   const query = await jeepneyGetAllByRoute(variables);
 
@@ -35,7 +35,7 @@ export async function jeepneyGetAllByRouteWithRoute(
   }
 
   const dataWithRoutes = query.data.content.map(async (jeepney: Jeepney) => {
-    const route = await routeGet({ keyword: jeepney.routeUuid ?? "" });
+    const route = await routeGet({ id: jeepney.routeUuid ?? "" });
 
     if (route.errors) {
       return jeepney;
@@ -53,7 +53,7 @@ export async function jeepneyGetAllByRouteWithRoute(
 }
 
 export async function jeepneyGetAllByRoute(
-  variables: CommonVariables & { keyword: string }
+  variables: CommonVariables & { id: string }
 ) {
   const query = await graphqlQuery(
     jeepneyGetAllByRouteDoc(),
@@ -78,7 +78,7 @@ export async function jeepneyGetAllWithRoute(variables: CommonVariables) {
   }
 
   const dataWithRoutes = query.data.content.map(async (jeepney: Jeepney) => {
-    const route = await routeGet({ keyword: jeepney.routeUuid ?? "" });
+    const route = await routeGet({ id: jeepney.routeUuid ?? "" });
 
     if (route.errors) {
       return jeepney;

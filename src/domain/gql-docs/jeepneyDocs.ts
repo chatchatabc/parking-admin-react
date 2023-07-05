@@ -25,8 +25,8 @@ export function jeepneyGetAllDoc() {
 
 export function jeepneyGetAllByRouteDoc() {
   return `
-  query GetJeepneysByRoute($page: Int = 0, $size: Int = 10, $keyword: String!) {
-    getJeepneysByRoute(page: $page, size: $size, id: $keyword) {
+  query GetJeepneysByRoute($page: Int = 0, $size: Int = 10, $id: String!) {
+    getJeepneysByRoute(page: $page, size: $size, id: $id) {
       content {
         jeepneyUuid
         name

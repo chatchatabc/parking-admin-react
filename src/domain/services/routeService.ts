@@ -279,7 +279,7 @@ export async function routeGetAllOptions(variables: CommonVariables) {
 
 export async function routeGet(
   variables: CommonVariables & {
-    keyword: string;
+    id: string;
   }
 ) {
   const query = await graphqlQuery(routeGetDoc(), variables, "RouteGet");
@@ -294,7 +294,7 @@ export async function routeGet(
 
 export async function routeGetWithNodesAndEdges(
   variables: CommonVariables & {
-    keyword: string;
+    id: string;
   }
 ) {
   const query = await routeGet(variables);
@@ -387,7 +387,7 @@ export async function routeUpdateNodeMany(params: RouteNode[]) {
   return response.data as AxiosResponseData;
 }
 
-export async function routeGetNodesAndEdges(variables: { keyword: string }) {
+export async function routeGetNodesAndEdges(variables: { id: string }) {
   const query = await graphqlQuery(
     routeGetNodesAndEdgesDoc(),
     variables,
@@ -416,7 +416,7 @@ export async function routeGetAllWithNodesAndEdges(variables: CommonVariables) {
 
   const moreInfoPromise = routes.data.content.map(async (route: Route) => {
     const nodesAndEdges = await routeGetNodesAndEdges({
-      keyword: route.routeUuid ?? "",
+      id: route.routeUuid ?? "",
     });
 
     if (nodesAndEdges.errors) {

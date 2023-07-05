@@ -27,7 +27,7 @@ function VehiclesProfilePage() {
     if (loading) {
       (async () => {
         const response = await vehicleGetWithAllInfo({
-          keyword: plateNumber ?? "",
+          id: plateNumber ?? "",
         });
 
         if (response.errors) {
@@ -249,10 +249,10 @@ function VehiclesProfilePage() {
             <section className="mt-2">
               <InvoicesTable
                 getData={(variables: CommonVariables) => {
-                  variables.keyword = vehicle.vehicleUuid;
-                  return invoiceGetAllByVehicle(
-                    variables as CommonVariables & { keyword: string }
-                  );
+                  return invoiceGetAllByVehicle({
+                    ...variables,
+                    id: vehicle.vehicleUuid ?? "",
+                  });
                 }}
               />
             </section>

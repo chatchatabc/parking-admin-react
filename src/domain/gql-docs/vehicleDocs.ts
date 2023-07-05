@@ -1,7 +1,7 @@
 export function vehicleGetDoc() {
   return `
-  query GetVehicle($keyword: String!) {
-    getVehicle(id: $keyword) {
+  query GetVehicle($id: String!) {
+    getVehicle(id: $id) {
       vehicleUuid
       name
       plateNumber
@@ -52,8 +52,8 @@ export function vehicleGetAllDoc() {
 
 export function vehicleGetTypeDoc() {
   return `
-  query GetVehicleType($keyword: String) {
-    getVehicleType(id: $keyword) {
+  query GetVehicleType($id: String) {
+    getVehicleType(id: $id) {
       typeUuid
       name
       status
@@ -121,8 +121,8 @@ export function vehicleGetAllBrandDoc() {
 
 export function vehicleGetBrandDoc() {
   return `
-  query GetVehicleBrandById($keyword: String!) {
-    getVehicleBrand(id: $keyword) {
+  query GetVehicleBrandById($id: String!) {
+    getVehicleBrand(id: $id) {
       brandUuid
       name
       status
@@ -159,8 +159,8 @@ export function vehicleGetAllTypeDoc() {
 
 export function vehicleGetModelDoc() {
   return `
-  query GetVehicleModel($keyword: String!) {
-    getVehicleModel(id: $keyword) {
+  query GetVehicleModel($id: String!) {
+    getVehicleModel(id: $id) {
       modelUuid
       brandUuid
       typeUuid

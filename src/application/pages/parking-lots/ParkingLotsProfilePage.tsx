@@ -82,9 +82,7 @@ function ParkingLotsProfilePage() {
 
   React.useEffect(() => {
     async function fetchData() {
-      const response = await parkingLotGetByUser({
-        keyword: id,
-      });
+      const response = await parkingLotGetByUser({ id });
 
       if (response.errors) {
         message.error("Failed to fetch parking lot.");
@@ -92,7 +90,7 @@ function ParkingLotsProfilePage() {
         setData(response.data);
 
         const responseImages = await parkingLotGetImagesByParkingLot({
-          keyword: response?.data?.parkingLotUuid ?? "",
+          id: response?.data?.parkingLotUuid ?? "",
           page: 0,
           size: 100,
         });
@@ -104,7 +102,7 @@ function ParkingLotsProfilePage() {
         }
       }
 
-      const responseOwner = await userGet({ keyword: id });
+      const responseOwner = await userGet({ id });
       if (responseOwner.errors) {
         message.error("Failed to fetch parking lot owner.");
       } else {
@@ -474,8 +472,10 @@ function ParkingLotsProfilePage() {
           <section className="mt-2">
             <InvoicesTable
               getData={(variables) => {
-                variables.keyword = data.parkingLotUuid;
-                return invoiceGetByParkingLot(variables);
+                return invoiceGetByParkingLot({
+                  ...variables,
+                  id: data.parkingLotUuid ?? "",
+                });
               }}
             />
           </section>

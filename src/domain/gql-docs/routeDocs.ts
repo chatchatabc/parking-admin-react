@@ -1,7 +1,7 @@
 export function routeGetDoc() {
   return `
-  query GetRoute($keyword: String!) {
-    getRoute(id: $keyword) {
+  query GetRoute($id: String!) {
+    getRoute(id: $id) {
       id
       routeUuid
       slug
@@ -68,8 +68,8 @@ export function routeGetNodesDoc() {
 
 export function routeGetNodesAndEdgesDoc() {
   return `
-  query GetRouteNodesAndEdges($keyword: String!) {
-    getRouteNodesAndEdges(id: $keyword) {
+  query GetRouteNodesAndEdges($id: String!) {
+    getRouteNodesAndEdges(id: $id) {
       nodes {
         id
         latitude

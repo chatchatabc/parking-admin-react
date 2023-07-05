@@ -93,7 +93,7 @@ function UserBanTable({
       getData={(variables) => {
         return userGetBanHistoryByUser({
           ...variables,
-          keyword: id,
+          id,
         });
       }}
     />

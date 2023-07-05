@@ -18,7 +18,7 @@ import { User } from "../models/UserModel";
 import { userGetByParkingLot } from "./userService";
 import type { Dayjs } from "dayjs";
 
-export async function parkingLotGet(variables: { keyword: string }) {
+export async function parkingLotGet(variables: { id: string }) {
   const query = await graphqlQuery(
     parkingLotGetDoc(),
     variables,
@@ -34,18 +34,10 @@ export async function parkingLotGet(variables: { keyword: string }) {
   return { data } as AxiosResponseData<ParkingLot>;
 }
 
-export async function parkingLotGetAll({
-  page = 0,
-  size = 10,
-  keyword = "",
-}: Record<string, any>) {
+export async function parkingLotGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(
     parkingLotGetAllDoc(),
-    {
-      page,
-      size,
-      keyword,
-    },
+    variables,
     "ParkingLotGetAll"
   );
 
@@ -73,7 +65,7 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
     };
 
     const queryOwner = await userGetByParkingLot({
-      keyword: parkingLot.parkingLotUuid ?? "",
+      id: parkingLot.parkingLotUuid ?? "",
     });
 
     if (queryOwner.errors) {
@@ -91,7 +83,7 @@ export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<ParkingLot>>;
 }
 
-export async function parkingLotGetWithOwner(variables: { keyword: string }) {
+export async function parkingLotGetWithOwner(variables: { id: string }) {
   const response = await parkingLotGet(variables);
 
   if (response.errors) {
@@ -101,7 +93,7 @@ export async function parkingLotGetWithOwner(variables: { keyword: string }) {
   const parkingLot = response.data as ParkingLot;
 
   const queryOwner = await userGetByParkingLot({
-    keyword: parkingLot.parkingLotUuid ?? "",
+    id: parkingLot.parkingLotUuid ?? "",
   });
 
   if (queryOwner.errors) {
@@ -115,7 +107,7 @@ export async function parkingLotGetWithOwner(variables: { keyword: string }) {
   return { data } as AxiosResponseData<ParkingLot>;
 }
 
-export async function parkingLotGetByUser(variables: { keyword: string }) {
+export async function parkingLotGetByUser(variables: { id: string }) {
   const response = await graphqlQuery(
     parkingLotGetByUserDoc(),
     variables,
@@ -246,7 +238,7 @@ export async function parkingLotUpdateRate(values: Record<string, any>) {
 
 export async function parkingLotGetImagesByParkingLot(
   variables: CommonVariables & {
-    keyword: string;
+    id: string;
   }
 ) {
   const query = await graphqlQuery(

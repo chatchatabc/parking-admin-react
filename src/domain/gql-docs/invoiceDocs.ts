@@ -29,8 +29,8 @@ export function invoiceGetAllDoc() {
 
 export function invoiceGetByParkingLotDoc() {
   return `
-  query GetInvoiceByParkingLot($page: Int = 0, $size: Int = 10, $keyword: String!) {
-    getInvoicesByParkingLot(page: $page, size: $size, id: $keyword) {
+  query GetInvoiceByParkingLot($page: Int = 0, $size: Int = 10, $id: String!) {
+    getInvoicesByParkingLot(page: $page, size: $size, id: $id) {
       content {
         invoiceUuid
         createdAt
@@ -87,8 +87,8 @@ export function invoiceGetByUserDoc() {
 
 export function invoiceGetAllByVehicleDoc() {
   return `
-    query GetAllInvoicesByVehicle($page: Int = 0, $size: Int = 10, $keyword: String = "") {
-      getInvoicesByVehicle(page: $page, size: $size, id: $keyword) {
+    query GetAllInvoicesByVehicle($page: Int = 0, $size: Int = 10, $id: String!) {
+      getInvoicesByVehicle(page: $page, size: $size, id: $id) {
         content {
           invoiceUuid
           createdAt
@@ -116,8 +116,8 @@ export function invoiceGetAllByVehicleDoc() {
 
 export function invoiceGetDoc() {
   return `
-  query GetInvoice($keyword: String!) {
-    getInvoice(id: $keyword) {
+  query GetInvoice($id: String!) {
+    getInvoice(id: $id) {
       invoiceUuid
       createdAt
       endAt

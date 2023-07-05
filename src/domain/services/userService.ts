@@ -12,7 +12,7 @@ import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { User, UserBan, UserRole } from "../models/UserModel";
 
-export async function userGet(variables: { keyword: string }) {
+export async function userGet(variables: { id: string }) {
   const query = await graphqlQuery(userGetDoc(), variables, "UserGet");
 
   if (query.data.errors) {
@@ -115,7 +115,7 @@ export async function userUpdate(values: Record<string, any>) {
   return response.data;
 }
 
-export async function userGetByParkingLot(variables: { keyword: string }) {
+export async function userGetByParkingLot(variables: { id: string }) {
   const response = await graphqlQuery(
     userGetByParkingLotDoc(),
     variables,
@@ -131,7 +131,7 @@ export async function userGetByParkingLot(variables: { keyword: string }) {
   return { data } as AxiosResponseData<User>;
 }
 
-export async function userGetByVehicle(variables: { keyword: string }) {
+export async function userGetByVehicle(variables: { id: string }) {
   const response = await graphqlQuery(
     userGetByVehicleDoc(),
     variables,
@@ -147,7 +147,9 @@ export async function userGetByVehicle(variables: { keyword: string }) {
   return { data } as AxiosResponseData<User>;
 }
 
-export async function userGetBanHistoryByUser(variables: CommonVariables) {
+export async function userGetBanHistoryByUser(
+  variables: CommonVariables & { id: string }
+) {
   const response = await graphqlQuery(userGetBanHistoryByUserDoc(), variables);
   if (response.data.errors) {
     return response.data;

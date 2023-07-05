@@ -75,7 +75,7 @@ function DynamicTable({
           const response = await getData({
             page: pagination.current - 1,
             size: pagination.pageSize,
-            keyword: keyword,
+            keyword,
           });
 
           if (response.errors) {

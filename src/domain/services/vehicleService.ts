@@ -26,7 +26,7 @@ import {
 } from "../models/VehicleModel";
 import { userGetByVehicle } from "./userService";
 
-export async function vehicleGet(variables: { keyword: string }) {
+export async function vehicleGet(variables: { id: string }) {
   const query = await graphqlQuery(vehicleGetDoc(), variables, "VehicleGet");
 
   if (query.data.errors) {
@@ -38,7 +38,7 @@ export async function vehicleGet(variables: { keyword: string }) {
   return { data } as AxiosResponseData<Vehicle>;
 }
 
-export async function vehicleGetWithAllInfo(variables: { keyword: string }) {
+export async function vehicleGetWithAllInfo(variables: { id: string }) {
   const query = await vehicleGet(variables);
 
   if (query.errors) {
@@ -47,7 +47,7 @@ export async function vehicleGetWithAllInfo(variables: { keyword: string }) {
 
   const vehicle = query.data;
 
-  const user = await userGetByVehicle({ keyword: vehicle.vehicleUuid ?? "" });
+  const user = await userGetByVehicle({ id: vehicle.vehicleUuid ?? "" });
 
   if (user.errors) {
     return user;
@@ -55,7 +55,7 @@ export async function vehicleGetWithAllInfo(variables: { keyword: string }) {
 
   vehicle.owner = user.data;
 
-  const model = await vehicleGetModel({ keyword: vehicle.modelUuid ?? "" });
+  const model = await vehicleGetModel({ id: vehicle.modelUuid ?? "" });
 
   if (model.errors) {
     return model;
@@ -80,12 +80,12 @@ export async function vehicleGetAll(variables: CommonVariables) {
   const data = query.data.data.getVehicles;
 
   const vehiclesPromise = data.content.map(async (vehicle: Vehicle) => {
-    const user = await userGetByVehicle({ keyword: vehicle.vehicleUuid ?? "" });
+    const user = await userGetByVehicle({ id: vehicle.vehicleUuid ?? "" });
     if (!user.errors) {
       vehicle.owner = user.data;
     }
 
-    const model = await vehicleGetModel({ keyword: vehicle.modelUuid ?? "" });
+    const model = await vehicleGetModel({ id: vehicle.modelUuid ?? "" });
     if (!model.errors) {
       vehicle.model = model.data;
     }
@@ -100,7 +100,7 @@ export async function vehicleGetAll(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
-export async function vehicleGetType(variables: { keyword: string }) {
+export async function vehicleGetType(variables: { id: string }) {
   const query = await graphqlQuery(
     vehicleGetTypeDoc(),
     variables,
@@ -151,7 +151,7 @@ export async function vehicleGetAllWithOwner(params: CommonVariables) {
     };
 
     const queryOwner = await userGetByVehicle({
-      keyword: vehicle.vehicleUuid ?? "",
+      id: vehicle.vehicleUuid ?? "",
     });
 
     if (queryOwner.errors) {
@@ -183,7 +183,7 @@ export async function vehicleGetAllByUser(
   const data = query.data.data.getVehiclesByUser;
 
   const vehiclesPromise = data.content.map(async (vehicle: Vehicle) => {
-    const model = await vehicleGetModel({ keyword: vehicle.modelUuid ?? "" });
+    const model = await vehicleGetModel({ id: vehicle.modelUuid ?? "" });
     if (!model.errors) {
       vehicle.model = model.data;
     }
@@ -211,13 +211,13 @@ export async function vehicleGetAllModel(variables: CommonVariables) {
   const data = query.data.data.getVehicleModels;
 
   const modelsPromise = data.content.map(async (model: VehicleModel) => {
-    const brand = await vehicleGetBrand({ keyword: model.brandUuid ?? "" });
+    const brand = await vehicleGetBrand({ id: model.brandUuid ?? "" });
 
     if (!brand.errors) {
       model.brand = brand.data;
     }
 
-    const type = await vehicleGetType({ keyword: model.typeUuid ?? "" });
+    const type = await vehicleGetType({ id: model.typeUuid ?? "" });
 
     if (!type.errors) {
       model.type = type.data;
@@ -233,7 +233,7 @@ export async function vehicleGetAllModel(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<VehicleModel>>;
 }
 
-export async function vehicleGetModel(variables: { keyword: string }) {
+export async function vehicleGetModel(variables: { id: string }) {
   const query = await graphqlQuery(
     vehicleGetModelDoc(),
     variables,
@@ -246,7 +246,7 @@ export async function vehicleGetModel(variables: { keyword: string }) {
 
   const model = query.data.data.getVehicleModel;
 
-  const brand = await vehicleGetBrand({ keyword: model.brandUuid ?? "" });
+  const brand = await vehicleGetBrand({ id: model.brandUuid ?? "" });
 
   if (brand.errors) {
     return brand;
@@ -254,7 +254,7 @@ export async function vehicleGetModel(variables: { keyword: string }) {
 
   model.brand = brand.data;
 
-  const type = await vehicleGetType({ keyword: model.typeUuid ?? "" });
+  const type = await vehicleGetType({ id: model.typeUuid ?? "" });
 
   if (type.errors) {
     return type;
@@ -352,8 +352,12 @@ export async function vehicleCreate(values: Record<string, any>) {
   return response.data;
 }
 
-export async function vehicleGetAllBrand(params: CommonVariables) {
-  const query = await graphqlQuery(vehicleGetAllBrandDoc(), params);
+export async function vehicleGetAllBrand(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    vehicleGetAllBrandDoc(),
+    variables,
+    "VehicleGetAllBrand"
+  );
 
   if (query.data.errors) {
     return query.data as AxiosResponseError;
@@ -364,7 +368,7 @@ export async function vehicleGetAllBrand(params: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<VehicleBrand>>;
 }
 
-export async function vehicleGetBrand(variables: { keyword: string }) {
+export async function vehicleGetBrand(variables: { id: string }) {
   const query = await graphqlQuery(
     vehicleGetBrandDoc(),
     variables,
@@ -419,8 +423,12 @@ export function vehicleGetAllBrandOptions() {
   ];
 }
 
-export async function vehicleGetAllType(params: CommonVariables) {
-  const query = await graphqlQuery(vehicleGetAllTypeDoc(), params);
+export async function vehicleGetAllType(variables: CommonVariables) {
+  const query = await graphqlQuery(
+    vehicleGetAllTypeDoc(),
+    variables,
+    "VehicleGetAllType"
+  );
 
   if (query.data.errors) {
     return query.data as AxiosResponseError;

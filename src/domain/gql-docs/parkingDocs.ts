@@ -34,8 +34,8 @@ export function parkingLotGetAllDoc() {
 
 export function parkingLotGetDoc() {
   return `
-    query GetParkingLot($keyword: String!) {
-      getParkingLot(id: $keyword) {
+    query GetParkingLot($id: String!) {
+      getParkingLot(id: $id) {
         parkingLotUuid
         availableSlots
         address
@@ -63,8 +63,8 @@ export function parkingLotGetDoc() {
 
 export function parkingLotGetByUserDoc() {
   return `
-    query GetParkingLotByUser($keyword: String!) {
-      getParkingLotByUser(id: $keyword) {
+    query GetParkingLotByUser($id: String!) {
+      getParkingLotByUser(id: $id) {
         parkingLotUuid
         availableSlots
         address
@@ -92,8 +92,8 @@ export function parkingLotGetByUserDoc() {
 
 export function parkingLotGetImagesByParkingLotDoc() {
   return `
-    query GetParkingLotImages($page: Int! = 0, $size: Int! = 10, $keyword: String!) {
-      getParkingLotImageKeysByParkingLot(page: $page, size: $size, id: $keyword) 
+    query GetParkingLotImages($page: Int! = 0, $size: Int! = 10, $id: String!) {
+      getParkingLotImageKeysByParkingLot(page: $page, size: $size, id: $id) 
     }
   `;
 }

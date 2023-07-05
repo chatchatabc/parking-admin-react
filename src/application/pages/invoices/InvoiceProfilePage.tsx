@@ -15,7 +15,7 @@ function InvoiceProfilePage() {
   React.useEffect(() => {
     if (loading) {
       (async () => {
-        const response = await invoiceGetWithAllInfo({ keyword: invoiceId });
+        const response = await invoiceGetWithAllInfo({ id: invoiceId });
 
         if (response.errors) {
           message.error("Failed to fetch invoice.");
