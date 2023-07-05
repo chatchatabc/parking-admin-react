@@ -1,4 +1,5 @@
 import {
+  invoiceGetAllByVehicleDoc,
   invoiceGetAllDoc,
   invoiceGetByParkingLotDoc,
   invoiceGetByUserDoc,
@@ -8,7 +9,7 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
-import { parkingLotGet, parkingLotGetWithOwner } from "./parkingLotService";
+import { parkingLotGetWithOwner } from "./parkingLotService";
 import { vehicleGetWithAllInfo } from "./vehicleService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
@@ -114,6 +115,48 @@ export async function invoiceGet(variables: { keyword: string }) {
   return { data } as AxiosResponseData<Invoice>;
 }
 
+export async function invoiceGetAllByVehicle(
+  variables: CommonVariables & { keyword: string }
+) {
+  const query = await graphqlQuery(
+    invoiceGetAllByVehicleDoc(),
+    variables,
+    "InvoiceGetAllByVehicle"
+  );
+
+  if (query.data.errors) {
+    return query.data;
+  }
+
+  const data = query.data.data.getInvoicesByVehicle;
+
+  const additionalInfo = data.content.map(async (invoice: Invoice) => {
+    const parkingLot = await parkingLotGetWithOwner({
+      keyword: invoice.parkingLotUuid ?? "",
+    });
+
+    if (!parkingLot.errors) {
+      invoice.parkingLot = parkingLot.data;
+    }
+
+    const vehicle = await vehicleGetWithAllInfo({
+      keyword: invoice.vehicleUuid ?? "",
+    });
+
+    if (!vehicle.errors) {
+      invoice.vehicle = vehicle.data;
+    }
+
+    return invoice;
+  });
+
+  data.content = await Promise.all(additionalInfo);
+
+  return {
+    data,
+  } as AxiosResponseData<CommonContent<Invoice>>;
+}
+
 export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
   const query = await invoiceGet(variables);
   if (query.errors) {
@@ -121,7 +164,7 @@ export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
   }
   const invoice = query.data as Invoice;
 
-  const queryParkingLot = await parkingLotGet({
+  const queryParkingLot = await parkingLotGetWithOwner({
     keyword: invoice.parkingLotUuid ?? "",
   });
   if (queryParkingLot.errors) {

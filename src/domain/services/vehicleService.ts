@@ -116,6 +116,25 @@ export async function vehicleGetType(variables: { keyword: string }) {
   return { data } as AxiosResponseData<VehicleType>;
 }
 
+export async function vehicleVerify(values: Record<string, any>) {
+  const { vehicleUuid, rejectionReason, status } = values;
+  const values1 = { rejectionReason, status };
+
+  const response = await restPut(
+    `/vehicle/verify/${vehicleUuid}`,
+    values1,
+    "VehicleVerify"
+  );
+
+  if (response.data.errors) {
+    return response.data as AxiosResponseError;
+  }
+
+  const data = response.data;
+
+  return { data } as AxiosResponseData<any>;
+}
+
 export async function vehicleGetAllWithOwner(params: CommonVariables) {
   const query = await vehicleGetAll(params);
 

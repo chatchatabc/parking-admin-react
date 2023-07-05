@@ -18,6 +18,7 @@ import CommutesRoutesPage from "./pages/commutes/CommutesRoutesPage";
 import CommutesNodesPage from "./pages/commutes/CommutesNodesPage";
 import CommutesMapPage from "./pages/commutes/CommutesMapPage";
 import InvoiceProfilePage from "./pages/invoices/InvoiceProfilePage";
+import VehiclesProfilePage from "./pages/vehicles/VehiclesProfilePage";
 
 message.config({
   maxCount: 2,
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <VehiclesPage />,
+          },
+          {
+            path: ":plateNumber",
+            element: <VehiclesProfilePage />,
           },
         ],
       },

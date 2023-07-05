@@ -18,14 +18,17 @@ export function userGetByUsernameDoc() {
 
 export function userGetByVehicleDoc() {
   return `
-    query GetOwnerByVehicleId($keyword: String!) {
-      getOwnerByVehicleId(id: $keyword) {
+    query GetUserByVehicle($keyword: String!) {
+      getUserByVehicle(id: $keyword) {
         userUuid
         username
-        email
         phone
-        createdAt
-        updatedAt
+        phoneVerifiedAt
+        emailVerifiedAt
+        email
+        authorities {
+          authority
+        }
       }
     }
   `;
