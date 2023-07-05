@@ -9,7 +9,7 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
-import { parkingLotGet, parkingLotGetWithOwner } from "./parkingLotService";
+import { parkingLotGetWithOwner } from "./parkingLotService";
 import { vehicleGetWithAllInfo } from "./vehicleService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
@@ -131,7 +131,7 @@ export async function invoiceGetAllByVehicle(
   const data = query.data.data.getInvoicesByVehicle;
 
   const additionalInfo = data.content.map(async (invoice: Invoice) => {
-    const parkingLot = await parkingLotGet({
+    const parkingLot = await parkingLotGetWithOwner({
       keyword: invoice.parkingLotUuid ?? "",
     });
 
@@ -164,7 +164,7 @@ export async function invoiceGetWithAllInfo(variables: { keyword: string }) {
   }
   const invoice = query.data as Invoice;
 
-  const queryParkingLot = await parkingLotGet({
+  const queryParkingLot = await parkingLotGetWithOwner({
     keyword: invoice.parkingLotUuid ?? "",
   });
   if (queryParkingLot.errors) {
