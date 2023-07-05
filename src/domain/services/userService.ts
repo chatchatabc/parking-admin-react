@@ -142,7 +142,7 @@ export async function userGetByVehicle(variables: { keyword: string }) {
     return response.data as AxiosResponseError;
   }
 
-  const data = response.data.data.getOwnerByVehicleId;
+  const data = response.data.data.getUserByVehicle;
 
   return { data } as AxiosResponseData<User>;
 }

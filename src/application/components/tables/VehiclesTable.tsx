@@ -83,7 +83,19 @@ function VehiclesTable({ showPagination, localPagination }: Props) {
       title: "Owner",
       key: "owner",
       render: (record: Vehicle) => {
-        return <p>{record.owner?.username}</p>;
+        if (record.owner) {
+          return (
+            <button
+              className="underline hover:no-underline"
+              onClick={() => {
+                navigate(`/users/${record.plateNumber}`);
+              }}
+            >
+              {record.owner?.username ?? record.owner?.phone}
+            </button>
+          );
+        }
+        return <p>Unknown</p>;
       },
     },
     {
