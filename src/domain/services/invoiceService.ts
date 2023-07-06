@@ -13,7 +13,11 @@ import { parkingLotGetWithOwner } from "./parkingLotService";
 import { vehicleGetWithAllInfo } from "./vehicleService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
-  const query = await graphqlQuery(invoiceGetAllDoc(), variables);
+  const query = await graphqlQuery(
+    invoiceGetAllDoc(),
+    variables,
+    "InvoiceGetAll"
+  );
 
   if (query.data.errors) {
     return query.data;
