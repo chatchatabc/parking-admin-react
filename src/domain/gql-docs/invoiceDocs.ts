@@ -1,6 +1,6 @@
 export function invoiceGetAllDoc() {
   return `
-  query GetAllInvoices($page: Int = 0, $size: Int = 10, $keyword: String) {
+  query GetAllInvoices($page: Int = 0, $size: Int = 10, $keyword: String = "") {
     getInvoices(page: $page, size: $size, keyword: $keyword) {
       content {
         invoiceUuid

@@ -21,8 +21,8 @@ export function vehicleGetDoc() {
 
 export function vehicleGetAllDoc() {
   return `
-  query GetAllVehicles($page: Int, $size: Int) {
-    getVehicles(page: $page, size: $size) {
+  query GetAllVehicles($page: Int, $size: Int, $keyword: String = "") {
+    getVehicles(page: $page, size: $size, keyword: $keyword) {
       content {
         vehicleUuid
         name
