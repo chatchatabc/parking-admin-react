@@ -14,7 +14,7 @@ export type User = {
   authorities?: UserAuthorities[];
 };
 
-export type UserLoginLog = {
+export type UserLogin = {
   id?: string | null;
   ipAddress?: string | null;
   createdAt?: string | null;
@@ -24,7 +24,7 @@ export type UserLoginLog = {
   success?: Boolean | null;
 };
 
-export type UserLogoutLog = {
+export type UserLogout = {
   id?: string | null;
   ipAddress?: string | null;
   createdAt?: string | null;

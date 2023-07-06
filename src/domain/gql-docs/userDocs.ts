@@ -118,6 +118,29 @@ export function userGetByParkingLotUuidDoc() {
   `;
 }
 
+export function userGetAllLoginDoc() {
+  return `
+    query GetUserLoginLogs($page: Int! = 0, $size: Int! = 10, $id: String!) {
+      getUserLoginLogs(page: $page, size: $size, id: $id) {
+        content {
+          id
+          type 
+          ipAddress
+          success
+          createdAt
+        }
+        pageInfo {
+          size
+          totalElements
+          first
+          last
+          empty
+        }
+      }
+    }
+  `;
+}
+
 export function userGetAllDoc() {
   return `
   query GetAllUsers ($page: Int! = 0, $size: Int! = 10, $keyword: String, $sortField: String = "username", $sortBy: Int = 1) {

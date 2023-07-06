@@ -1,5 +1,6 @@
 import {
   userGetAllDoc,
+  userGetAllLoginDoc,
   userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
   userGetByVehicleDoc,
@@ -10,7 +11,7 @@ import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restPost, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
-import { User, UserBan, UserRole } from "../models/UserModel";
+import { User, UserBan, UserLogin, UserRole } from "../models/UserModel";
 
 export async function userGet(variables: { id: string }) {
   const query = await graphqlQuery(userGetDoc(), variables, "UserGet");
@@ -129,6 +130,20 @@ export async function userGetByParkingLot(variables: { id: string }) {
   const data = response.data.data.getUserByParkingLot;
 
   return { data } as AxiosResponseData<User>;
+}
+
+export async function userGetAllLogin(
+  variables: CommonVariables & { id: string }
+) {
+  const response = await graphqlQuery(userGetAllLoginDoc(), variables);
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  const data = response.data.data.getUserLoginLogs;
+
+  return { data } as AxiosResponseData<CommonContent<UserLogin>>;
 }
 
 export async function userGetByVehicle(variables: { id: string }) {
