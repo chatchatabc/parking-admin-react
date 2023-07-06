@@ -1,6 +1,6 @@
 import {
   userGetAllDoc,
-  userGetAllLoginDoc,
+  userGetAllLoginByUserDoc,
   userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
   userGetByVehicleDoc,
@@ -132,16 +132,20 @@ export async function userGetByParkingLot(variables: { id: string }) {
   return { data } as AxiosResponseData<User>;
 }
 
-export async function userGetAllLogin(
+export async function userGetAllLoginByUser(
   variables: CommonVariables & { id: string }
 ) {
-  const response = await graphqlQuery(userGetAllLoginDoc(), variables);
+  const response = await graphqlQuery(
+    userGetAllLoginByUserDoc(),
+    variables,
+    "UserGetAllLoginByUser"
+  );
 
   if (response.data.errors) {
     return response.data;
   }
 
-  const data = response.data.data.getUserLoginLogs;
+  const data = response.data.data.getUserLoginLogsByUser;
 
   return { data } as AxiosResponseData<CommonContent<UserLogin>>;
 }

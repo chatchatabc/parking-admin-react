@@ -118,10 +118,10 @@ export function userGetByParkingLotUuidDoc() {
   `;
 }
 
-export function userGetAllLoginDoc() {
+export function userGetAllLoginByUserDoc() {
   return `
     query GetUserLoginLogs($page: Int! = 0, $size: Int! = 10, $id: String!) {
-      getUserLoginLogs(page: $page, size: $size, id: $id) {
+      getUserLoginLogsByUser(page: $page, size: $size, id: $id) {
         content {
           id
           type 
