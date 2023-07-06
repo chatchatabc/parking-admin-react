@@ -21,6 +21,7 @@ import VehicleModelForm from "./VehicleModelForm";
 import VehicleTypeForm from "./VehicleTypeForm";
 import VehicleBrandForm from "./VehicleBrandForm";
 import VehicleVerifyForm from "./VehicleVerifyForm";
+import UserAvatarForm from "./UserAvatarForm";
 
 function DrawerDynamicForm() {
   const dispatch = useDispatch();
@@ -113,6 +114,14 @@ function DrawerDynamicForm() {
       )}
       {drawerForm.content === "userCreate" && (
         <UserCreateForm
+          formRef={form}
+          title={drawerForm.title}
+          handleSubmit={handleSubmit}
+          loading={loading}
+        />
+      )}
+      {drawerForm.content === "userAvatar" && (
+        <UserAvatarForm
           formRef={form}
           title={drawerForm.title}
           handleSubmit={handleSubmit}
