@@ -1,8 +1,8 @@
 import { AxiosResponse as AxiosResponseOriginal } from "axios";
 
-export type AxiosResponse<T = any> = AxiosResponseOriginal & {
-  data: AxiosResponseData<T> | AxiosResponseError;
-};
+export type AxiosResponse<T = any> = AxiosResponseOriginal<
+  AxiosResponseData<T> | AxiosResponseError
+>;
 
 export type AxiosResponseErrorItem = {
   title: string;
