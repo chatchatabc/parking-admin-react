@@ -1,4 +1,4 @@
-import { Form, FormInstance } from "antd";
+import { Form, FormInstance, message } from "antd";
 import {
   AxiosResponseData,
   AxiosResponseError,
@@ -29,7 +29,11 @@ function UserAvatarForm({ formRef, title, handleSubmit }: Props) {
     <Form
       name={title}
       onFinish={(e) => {
-        handleSubmit(userUpdateAvatar, { ...e, file }, "User Avatar Updated");
+        if (file) {
+          handleSubmit(userUpdateAvatar, { ...e, file }, "User Avatar Updated");
+        } else {
+          message.error("No changes detected.");
+        }
       }}
       layout="vertical"
       form={formRef}
