@@ -90,8 +90,8 @@ function ProfilePage({ id = authUsername() }: Props) {
                 onClick={() => {
                   dispatch(
                     drawerFormUpdate({
-                      content: "userBan",
-                      mode: "create",
+                      content: "userAvatar",
+                      mode: "update",
                       show: true,
                       title: `Change profile of ${data.username ?? data.phone}`,
                       data: {
@@ -274,7 +274,7 @@ function ProfilePage({ id = authUsername() }: Props) {
           </section>
         </section>
 
-        {/* User Login */}
+        {/* User Logout */}
         <section className="p-2 w-1/2">
           <section className="bg-bg2 p-4 rounded-lg">
             {/* Header */}
