@@ -9,7 +9,7 @@ import {
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost, restPut } from "../infra/apis/restActions";
+import { restPost, restPostFormData, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import {
@@ -173,6 +173,18 @@ export async function userGetAllLoginByUser(
   const data = response.data.data.getUserLoginLogsByUser;
 
   return { data } as AxiosResponseData<CommonContent<UserLogin>>;
+}
+
+export async function userUpdateAvatar(values: Record<string, any>) {
+  const { userUuid, file } = values;
+
+  const response = await restPostFormData(
+    `/user/upload-avatar/${userUuid}`,
+    { file },
+    "UserUpdateAvatar"
+  );
+
+  return response.data;
 }
 
 export async function userGetByVehicle(variables: { id: string }) {
