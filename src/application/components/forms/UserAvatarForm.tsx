@@ -25,6 +25,14 @@ function UserAvatarForm({ formRef, title, handleSubmit }: Props) {
   const [file, setFile] = React.useState<File | undefined>(undefined);
   const [fileUrl, setFileUrl] = React.useState<string | undefined>(undefined);
 
+  React.useEffect(() => {
+    const userUuid = formRef.getFieldsValue().userUuid;
+
+    if (userUuid) {
+      setFileUrl(`/api/user/avatar/${userUuid}`);
+    }
+  }, [formRef]);
+
   return (
     <Form
       name={title}
@@ -43,21 +51,11 @@ function UserAvatarForm({ formRef, title, handleSubmit }: Props) {
 
         <div className="block max-w-[300px] w-full mx-auto">
           <div className="block border pb-[100%] rounded-full relative overflow-hidden group">
-            {fileUrl ? (
-              <img
-                className="w-full h-full absolute object-cover"
-                src={fileUrl}
-                onError={(e) => {
-                  e.currentTarget.src = "/images/image-placeholder.jpeg";
-                }}
-              />
-            ) : (
-              <ImageComp
-                className="w-full h-full absolute object-cover"
-                src={`/api/user/avatar/${formRef.getFieldsValue().userUuid}`}
-                alt={"User Avatar"}
-              />
-            )}
+            <ImageComp
+              className="w-full h-full absolute object-cover"
+              src={fileUrl ?? ""}
+              alt="User Avatar"
+            />
             <button
               onClick={() => {
                 inputFile.current?.click();
@@ -78,7 +76,7 @@ function UserAvatarForm({ formRef, title, handleSubmit }: Props) {
         onChange={(e) => {
           const file = e.currentTarget.files?.[0];
           if (!file) {
-            setFileUrl(undefined);
+            setFileUrl(`/api/user/avatar/${formRef.getFieldsValue().userUuid}`);
             setFile(undefined);
             return;
           }

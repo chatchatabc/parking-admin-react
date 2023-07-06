@@ -96,7 +96,6 @@ function ProfilePage({ id = authUsername() }: Props) {
                       show: true,
                       title: `Change profile of ${data.username ?? data.phone}`,
                       data: {
-                        method: "BAN",
                         userUuid: data.userUuid,
                       },
                     })
