@@ -3,47 +3,36 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { globalStateUpdate } from "../../redux/slices/globalState";
 import { useDispatch } from "react-redux";
+import ParkingIconAsset from "../../assets/ParkingIconAsset";
+import InvoiceIconAsset from "../../assets/InvoiceIconAsset";
+import UserIconAsset from "../../assets/UserIconAsset";
+import MagnifyIconAsset from "../../assets/MagnifyIconAsset";
+import VehicleIconAsset from "../../assets/VehicleIconAsset";
 
-const dictionary: Record<string, any> = {
+const dictionary = {
   u: {
     name: "Users",
     url: "/users",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
-        viewBox="0 0 24 24"
-      >
-        <path
-          fill="currentColor"
-          d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.232 7.232 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10Z"
-        />
-      </svg>
-    ),
+    icon: <UserIconAsset />,
   },
   p: {
     name: "Parking Lots",
     url: "/parking-lots",
-    icon: (
-      <svg
-        className="w-6 h-6"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 48 48"
-      >
-        <g
-          fill="none"
-          stroke="currentColor"
-          stroke-linejoin="round"
-          stroke-width="4"
-        >
-          <path d="M24 44s16-12 16-25c0-8.284-7.163-15-16-15S8 10.716 8 19c0 13 16 25 16 25Z" />
-          <path stroke-linecap="round" d="M21 14v16" />
-          <path d="M21 14h6a4 4 0 0 1 0 8h-6v-8Z" />
-        </g>
-      </svg>
-    ),
+    icon: <ParkingIconAsset />,
+  },
+  i: {
+    name: "Invoices",
+    url: "/invoices",
+    icon: <InvoiceIconAsset />,
+  },
+  v: {
+    name: "Vehicles",
+    url: "/vehicles",
+    icon: <VehicleIconAsset />,
   },
 };
+
+type DictionaryKey = keyof typeof dictionary;
 
 function NavbarSearchBar() {
   const [focus, setFocus] = React.useState(false);
@@ -53,7 +42,7 @@ function NavbarSearchBar() {
   const dispatch = useDispatch();
 
   const tokens = searchText?.split(" ");
-  const identifier = tokens[0].toLowerCase();
+  const identifier = tokens[0].toLowerCase() as DictionaryKey;
   const value = tokens.slice(1).join(" ");
   const searchType = dictionary[identifier];
 
@@ -101,18 +90,11 @@ function NavbarSearchBar() {
           onChange={(e) => setSearchText(e.target.value)}
           prefix={
             searchType && tokens.length >= 2 ? (
-              searchType.icon
+              <div className="w-6 h-6">{searchType.icon}</div>
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                viewBox="0 0 256 256"
-              >
-                <path
-                  fill="currentColor"
-                  d="m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32ZM40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72Z"
-                />
-              </svg>
+              <div className="w-6 h-6">
+                <MagnifyIconAsset />
+              </div>
             )
           }
           className="p-2 rounded-md bg-bg3 text-t1"
