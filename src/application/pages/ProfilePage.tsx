@@ -13,6 +13,7 @@ import { invoiceGetByUser } from "../../domain/services/invoiceService";
 import { authUsername } from "../../domain/services/authService";
 import { CommonVariables } from "../../domain/models/CommonModel";
 import UserLoginTable from "../components/tables/UserLoginTable";
+import UserLogoutTable from "../components/tables/UserLogoutTable";
 
 interface Props {
   id?: string;
@@ -269,6 +270,20 @@ function ProfilePage({ id = authUsername() }: Props) {
 
             <section className="mt-2">
               <UserLoginTable id={data.userUuid ?? ""} />
+            </section>
+          </section>
+        </section>
+
+        {/* User Login */}
+        <section className="p-2 w-1/2">
+          <section className="bg-bg2 p-4 rounded-lg">
+            {/* Header */}
+            <header className="flex justify-between items-center">
+              <h2 className="text-lg font-bold">Logout History</h2>
+            </header>
+
+            <section className="mt-2">
+              <UserLogoutTable id={data.userUuid ?? ""} />
             </section>
           </section>
         </section>
