@@ -15,6 +15,7 @@ import {
   AxiosResponseError,
 } from "../../../domain/models/AxiosModel";
 import Table, { ColumnsType } from "antd/es/table";
+import XIconAsset from "../../assets/XIconAsset";
 
 function CommutesRoutesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
@@ -131,6 +132,68 @@ function CommutesRoutesMap() {
       });
     }
   }, [loading]);
+
+  // Draw edges
+  React.useEffect(() => {
+    if (map?.current && create) {
+      selectedNodes.forEach((node, index) => {
+        if (index < selectedNodes.length - 1) {
+          const nodeFrom = node.id;
+          const nodeTo = selectedNodes[index + 1].id;
+
+          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
+
+          map.current?.addSource(edgeId, {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              geometry: {
+                type: "LineString",
+                coordinates: [
+                  [node.longitude, node.latitude],
+                  [
+                    selectedNodes[index + 1].longitude,
+                    selectedNodes[index + 1].latitude,
+                  ],
+                ],
+              },
+            },
+          });
+
+          map.current?.addLayer({
+            id: edgeId,
+            type: "line",
+            source: edgeId,
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-width": 8,
+            },
+          });
+        }
+      });
+    }
+
+    return () => {
+      selectedNodes.forEach((node, index) => {
+        if (index < selectedNodes.length - 1) {
+          const nodeFrom = node.id;
+          const nodeTo = selectedNodes[index + 1].id;
+
+          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
+
+          if (map?.current?.getLayer(edgeId)) {
+            map?.current?.removeLayer(edgeId);
+          }
+          if (map?.current?.getSource(edgeId)) {
+            map?.current?.removeSource(edgeId);
+          }
+        }
+      });
+    };
+  }, [create, selectedNodes]);
 
   // Draw routes
   React.useEffect(() => {
@@ -260,68 +323,6 @@ function CommutesRoutesMap() {
     };
   }, [create, selectedNodes]);
 
-  // Draw edges
-  React.useEffect(() => {
-    if (map?.current && create) {
-      selectedNodes.forEach((node, index) => {
-        if (index < selectedNodes.length - 1) {
-          const nodeFrom = node.id;
-          const nodeTo = selectedNodes[index + 1].id;
-
-          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
-
-          map.current?.addSource(edgeId, {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              geometry: {
-                type: "LineString",
-                coordinates: [
-                  [node.longitude, node.latitude],
-                  [
-                    selectedNodes[index + 1].longitude,
-                    selectedNodes[index + 1].latitude,
-                  ],
-                ],
-              },
-            },
-          });
-
-          map.current?.addLayer({
-            id: edgeId,
-            type: "line",
-            source: edgeId,
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            paint: {
-              "line-width": 8,
-            },
-          });
-        }
-      });
-    }
-
-    return () => {
-      selectedNodes.forEach((node, index) => {
-        if (index < selectedNodes.length - 1) {
-          const nodeFrom = node.id;
-          const nodeTo = selectedNodes[index + 1].id;
-
-          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
-
-          if (map?.current?.getLayer(edgeId)) {
-            map?.current?.removeLayer(edgeId);
-          }
-          if (map?.current?.getSource(edgeId)) {
-            map?.current?.removeSource(edgeId);
-          }
-        }
-      });
-    };
-  }, [create, selectedNodes]);
-
   return (
     <div className="flex items-stretch">
       <div className="w-1/3 flex">
@@ -370,7 +371,38 @@ function CommutesRoutesMap() {
                     <ul>
                       {selectedNodes.map((node, index) => {
                         return (
-                          <li key={node.id}>
+                          <li key={`${index}-${node}`} className="flex gap-2">
+                            <p className="mr-auto">{node.id}</p>
+                            <button
+                              onClick={() => {
+                                // Move element up
+                                if (index > 0) {
+                                  const newSelectedNodes = [...selectedNodes];
+                                  const temp = selectedNodes[index];
+                                  newSelectedNodes[index] =
+                                    newSelectedNodes[index - 1];
+                                  newSelectedNodes[index - 1] = temp;
+                                  setSelectedNodes(newSelectedNodes);
+                                }
+                              }}
+                            >
+                              Up
+                            </button>
+                            <button
+                              onClick={() => {
+                                // Move element down
+                                if (index < selectedNodes.length - 1) {
+                                  const newSelectedNodes = [...selectedNodes];
+                                  const temp = newSelectedNodes[index];
+                                  newSelectedNodes[index] =
+                                    newSelectedNodes[index + 1];
+                                  newSelectedNodes[index + 1] = temp;
+                                  setSelectedNodes(newSelectedNodes);
+                                }
+                              }}
+                            >
+                              Down
+                            </button>
                             <button
                               onClick={() => {
                                 // Removed element based from index
@@ -381,7 +413,9 @@ function CommutesRoutesMap() {
                                 );
                               }}
                             >
-                              {node.id}
+                              <div className="w-4 h-4">
+                                <XIconAsset />
+                              </div>
                             </button>
                           </li>
                         );
