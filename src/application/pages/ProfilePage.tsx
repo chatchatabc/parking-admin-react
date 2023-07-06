@@ -12,6 +12,7 @@ import UserVehiclesTable from "../components/tables/UserVehiclesTable";
 import { invoiceGetByUser } from "../../domain/services/invoiceService";
 import { authUsername } from "../../domain/services/authService";
 import { CommonVariables } from "../../domain/models/CommonModel";
+import UserLoginTable from "../components/tables/UserLoginTable";
 
 interface Props {
   id?: string;
@@ -75,146 +76,201 @@ function ProfilePage({ id = authUsername() }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-12 p-2 relative">
-      {/* Ban History */}
-      <section className="p-2 grid col-span-4 row-span-2">
-        <section className="p-4 pb-8 bg-bg2 rounded-lg">
-          {/* Header */}
-          <header className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Ban History</h2>
-            <MyButton
-              onClick={() => {
-                dispatch(
-                  drawerFormUpdate({
-                    content: "userBan",
-                    mode: "create",
-                    show: true,
-                    title: "User Ban",
-                    data: {
-                      method: "BAN",
-                      userUuid: data.userUuid,
-                    },
-                  })
-                );
-              }}
-            >
-              Add +
-            </MyButton>
-          </header>
+    <div className="flex p-2 relative">
+      {/* Left */}
+      <section className="w-1/3">
+        {/* User Profile */}
+        <section className="p-2">
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
+            {/* Header */}
+            <header className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">User Profile</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      content: "userBan",
+                      mode: "create",
+                      show: true,
+                      title: `Change profile of ${data.username ?? data.phone}`,
+                      data: {
+                        method: "BAN",
+                        userUuid: data.userUuid,
+                      },
+                    })
+                  );
+                }}
+              >
+                Change
+              </MyButton>
+            </header>
 
-          {/* Body */}
-          <div className="mt-2">
-            <UserBanTable id={id} />
-          </div>
+            {/* Body */}
+            <div className="mt-2">
+              <div className="max-w-[200px] mx-auto">
+                <div className="pb-[100%] rounded-full border"></div>
+              </div>
+            </div>
+          </section>
         </section>
-      </section>
 
-      {/* User Information */}
-      <section className="p-2 grid col-span-8">
-        <section className="p-4 pb-8 bg-bg2 rounded-lg">
-          {/* Header */}
-          <header className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">User Information</h2>
-            <MyButton
-              onClick={() => {
-                dispatch(
-                  drawerFormUpdate({
-                    content: "userDetails",
-                    mode: "update",
-                    show: true,
-                    title: "User Details",
-                    data,
-                  })
-                );
-              }}
-            >
-              Edit
-            </MyButton>
-          </header>
+        {/* Ban History */}
+        <section className="p-2">
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
+            {/* Header */}
+            <header className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">Ban History</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      content: "userBan",
+                      mode: "create",
+                      show: true,
+                      title: "User Ban",
+                      data: {
+                        method: "BAN",
+                        userUuid: data.userUuid,
+                      },
+                    })
+                  );
+                }}
+              >
+                Add +
+              </MyButton>
+            </header>
 
-          {/* Body */}
-          <div className="flex flex-wrap mt-2 gap-y-2 [&>*]:w-1/3">
-            <div>
-              <p className="text-xs font-bold uppercase">Username</p>
-              <p>{data?.username}</p>
+            {/* Body */}
+            <div className="mt-2">
+              <UserBanTable id={id} />
             </div>
-            <div>
-              <p className="text-xs font-bold uppercase">
-                Phone{" "}
-                {data?.phoneVerifiedAt ? (
-                  <span className="text-green-500">(Verified)</span>
-                ) : (
-                  <span className="text-red-500">(Not Verified)</span>
-                )}
-              </p>
-              <p>{data?.phone}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase">
-                Email{" "}
-                {data?.emailVerifiedAt ? (
-                  <span className="text-green-500">(Verified)</span>
-                ) : (
-                  <span className="text-red-500">(Not Verified)</span>
-                )}
-              </p>
-              <p>{data?.email}</p>
-            </div>
-          </div>
+          </section>
         </section>
-      </section>
 
-      {/* Invoice history */}
-      <section className="p-2 grid col-span-8 row-span-3">
-        <section className="bg-bg2 p-4 rounded-lg">
-          {/* Header */}
-          <header className="flex justify-between items-center">
-            <h2 className="text-lg font-bold">Invoice History</h2>
-          </header>
+        {/* Vehicles */}
+        <section className="p-2 grid col-span-4 row-span-4">
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
+            {/* Header */}
+            <header className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">Vehicles</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      data: {
+                        userUuid: data.userUuid,
+                        updating: true,
+                      },
+                      mode: "create",
+                      show: true,
+                      title: "Add Vehicle",
+                      content: "vehicle",
+                    })
+                  );
+                }}
+              >
+                Add +
+              </MyButton>
+            </header>
 
-          <section className="mt-2">
-            <InvoicesTable
-              getData={(variables) => {
-                variables.id = data.userUuid;
-                return invoiceGetByUser(
-                  variables as CommonVariables & { id: string }
-                );
-              }}
-            />
+            {/* Body */}
+            <div className="mt-2">
+              <UserVehiclesTable userUuid={data.userUuid ?? ""} />
+            </div>
           </section>
         </section>
       </section>
 
-      {/* Vehicles */}
-      <section className="p-2 grid col-span-4 row-span-4">
-        <section className="p-4 pb-8 bg-bg2 rounded-lg">
-          {/* Header */}
-          <header className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Vehicles</h2>
-            <MyButton
-              onClick={() => {
-                dispatch(
-                  drawerFormUpdate({
-                    data: {
-                      userUuid: data.userUuid,
-                      updating: true,
-                    },
-                    mode: "create",
-                    show: true,
-                    title: "Add Vehicle",
-                    content: "vehicle",
-                  })
-                );
-              }}
-            >
-              Add +
-            </MyButton>
-          </header>
+      {/* Right */}
+      <section className="w-2/3 flex flex-wrap h-fit">
+        {/* User Information */}
+        <section className="p-2 w-full">
+          <section className="p-4 pb-8 bg-bg2 rounded-lg">
+            {/* Header */}
+            <header className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">User Information</h2>
+              <MyButton
+                onClick={() => {
+                  dispatch(
+                    drawerFormUpdate({
+                      content: "userDetails",
+                      mode: "update",
+                      show: true,
+                      title: "User Details",
+                      data,
+                    })
+                  );
+                }}
+              >
+                Edit
+              </MyButton>
+            </header>
 
-          {/* Body */}
-          <div className="mt-2">
-            <UserVehiclesTable userUuid={data.userUuid ?? ""} />
-          </div>
+            {/* Body */}
+            <div className="flex flex-wrap mt-2 gap-y-2 [&>*]:w-1/3">
+              <div>
+                <p className="text-xs font-bold uppercase">Username</p>
+                <p>{data?.username}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase">
+                  Phone{" "}
+                  {data?.phoneVerifiedAt ? (
+                    <span className="text-green-500">(Verified)</span>
+                  ) : (
+                    <span className="text-red-500">(Not Verified)</span>
+                  )}
+                </p>
+                <p>{data?.phone}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase">
+                  Email{" "}
+                  {data?.emailVerifiedAt ? (
+                    <span className="text-green-500">(Verified)</span>
+                  ) : (
+                    <span className="text-red-500">(Not Verified)</span>
+                  )}
+                </p>
+                <p>{data?.email}</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        {/* Invoice history */}
+        <section className="p-2 w-full">
+          <section className="bg-bg2 p-4 rounded-lg">
+            {/* Header */}
+            <header className="flex justify-between items-center">
+              <h2 className="text-lg font-bold">Invoice History</h2>
+            </header>
+
+            <section className="mt-2">
+              <InvoicesTable
+                getData={(variables) => {
+                  variables.id = data.userUuid;
+                  return invoiceGetByUser(
+                    variables as CommonVariables & { id: string }
+                  );
+                }}
+              />
+            </section>
+          </section>
+        </section>
+
+        {/* User Login */}
+        <section className="p-2 w-1/2">
+          <section className="bg-bg2 p-4 rounded-lg">
+            {/* Header */}
+            <header className="flex justify-between items-center">
+              <h2 className="text-lg font-bold">Login History</h2>
+            </header>
+
+            <section className="mt-2">
+              <UserLoginTable id={data.userUuid ?? ""} />
+            </section>
+          </section>
         </section>
       </section>
     </div>
