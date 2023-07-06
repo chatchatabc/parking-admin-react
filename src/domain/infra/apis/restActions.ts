@@ -37,6 +37,24 @@ export async function restGet(
   return response;
 }
 
+export async function restPostFormData(
+  url: string,
+  values: Record<string, any>,
+  title: string = "REST POST FORM DATA"
+) {
+  const config = restConfig();
+  config.headers!["Content-Type"] = "multipart/form-data";
+
+  const formData = new FormData();
+  Object.keys(values).forEach((key) => {
+    formData.append(key, values[key]);
+  });
+
+  const response = await axiosPost(baseUrl + url, formData, config, title);
+
+  return response;
+}
+
 export async function restPost(
   url: string,
   values: Record<string, any>,

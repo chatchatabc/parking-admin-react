@@ -14,6 +14,7 @@ import { authUsername } from "../../domain/services/authService";
 import { CommonVariables } from "../../domain/models/CommonModel";
 import UserLoginTable from "../components/tables/UserLoginTable";
 import UserLogoutTable from "../components/tables/UserLogoutTable";
+import ImageComp from "../components/ImageComp";
 
 interface Props {
   id?: string;
@@ -90,8 +91,8 @@ function ProfilePage({ id = authUsername() }: Props) {
                 onClick={() => {
                   dispatch(
                     drawerFormUpdate({
-                      content: "userBan",
-                      mode: "create",
+                      content: "userAvatar",
+                      mode: "update",
                       show: true,
                       title: `Change profile of ${data.username ?? data.phone}`,
                       data: {
@@ -109,7 +110,13 @@ function ProfilePage({ id = authUsername() }: Props) {
             {/* Body */}
             <div className="mt-2">
               <div className="max-w-[200px] mx-auto">
-                <div className="pb-[100%] rounded-full border"></div>
+                <div className="pb-[100%] rounded-full border relative overflow-hidden">
+                  <ImageComp
+                    src={`/api/user/avatar/${data.userUuid}`}
+                    alt={data.username ?? "User Avatar"}
+                    className="w-full h-full absolute object-cover"
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -274,7 +281,7 @@ function ProfilePage({ id = authUsername() }: Props) {
           </section>
         </section>
 
-        {/* User Login */}
+        {/* User Logout */}
         <section className="p-2 w-1/2">
           <section className="bg-bg2 p-4 rounded-lg">
             {/* Header */}
