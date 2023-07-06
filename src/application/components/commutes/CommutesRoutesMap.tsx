@@ -32,7 +32,31 @@ function CommutesRoutesMap() {
     {
       title: "Name",
       key: "name",
-      dataIndex: "name",
+      render: (record: Route) => {
+        return (
+          <div className="flex space-x-2">
+            <button
+              className="w-6"
+              style={{ backgroundColor: record.color ?? "#FFFFFF" }}
+              onClick={() => {
+                if (map?.current) {
+                  const coordinates = record.nodes?.map((node) => {
+                    return [node.longitude, node.latitude];
+                  });
+
+                  if (coordinates && coordinates?.length > 0) {
+                    map.current.flyTo({
+                      center: coordinates[0],
+                      zoom: 15,
+                    });
+                  }
+                }
+              }}
+            />
+            <p>{record.name}</p>
+          </div>
+        );
+      },
     },
     {
       title: "Actions",
@@ -204,7 +228,6 @@ function CommutesRoutesMap() {
         });
 
         const routeId = `route-${String(route.routeUuid)}`;
-        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
         // Add name to the line
         map.current?.addSource(routeId, {
@@ -228,7 +251,7 @@ function CommutesRoutesMap() {
             "line-cap": "round",
           },
           paint: {
-            "line-color": `#${randomColor}`,
+            "line-color": route.color,
             "line-width": 8,
           },
         });
