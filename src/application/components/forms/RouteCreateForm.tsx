@@ -28,7 +28,7 @@ function RouteCreateForm({ title, formRef, handleSubmit, loading }: Props) {
     <Form
       name={title}
       onFinish={(e) => {
-        if (e.color !== "#ffffff") {
+        if (typeof e.color === "object") {
           e.color = e.color.toHexString();
         }
         if (e.routeUuid) {
