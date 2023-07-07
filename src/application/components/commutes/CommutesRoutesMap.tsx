@@ -5,8 +5,6 @@ import {
   routeGetNodes,
 } from "../../../domain/services/routeService";
 import { message } from "antd";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import MyButton from "../common/MyButton";
 import RouteCreateForm from "../forms/RouteCreateForm";
 import { useForm } from "antd/es/form/Form";
@@ -16,6 +14,9 @@ import {
 } from "../../../domain/models/AxiosModel";
 import Table, { ColumnsType } from "antd/es/table";
 import XIconAsset from "../../assets/XIconAsset";
+import type { FeatureCollection } from "geojson";
+import { Source, Layer, Marker, LayerProps } from "react-map-gl";
+import MapBoxComp from "../MapBoxComp";
 
 function CommutesRoutesMap() {
   const map = React.useRef<Record<string, any> | null>(null);
@@ -27,6 +28,37 @@ function CommutesRoutesMap() {
   const [selectedNodes, setSelectedNodes] = React.useState<RouteNode[]>([]);
   const [selectedEdges, setSelectedEdges] = React.useState<RouteEdge[]>([]);
   const [routes, setRoutes] = React.useState<Route[]>([]);
+
+  const edgeCoordinates = selectedNodes.map((node) => {
+    return [node.longitude, node.latitude];
+  });
+  const edgeLayer: LayerProps = {
+    id: "edge",
+    type: "line",
+    source: "edge",
+    layout: {
+      "line-join": "round",
+      "line-cap": "round",
+    },
+    paint: {
+      "line-color": "#1890ff",
+      "line-width": 8,
+      "line-opacity": 0.5,
+    },
+  };
+  const edgeGeojson: FeatureCollection = {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: edgeCoordinates,
+        },
+      },
+    ],
+  };
 
   const columns: ColumnsType<Route> = [
     {
@@ -115,6 +147,26 @@ function CommutesRoutesMap() {
     return response;
   }
 
+  function handleMoveNode(index: number, moveUp: boolean = true) {
+    const nodesCopy = [...selectedNodes];
+
+    if (moveUp) {
+      if (index > 0) {
+        const temp = nodesCopy[index - 1];
+        nodesCopy[index - 1] = nodesCopy[index];
+        nodesCopy[index] = temp;
+      }
+    } else {
+      if (index < nodesCopy.length - 1) {
+        const temp = nodesCopy[index + 1];
+        nodesCopy[index + 1] = nodesCopy[index];
+        nodesCopy[index] = temp;
+      }
+    }
+
+    setSelectedNodes(nodesCopy);
+  }
+
   // Initialize Data and Map
   React.useEffect(() => {
     if (loading) {
@@ -145,206 +197,7 @@ function CommutesRoutesMap() {
         setLoading(false);
       })();
     }
-
-    if (!map?.current) {
-      map.current = new mapboxgl.Map({
-        container: "commutesRoutesMap",
-        style: "mapbox://styles/mapbox/streets-v12",
-        center: [125.60355, 7.077729],
-        zoom: 13, // starting zoom
-        useWebGL2: true,
-      });
-    }
   }, [loading]);
-
-  // Draw edges
-  React.useEffect(() => {
-    if (map?.current && create) {
-      selectedNodes.forEach((node, index) => {
-        if (index < selectedNodes.length - 1) {
-          const nodeFrom = node.id;
-          const nodeTo = selectedNodes[index + 1].id;
-
-          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
-
-          map.current?.addSource(edgeId, {
-            type: "geojson",
-            data: {
-              type: "Feature",
-              geometry: {
-                type: "LineString",
-                coordinates: [
-                  [node.longitude, node.latitude],
-                  [
-                    selectedNodes[index + 1].longitude,
-                    selectedNodes[index + 1].latitude,
-                  ],
-                ],
-              },
-            },
-          });
-
-          map.current?.addLayer({
-            id: edgeId,
-            type: "line",
-            source: edgeId,
-            layout: {
-              "line-join": "round",
-              "line-cap": "round",
-            },
-            paint: {
-              "line-width": 8,
-            },
-          });
-        }
-      });
-    }
-
-    return () => {
-      selectedNodes.forEach((node, index) => {
-        if (index < selectedNodes.length - 1) {
-          const nodeFrom = node.id;
-          const nodeTo = selectedNodes[index + 1].id;
-
-          const edgeId = `edge-${String(nodeFrom)}-${String(nodeTo)}`;
-
-          if (map?.current?.getLayer(edgeId)) {
-            map?.current?.removeLayer(edgeId);
-          }
-          if (map?.current?.getSource(edgeId)) {
-            map?.current?.removeSource(edgeId);
-          }
-        }
-      });
-    };
-  }, [create, selectedNodes]);
-
-  // Draw routes
-  React.useEffect(() => {
-    if (map?.current && !create) {
-      routes.forEach((route) => {
-        const coordinates = route.nodes?.map((node) => {
-          return [node.longitude, node.latitude];
-        });
-
-        const routeId = `route-${String(route.routeUuid)}`;
-
-        // Add name to the line
-        map.current?.addSource(routeId, {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "LineString",
-              coordinates,
-            },
-          },
-        });
-
-        map.current?.addLayer({
-          id: routeId,
-          type: "line",
-          source: routeId,
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": route.color,
-            "line-width": 8,
-          },
-        });
-      });
-    }
-
-    return () => {
-      if (map?.current) {
-        routes.forEach((route) => {
-          const routeId = `route-${String(route.routeUuid)}`;
-          if (map?.current?.getLayer(routeId)) {
-            map?.current?.removeLayer(routeId);
-          }
-          if (map?.current?.getSource(routeId)) {
-            map?.current?.removeSource(routeId);
-          }
-        });
-      }
-    };
-  }, [create, routes]);
-
-  // Draw nodes
-  React.useEffect(() => {
-    if (map?.current && create) {
-      nodes.forEach((node) => {
-        const nodeId = `node-${String(node.id)}`;
-
-        map.current?.addSource(nodeId, {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: [node.longitude, node.latitude],
-            },
-            properties: {
-              title: node.poi ?? nodeId,
-            },
-          },
-        });
-
-        map.current?.addLayer({
-          id: nodeId,
-          type: "circle",
-          source: nodeId,
-          paint: {
-            "circle-radius": 4,
-            "circle-color": selectedNodes.some(
-              (selectedNode) => selectedNode.id === node.id
-            )
-              ? "#007cbf"
-              : "#ff0000",
-          },
-        });
-
-        map.current?.on("click", nodeId, () => {
-          setSelectedNodes([...selectedNodes, node]);
-        });
-
-        map.current?.on("mouseenter", nodeId, () => {
-          const canvas = map.current?.getCanvas() as HTMLCanvasElement;
-          canvas.style.cursor = "pointer";
-          // const coordinates = e.features[0].geometry.coordinates.slice();
-          // const { description, title } = e.features[0].properties;
-
-          // enlarge the node
-          map.current?.setPaintProperty(nodeId, "circle-radius", 6);
-        });
-
-        map.current?.on("mouseleave", nodeId, () => {
-          const canvas = map.current?.getCanvas() as HTMLCanvasElement;
-          canvas.style.cursor = "";
-
-          // reset the node
-          map.current?.setPaintProperty(nodeId, "circle-radius", 4);
-        });
-      });
-    }
-
-    return () => {
-      if (map?.current) {
-        nodes.forEach((node) => {
-          const nodeId = `node-${String(node.id)}`;
-          if (map?.current?.getLayer(nodeId)) {
-            map?.current?.removeLayer(nodeId);
-          }
-          if (map?.current?.getSource(nodeId)) {
-            map?.current?.removeSource(nodeId);
-          }
-        });
-      }
-    };
-  }, [create, selectedNodes]);
 
   return (
     <div className="flex items-stretch">
@@ -398,30 +251,14 @@ function CommutesRoutesMap() {
                             <p className="mr-auto">{node.id}</p>
                             <button
                               onClick={() => {
-                                // Move element up
-                                if (index > 0) {
-                                  const newSelectedNodes = [...selectedNodes];
-                                  const temp = selectedNodes[index];
-                                  newSelectedNodes[index] =
-                                    newSelectedNodes[index - 1];
-                                  newSelectedNodes[index - 1] = temp;
-                                  setSelectedNodes(newSelectedNodes);
-                                }
+                                handleMoveNode(index, true);
                               }}
                             >
                               Up
                             </button>
                             <button
                               onClick={() => {
-                                // Move element down
-                                if (index < selectedNodes.length - 1) {
-                                  const newSelectedNodes = [...selectedNodes];
-                                  const temp = newSelectedNodes[index];
-                                  newSelectedNodes[index] =
-                                    newSelectedNodes[index + 1];
-                                  newSelectedNodes[index + 1] = temp;
-                                  setSelectedNodes(newSelectedNodes);
-                                }
+                                handleMoveNode(index, false);
                               }}
                             >
                               Down
@@ -466,10 +303,98 @@ function CommutesRoutesMap() {
         </div>
       </div>
       <div className="w-2/3 h-[600px] px-4">
-        <div
-          className="w-full h-full rounded-lg overflow-hidden"
-          id="commutesRoutesMap"
-        ></div>
+        <div className="w-full h-full rounded-lg overflow-hidden">
+          <MapBoxComp
+            initialViewState={{
+              longitude: 125.60355,
+              latitude: 7.077729,
+              zoom: 15,
+            }}
+          >
+            {/* Create routes */}
+            {!create && (
+              <>
+                {routes.map((route) => {
+                  const coordinates = route.nodes?.map((node) => {
+                    return [node.longitude, node.latitude];
+                  });
+                  if (!coordinates) {
+                    return null;
+                  }
+                  const routeId = `route-${String(route.routeUuid)}`;
+
+                  const geoJson: FeatureCollection = {
+                    type: "FeatureCollection",
+                    features: [
+                      {
+                        type: "Feature",
+                        properties: {},
+                        geometry: {
+                          type: "LineString",
+                          coordinates,
+                        },
+                      },
+                    ],
+                  };
+
+                  const layer: LayerProps = {
+                    id: routeId,
+                    type: "line",
+                    source: routeId,
+                    layout: {
+                      "line-join": "round",
+                      "line-cap": "round",
+                    },
+                    paint: {
+                      "line-color": route.color ?? "#000",
+                      "line-width": 8,
+                      "line-opacity": 0.5,
+                    },
+                  };
+
+                  return (
+                    <Source id={routeId} type="geojson" data={geoJson}>
+                      <Layer {...layer} />
+                    </Source>
+                  );
+                })}
+              </>
+            )}
+
+            {/* Create line edges */}
+            {create && (
+              <Source id={"edge"} type="geojson" data={edgeGeojson}>
+                <Layer {...edgeLayer} />
+              </Source>
+            )}
+
+            {/* Create nodes */}
+            {create && (
+              <>
+                {nodes.map((node) => {
+                  return (
+                    <Marker
+                      key={node.id}
+                      longitude={node.longitude}
+                      latitude={node.latitude}
+                    >
+                      <button
+                        onClick={() => {
+                          setSelectedNodes([...selectedNodes, node]);
+                        }}
+                        className={`w-3 h-3 rounded-full transition ${
+                          selectedNodes.find((n) => n.id === node.id)
+                            ? "bg-blue-500"
+                            : "bg-red-500"
+                        } cursor-pointer hover:scale-150`}
+                      ></button>
+                    </Marker>
+                  );
+                })}
+              </>
+            )}
+          </MapBoxComp>
+        </div>
       </div>
     </div>
   );
