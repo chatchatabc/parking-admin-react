@@ -19,8 +19,6 @@ import { Source, Layer, Marker, LayerProps } from "react-map-gl";
 import MapBoxComp from "../MapBoxComp";
 
 function CommutesRoutesMap() {
-  const map = React.useRef<Record<string, any> | null>(null);
-
   const [form] = useForm();
   const [create, setCreate] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -71,18 +69,15 @@ function CommutesRoutesMap() {
               className="w-6"
               style={{ backgroundColor: record.color ?? "#FFFFFF" }}
               onClick={() => {
-                if (map?.current) {
-                  const coordinates = record.nodes?.map((node) => {
-                    return [node.longitude, node.latitude];
-                  });
-
-                  if (coordinates && coordinates?.length > 0) {
-                    map.current.flyTo({
-                      center: coordinates[0],
-                      zoom: 15,
-                    });
-                  }
-                }
+                // const coordinates = record.nodes?.map((node) => {
+                //   return [node.longitude, node.latitude];
+                // });
+                // if (coordinates && coordinates?.length > 0) {
+                //   map.flyTo({
+                //     center: coordinates[0],
+                //     zoom: 12,
+                //   });
+                // }
               }}
             />
             <p>{record.name}</p>
