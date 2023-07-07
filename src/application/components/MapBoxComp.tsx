@@ -3,7 +3,7 @@ import { Map } from "react-map-gl";
 
 type Props = React.ComponentProps<typeof Map>;
 
-function MapBox({ children, ...props }: Props) {
+function MapBoxComp({ children, ...props }: Props) {
   return (
     <Map
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
@@ -15,4 +15,4 @@ function MapBox({ children, ...props }: Props) {
   );
 }
 
-export default MapBox;
+export default MapBoxComp;
