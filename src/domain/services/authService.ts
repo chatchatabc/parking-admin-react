@@ -1,6 +1,7 @@
 import { restPost } from "../infra/apis/restActions";
 import { AuthLogin, AuthLogout } from "../models/AuthModel";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
+import { User } from "../models/UserModel";
 
 export function authTokenGet() {
   const token = document.cookie
@@ -60,7 +61,7 @@ export function authCheckSession() {
   return false;
 }
 
-export function authUsername() {
+export function authUser() {
   const userLocal = localStorage.getItem("user");
 
   if (!userLocal) {
@@ -68,9 +69,26 @@ export function authUsername() {
   }
 
   try {
-    const userParsed = JSON.parse(userLocal) as Record<string, any>;
-    return userParsed.username;
+    const userParsed = JSON.parse(userLocal) as User;
+    return userParsed;
   } catch (error) {
     return null;
   }
+}
+
+export function authUsername() {
+  const userLocal = authUser();
+  if (!userLocal) {
+    return null;
+  }
+  return userLocal.username;
+}
+
+export function authUserUuid() {
+  const userLocal = authUser();
+  if (!userLocal) {
+    return null;
+  }
+
+  return userLocal.userUuid;
 }

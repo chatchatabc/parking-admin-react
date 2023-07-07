@@ -3,6 +3,8 @@ import React from "react";
 import NavbarSearchBar from "./NavbarSearchBar";
 import { Popover } from "antd";
 import NavbarProfileMenu from "./NavbarProfileMenu";
+import ImageComp from "../ImageComp";
+import { authUserUuid } from "../../../domain/services/authService";
 
 type Props = {
   open: boolean;
@@ -57,7 +59,11 @@ function Navbar({ open, handleSidebar }: Props) {
               openProfileMenu ? "bg-bg3" : ""
             } hover:bg-bg3`}
           >
-            <div className="w-10 h-10 rounded-full border border-accent1 bg-white"></div>
+            <ImageComp
+              className="w-10 h-10 rounded-full border border-accent1 bg-white"
+              src={`/api/user/avatar/${authUserUuid()}`}
+              alt={authUserUuid() ?? "User Avatar"}
+            />
             <p>Admin</p>
             <span
               className={`transition ${openProfileMenu ? "rotate-180" : ""}`}
