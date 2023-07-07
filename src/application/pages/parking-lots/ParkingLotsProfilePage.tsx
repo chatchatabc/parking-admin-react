@@ -18,7 +18,8 @@ import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 import { userGet } from "../../../domain/services/userService";
 import { invoiceGetByParkingLot } from "../../../domain/services/invoiceService";
-import MapBoxComp from "../../components/MapBoxComp";
+import Map, { Marker } from "react-map-gl";
+import PinIconAsset from "../../assets/PinIconAsset";
 
 function ParkingLotsProfilePage() {
   const navigate = useNavigate();
@@ -559,10 +560,25 @@ function ParkingLotsProfilePage() {
           </header>
 
           <section className="mt-2 h-96">
-            <MapBoxComp
-              latitude={data.latitude ?? 0}
-              longitude={data.longitude ?? 0}
-            />
+            <Map
+              mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+              mapStyle={"mapbox://styles/mapbox/streets-v12"}
+              initialViewState={{
+                longitude: data.longitude ?? 0,
+                latitude: data.latitude ?? 0,
+                zoom: 15,
+              }}
+            >
+              <Marker
+                longitude={data.longitude}
+                latitude={data.latitude}
+                anchor="bottom"
+              >
+                <div className="w-10 h-10 text-blue-500">
+                  <PinIconAsset />
+                </div>
+              </Marker>
+            </Map>
           </section>
         </section>
       </section>
