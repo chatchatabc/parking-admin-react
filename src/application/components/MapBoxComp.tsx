@@ -1,35 +1,18 @@
 import React from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
+import { Map } from "react-map-gl";
 
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN as string;
+type Props = React.ComponentProps<typeof Map>;
 
-type Props = {
-  latitude: number;
-  longitude: number;
-};
-
-function MapBoxComp({ latitude, longitude }: Props) {
-  const map = React.useRef<any | null>(null);
-
-  React.useEffect(() => {
-    if (map?.current) {
-      return;
-    }
-
-    map.current = new mapboxgl.Map({
-      container: "map", // container ID
-      style: "mapbox://styles/mapbox/streets-v12", // style URL
-      center: [longitude, latitude], // starting position [lng, lat]
-      zoom: 15, // starting zoom
-    });
-
-    const marker = new mapboxgl.Marker().setLngLat([longitude, latitude]);
-
-    marker.addTo(map.current);
-  }, []);
-
-  return <div className="w-full h-full block rounded-lg" id="map"></div>;
+function MapBox({ children, ...props }: Props) {
+  return (
+    <Map
+      mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
+      mapStyle={"mapbox://styles/mapbox/streets-v12"}
+      {...props}
+    >
+      {children}
+    </Map>
+  );
 }
 
-export default MapBoxComp;
+export default MapBox;
