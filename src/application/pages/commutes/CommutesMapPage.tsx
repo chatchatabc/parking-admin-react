@@ -17,6 +17,8 @@ import { StringCodec, Subscription } from "nats.ws";
 
 const sc = StringCodec();
 
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN as string;
+
 function CommutesMapPage() {
   const map = React.useRef<Record<string, any> | null>(null);
 
