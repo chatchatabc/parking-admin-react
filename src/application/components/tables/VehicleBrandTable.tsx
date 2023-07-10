@@ -35,9 +35,9 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
       key: "actions",
       render: (record: VehicleBrand) => {
         return (
-          <div>
+          <div className="flex divide-x">
             <button
-              className="text-blue-500 hover:text-blue-600"
+              className="px-2 text-blue-500 hover:text-blue-600"
               onClick={() => {
                 dispatch(
                   drawerFormUpdate({
@@ -51,6 +51,23 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
               }}
             >
               Edit
+            </button>
+
+            <button
+              className="px-2 text-blue-500 hover:text-blue-600"
+              onClick={() => {
+                dispatch(
+                  drawerFormUpdate({
+                    show: true,
+                    title: "Edit Vehicle Brand Logo",
+                    content: "vehicleBrandLogo",
+                    mode: "update",
+                    data: record,
+                  })
+                );
+              }}
+            >
+              Update Logo
             </button>
           </div>
         );
