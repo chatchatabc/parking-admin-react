@@ -10,7 +10,7 @@ import {
   vehicleGetAllByUserDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost, restPut } from "../infra/apis/restActions";
+import { restPost, restPostFormData, restPut } from "../infra/apis/restActions";
 import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
 import {
   CommonContent,
@@ -366,6 +366,18 @@ export async function vehicleGetAllBrand(variables: CommonVariables) {
   const data = query.data.data.getVehicleBrands;
 
   return { data } as AxiosResponseData<CommonContent<VehicleBrand>>;
+}
+
+export async function vehicleUpdateBrandLogo(params: Record<string, any>) {
+  const { brandUuid, file } = params;
+
+  const response = await restPostFormData(
+    `/vehicle-brand/upload-logo/${brandUuid}`,
+    { file },
+    "VehicleUpdateBrandLogo"
+  );
+
+  return response.data;
 }
 
 export async function vehicleGetBrand(variables: { id: string }) {
