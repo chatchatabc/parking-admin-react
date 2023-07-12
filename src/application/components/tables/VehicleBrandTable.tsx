@@ -7,6 +7,7 @@ import {
 } from "../../../domain/services/vehicleService";
 import { useDispatch } from "react-redux";
 import { drawerFormUpdate } from "../../redux/slices/drawers/drawerForm";
+import ImageComp from "../ImageComp";
 
 type Props = {
   showPagination?: boolean;
@@ -20,7 +21,19 @@ function VehicleBrandTable({ showPagination, localPagination }: Props) {
     {
       title: "Name",
       key: "name",
-      dataIndex: "name",
+      render: (record: VehicleBrand) => {
+        return (
+          <div className="flex items-center space-x-2">
+            <div className="h-8 w-8 rounded-full overflow-hidden">
+              <ImageComp
+                src={`/api/vehicle-brand/logo/${record.brandUuid}`}
+                alt={record.name ?? "No Image"}
+              />
+            </div>
+            <p>{record.name}</p>
+          </div>
+        );
+      },
     },
     {
       title: "Status",

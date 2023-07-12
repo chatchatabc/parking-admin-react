@@ -20,7 +20,7 @@ interface Props {
   id?: string;
 }
 
-function ProfilePage({ id = authUsername() }: Props) {
+function ProfilePage({ id = authUsername() ?? "" }: Props) {
   const globalState = useSelector((state: any) => state.globalState);
   const dispatch = useDispatch();
 
