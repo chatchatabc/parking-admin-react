@@ -1,16 +1,10 @@
-import { jeepneyGetAllByRouteDoc } from "../gql-docs/jeepneyDocs";
-import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restGet, restPost } from "../infra/apis/restActions";
 import {
   AxiosResponse,
   AxiosResponseData,
   AxiosResponseError,
 } from "../models/AxiosModel";
-import {
-  CommonContent,
-  CommonPagination,
-  CommonVariables,
-} from "../models/CommonModel";
+import { CommonPagination, CommonVariables } from "../models/CommonModel";
 import { Jeepney } from "../models/JeepneyModel";
 import { routeGet } from "./routeService";
 
@@ -43,49 +37,28 @@ export async function jeepneyGetAll(params: CommonVariables) {
   return response.data;
 }
 
-export async function jeepneyGetAllByRouteWithRoute(
-  variables: CommonVariables & { id: string }
-) {
-  const query = await jeepneyGetAllByRoute(variables);
-
-  if (query.errors) {
-    return query as AxiosResponseError;
-  }
-
-  const dataWithRoutes = query.data.content.map(async (jeepney: Jeepney) => {
-    const route = await routeGet({ id: jeepney.routeUuid ?? "" });
-
-    if (route.errors) {
-      return jeepney;
-    }
-    jeepney.route = route.data;
-
-    return jeepney;
-  });
-
-  const content = await Promise.all(dataWithRoutes);
-
-  return { data: { ...query.data, content } } as AxiosResponseData<
-    CommonContent<Jeepney>
-  >;
-}
-
 export async function jeepneyGetAllByRoute(
-  variables: CommonVariables & { id: string }
+  params: CommonVariables & { id: string }
 ) {
-  const query = await graphqlQuery(
-    jeepneyGetAllByRouteDoc(),
-    variables,
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<CommonPagination<Jeepney>> = await restGet(
+    `/jeepney/route/${id}`,
+    values,
     "JeepneyGetAllByRoute"
   );
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
+  if (response.data.errors) {
+    return response.data;
   }
 
-  const data = query.data.data.getJeepneysByRoute;
+  const contentPromise = response.data.data.content.map(async (jeepney) => {
+    return await jeepneyGetAllInfo(jeepney);
+  });
 
-  return { data } as AxiosResponseData<CommonContent<Jeepney>>;
+  response.data.data.content = await Promise.all(contentPromise);
+
+  return response.data;
 }
 
 export async function jeepneyCreate(params: Record<string, any>) {
