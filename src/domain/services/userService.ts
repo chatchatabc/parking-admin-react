@@ -1,9 +1,4 @@
-import {
-  userGetAllDoc,
-  userGetByParkingLotDoc,
-  userGetByVehicleDoc,
-  userRolesGetDoc,
-} from "../gql-docs/userDocs";
+import { userGetAllDoc, userRolesGetDoc } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import {
   restGet,
@@ -11,11 +6,7 @@ import {
   restPostFormData,
   restPut,
 } from "../infra/apis/restActions";
-import {
-  AxiosResponse,
-  AxiosResponseData,
-  AxiosResponseError,
-} from "../models/AxiosModel";
+import { AxiosResponse, AxiosResponseData } from "../models/AxiosModel";
 import { CommonPagination, CommonVariables } from "../models/CommonModel";
 import {
   User,

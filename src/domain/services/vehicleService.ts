@@ -1,6 +1,5 @@
 import {
   vehicleGetAllDoc,
-  vehicleGetTypeDoc,
   vehicleGetAllBrandDoc,
   vehicleGetAllTypeDoc,
   vehicleGetAllModelDoc,

@@ -10,7 +10,6 @@ import UserBanTable from "../components/tables/UserBanTable";
 import InvoicesTable from "../components/tables/InvoicesTable";
 import UserVehiclesTable from "../components/tables/UserVehiclesTable";
 import { authUserUuid, authUsername } from "../../domain/services/authService";
-import { CommonVariables } from "../../domain/models/CommonModel";
 import UserLoginTable from "../components/tables/UserLoginTable";
 import UserLogoutTable from "../components/tables/UserLogoutTable";
 import ImageComp from "../components/ImageComp";

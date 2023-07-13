@@ -1,8 +1,5 @@
 import { UploadFile } from "antd";
-import {
-  parkingLotGetAllDoc,
-  parkingLotGetImagesByParkingLotDoc,
-} from "../gql-docs/parkingDocs";
+import { parkingLotGetAllDoc } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import {
   restGet,
