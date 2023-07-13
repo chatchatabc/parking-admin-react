@@ -1,8 +1,4 @@
-import {
-  invoiceGetAllByVehicleDoc,
-  invoiceGetAllDoc,
-  invoiceGetDoc,
-} from "../gql-docs/invoiceDocs";
+import { invoiceGetDoc } from "../gql-docs/invoiceDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restGet } from "../infra/apis/restActions";
 import {
@@ -10,51 +6,29 @@ import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../models/AxiosModel";
-import {
-  CommonContent,
-  CommonPagination,
-  CommonVariables,
-} from "../models/CommonModel";
+import { CommonPagination, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
 import { parkingLotGet, parkingLotGetWithOwner } from "./parkingLotService";
 import { vehicleGet, vehicleGetWithAllInfo } from "./vehicleService";
 
-export async function invoiceGetAll(variables: CommonVariables) {
-  const query = await graphqlQuery(
-    invoiceGetAllDoc(),
-    variables,
+export async function invoiceGetAll(params: CommonVariables) {
+  const response: AxiosResponse<CommonPagination<Invoice>> = await restGet(
+    "/invoice",
+    params,
     "InvoiceGetAll"
   );
 
-  if (query.data.errors) {
-    return query.data;
+  if (response.data.errors) {
+    return response.data;
   }
 
-  const data = query.data.data.getInvoices;
-  const additionalInfo = data.content.map(async (invoice: Invoice) => {
-    const parkingLot = await parkingLotGetWithOwner({
-      id: invoice.parkingLotUuid ?? "",
-    });
-
-    if (!parkingLot.errors) {
-      invoice.parkingLot = parkingLot.data;
-    }
-
-    const vehicle = await vehicleGetWithAllInfo({
-      id: invoice.vehicleUuid ?? "",
-    });
-
-    if (!vehicle.errors) {
-      invoice.vehicle = vehicle.data;
-    }
-
-    return invoice;
+  const contentPromise = response.data.data.content.map(async (invoice) => {
+    return await invoiceGetAllInfo(invoice);
   });
 
-  const content = await Promise.all(additionalInfo);
-  data.content = content;
+  response.data.data.content = await Promise.all(contentPromise);
 
-  return { data } as AxiosResponseData<CommonContent<Invoice>>;
+  return response.data;
 }
 
 export async function invoiceGetAllInfo(invoice: Invoice) {
@@ -134,16 +108,21 @@ export async function invoiceGetAllByUser(
   return response.data;
 }
 
-export async function invoiceGet(variables: { id: string }) {
-  const query = await graphqlQuery(invoiceGetDoc(), variables, "InvoiceGet");
+export async function invoiceGet(params: { id: string }) {
+  const { id, ...values } = params;
+  const response: AxiosResponse<Invoice> = await restGet(
+    `/invoice/${id}`,
+    values,
+    "InvoiceGet"
+  );
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
+  if (response.data.errors) {
+    return response.data;
   }
 
-  const data = query.data.data.getInvoice;
+  response.data.data = await invoiceGetAllInfo(response.data.data);
 
-  return { data } as AxiosResponseData<Invoice>;
+  return response.data;
 }
 
 export async function invoiceGetAllByVehicle(
