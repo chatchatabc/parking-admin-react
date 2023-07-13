@@ -28,7 +28,7 @@ export async function authLogin(values: Record<string, any>) {
     return response.data as AxiosResponseError;
   }
 
-  localStorage.setItem("user", JSON.stringify(response.data.data));
+  sessionStorage.setItem("user", JSON.stringify(response.data.data));
 
   const token = response.headers["x-access-token"];
 
@@ -62,7 +62,7 @@ export function authCheckSession() {
 }
 
 export function authUser() {
-  const userLocal = localStorage.getItem("user");
+  const userLocal = sessionStorage.getItem("user");
 
   if (!userLocal) {
     return null;

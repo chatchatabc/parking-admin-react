@@ -5,13 +5,25 @@ import {
   userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
   userGetByVehicleDoc,
-  userGetDoc,
   userRolesGetDoc,
 } from "../gql-docs/userDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost, restPostFormData, restPut } from "../infra/apis/restActions";
-import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import {
+  restGet,
+  restPost,
+  restPostFormData,
+  restPut,
+} from "../infra/apis/restActions";
+import {
+  AxiosResponse,
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../models/AxiosModel";
+import {
+  CommonContent,
+  CommonPagination,
+  CommonVariables,
+} from "../models/CommonModel";
 import {
   User,
   UserBan,
@@ -21,33 +33,29 @@ import {
 } from "../models/UserModel";
 
 export async function userGet(variables: { id: string }) {
-  const query = await graphqlQuery(userGetDoc(), variables, "UserGet");
+  const response: AxiosResponse<User> = await restGet(
+    `/user/${variables.id}`,
+    {},
+    "UserGet"
+  );
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
-  }
+  return response.data;
+}
 
-  const data = query.data.data.getUser;
+export async function userGetAll(variables: CommonVariables) {
+  const response: AxiosResponse<CommonPagination<User>> = await restGet(
+    "/user",
+    variables,
+    "UserGetAll"
+  );
 
-  return { data } as AxiosResponseData<User>;
+  return response.data;
 }
 
 export async function userUpdateProfile(values: Record<string, any>) {
   const response = await restPut(`/user/update/${values.userId}`, values);
 
   return response.data;
-}
-
-export async function userGetAll(variables: CommonVariables) {
-  const response = await graphqlQuery(userGetAllDoc(), variables);
-
-  if (response.data.errors) {
-    return response.data;
-  }
-
-  const data = response.data.data.getUsers;
-
-  return { data } as AxiosResponseData<CommonContent<User>>;
 }
 
 export async function userOptionsUuid() {

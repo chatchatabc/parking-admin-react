@@ -5,7 +5,7 @@ import {
 } from "../../../domain/models/AxiosModel";
 import { Table, message } from "antd";
 import {
-  CommonContent,
+  CommonPagination,
   CommonVariables,
 } from "../../../domain/models/CommonModel";
 import { TableProps } from "antd/es/table";
@@ -17,7 +17,7 @@ type Props = TableProps<any> & {
   localPagination?: boolean;
   getData?: (
     variables: CommonVariables
-  ) => Promise<AxiosResponseData<CommonContent<any>> | AxiosResponseError>;
+  ) => Promise<AxiosResponseData<CommonPagination<any>> | AxiosResponseError>;
 };
 
 function DynamicTable({
@@ -91,7 +91,7 @@ function DynamicTable({
             setData(processedData);
             setPagination((prev) => ({
               ...prev,
-              total: response.data.pageInfo.totalElements,
+              total: response.data.totalElements,
             }));
           }
         }
