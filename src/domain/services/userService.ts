@@ -124,20 +124,16 @@ export async function userUpdate(values: Record<string, any>) {
   return response.data;
 }
 
-export async function userGetByParkingLot(variables: { id: string }) {
-  const response = await graphqlQuery(
-    userGetByParkingLotDoc(),
-    variables,
+export async function userGetByParkingLot(params: { id: string }) {
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<User> = await restGet(
+    `/user/parking-lot/${id}`,
+    values,
     "UserGetByParkingLot"
   );
 
-  if (response.data.errors) {
-    return response.data;
-  }
-
-  const data = response.data.data.getUserByParkingLot;
-
-  return { data } as AxiosResponseData<User>;
+  return response.data;
 }
 
 export async function userGetAllLogoutByUser(

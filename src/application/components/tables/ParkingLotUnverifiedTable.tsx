@@ -1,12 +1,12 @@
 import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
 import { ParkingLot } from "../../../domain/models/ParkingLotModel";
-import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingLotService";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
 import CheckIconAsset from "../../assets/CheckIconAsset";
 import XIconAsset from "../../assets/XIconAsset";
 import ImageHandler from "../ImageHandler";
+import { parkingLotGetAll } from "../../../domain/services/parkingLotService";
 
 function ParkingLotUnverifiedTable() {
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ function ParkingLotUnverifiedTable() {
       localPagination={true}
       columns={columns}
       getData={(commonVariables) => {
-        return parkingLotGetAllWithOwners({ ...commonVariables, verified: 0 });
+        return parkingLotGetAll({ ...commonVariables, verified: 0 });
       }}
     />
   );

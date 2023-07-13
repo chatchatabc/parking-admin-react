@@ -1,36 +1,36 @@
 import { User } from "./UserModel";
 
 export type ParkingLot = {
-  parkingLotUuid?: string | null;
-  address?: string | null;
-  businessHoursEnd?: string | null;
-  businessHoursStart?: string | null;
-  createdAt?: string | null;
-  description?: string | null;
-  name?: string | null;
-  updatedAt?: string | null;
-  verifiedAt?: string | null;
+  parkingLotUuid: string;
+  address: string;
+  businessHoursEnd: string;
+  businessHoursStart: string;
+  createdAt: string;
+  description: string;
+  name: string;
+  updatedAt: string;
+  verifiedAt: string;
 
-  latitude?: number | null;
-  longitude?: number | null;
-  capacity?: number | null;
-  availableSlots?: number | null;
-  openDaysFlag?: number | null;
+  latitude: number;
+  longitude: number;
+  capacity: number;
+  availableSlots: number;
+  openDaysFlag: number;
 
-  rate?: ParkingLotRate | null;
-  owner?: User | null;
+  rate: ParkingLotRate;
+  owner?: User;
 };
 
 export type ParkingLotRate = {
-  id?: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  id: string;
+  createdAt: string;
+  updatedAt: string;
 
-  rate?: number | null;
-  startingRate?: number | null;
-  type?: number | null;
-  freeHours?: number | null;
-  interval?: number | null;
+  rate: number;
+  startingRate: number;
+  type: number;
+  freeHours: number;
+  interval: number;
 
-  payForFreeHoursWhenExceeding?: Boolean;
+  payForFreeHoursWhenExceeding: Boolean;
 };

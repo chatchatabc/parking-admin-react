@@ -1,7 +1,7 @@
 import DynamicTable from "./DynamicTable";
 import { useNavigate } from "react-router-dom";
 import { ParkingLot } from "../../../domain/models/ParkingLotModel";
-import { parkingLotGetAllWithOwners } from "../../../domain/services/parkingLotService";
+import { parkingLotGetAll } from "../../../domain/services/parkingLotService";
 import { ColumnsType } from "antd/es/table";
 import { Popover } from "antd";
 import CheckIconAsset from "../../assets/CheckIconAsset";
@@ -28,6 +28,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
       render: (record: ParkingLot) => {
         const owner = record.owner;
         const date = new Date(record.verifiedAt ?? "");
+        console.log(owner);
 
         if (owner?.username || owner?.phone) {
           return (
@@ -126,7 +127,7 @@ function ParkingTable({ showPagination, localPagination, variables }: Props) {
       localPagination={localPagination}
       columns={columns}
       getData={(commonVariables) => {
-        return parkingLotGetAllWithOwners({ ...commonVariables, ...variables });
+        return parkingLotGetAll({ ...commonVariables, ...variables });
       }}
     />
   );

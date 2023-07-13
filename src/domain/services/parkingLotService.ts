@@ -1,8 +1,6 @@
 import { UploadFile } from "antd";
 import {
   parkingLotGetAllDoc,
-  parkingLotGetByUserDoc,
-  parkingLotGetDoc,
   parkingLotGetImagesByParkingLotDoc,
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
@@ -17,7 +15,7 @@ import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import { CommonPagination, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingLotModel";
 import { User } from "../models/UserModel";
 import { userGetByParkingLot } from "./userService";
@@ -32,56 +30,33 @@ export async function parkingLotGet(params: { id: string }) {
     "ParkingLotGet"
   );
 
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  response.data.data = await parkingLotGetAllInfo(response.data.data);
+
   return response.data;
 }
 
-export async function parkingLotGetAll(variables: CommonVariables) {
-  const query = await graphqlQuery(
-    parkingLotGetAllDoc(),
-    variables,
+export async function parkingLotGetAll(params: CommonVariables) {
+  const response: AxiosResponse<CommonPagination<ParkingLot>> = await restGet(
+    `/parking-lot`,
+    params,
     "ParkingLotGetAll"
   );
 
-  if (query.data.errors) {
-    return query.data;
+  if (response.data.errors) {
+    return response.data;
   }
 
-  const data = query.data.data.getParkingLots;
-
-  return { data } as AxiosResponseData<CommonContent<ParkingLot>>;
-}
-
-export async function parkingLotGetAllWithOwners(variables: CommonVariables) {
-  const query = await parkingLotGetAll(variables);
-
-  if (query.errors) {
-    return query;
-  }
-
-  // Add owner info to each parking lot
-  const parkingLots = query.data.content as ParkingLot[];
-  const additionalInfo = parkingLots.map(async (parkingLot) => {
-    const newParkingLot: ParkingLot = {
-      ...parkingLot,
-    };
-
-    const queryOwner = await userGetByParkingLot({
-      id: parkingLot.parkingLotUuid ?? "",
-    });
-
-    if (queryOwner.errors) {
-      return newParkingLot;
-    }
-
-    newParkingLot.owner = queryOwner.data;
-    return newParkingLot;
+  const contentPromise = response.data.data.content.map(async (parkingLot) => {
+    return await parkingLotGetAllInfo(parkingLot);
   });
 
-  // Wait for all promises to resolve
-  const newContent = await Promise.all(additionalInfo);
-  const data = { ...query.data, content: newContent };
+  response.data.data.content = await Promise.all(contentPromise);
 
-  return { data } as AxiosResponseData<CommonContent<ParkingLot>>;
+  return response.data;
 }
 
 export async function parkingLotGetWithOwner(variables: { id: string }) {
