@@ -1,8 +1,5 @@
 import {
   userGetAllDoc,
-  userGetAllLoginByUserDoc,
-  userGetAllLogoutByUserDoc,
-  userGetBanHistoryByUserDoc,
   userGetByParkingLotDoc,
   userGetByVehicleDoc,
   userRolesGetDoc,
@@ -19,11 +16,7 @@ import {
   AxiosResponseData,
   AxiosResponseError,
 } from "../models/AxiosModel";
-import {
-  CommonContent,
-  CommonPagination,
-  CommonVariables,
-} from "../models/CommonModel";
+import { CommonPagination, CommonVariables } from "../models/CommonModel";
 import {
   User,
   UserBan,

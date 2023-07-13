@@ -2,7 +2,6 @@ import {
   invoiceGetAllByVehicleDoc,
   invoiceGetAllDoc,
   invoiceGetByParkingLotDoc,
-  invoiceGetByUserDoc,
   invoiceGetDoc,
 } from "../gql-docs/invoiceDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
