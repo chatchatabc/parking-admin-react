@@ -1,21 +1,21 @@
 import { Route } from "./RouteModel";
 
 export type Jeepney = {
-  jeepneyUuid?: string | null;
-  name?: string | null;
-  plateNumber?: string | null;
-  capacity?: number | null;
-  createdAt?: string | null;
-  status?: number;
-  routeUuid?: string | null;
+  jeepneyUuid: string;
+  name: string;
+  plateNumber: string;
+  capacity: number;
+  createdAt: string;
+  status: number;
+  routeUuid: string;
 
-  route?: Route | null;
-  position?: JeepneyPosition | null;
+  route?: Route;
+  position?: JeepneyPosition;
 };
 
 export type JeepneyPosition = {
-  jeepneyUuid?: string | null;
-  latitude?: number | null;
-  longitude?: number | null;
-  direction?: number | null;
+  jeepneyUuid: string;
+  latitude: number;
+  longitude: number;
+  direction: number;
 };

@@ -1,28 +1,46 @@
-import {
-  jeepneyGetAllByRouteDoc,
-  jeepneyGetAllDoc,
-} from "../gql-docs/jeepneyDocs";
+import { jeepneyGetAllByRouteDoc } from "../gql-docs/jeepneyDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { restPost } from "../infra/apis/restActions";
-import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import { restGet, restPost } from "../infra/apis/restActions";
+import {
+  AxiosResponse,
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../models/AxiosModel";
+import {
+  CommonContent,
+  CommonPagination,
+  CommonVariables,
+} from "../models/CommonModel";
 import { Jeepney } from "../models/JeepneyModel";
 import { routeGet } from "./routeService";
 
-export async function jeepneyGetAll(variables: CommonVariables) {
-  const response = await graphqlQuery(
-    jeepneyGetAllDoc(),
-    variables,
+export async function jeepneyGetAllInfo(jeepney: Jeepney) {
+  const route = await routeGet({ id: jeepney.routeUuid ?? "" });
+  if (!route.errors) {
+    jeepney.route = route.data;
+  }
+
+  return jeepney;
+}
+
+export async function jeepneyGetAll(params: CommonVariables) {
+  const response: AxiosResponse<CommonPagination<Jeepney>> = await restGet(
+    "/jeepney",
+    params,
     "JeepneyGetAll"
   );
 
   if (response.data.errors) {
-    return response.data as AxiosResponseError;
+    return response.data;
   }
 
-  const data = response.data.data.getJeepneys;
+  const contentPromise = response.data.data.content.map(async (jeepney) => {
+    return await jeepneyGetAllInfo(jeepney);
+  });
 
-  return { data } as AxiosResponseData<CommonContent<Jeepney>>;
+  response.data.data.content = await Promise.all(contentPromise);
+
+  return response.data;
 }
 
 export async function jeepneyGetAllByRouteWithRoute(
@@ -68,31 +86,6 @@ export async function jeepneyGetAllByRoute(
   const data = query.data.data.getJeepneysByRoute;
 
   return { data } as AxiosResponseData<CommonContent<Jeepney>>;
-}
-
-export async function jeepneyGetAllWithRoute(variables: CommonVariables) {
-  const query = await jeepneyGetAll(variables);
-
-  if (query.errors) {
-    return query as AxiosResponseError;
-  }
-
-  const dataWithRoutes = query.data.content.map(async (jeepney: Jeepney) => {
-    const route = await routeGet({ id: jeepney.routeUuid ?? "" });
-
-    if (route.errors) {
-      return jeepney;
-    }
-    jeepney.route = route.data;
-
-    return jeepney;
-  });
-
-  const content = await Promise.all(dataWithRoutes);
-
-  return { data: { ...query.data, content } } as AxiosResponseData<
-    CommonContent<Jeepney>
-  >;
 }
 
 export async function jeepneyCreate(params: Record<string, any>) {

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import DynamicTable from "./DynamicTable";
-import { jeepneyGetAllWithRoute } from "../../../domain/services/jeepneyService";
 import { Jeepney } from "../../../domain/models/JeepneyModel";
 import { ColumnsType } from "antd/es/table";
 import JeepneyPositionComp from "../JeepneyPositionComp";
+import { jeepneyGetAll } from "../../../domain/services/jeepneyService";
 
 type Props = {
   showPagination?: boolean;
@@ -64,7 +64,7 @@ function JeepneysTable({
       localPagination={localPagination}
       columns={columns}
       getData={(variables) => {
-        return jeepneyGetAllWithRoute({ ...variables, ...extraVariables });
+        return jeepneyGetAll({ ...variables, ...extraVariables });
       }}
     />
   );

@@ -6,8 +6,17 @@ import {
 } from "../gql-docs/routeDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
-import { restDelete, restPost, restPut } from "../infra/apis/restActions";
-import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
+import {
+  restDelete,
+  restGet,
+  restPost,
+  restPut,
+} from "../infra/apis/restActions";
+import {
+  AxiosResponse,
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../models/AxiosModel";
 import {
   CommonContent,
   CommonOptions,
@@ -278,18 +287,19 @@ export async function routeGetAllOptions(variables: CommonVariables) {
 }
 
 export async function routeGet(
-  variables: CommonVariables & {
+  params: CommonVariables & {
     id: string;
   }
 ) {
-  const query = await graphqlQuery(routeGetDoc(), variables, "RouteGet");
+  const { id, ...values } = params;
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
-  }
+  const response: AxiosResponse<Route> = await restGet(
+    `/route/${id}`,
+    values,
+    "RouteGet"
+  );
 
-  const data = query.data.data.getRoute;
-  return { data } as AxiosResponseData<Route>;
+  return response.data;
 }
 
 export async function routeGetWithNodesAndEdges(
