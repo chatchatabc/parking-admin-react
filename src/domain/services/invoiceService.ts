@@ -6,11 +6,20 @@ import {
   invoiceGetDoc,
 } from "../gql-docs/invoiceDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
-import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
-import { CommonContent, CommonVariables } from "../models/CommonModel";
+import { restGet } from "../infra/apis/restActions";
+import {
+  AxiosResponse,
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../models/AxiosModel";
+import {
+  CommonContent,
+  CommonPagination,
+  CommonVariables,
+} from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
-import { parkingLotGetWithOwner } from "./parkingLotService";
-import { vehicleGetWithAllInfo } from "./vehicleService";
+import { parkingLotGet, parkingLotGetWithOwner } from "./parkingLotService";
+import { vehicleGet, vehicleGetWithAllInfo } from "./vehicleService";
 
 export async function invoiceGetAll(variables: CommonVariables) {
   const query = await graphqlQuery(
@@ -90,41 +99,43 @@ export async function invoiceGetByParkingLot(
   } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
-export async function invoiceGetByUser(
-  variables: CommonVariables & { id: string }
+export async function invoiceGetAllByUser(
+  params: CommonVariables & { id: string }
 ) {
-  const query = await graphqlQuery(invoiceGetByUserDoc(), variables);
+  const { id, ...values } = params;
 
-  if (query.data.errors) {
-    return query.data;
+  const response: AxiosResponse<CommonPagination<Invoice>> = await restGet(
+    `/invoice/user/${id}`,
+    values,
+    "InvoiceGetAll"
+  );
+
+  if (response.data.errors) {
+    return response.data;
   }
 
-  const data = query.data.data.getInvoicesByUser;
-
-  const additionalInfo = data.content.map(async (invoice: Invoice) => {
-    const parkingLot = await parkingLotGetWithOwner({
+  const contentPromise = response.data.data.content.map(async (invoice) => {
+    const parkingLot = await parkingLotGet({
       id: invoice.parkingLotUuid ?? "",
     });
-
     if (!parkingLot.errors) {
       invoice.parkingLot = parkingLot.data;
     }
 
-    const vehicle = await vehicleGetWithAllInfo({
+    const vehicle = await vehicleGet({
       id: invoice.vehicleUuid ?? "",
     });
-
     if (!vehicle.errors) {
       invoice.vehicle = vehicle.data;
     }
 
     return invoice;
   });
-  const invoicesWithParkingLot = await Promise.all(additionalInfo);
+  const content = await Promise.all(contentPromise);
 
-  return {
-    data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData<CommonContent<Invoice>>;
+  response.data.data.content = content;
+
+  return response.data;
 }
 
 export async function invoiceGet(variables: { id: string }) {

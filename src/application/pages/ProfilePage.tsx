@@ -9,12 +9,12 @@ import MyButton from "../components/common/MyButton";
 import UserBanTable from "../components/tables/UserBanTable";
 import InvoicesTable from "../components/tables/InvoicesTable";
 import UserVehiclesTable from "../components/tables/UserVehiclesTable";
-import { invoiceGetByUser } from "../../domain/services/invoiceService";
-import { authUsername } from "../../domain/services/authService";
+import { authUserUuid, authUsername } from "../../domain/services/authService";
 import { CommonVariables } from "../../domain/models/CommonModel";
 import UserLoginTable from "../components/tables/UserLoginTable";
 import UserLogoutTable from "../components/tables/UserLogoutTable";
 import ImageComp from "../components/ImageComp";
+import { invoiceGetAllByUser } from "../../domain/services/invoiceService";
 
 interface Props {
   id?: string;
@@ -256,10 +256,10 @@ function ProfilePage({ id = authUsername() ?? "" }: Props) {
             <section className="mt-2">
               <InvoicesTable
                 getData={(variables) => {
-                  variables.id = data.userUuid;
-                  return invoiceGetByUser(
-                    variables as CommonVariables & { id: string }
-                  );
+                  return invoiceGetAllByUser({
+                    ...variables,
+                    id: data.userUuid ?? authUserUuid() ?? "",
+                  });
                 }}
               />
             </section>

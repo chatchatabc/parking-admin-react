@@ -1,52 +1,52 @@
 import { User } from "./UserModel";
 
 export type Vehicle = {
-  vehicleUuid?: string | null;
-  name?: string | null;
-  plateNumber?: string | null;
-  modelUuid?: string | null;
-  color?: string | null;
-  year?: string | null;
-  verifiedAt?: string | null;
-  rejectionReason?: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  vehicleUuid: string;
+  modelUuid: string;
+  name: string;
+  plateNumber: string;
+  color: string;
+  year: string;
+  verifiedAt: string;
+  rejectionReason: string;
+  createdAt: string;
+  updatedAt: string;
 
-  status?: number | null;
-  verifiedBy?: number | null;
+  status: number;
+  verifiedBy: number;
 
-  owner?: User | null;
-  model?: VehicleModel | null;
+  owner?: User;
+  model?: VehicleModel;
 };
 
 export type VehicleBrand = {
-  brandUuid?: string | null;
-  name?: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  brandUuid: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 
-  status?: number | null;
+  status: number;
 };
 
 export type VehicleType = {
-  typeUuid?: string | null;
-  name?: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  typeUuid: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 
-  status?: number | null;
+  status: number;
 };
 
 export type VehicleModel = {
-  modelUuid?: string | null;
-  name?: string | null;
-  brandUuid?: string | null;
-  typeUuid?: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  modelUuid: string;
+  name: string;
+  brandUuid: string;
+  typeUuid: string;
+  createdAt: string;
+  updatedAt: string;
 
-  status?: number | null;
+  status: number;
 
-  brand?: VehicleBrand | null;
-  type?: VehicleType | null;
+  brand?: VehicleBrand;
+  type?: VehicleType;
 };

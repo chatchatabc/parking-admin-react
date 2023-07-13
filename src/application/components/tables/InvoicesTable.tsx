@@ -4,6 +4,7 @@ import { Invoice } from "../../../domain/models/InvoiceModel";
 import { useNavigate } from "react-router-dom";
 import {
   CommonContent,
+  CommonPagination,
   CommonVariables,
 } from "../../../domain/models/CommonModel";
 import {
@@ -16,7 +17,8 @@ type Props = {
   getData: (
     variables: CommonVariables
   ) => Promise<
-    AxiosResponseData<CommonContent<Record<string, any>>> | AxiosResponseError
+    | AxiosResponseData<CommonPagination<Record<string, any>>>
+    | AxiosResponseError
   >;
 };
 

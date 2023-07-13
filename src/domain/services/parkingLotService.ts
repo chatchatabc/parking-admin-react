@@ -7,31 +7,32 @@ import {
 } from "../gql-docs/parkingDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import {
+  restGet,
   restPost,
   restPostMultiPart,
   restPut,
 } from "../infra/apis/restActions";
-import { AxiosResponseData, AxiosResponseError } from "../models/AxiosModel";
+import {
+  AxiosResponse,
+  AxiosResponseData,
+  AxiosResponseError,
+} from "../models/AxiosModel";
 import { CommonContent, CommonVariables } from "../models/CommonModel";
 import { ParkingLot } from "../models/ParkingLotModel";
 import { User } from "../models/UserModel";
 import { userGetByParkingLot } from "./userService";
 import type { Dayjs } from "dayjs";
 
-export async function parkingLotGet(variables: { id: string }) {
-  const query = await graphqlQuery(
-    parkingLotGetDoc(),
-    variables,
+export async function parkingLotGet(params: { id: string }) {
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<ParkingLot> = await restGet(
+    `/parking-lot/${id}`,
+    values,
     "ParkingLotGet"
   );
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
-  }
-
-  const data = query.data.data.getParkingLot;
-
-  return { data } as AxiosResponseData<ParkingLot>;
+  return response.data;
 }
 
 export async function parkingLotGetAll(variables: CommonVariables) {

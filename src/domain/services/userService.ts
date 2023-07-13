@@ -148,39 +148,31 @@ export async function userGetByParkingLot(variables: { id: string }) {
 }
 
 export async function userGetAllLogoutByUser(
-  variables: CommonVariables & { id: string }
+  params: CommonVariables & { id: string }
 ) {
-  const response = await graphqlQuery(
-    userGetAllLogoutByUserDoc(),
-    variables,
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<CommonPagination<UserLogout>> = await restGet(
+    `/log/user-logout/${id}`,
+    values,
     "UserGetAllLogoutByUser"
   );
 
-  if (response.data.errors) {
-    return response.data;
-  }
-
-  const data = response.data.data.getUserLogoutLogsByUser;
-
-  return { data } as AxiosResponseData<CommonContent<UserLogout>>;
+  return response.data;
 }
 
 export async function userGetAllLoginByUser(
-  variables: CommonVariables & { id: string }
+  params: CommonVariables & { id: string }
 ) {
-  const response = await graphqlQuery(
-    userGetAllLoginByUserDoc(),
-    variables,
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<CommonPagination<UserLogin>> = await restGet(
+    `/log/user-login/${id}`,
+    values,
     "UserGetAllLoginByUser"
   );
 
-  if (response.data.errors) {
-    return response.data;
-  }
-
-  const data = response.data.data.getUserLoginLogsByUser;
-
-  return { data } as AxiosResponseData<CommonContent<UserLogin>>;
+  return response.data;
 }
 
 export async function userUpdateAvatar(values: Record<string, any>) {
@@ -212,15 +204,17 @@ export async function userGetByVehicle(variables: { id: string }) {
 }
 
 export async function userGetBanHistoryByUser(
-  variables: CommonVariables & { id: string }
+  params: CommonVariables & { id: string }
 ) {
-  const response = await graphqlQuery(userGetBanHistoryByUserDoc(), variables);
-  if (response.data.errors) {
-    return response.data;
-  }
-  const data = response.data.data.getBanHistoryLogsByUser;
+  const { id, ...values } = params;
 
-  return { data } as AxiosResponseData<CommonContent<UserBan>>;
+  const response: AxiosResponse<CommonPagination<UserBan>> = await restGet(
+    `/log/user-ban-history/${id}`,
+    values,
+    "UserGetBanHistoryByUser"
+  );
+
+  return response.data;
 }
 
 export async function userBanCreate(values: Record<string, any>) {
