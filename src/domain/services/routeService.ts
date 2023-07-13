@@ -1,5 +1,3 @@
-import { routeGetNodesDoc } from "../gql-docs/routeDocs";
-import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { mapboxGet, mapboxGetPublicToken } from "../infra/apis/mapboxActions";
 import {
   restDelete,
@@ -13,7 +11,6 @@ import {
   AxiosResponseError,
 } from "../models/AxiosModel";
 import {
-  CommonContent,
   CommonOptions,
   CommonPagination,
   CommonVariables,
