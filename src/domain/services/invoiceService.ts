@@ -1,11 +1,5 @@
-import { invoiceGetDoc } from "../gql-docs/invoiceDocs";
-import { graphqlQuery } from "../infra/apis/graphqlActions";
 import { restGet } from "../infra/apis/restActions";
-import {
-  AxiosResponse,
-  AxiosResponseData,
-  AxiosResponseError,
-} from "../models/AxiosModel";
+import { AxiosResponse, AxiosResponseData } from "../models/AxiosModel";
 import { CommonPagination, CommonVariables } from "../models/CommonModel";
 import { Invoice } from "../models/InvoiceModel";
 import { parkingLotGet, parkingLotGetWithOwner } from "./parkingLotService";
