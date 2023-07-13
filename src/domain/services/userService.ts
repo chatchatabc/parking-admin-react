@@ -176,20 +176,16 @@ export async function userUpdateAvatar(values: Record<string, any>) {
   return response.data;
 }
 
-export async function userGetByVehicle(variables: { id: string }) {
-  const response = await graphqlQuery(
-    userGetByVehicleDoc(),
-    variables,
+export async function userGetByVehicle(params: { id: string }) {
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<User> = await restGet(
+    `/user/vehicle/${id}`,
+    values,
     "UserGetByVehicle"
   );
 
-  if (response.data.errors) {
-    return response.data as AxiosResponseError;
-  }
-
-  const data = response.data.data.getUserByVehicle;
-
-  return { data } as AxiosResponseData<User>;
+  return response.data;
 }
 
 export async function userGetBanHistoryByUser(

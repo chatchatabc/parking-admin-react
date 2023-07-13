@@ -2,19 +2,19 @@ import { ParkingLot } from "./ParkingLotModel";
 import { Vehicle } from "./VehicleModel";
 
 export type Invoice = {
-  invoiceUuid?: string | null;
-  createdAt?: string | null;
-  endAt?: string | null;
-  paidAt?: string | null;
-  plateNumber?: string | null;
-  startAt?: string | null;
-  updatedAt?: string | null;
-  parkingLotUuid?: string | null;
-  vehicleUuid?: string | null;
+  invoiceUuid: string;
+  createdAt: string;
+  endAt: string;
+  paidAt: string;
+  plateNumber: string;
+  startAt: string;
+  updatedAt: string;
+  parkingLotUuid: string;
+  vehicleUuid: string;
 
-  total?: number | null;
-  estimatedParkingDurationInHours?: number | null;
+  total: number;
+  estimatedParkingDurationInHours: number;
 
-  parkingLot?: ParkingLot | null;
-  vehicle?: Vehicle | null;
+  parkingLot?: ParkingLot;
+  vehicle?: Vehicle;
 };

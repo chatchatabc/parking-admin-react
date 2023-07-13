@@ -83,10 +83,12 @@ export async function parkingLotGetWithOwner(variables: { id: string }) {
   return { data } as AxiosResponseData<ParkingLot>;
 }
 
-export async function parkingLotGetByUser(variables: { id: string }) {
-  const response = await graphqlQuery(
-    parkingLotGetByUserDoc(),
-    variables,
+export async function parkingLotGetByUser(params: { id: string }) {
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<ParkingLot> = await restGet(
+    `/parking-lot/user/${id}`,
+    values,
     "ParkingLotGetByUser"
   );
 
@@ -94,9 +96,18 @@ export async function parkingLotGetByUser(variables: { id: string }) {
     return response.data;
   }
 
-  const data = response.data.data.getParkingLotByUser;
+  response.data.data = await parkingLotGetAllInfo(response.data.data);
 
-  return { data } as AxiosResponseData<ParkingLot>;
+  return response.data;
+}
+
+export async function parkingLotGetAllInfo(parking: ParkingLot) {
+  const user = await userGetByParkingLot({ id: parking.parkingLotUuid });
+  if (!user.errors) {
+    parking.owner = user.data;
+  }
+
+  return parking;
 }
 
 export async function parkingLotCreate(values: Record<string, any>) {
@@ -212,24 +223,20 @@ export async function parkingLotUpdateRate(values: Record<string, any>) {
   return response.data;
 }
 
-export async function parkingLotGetImagesByParkingLot(
-  variables: CommonVariables & {
+export async function parkingLotGetAllImage(
+  params: CommonVariables & {
     id: string;
   }
 ) {
-  const query = await graphqlQuery(
-    parkingLotGetImagesByParkingLotDoc(),
-    variables,
-    "ParkingLotGetImagesByParkingLot"
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<string[]> = await restGet(
+    `/parking-lot/images/${id}`,
+    values,
+    "ParkingLotGetAllImage"
   );
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
-  }
-
-  const data = query.data.data.getParkingLotImageKeysByParkingLot;
-
-  return { data } as AxiosResponseData<string[]>;
+  return response.data;
 }
 
 export function parkingLotGetFilters() {

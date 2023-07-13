@@ -3,8 +3,8 @@ import React from "react";
 import ErrorMessageComp from "../../components/ErrorMessageComp";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  parkingLotGetAllImage,
   parkingLotGetByUser,
-  parkingLotGetImagesByParkingLot,
   parkingLotUploadImage,
   parkingLotVerify,
 } from "../../../domain/services/parkingLotService";
@@ -17,10 +17,10 @@ import { globalStateUpdate } from "../../redux/slices/globalState";
 import { utilGenerateRandomNumber } from "../../../domain/utils/commonUtils";
 import InvoicesTable from "../../components/tables/InvoicesTable";
 import { userGet } from "../../../domain/services/userService";
-import { invoiceGetByParkingLot } from "../../../domain/services/invoiceService";
 import { Marker } from "react-map-gl";
 import PinIconAsset from "../../assets/PinIconAsset";
 import MapBoxComp from "../../components/MapBoxComp";
+import { invoiceGetAllByParkingLot } from "../../../domain/services/invoiceService";
 
 function ParkingLotsProfilePage() {
   const navigate = useNavigate();
@@ -91,7 +91,7 @@ function ParkingLotsProfilePage() {
       } else {
         setData(response.data);
 
-        const responseImages = await parkingLotGetImagesByParkingLot({
+        const responseImages = await parkingLotGetAllImage({
           id: response?.data?.parkingLotUuid ?? "",
           page: 0,
           size: 100,
@@ -474,7 +474,7 @@ function ParkingLotsProfilePage() {
           <section className="mt-2">
             <InvoicesTable
               getData={(variables) => {
-                return invoiceGetByParkingLot({
+                return invoiceGetAllByParkingLot({
                   ...variables,
                   id: data.parkingLotUuid ?? "",
                 });

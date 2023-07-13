@@ -58,44 +58,42 @@ export async function invoiceGetAll(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<Invoice>>;
 }
 
-export async function invoiceGetByParkingLot(
-  variables: CommonVariables & { id: string }
+export async function invoiceGetAllInfo(invoice: Invoice) {
+  const parkingLot = await parkingLotGet({ id: invoice.parkingLotUuid ?? "" });
+  if (!parkingLot.errors) {
+    invoice.parkingLot = parkingLot.data;
+  }
+
+  const vehicle = await vehicleGet({ id: invoice.vehicleUuid ?? "" });
+  if (!vehicle.errors) {
+    invoice.vehicle = vehicle.data;
+  }
+
+  return invoice;
+}
+
+export async function invoiceGetAllByParkingLot(
+  params: CommonVariables & { id: string }
 ) {
-  const query = await graphqlQuery(
-    invoiceGetByParkingLotDoc(),
-    variables,
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<CommonPagination<Invoice>> = await restGet(
+    `/invoice/parking-lot/${id}`,
+    values,
     "InvoiceGetByParkingLot"
   );
 
-  if (query.data.errors) {
-    return query.data;
+  if (response.data.errors) {
+    return response.data;
   }
 
-  const data = query.data.data.getInvoicesByParkingLot;
-  const additionalInfo = data.content.map(async (invoice: Invoice) => {
-    const parkingLot = await parkingLotGetWithOwner({
-      id: invoice.parkingLotUuid ?? "",
-    });
-
-    if (!parkingLot.errors) {
-      invoice.parkingLot = parkingLot.data;
-    }
-
-    const vehicle = await vehicleGetWithAllInfo({
-      id: invoice.vehicleUuid ?? "",
-    });
-
-    if (!vehicle.errors) {
-      invoice.vehicle = vehicle.data;
-    }
-
-    return invoice;
+  const contentPromise = response.data.data.content.map(async (invoice) => {
+    return await invoiceGetAllInfo(invoice);
   });
-  const invoicesWithParkingLot = await Promise.all(additionalInfo);
 
-  return {
-    data: { ...data, content: invoicesWithParkingLot },
-  } as AxiosResponseData<CommonContent<Invoice>>;
+  response.data.data.content = await Promise.all(contentPromise);
+
+  return response.data;
 }
 
 export async function invoiceGetAllByUser(

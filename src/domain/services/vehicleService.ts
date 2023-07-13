@@ -3,11 +3,7 @@ import {
   vehicleGetTypeDoc,
   vehicleGetAllBrandDoc,
   vehicleGetAllTypeDoc,
-  vehicleGetDoc,
-  vehicleGetBrandDoc,
-  vehicleGetModelDoc,
   vehicleGetAllModelDoc,
-  vehicleGetAllByUserDoc,
 } from "../gql-docs/vehicleDocs";
 import { graphqlQuery } from "../infra/apis/graphqlActions";
 import {
@@ -36,6 +32,20 @@ import {
 } from "../models/VehicleModel";
 import { userGetByVehicle } from "./userService";
 
+export async function vehicleGetAllInfo(vehicle: Vehicle) {
+  const model = await vehicleGetModel({ id: vehicle.modelUuid ?? "" });
+  if (!model.errors) {
+    vehicle.model = model.data;
+  }
+
+  const user = await userGetByVehicle({ id: vehicle.vehicleUuid ?? "" });
+  if (!user.errors) {
+    vehicle.owner = user.data;
+  }
+
+  return vehicle;
+}
+
 export async function vehicleGet(params: { id: string }) {
   const { id, ...values } = params;
 
@@ -44,6 +54,12 @@ export async function vehicleGet(params: { id: string }) {
     values,
     "VehicleGet"
   );
+
+  if (response.data.errors) {
+    return response.data;
+  }
+
+  response.data.data = await vehicleGetAllInfo(response.data.data);
 
   return response.data;
 }
@@ -110,20 +126,16 @@ export async function vehicleGetAll(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<Vehicle>>;
 }
 
-export async function vehicleGetType(variables: { id: string }) {
-  const query = await graphqlQuery(
-    vehicleGetTypeDoc(),
-    variables,
+export async function vehicleGetType(params: { id: string }) {
+  const { id, ...values } = params;
+
+  const response: AxiosResponse<VehicleType> = await restGet(
+    `/vehicle-type/${id}`,
+    values,
     "VehicleGetType"
   );
 
-  if (query.data.errors) {
-    return query.data as AxiosResponseError;
-  }
-
-  const data = query.data.data.getVehicleType;
-
-  return { data } as AxiosResponseData<VehicleType>;
+  return response.data;
 }
 
 export async function vehicleVerify(values: Record<string, any>) {
@@ -242,6 +254,20 @@ export async function vehicleGetAllModel(variables: CommonVariables) {
   return { data } as AxiosResponseData<CommonContent<VehicleModel>>;
 }
 
+export async function vehicleGetModelAllInfo(vehicleModel: VehicleModel) {
+  const brand = await vehicleGetBrand({ id: vehicleModel.brandUuid ?? "" });
+  if (!brand.errors) {
+    vehicleModel.brand = brand.data;
+  }
+
+  const type = await vehicleGetType({ id: vehicleModel.typeUuid ?? "" });
+  if (!type.errors) {
+    vehicleModel.type = type.data;
+  }
+
+  return vehicleModel;
+}
+
 export async function vehicleGetModel(params: { id: string }) {
   const { id, ...values } = params;
 
@@ -254,19 +280,7 @@ export async function vehicleGetModel(params: { id: string }) {
     return response.data;
   }
 
-  const model = response.data.data;
-
-  // Get vehicle brand
-  const brand = await vehicleGetBrand({ id: model.brandUuid ?? "" });
-  if (!brand.errors) {
-    response.data.data.brand = brand.data;
-  }
-
-  // Get vehicle type
-  const type = await vehicleGetType({ id: model.typeUuid ?? "" });
-  if (!type.errors) {
-    response.data.data.type = type.data;
-  }
+  response.data.data = await vehicleGetModelAllInfo(response.data.data);
 
   return response.data;
 }
