@@ -2,7 +2,7 @@ import React from "react";
 import { RouteNode } from "../../../domain/models/RouteModel";
 import {
   routeCreateNodeMany,
-  routeGetNodes,
+  routeGetAllNode,
   routeUpdateNodeMany,
 } from "../../../domain/services/routeService";
 import { message } from "antd";
@@ -64,7 +64,7 @@ function CommutesNodesMap() {
   React.useEffect(() => {
     if (loading) {
       (async () => {
-        const response = await routeGetNodes({ size: 10000000, page: 0 });
+        const response = await routeGetAllNode({ size: 10000000, page: 0 });
 
         if (response.errors) {
           response.errors.forEach((error) => {

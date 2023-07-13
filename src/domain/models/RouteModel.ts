@@ -1,15 +1,15 @@
 export type Route = {
-  routeUuid?: string;
-  slug?: string | null;
-  name?: string | null;
-  description?: string | null;
-  points?: string | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
-  color?: string | null;
+  routeUuid: string;
+  slug: string;
+  name: string;
+  description: string;
+  points: string;
+  createdAt: string;
+  updatedAt: string;
+  color: string;
 
-  id?: number;
-  status?: number | null;
+  id: number;
+  status: number;
 
   nodes?: RouteNode[];
   edges?: RouteEdge[];
@@ -22,12 +22,12 @@ export type RouteEdgeCreate = {
 };
 
 export type RouteEdge = {
-  id?: number;
-  routeId?: number;
-  nodeFrom?: number;
-  nodeTo?: number;
-  distance?: number;
-  createdAt?: string;
+  id: number;
+  routeId: number;
+  nodeFrom: number;
+  nodeTo: number;
+  distance: number;
+  createdAt: string;
 };
 
 export type RouteNodeCreate = {

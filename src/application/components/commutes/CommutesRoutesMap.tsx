@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, RouteEdge, RouteNode } from "../../../domain/models/RouteModel";
 import {
-  routeGetAllWithNodesAndEdges,
-  routeGetNodes,
+  routeGetAll,
+  routeGetAllNode,
 } from "../../../domain/services/routeService";
 import { message } from "antd";
 import MyButton from "../common/MyButton";
@@ -166,7 +166,7 @@ function CommutesRoutesMap() {
   React.useEffect(() => {
     if (loading) {
       (async () => {
-        const response = await routeGetNodes({
+        const response = await routeGetAllNode({
           page: 0,
           size: 1000000,
         });
@@ -179,7 +179,7 @@ function CommutesRoutesMap() {
           setNodes(response.data?.content || []);
         }
 
-        const response2 = await routeGetAllWithNodesAndEdges({});
+        const response2 = await routeGetAll({});
 
         if (response2.errors) {
           response2.errors.forEach((error) => {
